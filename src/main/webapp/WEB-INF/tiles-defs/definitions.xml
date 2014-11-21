@@ -3,8 +3,7 @@
 
 <tiles-definitions>
 	<definition name="defaultTemplate" template="/WEB-INF/jsp/template/template.jsp">
-<!-- 		<put-attribute name="modals" value="/WEB-INF/jsp/template/modals.jsp"/> -->
-		<put-attribute name="header" value="/WEB-INF/jsp/template/navbar.jsp" />
+		<put-attribute name="header" value="/WEB-INF/jsp/template/header.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
 	</definition>
@@ -14,22 +13,4 @@
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
-<!-- 	<definition name="play" extends="defaultTemplate"> -->
-<!-- 		<put-attribute name="content" value="/WEB-INF/jsp/play.jsp" /> -->
-<!-- 	</definition> -->
-<!-- 	<definition name="panel" extends="defaultTemplate"> -->
-<!-- 		<put-attribute name="content" value="/WEB-INF/jsp/panel.jsp" /> -->
-<!-- 	</definition> -->
-<!-- 	<definition name="register" extends="defaultTemplate"> -->
-<!-- 		<put-attribute name="content" value="/WEB-INF/jsp/register.jsp" /> -->
-<!-- 	</definition> -->
-<!-- 	<definition name="rerequest" extends="defaultTemplate"> -->
-<!-- 		<put-attribute name="content" value="/WEB-INF/jsp/rerequest_facebook_permissions.jsp" /> -->
-<!-- 	</definition> -->
-<!-- 	<definition name="error404" extends="defaultTemplate"> -->
-<!-- 		<put-attribute name="content" value="/WEB-INF/jsp/errors/error404.jsp" /> -->
-<!-- 	</definition> -->
-	
-	
-<!-- 	<definition name="game" template="/WEB-INF/jsp/game.jsp"></definition> -->
 </tiles-definitions>
