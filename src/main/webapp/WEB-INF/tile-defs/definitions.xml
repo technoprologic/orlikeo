@@ -8,7 +8,7 @@
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
 	</definition>
 	<definition name="home" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/header.jsp" />
+		<put-attribute name="content" value="/WEB-INF/jsp/home.jsp" />
 	</definition>
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
