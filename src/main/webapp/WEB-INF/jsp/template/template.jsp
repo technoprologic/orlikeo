@@ -13,7 +13,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Jumbotron Template for Bootstraper</title>
+    <title>Oficiall Orlikeo service</title>
 
     <!-- Bootstrap core CSS -->
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
@@ -39,9 +39,6 @@
 		
 	<!-- Main jumbotron for a primary marketing message or call to action -->
     <div>
-    	<tiles:insertAttribute name="content" />
-	</div>
-	<div>
     	<tiles:insertAttribute name="content" />
 	</div>
 
