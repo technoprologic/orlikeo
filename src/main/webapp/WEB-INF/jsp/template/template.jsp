@@ -16,7 +16,7 @@
     <title>Jumbotron Template for Bootstraper</title>
 
     <!-- Bootstrap core CSS -->
-   <link href="<c:url value="/resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
+   <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 
     <!-- Custom styles for this template -->
    <!--  <link href="jumbotron.css" rel="stylesheet"> -->
