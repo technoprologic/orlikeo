@@ -33,18 +33,18 @@
   </head>
 <body>
 
-<!-- 	<div> -->
-<%-- 		<tiles:insertAttribute name="header" /> --%>
-<!-- 	</div> -->
+	<div> 
+		<tiles:insertAttribute name="header" />
+ 	</div>
 		
 	<!-- Main jumbotron for a primary marketing message or call to action -->
     <div>
     	<tiles:insertAttribute name="content" />
 	</div>
 
-<!-- 	<div> -->
-<%-- 		<tiles:insertAttribute name="footer" /> --%>
-<!-- 	</div> -->
+ 	<div>
+ 		<tiles:insertAttribute name="footer" />
+ 	</div>
 
 
 
