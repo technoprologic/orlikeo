@@ -18,16 +18,7 @@
           <a class="navbar-brand" href="${homerUrl}">Orlikeo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-            <a class="btn btn-default" href="${loginUrl}">Register</a>
-          </form>
+            <a class="btn btn-default" href="${loginUrl}">Zaloguj</a>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
