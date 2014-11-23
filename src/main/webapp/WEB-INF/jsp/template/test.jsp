@@ -5,7 +5,7 @@
 
 
     <div>
-    	<tiles:insertAttribute name="content" />
+    	<tiles:insertAttribute name="contentTest" />
 	</div>
 
 

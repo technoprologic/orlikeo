@@ -12,8 +12,11 @@
 	<definition name="home" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/home.jsp" />
 	</definition>
+	
+	
+	
 	<definition name="tester" template="WEB-INF/jsp/template/test.jsp">
-		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
+		<put-attribute name="contentTest" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
 	
 	<!-- template for clear business content (without menu etc.) -->
