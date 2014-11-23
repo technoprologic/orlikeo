@@ -35,7 +35,7 @@
 		<h2>Input Validation + Colorful Input Groups</h2>
 	</div>
     <div class="row">
-        <div class="col-sm-offset-4 col-sm-4">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
         <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
         <div class="account-wall">
             <form method="post">
