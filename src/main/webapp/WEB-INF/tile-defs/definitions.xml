@@ -18,7 +18,7 @@
 	<definition name="clearTemplate" template="WEB-INF/jsp/template/clearTemplate.jsp">
 		<put-attribute name="clearContent" value="" />
 	</definition>
-		<definition name="loginRegisterTemplate" extends="clearTemplate">
+		<definition name="login" extends="clearTemplate">
 		<put-attribute name="clearContent" value="/WEB-INF/jsp/login.jsp" />
 	</definition>
 </tiles-definitions>
