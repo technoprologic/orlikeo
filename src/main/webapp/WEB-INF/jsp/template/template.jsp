@@ -30,17 +30,12 @@
 </head>
 <body>
 
-	<div> 
-		<tiles:insertAttribute name="navbar" />
- 	</div>
-		
-<%-- 	<div>
-    	<tiles:insertAttribute name="leftMenuContent" />
-	</div>
-	
-    <div>
-    	<tiles:insertAttribute name="content" />
-	</div> --%>
+    <div id="wrapper">
+		<tiles:insertAttribute name="navbar" />	
+		<div id="page-wrapper">	
+	    	<tiles:insertAttribute name="content" />
+        </div> <!-- page-wrapper -->
+	</div> <!-- wrapper -->
 
     <!-- jQuery -->
     <script src="/resources/mytheme/bootstrap/js/jquery.js"></script>

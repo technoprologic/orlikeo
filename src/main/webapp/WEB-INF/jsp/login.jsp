@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-<c:url value="/" var="loginUrl" />
+<c:url value="/home" var="loginUrl" />
 <c:url value="/help" var="helpUrl" />
 <c:url value="/register" var="createAccountUrl" />
 
