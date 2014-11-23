@@ -16,8 +16,7 @@
                 <form class="form-signin">
                 <input type="text" class="form-control" placeholder="Email" required autofocus>
                 <input type="password" class="form-control" placeholder="Password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    Sign in</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
                 <label class="checkbox pull-left">
                 <input type="checkbox" value="remember-me">Zapamiętaj mnie</label>
                 <a href="${helpUrl}" class="pull-right need-help">Potrzebujesz pomocy? </a><span class="clearfix"></span>

@@ -10,17 +10,43 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
-        <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
+        <h1 class="text-center login-title">Zarejestruj nowe konto</h1>
         <div class="account-wall">
-            <form method="post">
+            <form method="post" class="form-signin">
+            
 				<div class="form-group">
-        			<label for="validate-text">Validate Text</label>
+        			<label for="validate-text">Imię</label>
 					<div class="input-group">
 						<input type="text" class="form-control" name="validate-text" id="validate-text" placeholder="Validate Text" required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
+						
 				<div class="form-group">
+        			<label for="validate-text">Nazwisko</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="validate-text" id="validate-text" placeholder="Validate Text" required>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
+				
+				<div class="form-group">
+        			<label for="validate-email">Adres e-mail</label>
+					<div class="input-group" data-validate="email">
+						<input type="text" class="form-control" name="validate-email" id="validate-email" placeholder="Validate Email" required>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
+				
+				<div class="form-group">
+        			<label for="validate-text">Hasło</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="validate-text" id="validate-text" placeholder="Validate Text" required>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
+				
+<!-- 				<div class="form-group">
         			<label for="validate-optional">Optional</label>
 					<div class="input-group">
 						<input type="text" class="form-control" name="validate-optional" id="validate-optional" placeholder="Optional">
@@ -34,13 +60,7 @@
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
-				<div class="form-group">
-        			<label for="validate-email">Validate Email</label>
-					<div class="input-group" data-validate="email">
-						<input type="text" class="form-control" name="validate-email" id="validate-email" placeholder="Validate Email" required>
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
-				</div>
+
     			<div class="form-group">
         			<label for="validate-phone">Validate Phone</label>
 					<div class="input-group" data-validate="phone">
@@ -73,7 +93,7 @@
 						<input type="text" class="form-control" name="validate-number" id="validate-number" placeholder="Validate Number" required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
-				</div>
+				</div> -->
                 <button type="submit" class="btn btn-lg btn-primary btn-block" disabled>Zarejestruj</button>
             </form>
             </div>
