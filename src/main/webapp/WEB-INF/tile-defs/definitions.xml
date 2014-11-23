@@ -13,7 +13,14 @@
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
-	<definition name="createAccount" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/createAccount.jsp" />
+	
+	<!-- template for clear business content (without menu etc.) -->
+	<definition name="clearTemplate" template="WEB-INF/jsp/template/clearTemplate.jsp">
+		<put-attribute name="clearContent" value="" />
+	</definition>
+		<definition name="help" extends="clearTemplate">
+		<put-attribute name="clearContent" value="/WEB-INF/jsp/createAccount.jsp" />
 	</definition>
 </tiles-definitions>
+
+
