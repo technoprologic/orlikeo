@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<c:url value="/register/new_user" var="registerUrl" />
+<c:url value="/register" var="registerUrl" />
  
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
