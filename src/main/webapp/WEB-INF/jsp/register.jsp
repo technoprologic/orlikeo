@@ -41,7 +41,7 @@
 				<div class="form-group">
         			<label for="validate-text">Hasło</label>
 					<div class="input-group">
-						<input type="text" class="form-control" name="validate-text" id="validate-text"  required>
+						<input type="password" class="form-control" name="validate-text" id="validate-text"  required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
