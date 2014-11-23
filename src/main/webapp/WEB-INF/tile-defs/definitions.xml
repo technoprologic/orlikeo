@@ -4,6 +4,7 @@
 <tiles-definitions>
 	<definition name="defaultTemplate" template="WEB-INF/jsp/template/template.jsp">
 		<put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
+		<put-attribute name="leftMenuContent" value="/WEB-INF/jsp/template/leftMenuContent.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
 	</definition>

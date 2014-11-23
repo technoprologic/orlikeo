@@ -34,10 +34,13 @@
 <body>
 
 	<div> 
-		<tiles:insertAttribute name="header" />
+		<tiles:insertAttribute name="navbar" />
  	</div>
 		
-	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div>
+    	<tiles:insertAttribute name="leftMenuContent" />
+	</div>
+	
     <div>
     	<tiles:insertAttribute name="content" />
 	</div>
