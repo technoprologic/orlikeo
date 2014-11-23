@@ -16,6 +16,9 @@
 	
 	
 	<definition name="tester" template="WEB-INF/jsp/template/test.jsp">
+		<put-attribute name="contentTest" value="" />
+	</definition>
+		<definition name="help" extends="tester">
 		<put-attribute name="contentTest" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
 	
