@@ -19,7 +19,7 @@
 
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
    <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
-   <script  type="text/javascript" src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.js" />" ></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script type="text/javascript" src="<c:url value="/resources/mytheme/css/register.js" />"></script>
 
 
