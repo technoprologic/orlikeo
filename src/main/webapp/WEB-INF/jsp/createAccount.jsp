@@ -1,10 +1,10 @@
 <div class="container">
 	
-	<form class="form-horizontal">
+	<form class="form-signing" role="form">
 	<fieldset>
 	
 	<!-- Form Name -->
-	<legend>Form Name</legend>
+	<h2 class="form-signing-heading">Please sign up</h2>
 	
 	<!-- Text input-->
 	<div class="form-group">
