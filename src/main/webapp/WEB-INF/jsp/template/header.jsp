@@ -1,3 +1,9 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<c:url value="/register/new_user" var="registerUrl" />
+ 
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -18,6 +24,7 @@
               <input type="password" placeholder="Password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
+            <button type="submit" class="btn btn-info" target="${registerUrl}">Sign up</button>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
