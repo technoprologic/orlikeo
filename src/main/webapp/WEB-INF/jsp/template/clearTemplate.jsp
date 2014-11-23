@@ -19,6 +19,7 @@
 
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
    <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
+   <script type="text/javascript" src="<c:url value="/resources/mytheme/css/register.js" />"></script>
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">

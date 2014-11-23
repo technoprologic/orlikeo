@@ -41,7 +41,7 @@
     <div>
     	<tiles:insertAttribute name="content" />
 	</div>
-	<img  src="<c:url value="/resources/mytheme/images/user.png" />" alt="user"/>
+	
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
