@@ -13,17 +13,15 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Orlikeo - Rejestracja</title>
 
     <!-- Bootstrap core CSS -->
 
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
    <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
-   <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.js" />"  type="text/javascript"></script>
+   <script  type="text/javascript" src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.js" />" ></script>
    <script type="text/javascript" src="<c:url value="/resources/mytheme/css/register.js" />"></script>
 
-    <!-- Custom styles for this template -->
-    <link href="signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
