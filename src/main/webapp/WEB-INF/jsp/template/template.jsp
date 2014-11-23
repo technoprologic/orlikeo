@@ -41,9 +41,9 @@
     	<tiles:insertAttribute name="leftMenuContent" />
 	</div>
 	
-    <div>
+    <%-- <div>
     	<tiles:insertAttribute name="content" />
-	</div>
+	</div> --%>
 	
 
     <!-- Bootstrap core JavaScript
