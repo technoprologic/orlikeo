@@ -14,8 +14,8 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(ModelMap model) {
 
-		model.addAttribute("message", "Spring 3 MVC Hello World");
-		return "home";
+		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
+		return "login";
 
 	}
 
