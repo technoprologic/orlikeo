@@ -39,9 +39,9 @@
 				</div>
 				
 				<div class="form-group">
-        			<label for="validate-password">Hasło</label>
+        			<label for="validate-text">Hasło</label>
 					<div class="input-group">
-						<input type="password" class="form-control" name="validate-password" id="validate-password"  required>
+						<input type="text" class="form-control" name="validate-text" id="validate-text"  required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
