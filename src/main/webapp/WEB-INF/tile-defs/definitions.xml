@@ -18,7 +18,7 @@
 	<definition name="clearTemplate" template="WEB-INF/jsp/template/clearTemplate.jsp">
 		<put-attribute name="clearContent" value="" />
 	</definition>
-		<definition name="help" extends="clearTemplate">
+		<definition name="createAccount" extends="clearTemplate">
 		<put-attribute name="clearContent" value="/WEB-INF/jsp/createAccount.jsp" />
 	</definition>
 </tiles-definitions>
