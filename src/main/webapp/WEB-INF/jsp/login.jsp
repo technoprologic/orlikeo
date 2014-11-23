@@ -14,9 +14,9 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="">
-                <form class="form-signin">
+                <form class="form-signin" action="">
                 
-                <input type="text" class="form-control" placeholder="Email" required autofocus>
+                
                 <div class="form-group">
 					<div class="input-group" data-validate="email">
 						<input type="text" class="form-control" name="email" id="email"  placeholder="E-mail" required autofocus>
