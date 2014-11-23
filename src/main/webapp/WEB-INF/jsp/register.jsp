@@ -34,10 +34,10 @@
 	<div class="row">
 		<h2>Input Validation + Colorful Input Groups</h2>
 	</div>
-    
     <div class="row">
         <div class="col-sm-offset-4 col-sm-4">
         <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
+        <div class="account-wall">
             <form method="post">
 				<div class="form-group">
         			<label for="validate-text">Validate Text</label>
@@ -70,7 +70,7 @@
     			<div class="form-group">
         			<label for="validate-phone">Validate Phone</label>
 					<div class="input-group" data-validate="phone">
-						<input type="text" class="form-control" name="validate-phone" id="validate-phone" placeholder="(814) 555-1234" required>
+						<input type="text" class="form-control" name="validate-phone" id="validate-phone" placeholder="476 375 374" required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
@@ -102,6 +102,7 @@
 				</div>
                 <button type="submit" class="btn btn-primary col-xs-12" disabled>Submit</button>
             </form>
+            </div>
         </div>
     </div>
 </div>
