@@ -4,7 +4,7 @@
 
 
 <c:url value="/" var="homeUrl" />
-<c:url value="/register" var="registerUrl" />
+<c:url value="/login" var="loginUrl" />
  
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -26,7 +26,7 @@
               <input type="password" placeholder="Password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
-            <a class="btn btn-default" href="${registerUrl}">Register</a>
+            <a class="btn btn-default" href="${loginUrl}">Register</a>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
