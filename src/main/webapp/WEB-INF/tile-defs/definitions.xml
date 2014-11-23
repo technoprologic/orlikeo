@@ -13,4 +13,7 @@
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
+	<definition name="createAccount" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/createAccount.jsp" />
+	</definition>
 </tiles-definitions>
