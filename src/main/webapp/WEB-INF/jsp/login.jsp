@@ -19,13 +19,11 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
                     Sign in</button>
                 <label class="checkbox pull-left">
-                    <input type="checkbox" value="remember-me">
-                    Remember me
-                </label>
-                <a href="${helpUrl}" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+                <input type="checkbox" value="remember-me">Zapamiętaj mnie</label>
+                <a href="${helpUrl}" class="pull-right need-help">Potrzebujesz pomocy? </a><span class="clearfix"></span>
                 </form>
             </div>
-            <a href="${createAccountUrl}" class="text-center new-account">Create an account </a>
+            <a href="${createAccountUrl}" class="text-center new-account">Utwórz nowe konto</a>
         </div>
     </div>
 </div>
