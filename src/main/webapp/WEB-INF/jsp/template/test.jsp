@@ -25,10 +25,10 @@
     <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/resources/mytheme/bootstrapcss/sb-admin.css" rel="stylesheet">
+    <link href="/resources/mytheme/bootstrap/css/sb-admin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="/resources/mytheme/bootstrapcss/plugins/morris.css" rel="stylesheet">
+    <link href="/resources/mytheme/bootstrap/css/plugins/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/resources/mytheme/bootstrap/css/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
