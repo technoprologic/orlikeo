@@ -13,6 +13,9 @@
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
+	<definition name="userMain" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/userMain.jsp" />
+	</definition>
 	
 	<!-- template for clear business content (without menu etc.) -->
 	<definition name="clearTemplate" template="WEB-INF/jsp/template/clearTemplate.jsp">

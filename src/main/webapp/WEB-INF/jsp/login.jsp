@@ -4,8 +4,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
+<c:url value="/userHome" var="userLoggedUrl" />
 <c:url value="/help" var="helpUrl" />
 <c:url value="/register" var="createAccountUrl" />
+
 
 <div class="container">
     <div class="row">
@@ -14,23 +16,19 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="">
-                <form class="form-signin" action="">
-                
-                
+                <form method="post" class="form-signin" action="${userLoggedUrl}">           
                 <div class="form-group">
 					<div class="input-group" data-validate="email">
 						<input type="text" class="form-control" name="email" id="email"  placeholder="E-mail" required autofocus>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
-				</div>
-					
+				</div>					
 				<div class="form-group">
 					<div class="input-group">
 						<input type="password" class="form-control" name="password" id="password"  placeholder="Hasło" required>
 						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
 					</div>
 				</div>
-				
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
                 <label class="checkbox pull-left">
                 <input type="checkbox" value="remember-me">Zapamiętaj mnie</label>

@@ -12,11 +12,23 @@ public class HomeController {
 
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) {
+	public String home(ModelMap model) {
 
 		model.addAttribute("message", "Spring 3 MVC Hello World");
 		return "home";
 
 	}
+	
+	
+	
+	@RequestMapping(value = "/userHome", method = RequestMethod.POST)
+	public String userHome(ModelMap model) {
+
+		model.addAttribute("message", "Spring 3 MVC Hello World");
+		return "userMain";
+
+	}
+	
+	
 
 }
