@@ -24,7 +24,7 @@
               <input type="password" placeholder="Password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
-            <button type="submit" class="btn btn-info" target="${registerUrl}">Sign up</button>
+            <a href="${registerURL}">Register</a>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
