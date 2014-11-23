@@ -18,6 +18,7 @@
     <!-- Bootstrap core CSS -->
 
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
+   <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
