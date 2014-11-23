@@ -2,6 +2,8 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
+<c:url value="/" var="homeUrl" />
 <c:url value="/register" var="registerUrl" />
  
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -13,7 +15,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Orlikeo</a>
+          <a class="navbar-brand" href="${homerUrl}">Orlikeo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
@@ -24,7 +26,7 @@
               <input type="password" placeholder="Password" class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
-            <a class="btn btn-default" href="<c:url value="/register" />">Register</a>
+            <a class="btn btn-default" href="${registerUrl}">Register</a>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
