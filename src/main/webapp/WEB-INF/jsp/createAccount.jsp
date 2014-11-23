@@ -1,47 +1,14 @@
-<div class="container">
-	
-	<form class="form-signing" role="form">
-	<fieldset>
-	
-	<!-- Form Name -->
-	<h2 class="form-signing-heading">Please sign up</h2>
-	
-	<!-- Text input-->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="login">Login/E-mail</label>  
-	  <div class="col-md-6">
-	  <input id="login" name="login" placeholder="login" class="form-control input-md" required="required" type="text">
-	    
-	  </div>
-	</div>
-	
-	<!-- Password input-->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="password">Password</label>
-	  <div class="col-md-6">
-	    <input id="password" name="password" placeholder="password" class="form-control input-md" required="required" type="password">
-	    
-	  </div>
-	</div>
-	
-	<!-- Password input-->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="passwordConfirmation">Confirm Passwrod</label>
-	  <div class="col-md-6">
-	    <input id="passwordConfirmation" name="passwordConfirmation" placeholder="confirm password" class="form-control input-md" required="required" type="password">
-	    
-	  </div>
-	</div>
-	
-	<!-- Button -->
-	<div class="form-group">
-	  <label class="col-md-4 control-label" for="createAccount"></label>
-	  <div class="col-md-4">
-	    <button id="createAccount" name="createAccount" class="btn btn-success">Create</button>
-	  </div>
-	</div>
-	
-	</fieldset>
-	</form>
 
-</div> <!-- /container -->
+      <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
