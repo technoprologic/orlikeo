@@ -2,6 +2,8 @@
 
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            
+            
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -12,6 +14,8 @@
                 </button>
                 <a class="navbar-brand" href="index.html">SB Admin</a>
             </div>
+            
+            
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
@@ -113,6 +117,14 @@
                     </ul>
                 </li>
             </ul>
+          
+          
+          
+          
+          
+          
+          
+          
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
@@ -153,7 +165,7 @@
             <!-- /.navbar-collapse -->
         </nav>
 
-        <!-- <div id="page-wrapper">
+        <div id="page-wrapper">
 
             <div class="container-fluid">
 
@@ -429,7 +441,7 @@
             /.container-fluid
 
         </div>
-        /#page-wrapper -->
+        /#page-wrapper
 
     </div>
     <!-- /#wrapper -->
