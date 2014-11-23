@@ -37,6 +37,7 @@
     
     <div class="row">
         <div class="col-sm-offset-4 col-sm-4">
+        <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
             <form method="post">
 				<div class="form-group">
         			<label for="validate-text">Validate Text</label>
