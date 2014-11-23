@@ -1,32 +1,17 @@
-<form class="form-horizontal">
-<fieldset>
-
-<!-- Form Name -->
-<legend>Form Name</legend>
-
-<!-- Text input-->
-<div class="control-group">
-  <label class="control-label" for="textinput">Text Input</label>
-  <div class="controls">
-    <input id="textinput" name="textinput" placeholder="placeholder" class="input-xlarge" type="text">
-    <p class="help-block">help</p>
-  </div>
-</div>
-
 <!-- Password input-->
-<div class="control-group">
-  <label class="control-label" for="passwordinput">Password Input</label>
-  <div class="controls">
-    <input id="passwordinput" name="passwordinput" placeholder="placeholder" class="input-xlarge" type="password">
-    <p class="help-block">help</p>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="passwordConfirmation">Confirm Passwrod</label>
+  <div class="col-md-6">
+    <input id="passwordConfirmation" name="passwordConfirmation" placeholder="confirm password" class="form-control input-md" required="" type="password">
+    
   </div>
 </div>
 
 <!-- Button -->
-<div class="control-group">
-  <label class="control-label" for="singlebutton">Single Button</label>
-  <div class="controls">
-    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Button</button>
+<div class="form-group">
+  <label class="col-md-4 control-label" for="createAccount"></label>
+  <div class="col-md-4">
+    <button id="createAccount" name="createAccount" class="btn btn-success">Create</button>
   </div>
 </div>
 
