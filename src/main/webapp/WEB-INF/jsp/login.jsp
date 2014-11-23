@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-<c:url value="/userHome" var="logInUrl" />
+<c:url value="/" var="loginUrl" />
 <c:url value="/help" var="helpUrl" />
 <c:url value="/register" var="createAccountUrl" />
 
@@ -16,7 +16,7 @@
             <div class="account-wall">
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="">
-                <form method="post" class="form-signin" action="${logInUrl}">           
+                <form method="get" class="form-signin" action="${loginUrl}">           
                 <div class="form-group">
 					<div class="input-group" data-validate="email">
 						<input type="text" class="form-control" name="email" id="email"  placeholder="E-mail" required autofocus>

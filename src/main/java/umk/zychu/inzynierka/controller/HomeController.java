@@ -18,17 +18,5 @@ public class HomeController {
 		return "home";
 
 	}
-	
-	
-	
-	@RequestMapping(value = "/userHome", method = RequestMethod.POST)
-	public String userHome(ModelMap model) {
-
-		model.addAttribute("message", "Spring 3 MVC Hello World");
-		return "userMain";
-
-	}
-	
-	
 
 }

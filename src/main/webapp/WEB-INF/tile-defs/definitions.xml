@@ -3,7 +3,7 @@
 
 <tiles-definitions>
 	<definition name="defaultTemplate" template="WEB-INF/jsp/template/template.jsp">
-		<put-attribute name="header" value="/WEB-INF/jsp/template/header.jsp" />
+		<put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
 	</definition>
@@ -12,9 +12,6 @@
 	</definition>
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
-	</definition>
-	<definition name="userMain" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/userMain.jsp" />
 	</definition>
 	
 	<!-- template for clear business content (without menu etc.) -->

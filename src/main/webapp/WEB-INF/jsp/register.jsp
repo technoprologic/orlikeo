@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
+<c:url value="/" var="register" />
 <c:url value="/help" var="helpUrl" />
 <c:url value="/register" var="createAccountUrl" />
 
@@ -12,7 +13,7 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4">
         <h1 class="text-center login-title">Zarejestruj nowe konto</h1>
         <div class="account-wall">
-            <form method="post" class="form-signin">
+            <form method="get" class="form-signin" action="${register}">
             
 				<div class="form-group">
         			<label for="validate-text">Imię</label>
