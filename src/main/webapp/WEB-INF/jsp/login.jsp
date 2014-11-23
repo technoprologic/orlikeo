@@ -15,6 +15,13 @@
                     alt="">
                 <form class="form-signin">
                 <input type="text" class="form-control" placeholder="Email" required autofocus>
+                <div class="form-group">
+					<label for="validate-email">Adres e-mail</label>
+					<div class="input-group" data-validate="email">
+						<input type="text" class="form-control" name="email" id="email"  required autofocus>
+						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
+					</div>
+				</div>
                 <input type="password" class="form-control" placeholder="Hasło" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Zaloguj</button>
                 <label class="checkbox pull-left">
@@ -26,3 +33,5 @@
         </div>
     </div>
 </div>
+
+
