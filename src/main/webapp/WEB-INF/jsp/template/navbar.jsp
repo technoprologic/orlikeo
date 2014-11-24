@@ -107,17 +107,17 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-cog"></i>Profile</a>
+                            <a href="#"><i class="glyphicon glyphicon-cog"></i> Profil</a>
                         </li>
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-envelope"></i> Inbox</a>
+                            <a href="#"><i class="glyphicon glyphicon-envelope"></i> Skrzynka</a>
                         </li>
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-wrench"></i> Settings</a>
+                            <a href="#"><i class="glyphicon glyphicon-wrench"></i> Ustawienia</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-off"></i> Log Out</a>
+                            <a href="#"><i class="glyphicon glyphicon-off"></i> Wyloguj</a>
                         </li>
                     </ul>
                 </li>
