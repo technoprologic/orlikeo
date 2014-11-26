@@ -153,7 +153,18 @@
                                 <a href="#"> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="#"> Orgabizowane </a>
+                                <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Organizowane <i class="fa fa-fw fa-caret-down"></i></a>
+								<ul id="demo" class="collapse">
+                            		<li>
+                               			<a href="#"> Utwórz nowe </a>
+                            		</li>
+                            		<li>
+                                		<a href="#"> Orgabizowane </a>
+                            		</li>
+                            		<li>
+                                		<a href="#"> Zaproszenia </a>
+                            		</li>
+                            	<li>
                             </li>
                             <li>
                                 <a href="#"> Zaproszenia </a>
