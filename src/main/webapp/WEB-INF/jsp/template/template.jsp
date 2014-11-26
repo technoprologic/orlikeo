@@ -36,7 +36,6 @@
 			 <div class="container-fluid">
 				<tiles:insertAttribute name="content" />
 	    	 </div>
-            /.container-fluid
         </div> <!-- page-wrapper -->
 	</div> <!-- wrapper -->
 
