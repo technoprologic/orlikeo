@@ -4,6 +4,7 @@
 
 
 <c:url value="/home" var="homeUrl" />
+<c:url value="/profile" var="profileUrl" />
  
 
 <!-- Navigation -->
@@ -107,7 +108,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-cog"></i> Profil</a>
+                            <a href="${profileUrl}"><i class="glyphicon glyphicon-cog"></i> Profil</a>
                         </li>
                         <li>
                             <a href="#"><i class="glyphicon glyphicon-envelope"></i> Skrzynka</a>
