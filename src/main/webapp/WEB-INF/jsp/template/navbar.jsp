@@ -129,34 +129,16 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li class="active">
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
-                    </li>
-                    <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
-                    </li>
-                    <li>
-                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> WYDARZENIA <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
                         <ul id="demo" class="collapse">
                             <li>
-                                <a href="#"> Utwórz nowe </a>
+                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="#"> Organizowane </a> 
+                                <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
                             </li>
                             <li>
-                                <a href="#"> Zaproszenia </a>
+                                <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>
                             </li>
                         </ul>
                     </li>
