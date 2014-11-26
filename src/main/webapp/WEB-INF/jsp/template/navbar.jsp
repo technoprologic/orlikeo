@@ -132,7 +132,7 @@
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
                         <ul id="demo" class="collapse">
-                            <li>
+                            <li class="active">
                                 <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
@@ -143,7 +143,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
                         <ul id="demo2" class="collapse">
                             <li>
