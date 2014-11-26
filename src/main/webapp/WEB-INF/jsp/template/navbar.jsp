@@ -143,7 +143,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
                         <ul id="demo2" class="collapse">
                             <li>
