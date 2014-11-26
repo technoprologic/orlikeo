@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<c:url value="/" var="homeUrl" />
+<c:url value="/home" var="homeUrl" />
  
 
 <!-- Navigation -->
@@ -147,18 +147,37 @@
                         <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> WYDARZENIA <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
-                                <a href="#">Dropdown Item</a>
+                                <a href="#"> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="#">Dropdown Item</a>
+                                <a href="#"> Orgabizowane </a>
+                            </li>
+                            <li>
+                                <a href="#"> Zaproszenia </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Regulaminy <i class="fa fa-fw fa-caret-down"></i></a>
+								<ul id="demo" class="collapse">
+                            		<li>
+                               			<a href="#"> Utwórz nowe </a>
+                            		</li>
+                            		<li>
+                                		<a href="#"> Orgabizowane </a>
+                            		</li>
+                            		<li>
+                                		<a href="#"> Zaproszenia </a>
+                            		</li>
+                            	<li>
+                            </li>
+                        </ul>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page </a>
                     </li>
                 </ul>
             </div>
