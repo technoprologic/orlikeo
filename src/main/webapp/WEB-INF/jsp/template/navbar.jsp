@@ -142,6 +142,20 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="active">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
+                            </li>
+                            <li>
+                                <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
