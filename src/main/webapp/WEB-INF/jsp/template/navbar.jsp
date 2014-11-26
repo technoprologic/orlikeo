@@ -129,10 +129,10 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
-                    <li>
+                    <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
                         <ul id="demo" class="collapse">
-                            <li class="active">
+                            <li>
                                 <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
