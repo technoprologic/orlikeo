@@ -33,7 +33,10 @@
     <div id="wrapper">
 		<tiles:insertAttribute name="navbar" />	
 		<div id="page-wrapper">	
-	    	<tiles:insertAttribute name="content" />
+			 <div class="container-fluid">
+				<tiles:insertAttribute name="content" />
+	    	 </div>
+            /.container-fluid
         </div> <!-- page-wrapper -->
 	</div> <!-- wrapper -->
 
