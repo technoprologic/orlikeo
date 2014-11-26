@@ -16,7 +16,7 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="<c:url value="/resources/mytheme/images/" />" class="img-circle"> </div>
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="<c:url value="/resources/mytheme/images/profil.jpg" />" class="img-circle"> </div>
                 
                 <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
                   <dl>
