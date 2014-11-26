@@ -156,13 +156,10 @@
                                 <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Organizowane <i class="fa fa-fw fa-caret-down"></i></a>
 								<ul id="demo" class="collapse">
                             		<li>
-                               			<a href="#"> Utwórz nowe </a>
+                               			<a href="#"> W kolejce </a>
                             		</li>
                             		<li>
-                                		<a href="#"> Orgabizowane </a>
-                            		</li>
-                            		<li>
-                                		<a href="#"> Zaproszenia </a>
+                                		<a href="#"> Zatwierdzone </a>
                             		</li>
                             	<li>
                             </li>
