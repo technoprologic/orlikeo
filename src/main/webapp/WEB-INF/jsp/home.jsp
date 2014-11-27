@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Informacje <small><i class="glyphicon glyphicon-info-sign"></i>Szybki przegląd</small>
+                            Informacje <small><i class="glyphicon glyphicon-info-sign"></i> Szybki przegląd</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="large">Nadchodzące </div>
-                                        <div>11.11.2014:  Orlik Sp9 18:00 - 20:00</div>
+                                        <div><span>11.11.2014:  Orlik Sp9 18:00 - 20:00</span>span></div>
                                     </div>
                                 </div>
                             </div>
