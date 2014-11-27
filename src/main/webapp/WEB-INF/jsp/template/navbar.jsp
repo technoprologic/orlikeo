@@ -1,6 +1,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
 <c:url value="/home" var="homeUrl" />
@@ -32,13 +33,13 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        <img class="media-object" src="http://epilka.pl/public/upload/player/robert_lewandowski.jpg" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
+                                        <h5 class="media-heading"><strong>Robert Lewandowski</strong>
                                         </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Dzisiaj o 18:01 </p>
+                                        <p>Finał jest nasz...</p>
                                     </div>
                                 </div>
                             </a>
@@ -47,13 +48,13 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        <img class="media-object" src="https://lh5.googleusercontent.com/-abmIrPFO_4o/AAAAAAAAAAI/AAAAAAAAAT4/WRtI40jdXms/photo.jpg?sz=50" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
+                                        <h5 class="media-heading"><strong>Ronaldo</strong>
                                         </h5>
-                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Dzisiaj o 17:04 </p>
+                                        <p>Szczeliłem gola...</p>
                                     </div>
                                 </div>
                             </a>
@@ -62,13 +63,13 @@
                             <a href="#">
                                 <div class="media">
                                     <span class="pull-left">
-                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        <img class="media-object" src="http://cs9403.vk.me/v9403819/12e0/knAMr1aDwqs.jpg" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>John Smith</strong>
+                                        <h5 class="media-heading"><strong>Zinedine Zidane</strong>
                                         </h5>
-                                        <p class="small text-muted"><i class="glyphicon glyphicon-user"></i> Yesterday at 4:32 PM</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        <p class="small text-muted"><i class="glyphicon glyphicon-user"></i> Wczoraj o 16:32 </p>
+                                        <p>Skończyłem karierę, ale co z tego...</p>
                                     </div>
                                 </div>
                             </a>
@@ -135,7 +136,7 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
                         <ul id="demo" class="collapse">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Utw�rz nowe </a>
+                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
