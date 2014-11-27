@@ -28,7 +28,7 @@
                                     <div class="col-xs-3">
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-12 text-right">
                                         <div class="large">Nadchodzące </div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
@@ -40,7 +40,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -63,8 +63,8 @@
                             </div>
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Sprawdź wszystkie</i></span>
-                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -77,7 +77,7 @@
                                     <div class="col-xs-3">
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-12 text-right">
                                         <div class="large">Do akceptacji</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
@@ -88,7 +88,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -101,7 +101,7 @@
                                     <div class="col-xs-3">
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-glyphicon-trash"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
+                                    <div class="col-xs-12 text-right">
                                         <div class="large">Niezorganizowane</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
@@ -112,7 +112,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
