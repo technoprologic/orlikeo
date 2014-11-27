@@ -36,7 +36,7 @@
                         <td>01/24/1988</td>
                       </tr>
 					<tr>
-						<td>Pleć: </td>
+						<td>Płeć: </td>
 						<td>mężczyzna</td>
 					</tr>
                         <tr>
