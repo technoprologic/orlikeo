@@ -39,7 +39,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -63,7 +63,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -87,7 +87,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -98,7 +98,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-glyphicon-trash"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
                                         <div class="large">Niezorganizowane</div>
@@ -111,7 +111,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-check"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
