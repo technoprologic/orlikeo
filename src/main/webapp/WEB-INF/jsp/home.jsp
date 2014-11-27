@@ -26,18 +26,21 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="large">Nadchodzące </div>
-                                        <div><span>11.11.2014:  Orlik Sp9 18:00 - 20:00</span>span></div>
+                                        <div>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
+                                        <div>
                                     </div>
                                 </div>
                             </div>
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Sprawdź</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -48,7 +51,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="glyphicon glyphicon-ok"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
                                         <div class="large">Ostatnio zaakceptowane</div>
@@ -60,8 +63,8 @@
                             </div>
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-left">Sprawdź wszystkie</i></span>
+                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -72,18 +75,20 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="large">Do akceptacji </div>
-                                        <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
+                                        <div class="large">Do akceptacji</div>
+                                        <div>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
                                     </div>
                                 </div>
                             </div>
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Sprawdź wszystkie </span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -94,18 +99,20 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-support fa-5x"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-glyphicon-trash"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="large">Niezorganizowane </div>
-                                        <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
+                                        <div class="large">Niezorganizowane</div>
+                                        <div>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
                                     </div>
                                 </div>
                             </div>
                             <a href="#">
                                 <div class="panel-footer">
-                                    <span class="pull-left">Sprawdź</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicons glyphicon-check"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
