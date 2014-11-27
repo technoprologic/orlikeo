@@ -27,6 +27,9 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!--  css for password changing -->
+   <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
+   <script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
 </head>
 <body>
 
