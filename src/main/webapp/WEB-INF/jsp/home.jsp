@@ -20,6 +20,7 @@
                 </div>
                 /.row
 
+
                 <div class="row text-center">
                 	<div class="col-md-1">
                 	</div>
