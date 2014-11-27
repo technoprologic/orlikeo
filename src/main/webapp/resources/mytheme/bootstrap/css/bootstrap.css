@@ -1416,6 +1416,8 @@ pre code {
   height:100%;
   min-height:100%; /* real browsers */
   border:1px solid red;
+  style="background-image: url('/resources/mytheme/images/pitch.jpg');
+  
 }
 .row {
   margin-right: -15px;
