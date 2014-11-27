@@ -25,9 +25,9 @@ body {
    /*  background-image: url("../../resources/mytheme/images/pitch.jpg");  */
 	min-height: 100%; /* Mindesthöhe für moderne Browser */
     height:100%; /* Mindesthöhe für den IE */ 
-    width:200px;
+    width:200px;/* 
     position:absolute;
-    /* overflow:hidden; */
+    overflow:hidden;  */
 	border:1px solid blue;
 	
 
