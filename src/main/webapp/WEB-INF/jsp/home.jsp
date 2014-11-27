@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            <i class="glyphicon glyphicon-info-sign"></i> Szybki przegląd <small> Informacje </small>
+                            <i class="glyphicon glyphicon-eye-open"></i> Szybki przegląd <small> <i class="glyphicon glyphicon-info-sign"></i>Informacje </small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
@@ -78,6 +78,30 @@
                                     </div>
                                     <div class="col-xs-12 text-right">
                                         <div class="large">Do akceptacji</div>
+                                        <div>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
+                                    </div>
+                                    <div class="col-xs-12 text-right">
+                                        <div class="large">Niezorganizowane</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
