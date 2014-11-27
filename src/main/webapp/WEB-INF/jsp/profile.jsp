@@ -19,11 +19,11 @@
                     <tbody>
                       <tr>
                         <td>Imie:</td>
-                        <td>Austin</td>
+                        <td>Lionel</td>
                       </tr>
                       <tr>
                         <td>Nazwisko:</td>
-                        <td>A.Eschor</td>
+                        <td>Messi</td>
                       </tr>
                       <tr>
                         <td>Data zalozenia konta: </td>
@@ -39,14 +39,14 @@
                       </tr>
                       <tr>
                         <td>Email</td>
-                        <td><a href="mailto:info@support.com">info@support.com</a></td>
+                        <td><a href="mailto:info@support.com">messi@orlikeo.com</a></td>
                       </tr>                     
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-			<div class="panel-footer">
+			<div class="panel-footer text-right">
 				<a href="#" class="btn btn-primary">Zmien haslo</a>
 				<a href="#" class="btn btn-primary">Edytuj</a>	
 			</div>
