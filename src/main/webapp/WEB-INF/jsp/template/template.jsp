@@ -36,7 +36,7 @@
 
     <div id="wrapper">
 		<tiles:insertAttribute name="navbar" />	
-		<div id="page-wrapper" style="background-image: url('/resources/mytheme/images/pitch.jpg');">	
+		<div id="page-wrapper" style="background-image: url('/resources/mytheme/images/pitch.jpg'); height: 100%;">	
 			 <div class="container-fluid">
 				<tiles:insertAttribute name="content" />
 	    	 </div>
