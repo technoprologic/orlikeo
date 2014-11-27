@@ -39,7 +39,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -63,7 +63,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -87,7 +87,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
@@ -111,7 +111,7 @@
                             <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">Sprawdź wszystkie</span>
-                                    <span class="pull-right"><i class="glyphicon glyphicon-eye"></i></span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
                             </a>
