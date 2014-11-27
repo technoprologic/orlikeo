@@ -1409,14 +1409,15 @@ pre code {
   }
 }
 .container-fluid {
-  	padding-right: 15px;
-  	padding-left: 15px;
-  	margin-right: auto;
-  	margin-left: auto;
-    height:100%;
-    min-height:100%; /* real browsers */
-	border:1px solid red;
-	background-color:red;
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto;
+background-color: #CCC;
+height: 100%;
+position: absolute;
+min-height: 100%;
+min-width: 75%;
   
 }
 .row {
