@@ -41,6 +41,12 @@ background-color: #CCC;
     line-height: normal;
 }
 
+
+.huge {
+    font-size: 22px;
+    line-height: normal;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 225px;
