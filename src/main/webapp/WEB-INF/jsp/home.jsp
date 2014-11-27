@@ -48,11 +48,11 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                                        <i class="glyphicon glyphicon-ok"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="large">Ostatnio zaakceptowane </div>
-                                        <div><i class="glyphicon glyphicon-ok"></i>Orlik Sp9</div>
+                                    <div class="col-xs-12 text-right">
+                                        <div class="large">Ostatnio zaakceptowane</div>
+                                        <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
                                     </div>
