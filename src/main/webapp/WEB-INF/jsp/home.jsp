@@ -52,7 +52,9 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="large">Ostatnio zaakceptowane </div>
-                                        <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
+                                        <div><i class="glyphicon glyphicon-ok"></i>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
                                     </div>
                                 </div>
                             </div>
