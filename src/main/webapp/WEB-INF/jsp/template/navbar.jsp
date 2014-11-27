@@ -5,6 +5,7 @@
 
 <c:url value="/home" var="homeUrl" />
 <c:url value="/profile" var="profileUrl" />
+<c:url value="/" var="looutUrl" />
  
 
 <!-- Navigation -->
@@ -118,7 +119,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="glyphicon glyphicon-off"></i> Wyloguj</a>
+                            <a href="${logoutUrl}"><i class="glyphicon glyphicon-off"></i> Wyloguj</a>
                         </li>
                     </ul>
                 </li>
