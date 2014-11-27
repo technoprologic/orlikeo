@@ -132,9 +132,12 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                <li class="active">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#main"><i class="glyphicon glyphicon-eye-open"></i> SZYBKI PRZEGLĄD </a>
+                    </li>
                     <li class="active">
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
-                        <ul id="demo" class="collapse">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#events"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
+                        <ul id="events" class="collapse">
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
@@ -146,9 +149,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo2"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
-                        <ul id="demo2" class="collapse">
+                    <li class="active">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#friends"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
+                        <ul id="friends" class="collapse">
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
                             </li>

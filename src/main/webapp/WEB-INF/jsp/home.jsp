@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Informacje <small><i class="glyphicon glyphicon-info-sign"></i> Szybki przegląd</small>
+                            <i class="glyphicon glyphicon-info-sign"></i> Szybki przegląd <small> Informacje </small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
@@ -74,7 +74,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-send"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
                                         <div class="large">Do akceptacji</div>
