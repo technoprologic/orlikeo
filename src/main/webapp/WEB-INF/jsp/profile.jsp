@@ -1,12 +1,17 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+
+<c:url value="/password" var="passwordUrl" />
 
 <div class="container">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title">Austin A.Eschor</h3>
+              <h3 class="panel-title">Lionel Messi</h3>
             </div>
             <div class="panel-body">
               <div class="row">
@@ -15,7 +20,7 @@
                   <table class="table table-user-information">
                     <tbody>
                       <tr>
-						<td>Imie:</td>
+						<td>Imię:</td>
                         <td>Lionel</td>
                       </tr>
                       <tr>
@@ -23,7 +28,7 @@
                         <td>Messi</td>
                       </tr>
                       <tr>
-                        <td>Data zalozenia konta: </td>
+                        <td>Data założenia konta: </td>
                         <td>11/21/2014</td>
                       </tr>
                       <tr>
@@ -31,8 +36,8 @@
                         <td>01/24/1988</td>
                       </tr>
 					<tr>
-						<td>Plec: </td>
-						<td>mezczyzna</td>
+						<td>Pleć: </td>
+						<td>mężczyzna</td>
 					</tr>
                         <tr>
                         <td>Telefon: </td>
@@ -48,8 +53,8 @@
               </div>
             </div>
 			<div class="panel-footer text-right">
-				<a href="#" class="btn btn-primary">Zmien haslo</a>
-				<a href="#" class="btn btn-primary">Edytuj profil</a>	
+				<a href="${passwordUrl}" class="btn btn-primary">Zmien haslo</a>
+				<a href="${editUrl}" class="btn btn-primary">Edytuj profil</a>	
 			</div>
           </div>
         </div>
