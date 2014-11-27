@@ -18,7 +18,7 @@
                   <table class="table table-user-information">
                     <tbody>
                       <tr>
-                        <td>Imię:</td>
+                        <td>Imie:</td>
                         <td>Austin</td>
                       </tr>
                       <tr>
@@ -26,15 +26,13 @@
                         <td>A.Eschor</td>
                       </tr>
                       <tr>
-                        <td>Data założenia konta: </td>
+                        <td>Data zalozenia konta: </td>
                         <td>01/24/1988</td>
                       </tr>
-                   
-                         <tr>
-                             <tr>
-                        <td>Płeć: </td>
-                        <td>mężczyzna</td>
-                      </tr>
+					<tr>
+						<td>Plec: </td>
+						<td>mezczyzna</td>
+					</tr>
                         <tr>
                         <td>Telefon: </td>
                         <td>691 536 255</td>
@@ -45,17 +43,13 @@
                       </tr>                     
                     </tbody>
                   </table>
-
                 </div>
               </div>
             </div>
 			<div class="panel-footer">
-				<span class="pull-right">
-                	<a href="#" class="btn btn-primary">Zmień hasło</a>
-					<a href="#" class="btn btn-primary">Edytuj</a>
-				</span>
+				<a href="#" class="btn btn-primary">Zmien haslo</a>
+				<a href="#" class="btn btn-primary">Edytuj</a>	
 			</div>
           </div>
         </div>
-      </div>
-    </div>
+</div>
