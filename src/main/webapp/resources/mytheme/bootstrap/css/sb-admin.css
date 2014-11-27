@@ -19,6 +19,12 @@ body {
 
 #wrapper {
     padding-left: 0;
+    min-height: 100%; /* Mindesthöhe für moderne Browser */
+    height:100%; /* Mindesthöhe für den IE */ 
+    width:100%;
+    position:absolute;
+    overflow:hidden;
+	border:1px solid blue;
 
 }
 
