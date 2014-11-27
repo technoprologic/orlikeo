@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Informacje o zawodniku <small><i class="glyphicon glyphicon-info-sign"></i></small>
+                            Informacje <small><i class="glyphicon glyphicon-info-sign"></i>Szybki przegląd</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
