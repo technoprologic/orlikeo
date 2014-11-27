@@ -107,7 +107,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> Leo Messi <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="${profileUrl}"><i class="glyphicon glyphicon-cog"></i> Profil</a>
