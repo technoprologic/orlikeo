@@ -29,7 +29,7 @@
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">Nadchodzące </div>
+                                        <div class="large">Nadchodzące </div>
                                         <div>11.11.2014:  Orlik Sp9 18:00 - 20:00</div>
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                         <i class="fa fa-tasks fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">Ostatnio zaakceptowane </div>
+                                        <div class="large">Ostatnio zaakceptowane </div>
                                         <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                         <i class="fa fa-shopping-cart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">Do akceptacji </div>
+                                        <div class="large">Do akceptacji </div>
                                         <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
                                         <i class="fa fa-support fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">Niezorganizowane </div>
+                                        <div class="large">Niezorganizowane </div>
                                         <div>13.11.2014:  Orlik Sp9 18:00 - 20:00</div>
                                     </div>
                                 </div>
