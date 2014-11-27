@@ -33,7 +33,6 @@
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
-                                        <div>
                                     </div>
                                 </div>
                             </div>
