@@ -29,6 +29,7 @@
     <![endif]-->
     <!--  css for password changing -->
    <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
    <script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
 </head>
 <body>
