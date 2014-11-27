@@ -28,12 +28,12 @@ body {
 }
 
 #page-wrapper {
-    width: 100%;
-    padding: 0;
-    background-color: #fff;
-    width: 100%;
-	min-height: 100%;
-
+padding: 0px;
+background-color: #CCC;
+min-width: 75%;
+min-height: 100%;
+position: absolute;
+background-color: #CCC;
 }
 
 .huge {
