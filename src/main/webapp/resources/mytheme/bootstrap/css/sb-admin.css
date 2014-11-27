@@ -25,10 +25,7 @@ body {
    /*  background-image: url("../../resources/mytheme/images/pitch.jpg");  */
 	min-height: 100%; /* Mindesthöhe für moderne Browser */
     height:100%; /* Mindesthöhe für den IE */ 
-    width:200px;/* 
-    position:absolute;
-    overflow:hidden;  */
-	border:1px solid blue;
+
 	
 
 }
@@ -164,7 +161,7 @@ ul.alert-dropdown {
     color: #fff;
 }
 
-/* Flot Chart Containers */
+/* Flot Chart s */
 
 .flot-chart {
     display: block;
