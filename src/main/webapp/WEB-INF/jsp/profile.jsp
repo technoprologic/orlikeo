@@ -3,9 +3,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div class="container">
-		<div class="row">
-			<p class=" text-info">May 05,2014,03:00 pm </p>
-		</div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
@@ -18,7 +15,7 @@
                   <table class="table table-user-information">
                     <tbody>
                       <tr>
-                        <td>Imie:</td>
+						<td>Imie:</td>
                         <td>Lionel</td>
                       </tr>
                       <tr>
@@ -27,6 +24,10 @@
                       </tr>
                       <tr>
                         <td>Data zalozenia konta: </td>
+                        <td>11/21/2014</td>
+                      </tr>
+                      <tr>
+                        <td>Data urodzenia: </td>
                         <td>01/24/1988</td>
                       </tr>
 					<tr>

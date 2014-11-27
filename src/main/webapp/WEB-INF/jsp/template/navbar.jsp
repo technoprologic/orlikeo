@@ -5,7 +5,7 @@
 
 <c:url value="/home" var="homeUrl" />
 <c:url value="/profile" var="profileUrl" />
-<c:url value="/" var="looutUrl" />
+<c:url value="/" var="logoutUrl" />
  
 
 <!-- Navigation -->

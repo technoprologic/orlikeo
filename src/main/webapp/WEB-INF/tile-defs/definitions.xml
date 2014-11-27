@@ -15,6 +15,9 @@
 	<definition name="profile" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/profile.jsp" />
 	</definition>
+	<definition name="password" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/password.jsp" />
+	</definition>
 	
 	
 	
