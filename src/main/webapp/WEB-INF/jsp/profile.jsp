@@ -7,7 +7,7 @@
 
 <c:url value="/password" var="passwordUrl" />
 
-<div class="container" style="height: 100%;">
+<div class="container" style="min-height: 100%;">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
