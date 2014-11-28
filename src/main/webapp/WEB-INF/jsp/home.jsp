@@ -23,8 +23,6 @@
                                 <h3 class="panel-title"><i class="glyphicon glyphicon-info-sign"></i> Informacje</h3>
                             </div>
                             <div class="panel-body">
-                	<div class="col-md-1">
-                	</div>
                 	
                     <div class="col-md-2">
                         <div class="panel panel-primary">
@@ -147,8 +145,30 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-1">
-                	</div>
+                                        <div class="col-md-2">
+                        <div class="panel panel-red">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
+                                    </div>
+                                    <div class="col-xs-12 text-right">
+                                        <div class="large">Kosz</div>
+                                        <div>Orlik Sp9</div>
+                                        <div>13.11.2014</div>
+                                        <div>18:00 - 20:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Sprawdź wszystkie</span>
+                                    <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 	  </div>
                         </div>
                     </div>
