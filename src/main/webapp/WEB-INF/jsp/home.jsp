@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            <i class="glyphicon glyphicon-eye-open"></i> Szybki przegląd <small> <i class="glyphicon glyphicon-info-sign"></i> Informacje </small>
+                            <i class="glyphicon glyphicon-eye-open"></i> Szybki przegląd
                         </h1>
                     </div>
                 </div>
@@ -20,8 +20,9 @@
   					                    <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i> Area Chart</h3>
+                                <h3 class="panel-title"><i class="glyphicon glyphicon-info-sign"></i> Informacje</h3>
                             </div>
+                            <div class="panel-body">
                 	<div class="col-md-1">
                 	</div>
                 	
@@ -149,6 +150,7 @@
                 	</div>
                 	  </div>
                         </div>
+                    </div>
                     </div>
                 /.row
 
