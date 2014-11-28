@@ -196,22 +196,14 @@ Page Heading
 			</div>
 			<div class="panel-body">
 				<div class="list-group">
-					<a href="#" class="list-group-item"> <span class="ok badge">przed chwilą </span> <i class="glyphicon glyphicon-user"></i> Cristiano Ronaldo dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">4
-							minuty temu</span> <i class="glyphicon glyphicon-user"></i> Robert Lewandowski ołączył do: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">23
-							minuty temu</span> <i class="glyphicon glyphicon-user"></i> Mateusz Tamborek dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">46
-							minut temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych opuścił: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">1
-							godzinę temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych skomentował: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">2
-							godziny temu</span> <i class="glyphicon glyphicon-user"></i> Lionel Messi dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">yesterday</span>
-						<i class="glyphicon glyphicon-user"></i> Mariusz Zych opuścił: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a> <a href="#" class="list-group-item"> <span class="badge">2
-							dni temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych docyz: Orlik SP9 13.11.2014 18:00 - 20:00
-					</a>
+					<a href="#" class="list-group-item"> <span class="badge badge-ok">przed chwilą </span> <i class="glyphicon glyphicon-user"></i> Cristiano Ronaldo dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00</a> 
+					<a href="#" class="list-group-item"> <span class="badge badge-not-ok">4 minuty temu</span> <i class="glyphicon glyphicon-user"></i> Robert Lewandowski dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00</a> 
+					<a href="#" class="list-group-item"> <span class="badge">23 minuty temu</span> <i class="glyphicon glyphicon-user"></i> Mateusz Tamborek dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00 </a>
+					<a href="#" class="list-group-item"> <span class="badge">46 minut temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych opuścił: Orlik SP9 13.11.2014 18:00 - 20:00 </a>
+					<a href="#" class="list-group-item"> <span class="badge">1 godzinę temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych skomentował: Orlik SP9 13.11.2014 18:00 - 20:00</a>
+					<a href="#" class="list-group-item"> <span class="badge">2 godziny temu</span> <i class="glyphicon glyphicon-user"></i> Lionel Messi dołączył do: Orlik SP9 13.11.2014 18:00 - 20:00</a>
+					<a href="#" class="list-group-item"> <span class="badge">yesterday</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych opuścił: Orlik SP9 13.11.2014 18:00 - 20:00 </a>
+					<a href="#" class="list-group-item"> <span class="badge">2 dni temu</span> <i class="glyphicon glyphicon-user"></i> Mariusz Zych docyz: Orlik SP9 13.11.2014 18:00 - 20:00</a> 
 				</div>
 				<div class="text-right">
 					<a href="#">Zobacz wszystko <i class="glyphicon glyphicon-eye-open"></i></a>
