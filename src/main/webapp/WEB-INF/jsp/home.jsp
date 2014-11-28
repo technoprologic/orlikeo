@@ -34,7 +34,7 @@ Page Heading
 									<i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i>
 								</div>
 								<div class="col-xs-12 text-right">
-									<div class="large">Nadchodzące(1)</div>
+									<div class="large">Nadchodzące</div>
 									<div class="large">12/14</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
@@ -44,7 +44,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie</span> <span
+								<span class="pull-left">Sprawdź wszystkie(2)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -137,7 +137,7 @@ Page Heading
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-down"></i><div class="large"> 3/12</div>
+									<i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-down"></i> 3/12
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">W budowie</div>
