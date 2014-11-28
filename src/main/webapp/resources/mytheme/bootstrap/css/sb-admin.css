@@ -277,7 +277,17 @@ ul.alert-dropdown {
 
 
 
+.green{
+	color: #5cb85c;
+}
+
 .red{
 	color: #d9534f;
 }
+
+
+.blue{
+	color: #ddd;
+}
+
 
