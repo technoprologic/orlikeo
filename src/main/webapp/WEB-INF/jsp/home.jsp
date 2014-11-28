@@ -130,7 +130,7 @@ Page Heading
 				</div>
 				
 				<div class="col-md-2">
-					<div class="panel panel-red">
+					<div class="panel panel-silver">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
