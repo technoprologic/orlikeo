@@ -220,6 +220,25 @@ ul.alert-dropdown {
     color: #b52b27;
 }
 
+
+.panel-silver {
+    border-color: #666666;
+}
+
+.panel-silver .panel-heading {
+    border-color: #666666;
+    color: #fff;
+    background-color: #6666666;
+}
+
+.panel-silver a {
+    color: #333333;
+}
+
+.panel-silver a:hover {
+    color: #666666;
+}
+
 .panel-yellow {
     border-color: #f0ad4e;
 }
