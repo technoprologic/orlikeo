@@ -226,7 +226,7 @@ ul.alert-dropdown {
 }
 
 .panel-silver .panel-heading {
-    border-color: A9A9A9;
+    border-color: #A9A9A9;
     color: #fff;
     background-color: #A9A9A9;
 }
@@ -236,9 +236,27 @@ ul.alert-dropdown {
 }
 
 .panel-silver a:hover {
-    color: #999999;
+    color: #787878;
 }
 
+
+.panel-silver-dark {
+    border-color: #7D7D7D;
+}
+
+.panel-silver-dark .panel-heading {
+    border-color: #7D7D7D;
+    color: #fff;
+    background-color: #7D7D7D;
+}
+
+.panel-silver-dark a {
+    color: #7D7D7D;
+}
+
+.panel-silver-dark a:hover {
+    color: #454545;
+}
 .panel-yellow {
     border-color: #f0ad4e;
 }
