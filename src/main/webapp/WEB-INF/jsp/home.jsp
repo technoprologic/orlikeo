@@ -36,7 +36,7 @@ Page Heading
 								<div class="col-xs-12 text-right">
 									<div class="large">Nadchodzące</div>
 									<div>Orlik Sp9</div>
-									<div>13.11.2014</div>
+									<div>13.11.2015</div>
 									<div>18:00 - 20:00</div>
 								</div>
 							</div>
