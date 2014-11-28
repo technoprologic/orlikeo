@@ -222,21 +222,21 @@ ul.alert-dropdown {
 
 
 .panel-silver {
-    border-color: #ccc;
+    border-color: #A9A9A9;
 }
 
 .panel-silver .panel-heading {
-    border-color: blue;
+    border-color: A9A9A9;
     color: #fff;
-    background-color: #ccc;
+    background-color: #A9A9A9;
 }
 
 .panel-silver a {
-    color: #ccc;
+    color: #A9A9A9;
 }
 
 .panel-silver a:hover {
-    color: #c6c;
+    color: #999999;
 }
 
 .panel-yellow {
