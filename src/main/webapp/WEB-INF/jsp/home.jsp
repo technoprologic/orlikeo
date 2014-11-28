@@ -154,7 +154,7 @@ Page Heading
 					</div>
 				</div>
 				<div class="col-md-2">
-					<div class="panel panel-red">
+					<div class="panel panel-dark">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
