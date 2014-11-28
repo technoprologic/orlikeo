@@ -4628,15 +4628,6 @@ a.label:focus {
   border-radius: 10px;
 }
 
-.badge-ok{
-	background-color: #5cb85c;
-} 
-
-.badge-not-ok{
-	background-color: #d9534f;
-}
-
-
 .badge:empty {
   display: none;
 }
