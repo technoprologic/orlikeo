@@ -44,7 +44,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(2)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (2)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -58,11 +58,10 @@ Page Heading
 							<div class="row">
 								<div class="col-xs-3">
 									<i style="font-size: 2.5em;"
-										class="glyphicon glyphicon-thumbs-up"></i>
+										class="glyphicon glyphicon-thumbs-up"></i>11/12
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">Zaakceptowany</div>
-									<div class="large">11/12</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
@@ -71,7 +70,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(3)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (3)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -84,11 +83,10 @@ Page Heading
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-warning-sign"></i>
+									<i style="font-size: 2.5em;" class="glyphicon glyphicon-warning-sign"></i> 7/12
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">Zagrożony</div>
-									<div class="large">Stan 7/12</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
@@ -97,7 +95,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(2)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (2)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -110,11 +108,10 @@ Page Heading
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-send"></i>
+									<i style="font-size: 2.5em;" class="glyphicon glyphicon-send"></i> 10/14
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">Do akceptacji</div>
-									<div class="large">10/14</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
@@ -123,7 +120,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(1)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (1)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -141,7 +138,6 @@ Page Heading
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">W budowie</div>
-									
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
@@ -150,7 +146,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(1)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (1)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
@@ -163,11 +159,10 @@ Page Heading
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
+									<i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i> 1/16
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">Kosz</div>
-									<div class="large">1/16</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
@@ -176,7 +171,7 @@ Page Heading
 						</div>
 						<a href="#">
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie(5)</span> <span
+								<span class="pull-left">Sprawdź wszystkie (5)</span> <span
 									class="pull-right"><i
 									class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
