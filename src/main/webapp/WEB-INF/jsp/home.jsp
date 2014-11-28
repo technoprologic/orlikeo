@@ -11,17 +11,13 @@
                         <h1 class="page-header">
                             <i class="glyphicon glyphicon-eye-open"></i> Szybki przegląd <small> <i class="glyphicon glyphicon-info-sign"></i> Informacje </small>
                         </h1>
-                        <ol class="breadcrumb">
-                            <li class="active">
-                                 Dashboard
-                            </li>
-                        </ol>
                     </div>
                 </div>
                 /.row
 
 
-                <div class="row text-center">
+                <div class="row">
+  
                 	<div class="col-md-1">
                 	</div>
                 	
@@ -57,7 +53,7 @@
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
-                                        <div class="large">Ostatnio zaakceptowane</div>
+                                        <div class="large">Zaakceptowany</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
@@ -105,7 +101,7 @@
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
-                                        <div class="large">Niezorganizowane</div>
+                                        <div class="large">Stan 7/10</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
@@ -129,7 +125,7 @@
                                         <i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
                                     </div>
                                     <div class="col-xs-12 text-right">
-                                        <div class="large">Niezorganizowane</div>
+                                        <div class="large">Kosz</div>
                                         <div>Orlik Sp9</div>
                                         <div>13.11.2014</div>
                                         <div>18:00 - 20:00</div>
