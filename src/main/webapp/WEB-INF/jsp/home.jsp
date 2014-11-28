@@ -31,11 +31,10 @@ Page Heading
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i>
+									<i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i> 12/14
 								</div>
 								<div class="col-xs-12 text-right">
 									<div class="large">Nadchodzące</div>
-									<div class="large">12/14</div>
 									<div>Orlik Sp9</div>
 									<div>13.11.2014</div>
 									<div>18:00 - 20:00</div>
