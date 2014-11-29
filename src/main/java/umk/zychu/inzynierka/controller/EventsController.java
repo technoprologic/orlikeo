@@ -22,7 +22,7 @@ public class EventsController {
 	public String create2(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		return "help";
+		return "help2";
 	}
 	
 }
