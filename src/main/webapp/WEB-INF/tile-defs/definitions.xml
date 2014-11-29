@@ -24,6 +24,9 @@
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="contentTest" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
+	<definition name="help2" extends="defaultTemplate">
+		<put-attribute name="contentTest" value="/WEB-INF/jsp/help2.jsp" />
+	</definition>
 	
 	
 	
