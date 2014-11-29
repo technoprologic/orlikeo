@@ -43,7 +43,6 @@
 	<beans:bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
 		<beans:property name="pathPrefix" value="/events" />
 	</beans:bean>
-	<beans:bean class="umk.zychu.inzynierka.controller.HomeController" />
 	<beans:bean class="umk.zychu.inzynierka.controller.EventsController" />
 </beans:beans>
 
