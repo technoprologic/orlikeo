@@ -24,6 +24,5 @@ public class EventsController {
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
 		return "help2";
 	}
-	
-	
+
 }
