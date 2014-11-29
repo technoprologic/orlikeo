@@ -23,7 +23,7 @@ public class EventsController {
 
 		response.setContentType("text/html");
 	    response.setCharacterEncoding("UTF-8");
-	    return "createEvent";
+	    return "home";
 	}
 
 	
