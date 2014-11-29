@@ -38,10 +38,5 @@
 			<beans:property name="paramName" value="lang" />
 		</beans:bean>
 	</interceptors> -->
-	
-	<!--  mapping controllers tu url  -->
-	<beans:bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" >
-		<beans:property name="pathPrefix" value="/events" />
-	</beans:bean>
 </beans:beans>
 
