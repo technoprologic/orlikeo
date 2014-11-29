@@ -21,7 +21,7 @@ public class EventsController {
 	@ResponseBody
 	public String dupa(HttpServletResponse response, ModelMap model) {
 
-		response.setContentType("text/plain");
+		response.setContentType("text/html");
 	    response.setCharacterEncoding("UTF-8");
 	    return "createEvent";
 	}
