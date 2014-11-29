@@ -21,16 +21,13 @@
 	<definition name="createEvent" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/createEvent.jsp" />
 	</definition>
-	
-	
-	
-	<definition name="tester" template="WEB-INF/jsp/template/test.jsp">
-		<put-attribute name="contentTest" value="" />
-	</definition>
-		<definition name="help" extends="tester">
+	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="contentTest" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
 	
+	
+	
+
 	
 	
 	
