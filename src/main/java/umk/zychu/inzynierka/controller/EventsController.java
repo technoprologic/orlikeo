@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @Controller
+@RequestMapping(value="/events")
 public class EventsController {
 
 	
-	@RequestMapping(value="dupa/dupa",  method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public String dupa(ModelMap model) {
 
 	    return "help2";
 	}
 
 	
-	@RequestMapping( value="help2", method = RequestMethod.GET)
+	@RequestMapping( value="/help2", method = RequestMethod.GET)
 	public String create2(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
