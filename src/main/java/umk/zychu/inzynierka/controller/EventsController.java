@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/events")
 public class EventsController {
 
+	
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String create(ModelMap model) {
