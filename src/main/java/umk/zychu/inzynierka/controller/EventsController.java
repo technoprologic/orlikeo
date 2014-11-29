@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class EventsController {
 
 	
-	@RequestMapping(value="/dupa",  method = RequestMethod.GET)
+	@RequestMapping(value="/dupa/dupa",  method = RequestMethod.GET)
 	public String dupa(ModelMap model) {
 
 	    return "help2";
