@@ -5,25 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value="/events")
 public class EventsController {
 
 	
-	@RequestMapping(value="dupa",  method = RequestMethod.GET)
-	@ResponseBody
-	public String dupa(HttpServletResponse response, ModelMap model) {
+	@RequestMapping(value="/dupa",  method = RequestMethod.GET)
+	public String dupa(ModelMap model) {
 
-		response.setContentType("text/html");
-	    response.setCharacterEncoding("UTF-8");
-	    return "home";
+	    return "help2";
 	}
 
 	
