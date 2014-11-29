@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class EventsController {
 
 	
-	@RequestMapping(value="/dupa",  method = RequestMethod.GET)
+	@RequestMapping(value="dupa",  method = RequestMethod.GET)
 	@ResponseBody
 	public String dupa(ModelMap model) {
 
