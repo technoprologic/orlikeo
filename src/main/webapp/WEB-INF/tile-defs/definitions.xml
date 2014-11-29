@@ -18,6 +18,9 @@
 	<definition name="password" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/password.jsp" />
 	</definition>
+	<definition name="createEvent" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/createEvent.jsp" />
+	</definition>
 	
 	
 	

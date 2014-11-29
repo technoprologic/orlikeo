@@ -7,6 +7,7 @@
 <c:url value="/home" var="homeUrl" />
 <c:url value="/profile" var="profileUrl" />
 <c:url value="/" var="logoutUrl" />
+<c:url value="/events/create" var="createEventUrl" />
  
 
 <!-- Navigation -->
@@ -133,13 +134,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                 <li class="active">
-                        <a href="javascript:;" data-toggle="collapse" data-target="#main"><i class="glyphicon glyphicon-eye-open"></i> SZYBKI PRZEGLĄD </a>
+                        <a href="${homeUrl}" data-toggle="collapse" data-target="#main"><i class="glyphicon glyphicon-eye-open"></i> SZYBKI PRZEGLĄD </a>
                     </li>
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#events"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
                         <ul id="events" class="collapse">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
+                                <a href="${createEventUrl}"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
