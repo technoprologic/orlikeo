@@ -5,13 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value="/events")
 public class EventsController {
 
 	
-	@RequestMapping(value="dupa",  method = RequestMethod.GET)
+	@RequestMapping(value="/dupa",  method = RequestMethod.GET)
+	@ResponseBody
 	public String dupa(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
