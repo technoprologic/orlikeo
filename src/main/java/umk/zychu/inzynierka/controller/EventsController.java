@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class EventsController {
 
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "events", method = RequestMethod.GET)
 	public String create(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
