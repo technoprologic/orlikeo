@@ -23,7 +23,7 @@ public class EventsController {
 	
 	
 	@RequestMapping(value="*", method = RequestMethod.GET)
-	public String dupa(WebRequest request, ModelMap model) {
+	public String dupa(ModelMap model) {
 
 	    return "home";
 	}
