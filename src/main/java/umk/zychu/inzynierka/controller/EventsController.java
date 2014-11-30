@@ -20,6 +20,7 @@ public class EventsController {
 	}
 
 	
+	
 	@RequestMapping( value="/login", method = RequestMethod.GET)
 	public String create2(ModelMap model) {
 
