@@ -25,7 +25,7 @@ public class EventsController {
 	@RequestMapping(value="*", method = RequestMethod.GET)
 	public String dupa(WebRequest request, ModelMap model) {
 
-	    return "/errors/error404";
+	    return "home";
 	}
 
 
