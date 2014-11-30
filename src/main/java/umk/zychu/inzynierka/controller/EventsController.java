@@ -21,7 +21,7 @@ public class EventsController {
 	}
 	
 	
-	@RequestMapping(value="/dupa", method = RequestMethod.GET)
+	@RequestMapping(value="/template", method = RequestMethod.GET)
 	public String dupa(ModelMap model) {
 
 	    return "home";
