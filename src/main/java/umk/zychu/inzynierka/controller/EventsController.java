@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class EventsController {
 
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="", method = RequestMethod.GET)
 	public String dupa(ModelMap model) {
 
 	    return "home";
