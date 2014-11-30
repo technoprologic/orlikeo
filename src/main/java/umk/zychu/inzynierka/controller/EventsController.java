@@ -18,8 +18,6 @@ public class EventsController {
 
 	    return "home";
 	}
-
-	
 	
 	
 	@RequestMapping( value="/login", method = RequestMethod.GET)
