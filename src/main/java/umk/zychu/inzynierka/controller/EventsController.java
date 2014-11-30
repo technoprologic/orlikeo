@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-@RequestMapping(value="/events")
 public class EventsController {
 
 	
 
-	@RequestMapping(value="", method = RequestMethod.GET)
+	@RequestMapping(value="/events/dupa", method = RequestMethod.GET)
 	public String dupa2(ModelMap model) {
 
 	    return "home";
