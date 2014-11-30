@@ -25,6 +25,20 @@
 <!-- 		<beans:property name="defaultEncoding" value="UTF-8" /> -->
 <!-- 	</beans:bean> -->
 
+
+	<beans:bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix">
+			<beans:value>/WEB-INF/jsp/</beans:value>
+		</beans:property>
+		<beans:property name="suffix">
+			<beans:value>.jsp</beans:value>
+		</beans:property>
+		<beans:property name="order" value="2" />
+	</beans:bean>
+	
+	  
+
 <!-- 	<beans:bean id="localeResolver" -->
 <!-- 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> -->
 <!-- 		<beans:property name="defaultLocale" value="pl" /> -->
