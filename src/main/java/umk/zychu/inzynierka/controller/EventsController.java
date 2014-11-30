@@ -19,7 +19,7 @@ public class EventsController {
 	}
 
 	
-	@RequestMapping( value="help2", method = RequestMethod.GET)
+	@RequestMapping( value="/events/help2", method = RequestMethod.GET)
 	public String create2(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
