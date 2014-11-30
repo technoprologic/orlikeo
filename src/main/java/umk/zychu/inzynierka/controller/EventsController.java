@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 
 @Controller
@@ -21,10 +22,10 @@ public class EventsController {
 	}
 	
 	
-	@RequestMapping(value="/metoda", method = RequestMethod.GET)
-	public String dupa(ModelMap model) {
+	@RequestMapping(value="*", method = RequestMethod.GET)
+	public String dupa(WebRequest request, ModelMap model) {
 
-	    return "home";
+	    return "/errors/error404";
 	}
 
 
