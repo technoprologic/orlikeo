@@ -19,7 +19,7 @@
 
    <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
    <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="<c:url value="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" /> "></script>
    <script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
 
 
@@ -37,12 +37,8 @@
   <body>
 
     <div class="container">
-		<tiles:insertAttribute name="clearContent" />
+		<tiles:insertAttribute name="content" />
     </div> <!-- /container -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
 

@@ -5,7 +5,7 @@
 
 
 
-<c:url value="/password" var="passwordUrl" />
+<c:url value="/account/password" var="passwordUrl" />
 
 
 <div class="row">

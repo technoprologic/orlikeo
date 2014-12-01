@@ -17,9 +17,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/resources/mytheme/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/resources/mytheme/bootstrap/css/sb-admin.css" rel="stylesheet">
+    <link href="<c:url value="/resources/mytheme/bootstrap/css/sb-admin.css" />"  rel="stylesheet">
     <!-- Morris Charts CSS -->
-    <link href="/resources/mytheme/bootstrap/css/plugins/morris.css" rel="stylesheet">
+    <link href="<c:url value="/resources/mytheme/bootstrap/css/plugins/morris.css" />" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="/resources/mytheme/bootstrap/css/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -29,8 +29,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!--  css for password changing -->
-   <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet" />
+   <script src="<c:url value="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />"> </script>
    <script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
 </head>
 <body>
@@ -45,13 +45,13 @@
 	</div> <!-- wrapper -->
 
     <!-- jQuery -->
-    <script src="/resources/mytheme/bootstrap/js/jquery.js"></script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/jquery.js" />" ></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="/resources/mytheme/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.min.js" />" ></script>
     <!-- Morris Charts JavaScript -->
-    <script src="/resources/mytheme/bootstrap/js/plugins/morris/raphael.min.js"></script>
-    <script src="/resources/mytheme/bootstrap/js/plugins/morris/morris.min.js"></script>
-    <script src="/resources/mytheme/bootstrap/js/plugins/morris/morris-data.js"></script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/plugins/morris/raphael.min.js" />"></script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/plugins/morris/morris.min.js" />"></script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/plugins/morris/morris-data.js" />"></script>
 
 </body>
 

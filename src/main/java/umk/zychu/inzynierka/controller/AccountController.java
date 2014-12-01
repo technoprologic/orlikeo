@@ -5,23 +5,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/account")
 public class AccountController {
 
 
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public String userProfile(ModelMap model) {
+	public ModelAndView userProfile(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		return "profile";
+		return new ModelAndView("profile");
 	}
 	
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
-	public String userPassword(ModelMap model) {
+	public ModelAndView userPassword(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		return "password";
+		return new ModelAndView("password");
 	}
 	
 }

@@ -11,6 +11,7 @@
 	<context:property-placeholder location="classpath:application.properties"/> -->
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- <import resource="tiles-context.xml"/> -->
 	<import resource="tiles-context.xml"/>
 <!-- 	<import resource="spring-security.xml"/> -->
 <!-- 	<import resource="datasource-config.xml"/> -->

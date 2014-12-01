@@ -5,25 +5,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping(value = { "/", "", "/home" })
 public class HomeController {
 
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String login(ModelMap model) {
+	@RequestMapping( method = RequestMethod.GET)
+	public ModelAndView home(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		return "login";
+		//return new ModelAndView("home");
+		return new ModelAndView("home");
 	}
 	
 	
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(ModelMap model) {
+	@RequestMapping( value="/home2", method = RequestMethod.GET)
+	public ModelAndView home2(ModelMap model) {
 
 		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		return "home";
-
+		//return new ModelAndView("home");
+		return new ModelAndView("home");
 	}
-
 }

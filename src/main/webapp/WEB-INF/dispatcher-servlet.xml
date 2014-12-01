@@ -9,9 +9,9 @@
 
 
 	<context:component-scan base-package="umk.zychu.inzynierka.controller" />
-<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
-<!-- 	</context:component-scan> -->
-
+<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+ -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -26,18 +26,58 @@
 <!-- 	</beans:bean> -->
 
 
-	<!-- <beans:bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" /> -->
-	<!-- <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix">
+
+
+
+<!-- <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <beans:property name="viewClass">
+            <beans:value> org.springframework.web.servlet.view.JstlView </beans:value>
+    </beans:property>
+    <beans:property name="prefix">
 			<beans:value>/WEB-INF/jsp/</beans:value>
-		</beans:property>
-		<beans:property name="suffix">
+	</beans:property>
+	<beans:property name="suffix">
 			<beans:value>.jsp</beans:value>
-		</beans:property>
-		<beans:property name="order" value="2" />
-	</beans:bean> -->
-	
-	  
+	</beans:property>
+	<beans:property name="order" > 
+		<beans:value>1</beans:value>
+	</beans:property>
+</beans:bean>   
+
+
+<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+    <beans:property name="viewClass">
+            <beans:value> org.springframework.web.servlet.view.tiles3.TilesView </beans:value>
+    </beans:property>
+    <beans:property name="prefix">
+			<beans:value>/WEB-INF/jsp/</beans:value>
+	</beans:property>
+	<beans:property name="suffix">
+			<beans:value>.jsp</beans:value>
+	</beans:property>
+	<beans:property name="order" > 
+		<beans:value>2</beans:value>
+	</beans:property>
+</beans:bean> -->
+
+<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    <beans:property name="viewClass">
+            <beans:value> org.springframework.web.servlet.view.tiles3.TilesView </beans:value>
+    </beans:property>
+</beans:bean>
+
+  <!-- The actual tiles templates are in the tiles-definitions.xml  -->         
+<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"> 
+    <beans:property name="definitions">       
+        <beans:list>
+            <beans:value>/WEB-INF/tile-defs/definitions.xml</beans:value>
+        </beans:list>
+    </beans:property> 
+</beans:bean>
+
+
+
+
 
 <!-- 	<beans:bean id="localeResolver" -->
 <!-- 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> -->

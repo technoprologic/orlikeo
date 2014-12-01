@@ -37,7 +37,7 @@
                                         <img class="media-object" src="http://epilka.pl/public/upload/player/robert_lewandowski.jpg" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>Robert Lewandowski</strong>
+                                        <h5 class="media-heading"><strong>Robert Lewandowskii</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Dzisiaj o 18:01 </p>
                                         <p>Finał jest nasz...</p>

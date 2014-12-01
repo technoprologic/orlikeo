@@ -3,7 +3,7 @@
 
 
 <tiles-definitions>
-	<definition name="defaultTemplate" template="WEB-INF/jsp/template/template.jsp">
+	<definition name="defaultTemplate" template="/WEB-INF/jsp/template/template.jsp">
 		<put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
 		<put-attribute name="leftMenuContent" value="/WEB-INF/jsp/template/leftMenuContent.jsp" />
 		<put-attribute name="content" value="" />
@@ -28,21 +28,15 @@
 		<put-attribute name="contentTest" value="/WEB-INF/jsp/create.jsp" />
 	</definition>
 	
-	
-	
-
-	
-	
-	
 	<!-- template for clear business content (without menu etc.) -->
-	<definition name="clearTemplate" template="WEB-INF/jsp/template/clearTemplate.jsp">
-		<put-attribute name="clearContent" value="" />
+	<definition name="clearTemplate" template="/WEB-INF/jsp/template/clearTemplate.jsp">
+		<put-attribute name="content" value="" />
 	</definition>
 	<definition name="login" extends="clearTemplate">
-		<put-attribute name="clearContent" value="/WEB-INF/jsp/login.jsp" />
+		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
 	</definition>
 	<definition name="register" extends="clearTemplate">
-		<put-attribute name="clearContent" value="/WEB-INF/jsp/register.jsp" />
+		<put-attribute name="content" value="/WEB-INF/jsp/register.jsp" />
 	</definition>
 </tiles-definitions>
 
