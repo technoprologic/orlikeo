@@ -14,7 +14,7 @@ Page Heading
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Wydarzenia <small><i class="glyphicon glyphicon-picture"></i> Moje organizowane</small>
+			Wydarzenia <small><i class="glyphicon glyphicon-picture"></i> Zaproszenia na wydarzenia</small>
 		</h1>
 	</div>
 </div>
@@ -26,7 +26,7 @@ Page Heading
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
-					<i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach które organizujesz
+					<i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach na które zostałeś zaproszony
 				</h3>
 			</div>
 			<div class="panel-body">
@@ -194,8 +194,8 @@ Page Heading
 
 
 		<!-- Form Name -->
-<legend>Wydarzenia - wszystkie</legend>
-<table data-toggle="table" id="table-pagination"  data-pagination="true" data-search="true" style="background-color:white">
+<legend>Wydarzenia - wszystkie zaproszenia</legend>
+<table data-toggle="table" id="table-pagination"  data-height="400" data-pagination="true" data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="right" data-sortable="true">Orlik</th>

@@ -29,11 +29,11 @@
 
 
 
-<form class="form-horizontal" action="${registerEventUrl}">
+<form class="form" action="${registerEventUrl}">
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Zaproś znajomych</legend>
-		<table data-toggle="table" style="background-color: white">
+		<table data-toggle="table" style="background-color: white" >
 			<thead>
 				<tr>
 					<th>Zaproś </th>
@@ -85,6 +85,18 @@
 				<input type="checkbox" id="allowAllStates">
 				<label for="allowAllStates">Pozwól zapraszać wszystkim</label>
 			</div>
+		</div>
+		<legend>Inne ustawienia</legend>
+		<!-- Select Basic -->
+		<div class="control-group">
+		  <label class="control-label" for="maxPlayers">Limit graczy</label>
+		  <div class="controls">
+		    <select id="maxPlayers" name="maxPlayers" class="input-medium">
+		      <option>12 (bez zmian)</option>
+		      <option>14 (po 1 na zmianę)</option>
+		      <option>16 (po 2 na zmianę)</option>
+		    </select>
+		  </div>
 		</div>
 		<!-- Button -->
 		<div class="control-group .">

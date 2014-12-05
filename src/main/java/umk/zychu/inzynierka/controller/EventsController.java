@@ -43,4 +43,15 @@ public class EventsController {
 
 		return new ModelAndView("organized");
 	}
+	
+	@RequestMapping(value = "/invitations", method = RequestMethod.GET)
+	public ModelAndView invitations(ModelMap model) {
+
+		return new ModelAndView("invitations");
+	}
+	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	public ModelAndView details(ModelMap model) {
+
+		return new ModelAndView("details");
+	}
 }
