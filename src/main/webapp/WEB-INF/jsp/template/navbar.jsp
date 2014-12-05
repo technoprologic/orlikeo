@@ -5,10 +5,10 @@
 
 
 <c:url value="/home" var="homeUrl" />
-<c:url value="/profile" var="profileUrl" />
+<c:url value="/account/profile" var="profileUrl" />
 <c:url value="/" var="logoutUrl" />
 <c:url value="/events/create" var="createEventUrl" />
- 
+ <c:url value="/events/organized" var="organizedEventsUrl" />
 
 <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -37,7 +37,7 @@
                                         <img class="media-object" src="http://epilka.pl/public/upload/player/robert_lewandowski.jpg" alt="">
                                     </span>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>Robert Lewandowskii</strong>
+                                        <h5 class="media-heading"><strong>Robert Lewandowski</strong>
                                         </h5>
                                         <p class="small text-muted"><i class="fa fa-clock-o"></i> Dzisiaj o 18:01 </p>
                                         <p>Finał jest nasz...</p>
@@ -143,7 +143,7 @@
                                 <a href="${createEventUrl}"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
+                                <a href="${organizedEventsUrl}"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
                             </li>
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>

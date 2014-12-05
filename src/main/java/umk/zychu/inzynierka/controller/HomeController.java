@@ -20,12 +20,4 @@ public class HomeController {
 		return new ModelAndView("home");
 	}
 	
-	
-	@RequestMapping( value="/home2", method = RequestMethod.GET)
-	public ModelAndView home2(ModelMap model) {
-
-		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
-		//return new ModelAndView("home");
-		return new ModelAndView("home");
-	}
 }
