@@ -8,7 +8,7 @@
 <c:url value="/account/profile" var="profileUrl" />
 <c:url value="/" var="logoutUrl" />
 <c:url value="/events/create" var="createEventUrl" />
- <c:url value="/events/organized" var="organizedEventsUrl" />
+<c:url value="/events/organized" var="organizedEventsUrl" />
 
 <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
