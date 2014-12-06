@@ -8,7 +8,7 @@
 <c:url value="/account/profile" var="profileUrl" />
 <c:url value="/" var="logoutUrl" />
 <c:url value="/events/create" var="createEventUrl" />
-<c:url value="/events/organized" var="organizedEventsUrl" />
+<c:url value="/events/organized" var="EventsUrl" />
 <c:url value="/events/invitations" var="invitationsEventsUrl" />
 
 <!-- Navigation -->
@@ -144,10 +144,13 @@
                                 <a href="${createEventUrl}"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="${organizedEventsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
+                                <a href="${EventsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Wszystkie </a> 
                             </li>
                             <li>
-                                <a href="${invitationsEventsUrl}?sort=all"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>
+                                <a href="${EventsUrl}?sort=organized"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
+                            </li>
+                            <li>
+                                <a href="${EventsUrl}?sort=invitations"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>
                             </li>
                         </ul>
                     </li>

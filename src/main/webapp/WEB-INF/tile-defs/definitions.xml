@@ -36,10 +36,7 @@
 	<definition name="organized" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/organizedEvents.jsp" />
 	</definition>
-	<definition name="invitations" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/invitationsEvents.jsp" />
-	</definition>
-		<definition name="details" extends="defaultTemplate">
+	<definition name="details" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/detailsEvents.jsp" />
 	</definition>
 	

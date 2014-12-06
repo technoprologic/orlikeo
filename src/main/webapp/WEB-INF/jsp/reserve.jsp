@@ -5,13 +5,14 @@
 
 
 
-<c:url value="/home" var="registerEventUrl" />
-
+<c:url value="/events/organized" var="registerEventUrl" />
+<c:url value="/events/create" var="createEventUrl" />
+<c:url value="/events/graphic" var="graphicEventUrl" />
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Orlik Toruń Sp9 ul.Rzepakowa 9  <small><i class="glyphicon glyphicon-picture"></i> 17:30 - 19:00</small>
+			<a href="${createEventUrl}" ><i class="glyphicon glyphicon-edit"></i></a> Orlik Toruń Sp9 ul.Rzepakowa 9 <small><a href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a> 17:30 - 19:00 (12.12.2014)</small>
 		</h1>
 		<ul>
 			<li><i class="glyphicon glyphicon-thumbs-up"></i> Oświetlenie: Tak</li>
@@ -45,8 +46,8 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><input type="checkbox" class="invite" name="inviteUsrId" value="23"></td>
-					<td><input type="checkbox" class="allow" name="allowUsrId" value="23"></td>
+					<td><input type="checkbox" disabled="disabled" checked="checked"  name="inviteUsrId" value="23"></td>
+					<td><input type="checkbox" checked="checked" class="allow" name="allowUsrId" value="23"></td>
 					<td>Mariusz Zych</td>
 					<td>Obrońca</td>
 					<td>83%</td>
@@ -93,17 +94,20 @@
 		  <div class="controls">
 		    <select id="maxPlayers" name="maxPlayers" class="input-medium">
 		      <option>12 (bez zmian)</option>
-		      <option>14 (po 1 na zmianę)</option>
+		      <option selected="selected" >14 (po 1 na zmianę)</option>
 		      <option>16 (po 2 na zmianę)</option>
 		    </select>
 		  </div>
 		</div>
-		<!-- Button -->
+		<!-- Buttons -->
 		<div class="control-group .">
 			<div class="controls">
-				<!-- Invite all -->
+				<!-- Confirm changes -->
 				<button id="singlebutton" name="singlebutton"
-					class="btn btn-primary  pull-right">Złóż wniosek</button>
+					class="btn btn-primary  pull-right">Zapisz zmiany / Zaproś</button>
+				<!-- New event -->
+				<button id="singlebutton" name="singlebutton"
+					class="btn btn-primary  pull-right">Utwórz wydarzenie</button>
 			</div>
 		</div>
 	</fieldset>

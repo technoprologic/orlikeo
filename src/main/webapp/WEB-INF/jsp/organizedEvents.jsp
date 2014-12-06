@@ -14,7 +14,7 @@ Page Heading
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Wydarzenia <small><i class="glyphicon glyphicon-picture"></i> Moje organizowane</small>
+			Wydarzenia <small><i class="glyphicon glyphicon-picture"></i> Wszystkie / Organizowane / Zaproszenia </small>
 		</h1>
 	</div>
 </div>
@@ -194,7 +194,7 @@ Page Heading
 
 
 		<!-- Form Name -->
-<legend>Wydarzenia - wszystkie</legend>
+<legend>Wydarzenia - wszystkie / organizowane / zaproszenia (Zagrożone)</legend>
 <table data-toggle="table" id="table-pagination"  data-pagination="true" data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
@@ -202,8 +202,9 @@ Page Heading
             <th data-field="eventDate" data-align="right" data-sortable="true">Data</th>
             <th data-field="eventTime" data-align="center" data-sortable="true">Godzina</th>
             <th data-field="eventStatus" data-align="center" data-sortable="true" >Status</th>
+            <th data-field="eventDecision" data-align="center" data-sortable="true" >Decyzja</th>
             <th data-field="eventPlayers" data-align="center" data-sortable="true" >Graczy</th>
-            <th data-align="center">Edytuj / Usuń / Szczegóły</th>
+            <th data-align="center">Edytuj / Usuń / Szczegóły / Dołącz</th>
         </tr>
     </thead>
     <tbody>
@@ -212,64 +213,21 @@ Page Heading
     		<td>04.11.2014</td>
     		<td>17:30 - 19:00</td>
     		<td>Kosz</td>
-    		<td>12/14</td>
+    		<td><i class="glyphicon glyphicon-plus"></i></td>
+    		<td>12/14</td>    		
     		<td><a href="${editEventUrl}?evId=33" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
     			<a href="${removeEventUrl}?evId=33" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
     			<a href="${detailsEventUrl}?evId=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>    		
-    	</tr>
-    	<tr>
-    		<td>Polna</td>
-    		<td>14.12.2014</td>
-    		<td>17:30 - 19:00</td>
-    		<td>Do akceptacji</td>
-    		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>
-    	</tr>  
-    	<tr>
-    		<td>Legionów</td>
-    		<td>03.12.2014</td>
-    		<td>17:30 - 19:00</td>
-    		<td>Przyjęty</td>
-    		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>
-    	</tr>  
-    	<tr>
-    		<td>Gagarina</td>
-    		<td>09.12.2014</td>
-    		<td>17:30 - 19:00</td>
-    		<td>Zagrożony</td>
-    		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>
-    	</tr>  
-    	<tr>
-    		<td>Morcinka</td>
-    		<td>12.12.2014</td>
-    		<td>17:30 - 19:00</td>
-    		<td>Do akceptacji</td>
-    		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>
     	</tr>  
     	<tr>
     		<td>Ugory</td>
     		<td>06.12.2014</td>
     		<td>13:30 - 15:00</td>
     		<td>W budowie</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>12/14</td>
     		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
     			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>
@@ -278,10 +236,9 @@ Page Heading
     		<td>04.11.2014</td>
     		<td>17:30 - 19:00</td>
     		<td>Kosz</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>
     	<tr>
@@ -289,9 +246,9 @@ Page Heading
     		<td>14.12.2014</td>
     		<td>20:30 - 22:00</td>
     		<td>Do akceptacji</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>12/14</td>
     		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
     			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>  
@@ -300,10 +257,9 @@ Page Heading
     		<td>03.12.2014</td>
     		<td>18:00 - 19:30</td>
     		<td>Przyjęty</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>  
     	<tr>
@@ -311,10 +267,9 @@ Page Heading
     		<td>09.12.2014</td>
     		<td>17:00 - 18:30</td>
     		<td>Zagrożony</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>12/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>  
     	<tr>
@@ -322,9 +277,9 @@ Page Heading
     		<td>12.12.2014</td>
     		<td>12:00 - 13:30</td>
     		<td>Do akceptacji</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>13/14</td>
     		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
     			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>  
@@ -333,10 +288,9 @@ Page Heading
     		<td>06.12.2014</td>
     		<td>15:00 - 16:30</td>
     		<td>W budowie</td>
+    		<td><i class="glyphicon glyphicon-minus"></i></td>
     		<td>14/14</td>
-    		<td><a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsEvent}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>
     	</tr>       	
     </tbody>

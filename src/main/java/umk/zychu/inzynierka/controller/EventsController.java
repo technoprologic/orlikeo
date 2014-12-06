@@ -35,7 +35,7 @@ public class EventsController {
 	@RequestMapping(value = "/registerEvent", method = RequestMethod.GET)
 	public ModelAndView register(ModelMap model) {
 
-		return new ModelAndView("/home");
+		return new ModelAndView("organized");
 	}
 	
 	@RequestMapping(value = "/organized", method = RequestMethod.GET)
@@ -44,14 +44,15 @@ public class EventsController {
 		return new ModelAndView("organized");
 	}
 	
-	@RequestMapping(value = "/invitations", method = RequestMethod.GET)
-	public ModelAndView invitations(ModelMap model) {
-
-		return new ModelAndView("invitations");
-	}
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	public ModelAndView details(ModelMap model) {
 
 		return new ModelAndView("details");
+	}
+	
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(ModelMap model) {
+
+		return new ModelAndView("edit");
 	}
 }

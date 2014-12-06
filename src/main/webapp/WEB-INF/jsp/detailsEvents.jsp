@@ -5,15 +5,19 @@
 
 
 
-<c:url value="/home" var="registerEventUrl" />
 
+<c:url value="/events/reserve" var="editEventUrl" />
+<c:url value="/events/reserve" var="editEventUrl" />
+<c:url value="/events/organized" var="removeEventUrl" />
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
 			Orlik Toruń Sp9 ul.Rzepakowa 9  <small><i class="glyphicon glyphicon-picture"></i> 17:30 - 19:00 </small>
-			<a href="${editEvent}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
-    		<a href="${removeEvent}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
+			<a href="${editEventUrl}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+    		<a href="${joinEventUrl}?join=true" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em"></i></a> /
+    		<a href="${joinEventUrl}?join=false" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em"></i></a>
+    		<a href="${removeEventUrl}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
 		</h1>
 		<ul>
 			<li><i class="glyphicon glyphicon-thumbs-up"></i> Oświetlenie: Tak</li>
@@ -106,7 +110,7 @@
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
             <th data-field="eventDate" data-align="center" data-sortable="true">Prawo zapraszania</th>
             <th data-field="eventTime" data-align="center" data-sortable="true">Zaproszony przez</th>
-            <th data-field="eventStatus" data-align="center" data-sortable="true" >Dołączył</th>
+            <th data-field="eventStatus" data-align="center" data-sortable="true" >Wysłano</th>
             <th data-field="eventPlayers" data-align="center" data-sortable="true" >Poziom zaufania</th>
         </tr>
     </thead>
@@ -172,7 +176,7 @@
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
             <th data-field="eventDate" data-align="center" data-sortable="true">Prawo zapraszania</th>
             <th data-field="eventTime" data-align="center" data-sortable="true">Zaproszony przez</th>
-            <th data-field="eventStatus" data-align="center" data-sortable="true" >Dołączył</th>
+            <th data-field="eventStatus" data-align="center" data-sortable="true" >Odrzucił</th>
             <th data-field="eventPlayers" data-align="center" data-sortable="true" >Poziom zaufania</th>
         </tr>
     </thead>
