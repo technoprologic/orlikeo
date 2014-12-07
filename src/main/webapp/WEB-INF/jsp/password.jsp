@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-<c:url value="/password" var="passwordUrl" />
+<c:url value="/account/changePswd" var="changePswdUrl" />
 
 
 <div class="container">
@@ -14,7 +14,7 @@
             <div class="account-wall">
                 <img class="profile-img" src="http://cdn.content.easports.com/fifa/fltOnlineAssets/2013/fut/items/images/players/web/158023.png"
                     alt="">
-                <form method="get" class="form-signin" action="${passwordUrl}">           
+                <form method="get" class="form-signin" action="${changePswdUrl}">           
                 <div class="form-group">
 					<div class="input-group">
 						<input type="password" class="form-control" name="password" id="password"  placeholder="Stare hasło" required>

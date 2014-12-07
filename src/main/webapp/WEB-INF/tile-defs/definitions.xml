@@ -18,11 +18,12 @@
 	<definition name="password" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/password.jsp" />
 	</definition>
-	<definition name="createEvent" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/createEvent.jsp" />
-	</definition>
+
 	<definition name="help" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
+	</definition>
+	<definition name="createEvent" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/createEvent.jsp" />
 	</definition>
 	<definition name="create" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/create.jsp" />
@@ -38,6 +39,14 @@
 	</definition>
 	<definition name="details" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/detailsEvents.jsp" />
+	</definition>
+	
+	<!-- Friends -->
+	<definition name="friends" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/friends.jsp" />
+	</definition>
+		<definition name="addFriend" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/addFriend.jsp" />
 	</definition>
 	
 	

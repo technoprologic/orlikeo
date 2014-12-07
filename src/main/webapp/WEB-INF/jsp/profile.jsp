@@ -6,12 +6,16 @@
 
 
 <c:url value="/account/password" var="passwordUrl" />
-
+<c:url value="/register" var="removeAccountUrl" />
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
 			Profil zawodnika <small><i class="glyphicon glyphicon-info-sign"></i> Informacje podstawowe</small>
+			<a href="${editEventUrl}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+    		<a href="${joinEventUrl}?join=true" title="Dodaj do znajomych"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em"></i></a> /
+    		<a href="${joinEventUrl}?join=false" title="Usuń ze znajomych"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em"></i></a>
+    		<a href="${removeAccountUrl}" title="Usuń konto"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
 		</h1>
 		<ol class="breadcrumb">
 			<li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>

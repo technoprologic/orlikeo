@@ -26,4 +26,12 @@ public class AccountController {
 		return new ModelAndView("password");
 	}
 	
+	
+	@RequestMapping(value = "/changePswd", method = RequestMethod.GET)
+	public ModelAndView changePswd(ModelMap model) {
+
+		/*model.addAttribute("message", "Spring 3 MVC Hello World");*/
+		return new ModelAndView("profile");
+	}
+	
 }

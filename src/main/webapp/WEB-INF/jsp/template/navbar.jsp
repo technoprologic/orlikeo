@@ -10,6 +10,8 @@
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/organized" var="EventsUrl" />
 <c:url value="/events/invitations" var="invitationsEventsUrl" />
+<c:url value="/friends" var="friendsUrl" />
+<c:url value="/friends//addFriend" var="addFriendUrl" />
 
 <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -158,10 +160,10 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#friends"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
                         <ul id="friends" class="collapse">
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
+                                <a href="${addFriendUrl }"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
+                                <a href="${friendsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
                             </li>
                             <li>
                                 <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
