@@ -12,13 +12,13 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<!-- <import resource="tiles-context.xml"/> -->
-	<import resource="tiles-context.xml"/>
+ 		<import resource="tiles-context.xml"/> 
 <!-- 	<import resource="spring-security.xml"/> -->
-<!-- 	<import resource="datasource-config.xml"/> -->
+ 	<import resource="datasource-config.xml"/> 
 	
-<!-- 	<context:component-scan base-package="pl.yeloon.magisterium" > -->
-<!-- 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
-<!-- 	</context:component-scan> -->
+	<context:component-scan base-package="umk.zychu.inzynierka" >
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	
 <!-- 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
 <!-- 		<property name="host" value="smtp.gmail.com" /> -->

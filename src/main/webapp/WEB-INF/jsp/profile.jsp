@@ -18,7 +18,7 @@
     		<a href="${removeAccountUrl}" title="Usuń konto"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
 		</h1>
 		<ol class="breadcrumb">
-			<li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
+			<li class="active"><i class="fa fa-dashboard"></i> Dashboard <c:out value="${owner.getPosition()}"/> </li>
 		</ol>
 	</div>
 </div>

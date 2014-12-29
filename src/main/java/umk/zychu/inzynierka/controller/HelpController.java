@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelpController {
 
 	@RequestMapping(value = "/help", method = RequestMethod.GET)
-	public ModelAndView login(ModelMap model) {
+	public ModelAndView help(ModelMap model) {
 
 		model.addAttribute("message", "Spring 3 MVC Hello World");
 		return new ModelAndView("help");

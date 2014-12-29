@@ -8,36 +8,35 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<context:component-scan base-package="umk.zychu.inzynierka.controller" />
-<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	<context:component-scan base-package="umk.zychu.inzynierka.controller" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
- -->
+
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-<!-- 	<resources mapping="/webjars/**" location="/webjars/" /> -->
+	<resources mapping="/webjars/**" location="/webjars/" />
 
-<!-- 	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource"> -->
-<!-- 		<beans:property name="basename" value="/resources/messages/messages" /> -->
-<!-- 		<beans:property name="defaultEncoding" value="UTF-8" /> -->
-<!-- 	</beans:bean> -->
+	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<beans:property name="basename" value="/resources/messages/messages" />
+		<beans:property name="defaultEncoding" value="UTF-8" />
+	</beans:bean>
 
-
-<!-- 	<beans:bean id="localeResolver" -->
-<!-- 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> -->
-<!-- 		<beans:property name="defaultLocale" value="pl" /> -->
-<!-- 	</beans:bean> -->
+	<beans:bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<beans:property name="defaultLocale" value="pl" />
+	</beans:bean>
 	
-<!-- 	<beans:bean id="connectController" class="pl.yeloon.magisterium.controller.CustomConnectController" autowire="constructor"></beans:bean> -->
+	<!-- <beans:bean id="connectController" class="umk.zychu.inzynierka.controller.CustomConnectController" autowire="constructor"></beans:bean> -->
 
-<!-- 	<interceptors>
+	<interceptors>
 		<beans:bean
 			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<beans:property name="paramName" value="lang" />
 		</beans:bean>
-	</interceptors> -->
-</beans:beans>
+	</interceptors>
 
+</beans:beans>

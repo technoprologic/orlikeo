@@ -20,7 +20,7 @@ public class FriendsController {
 		return new ModelAndView("friends");
 	}
 	
-	@RequestMapping(value="/user", method = RequestMethod.GET)
+	@RequestMapping(value="/friend", method = RequestMethod.GET)
 	public ModelAndView getFriend(ModelMap model) {
 
 		return new ModelAndView("profile");
