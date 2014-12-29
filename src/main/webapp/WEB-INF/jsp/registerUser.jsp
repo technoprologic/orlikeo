@@ -38,7 +38,7 @@
 				<br/>
 				<form:errors path="repeatedPassword" cssClass="error"/>
 				<spring:message code="web.register.repeated_password.placeholder" var="repeatedPasswordPlaceholder" />
-				<form:password path="repeatedPassword" required="required" placeholder="${repeatedPasswordPlaceholder}" class="form-control" />
+				<form:password path="repeatedPassword" required="required" placeholder="${repeatedPasswordPlaceholder}" class="form-control"  />
 			</div>
 			<div class="form-group">
 				<form:checkbox path="acceptRegulation"/>

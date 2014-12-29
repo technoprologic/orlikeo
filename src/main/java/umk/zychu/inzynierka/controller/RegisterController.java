@@ -25,7 +25,7 @@ import umk.zychu.inzynierka.service.UserService;
 @RequestMapping("/register")
 public class RegisterController {
 	
-//	private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
+	private static final Logger logger = LoggerFactory.getLogger(RegisterController.class);
 	
 	@Autowired
 	private UserService userService;
@@ -46,21 +46,22 @@ public class RegisterController {
 	}
 
 	
-	@RequestMapping(value="/register/new_user", method=RequestMethod.POST)
-	public String processRegister( @ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result, HttpServletRequest request ){
+	@RequestMapping(value="/new_user", method=RequestMethod.POST)
+	public String processRegister(@ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result, HttpServletRequest request ){
 		
 		if(result.hasErrors()){
-		//	logger.debug("wystapily bledy: " + result);
+			logger.debug("ERRRRROOOOOOOOOOOOORRRRRRRRRRRRRRRRRR: " + result);
 			return "register";
 		}
 		else{
-		//	logger.debug("New user registered");
+			logger.debug("New user registered");
 			userService.createNewUser(registerUserBean);
 			//TODO wlaczyc wysylanie maili oraz zastapic to jakimis szablonami
 			//mailService.sendMail(registerUserBean.getEmail()
 		//	authenticateUserAndSetSession(registerUserBean, request);
 			return "redirect:/";
 		}
+		
 		
 	}
 	
