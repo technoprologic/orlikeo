@@ -1,6 +1,7 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
@@ -11,14 +12,14 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Grafik <small><i class="glyphicon glyphicon-picture"></i> Orlik Toruń Sp9 ul.Rzepakowa 9</small>
+			Grafik <small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both" 
+      pattern="dd-MM-yyyy-HH-mm" /> Orlik <c:out value="${orlikInfo.getCity()}" /> ul. <c:out value="${orlikInfo.getAddress()}" /></small>
 		</h1>
 		<ul>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: 18-22</li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: Tak</li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: 18-22</li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Nawierzchnia: Turf</li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: Turf</li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlikInfo.getLights() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlikInfo.getWater() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlikInfo.getShower() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlikInfo.getShoes()}"/></li>
 			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: Francesco Totti, Angela Merkel, Tusek Złodziejaszek</li>
 		</ul>
 	</div>
@@ -26,6 +27,47 @@
 
 
 <script type="text/javascript">
+	$.getScript("<c:url value="/resources/mytheme/js/calendar.js" />",
+			function() {
+
+				var json = ${list};
+
+				$.each(json, function(index, value) {
+					value.start = new Date(value.start);
+					value.end = new Date(value.end);
+					value.url = '${reserveUrl}/' + value.id;
+				});
+
+				/*   alert(JSON.stringify(json)); */
+
+				$('#calendar').fullCalendar({
+					header : {
+						left : 'prev,next today',
+						center : 'title',
+						right : 'month,agendaWeek,agendaDay'
+					},
+					editable : true,
+					events : json
+				});
+			})
+</script>
+
+
+
+<div class="container">
+    <hr>
+	<div id="calendar"></div>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- <script type="text/javascript">
 $.getScript("<c:url value="/resources/mytheme/js/calendar.js" />",function(){
   
   var date = new Date();
@@ -73,7 +115,7 @@ $.getScript("<c:url value="/resources/mytheme/js/calendar.js" />",function(){
         start: new Date(y, m, d, 17, 30),
         end: new Date(y, m, d,  19, 0),
         allDay: false,
-        url: '${reserveUrl}?orlik=33'
+        url: '${reserveUrl}/33/${data.getTime()}/${data.getTime()+1}'
       },
       {
         title: 'Lunch',
@@ -97,9 +139,4 @@ $.getScript("<c:url value="/resources/mytheme/js/calendar.js" />",function(){
   });
 })
 
-</script>
-
-<div class="container">
-    <hr>
-	<div id="calendar"></div>
-</div>
+</script> -->

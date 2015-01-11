@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 
@@ -12,15 +13,17 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			<a href="${createEventUrl}" ><i class="glyphicon glyphicon-edit"></i></a> Orlik Toruń Sp9 ul.Rzepakowa 9 <small><a href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a> 17:30 - 19:00 (12.12.2014)</small>
+			<a href="${createEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
+			Orlik ${orlik.getCity()} ul.${orlik.getAddress()} <small><a
+				href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
+				<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${event.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
 		</h1>
 		<ul>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Oświetlenie: Tak</li>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Bieżąca woda: Tak</li>
-			<li><i class="glyphicon glyphicon-thumbs-down"></i> Prysznic: Tak</li>
-			<li><i class="glyphicon glyphicon-road"></i> Nawierzchnia: Turf</li>
-			<li><i class="glyphicon glyphicon-hand-up"></i> Obowiązujące obuwie: Turf</li>
-			<li><i class="glyphicon glyphicon-user"></i> Animator: Francesco Totti</li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlik.getShower() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlik.getShoes()}"/></li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: Francesco Totti, Angela Merkel, Tusek Złodziejaszek</li>
 		</ul>
 	</div>
 </div>
