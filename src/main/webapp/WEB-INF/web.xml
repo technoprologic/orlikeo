@@ -72,10 +72,10 @@
 	
 	
 	
-	<error-page>
+<!-- 	<error-page>
 		<error-code>404</error-code>
 		<location>/error/404</location>
-	</error-page>
+	</error-page> -->
 
 
 	<!--
@@ -89,9 +89,11 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
-	</filter-mapping> 
-
- <filter>
+	</filter-mapping>
+	
+	
+	
+	 <filter>
 	    <filter-name>hiddenHttpMethodFilter</filter-name>
 	    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
 	</filter>
@@ -99,6 +101,22 @@
     	<filter-name>hiddenHttpMethodFilter</filter-name>
     	<servlet-name>appServlet</servlet-name>
 	</filter-mapping>
+	-->
+	
+	
+	<!--  SPRING SECURITY -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> 
+
+<!-- 
+
 
  TODO sprawdzic czy to mozna usunac 
 <resource-ref>

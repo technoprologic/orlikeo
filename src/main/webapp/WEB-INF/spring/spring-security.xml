@@ -10,37 +10,19 @@
 		http://www.springframework.org/schema/social http://www.springframework.org/schema/social/spring-social-1.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- <beans:import resource="spring-social.xml"/> -->
-	
-	<http pattern="/resources/**" security="none"/>
-	<http use-expressions="true">  
-        <form-login 
-        	password-parameter="password"
-        	username-parameter="username"
-        	login-processing-url="/login"
-        	login-page="" 
-        	authentication-success-handler-ref="customAuthenticationSuccessHandler"
-        	authentication-failure-handler-ref="customAuthenticationFailureHandler"
-        	/>
-        <logout logout-success-url="" logout-url="/logout"/>
-<!--         <intercept-url pattern="/**" access="permitAll" requires-channel="https"/> -->
-<!-- 		<intercept-url pattern="/auth/**" access="permitAll" requires-channel="http"/> -->
-        <intercept-url pattern="/**" access="permitAll" requires-channel="https"/>
-        <!-- <custom-filter ref="socialAuthenticationFilter" before="PRE_AUTH_FILTER"/> -->
-    </http>  
-      
-    <authentication-manager alias="authenticationManager">  
-        <authentication-provider user-service-ref="customUserDetailsService">  
-            <password-encoder hash="plaintext"/>
-        </authentication-provider>
-        <!-- <authentication-provider ref="socialAuthenticationProvider"/>  --> 
-    </authentication-manager>
-    
-<!--     <beans:bean id="customSocialUserDetailsService" class="pl.yeloon.magisterium.security.CustomSocialUserDetailsService" /> -->
-    
-    <beans:bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText" />
-    
-	<beans:bean id="customAuthenticationFailureHandler" class="umk.zychu.inzynierka.security.CustomAuthenticationFailureHandler"></beans:bean>
-	<beans:bean id="customAuthenticationSuccessHandler" class="umk.zychu.inzynierka.security.CustomAuthenticationSuccessHandler"></beans:bean>
+<http use-expressions="true">
+	<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+	<form-login />
+	<logout />
+</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="jimi" password="jimispassword" authorities="ROLE_USER,ROLE_ADMIN" />
+				<user name="bob" password="bobspassword" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
 
 </beans:beans>
