@@ -54,7 +54,8 @@ public class User extends BaseEntity
 	@Column(name = "foot")
 	String foot;
 	
-	Boolean enabled;
+	boolean enabled;
+	
 	
 	//getter and setter methods
 	public String getEmail() {
@@ -129,12 +130,12 @@ public class User extends BaseEntity
 	public void setFoot(String foot) {
 		this.foot = foot;
 	}
-
-	public void setEnabled(Boolean enabled){
-		this.enabled = enabled;
+	
+	public void setEnabled(boolean bool) {
+		enabled = bool;
 	}
+
 	public boolean getEnabled() {
-		// TODO Auto-generated method stub
 		return enabled;
 	}
 
