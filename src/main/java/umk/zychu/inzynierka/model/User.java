@@ -4,13 +4,7 @@ package umk.zychu.inzynierka.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -54,7 +48,6 @@ public class User extends BaseEntity
 	@Column(name = "foot")
 	String foot;
 	
-	boolean enabled;
 	
 	
 	//getter and setter methods
@@ -130,15 +123,6 @@ public class User extends BaseEntity
 	public void setFoot(String foot) {
 		this.foot = foot;
 	}
-	
-	public void setEnabled(boolean bool) {
-		enabled = bool;
-	}
-
-	public boolean getEnabled() {
-		return enabled;
-	}
-
 }
 
 //TODO indeks na user_id

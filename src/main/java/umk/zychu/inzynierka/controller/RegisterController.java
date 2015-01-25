@@ -59,7 +59,7 @@ public class RegisterController {
 			//TODO wlaczyc wysylanie maili oraz zastapic to jakimis szablonami
 			//mailService.sendMail(registerUserBean.getEmail()
 		//	authenticateUserAndSetSession(registerUserBean, request);
-			return "redirect:/";
+			return "redirect:/login";
 		}
 		
 		

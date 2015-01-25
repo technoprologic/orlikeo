@@ -6,7 +6,6 @@
 
 <c:url value="/home" var="homeUrl" />
 <c:url value="/account/profile" var="profileUrl" />
-<c:url value="/" var="logoutUrl" />
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/organized" var="EventsUrl" />
 <c:url value="/events/invitations" var="invitationsEventsUrl" />
@@ -124,7 +123,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="${logoutUrl}"><i class="glyphicon glyphicon-off"></i> Wyloguj</a>
+                            <a href="<c:url value="/j_spring_security_logout" />"><i class="glyphicon glyphicon-off"></i> Wyloguj</a>
                         </li>
                     </ul>
                 </li>
