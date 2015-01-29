@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.GraphicEntity;
 import umk.zychu.inzynierka.model.Orlik;
 
 @Repository
@@ -34,16 +35,30 @@ public class EventDAOimp implements EventDAO {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Event> getEventsByOrlikId(int id){
-		List<Event> eventList = new ArrayList<Event>();
-		Query query = em.createQuery("from Event e where e.id = :id AND e.startDate = :startDate");
-		query.setParameter("id", id);
-		query.setParameter("startDate", new Date());
-		eventList = query.getResultList();
-		if(eventList.size() > 0){
-			return eventList;
+	@SuppressWarnings("unchecked")
+	public List<GraphicEntity> getOrlikGraphicByOrlik(Orlik orlik){
+		List<GraphicEntity> orlikGraphic = new ArrayList<GraphicEntity>();
+		Query query = em.createQuery("from GraphicEntity o where o.orlik = :orlik");
+		query.setParameter("orlik", orlik);
+		orlikGraphic = query.getResultList();
+		if(orlikGraphic.size() > 0){
+			return orlikGraphic;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public GraphicEntity getGraphicEntityById(int graphicId){
+		List<GraphicEntity> orlikGraphic = new ArrayList<GraphicEntity>();
+		Query query = em.createQuery("from GraphicEntity o where o.id = :graphic");
+		query.setParameter("graphic", graphicId);
+		orlikGraphic = query.getResultList();
+		if(orlikGraphic.size() > 0){
+			return orlikGraphic.get(0);
 		}
 		else{
 			return null;

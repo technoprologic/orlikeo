@@ -21,10 +21,7 @@ public interface OrlikService {
 	Map<String, String> getOrliksIdsAndNames();
 	
 	
-	List<GraphicEntity> getOrlikGraphicByOrlikId(int id);
-	
-	
-	GraphicEntity getGraphicEntityById(int graphicId);
+
 
 
 }

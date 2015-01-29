@@ -11,12 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = { "/", "", "/home" })
 public class HomeController {
 
-
-	@RequestMapping( method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView home(ModelMap model) {
 
-		model.addAttribute("message", "Spring 3 MVC Hello World");
-		//return new ModelAndView("home");
 		return new ModelAndView("home");
 	}
 	

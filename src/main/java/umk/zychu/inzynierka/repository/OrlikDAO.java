@@ -13,6 +13,4 @@ public interface OrlikDAO {
 	List<Orlik> getOrliks();
 	void saveOrlik(Orlik orlik);
 	Map<String, String> getOrliksIdsAndNames(); 
-	List<GraphicEntity> getOrlikGraphicByOrlikId(int id);
-	GraphicEntity getGraphicEntityById(int graphicId);
 }

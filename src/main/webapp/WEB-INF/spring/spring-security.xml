@@ -30,6 +30,7 @@
 		<intercept-url pattern="/login**" access="permitAll" />
 		<intercept-url pattern="/register/**"  access="permitAll" />
     	<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+    	<intercept-url pattern="/error"  access="allowAll" /> 
 		<form-login 
 		    login-page="/login" 
 		    default-target-url="/" 

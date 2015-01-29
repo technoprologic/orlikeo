@@ -1,19 +1,25 @@
 package umk.zychu.inzynierka.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Null;
 
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="orlik_graphic")
-public class GraphicEntity extends BaseEntity {
+public class GraphicEntity extends BaseEntity{
 
-	@Column(name="orlik_id")
-	int orlikId;
+
+	@ManyToOne(optional=false)
+	@JoinColumn(name="orlik_id", referencedColumnName="id")
+	Orlik orlik;
 	
 	@Column(name="title")
 	String title;
@@ -30,12 +36,16 @@ public class GraphicEntity extends BaseEntity {
 	@Column(name="available")
 	Boolean available;
 	
-	public void setOrlikId(int id){
-		orlikId = id;
+	
+	public GraphicEntity(){
 	}
 	
-	public int getOrlikId(){
-		return orlikId;
+	public void setOrlikId(Orlik orlikObj){
+		orlik = orlikObj;
+	}
+	
+	public Orlik getOrlikId(){
+		return orlik;
 	}
 		
 	public void setTitle(String name){

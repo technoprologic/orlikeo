@@ -41,15 +41,5 @@ public class OrlikServiceImp implements OrlikService {
 		orlikDAO.saveOrlik(orlik);
 	}
 	
-	@Override
-	public List<GraphicEntity> getOrlikGraphicByOrlikId(int id){
-		return orlikDAO.getOrlikGraphicByOrlikId(id);
-	}
-	
-	@Override
-	public GraphicEntity getGraphicEntityById(int graphicId){
-		return orlikDAO.getGraphicEntityById(graphicId);
-	}
-	
 	
 }

@@ -28,8 +28,7 @@ public class OrlikDAOimp implements OrlikDAO{
 	
 	@PersistenceContext
 	private EntityManager em;
-	
-	
+		
 	@Override
 	@SuppressWarnings("unchecked")
 	public Orlik getOrlikById(int id){
@@ -92,35 +91,7 @@ public class OrlikDAOimp implements OrlikDAO{
 		
 	}
 	
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<GraphicEntity> getOrlikGraphicByOrlikId(int id){
-		List<GraphicEntity> orlikGraphic = new ArrayList<GraphicEntity>();
-		Query query = em.createQuery("from GraphicEntity o where o.orlikId = :orlikId");
-		query.setParameter("orlikId", id);
-		orlikGraphic = query.getResultList();
-		if(orlikGraphic.size() > 0){
-			return orlikGraphic;
-		}
-		else{
-			return null;
-		}
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public GraphicEntity getGraphicEntityById(int graphicId){
-		List<GraphicEntity> orlikGraphic = new ArrayList<GraphicEntity>();
-		Query query = em.createQuery("from GraphicEntity o where o.id = :graphic");
-		query.setParameter("graphic", graphicId);
-		orlikGraphic = query.getResultList();
-		if(orlikGraphic.size() > 0){
-			return orlikGraphic.get(0);
-		}
-		else{
-			return null;
-		}
-	}
+
 	
 	
 }

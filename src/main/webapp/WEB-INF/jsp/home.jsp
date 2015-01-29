@@ -5,6 +5,7 @@
 
 
 
+
 <c:url value="/events/organized" var="EventsUrl" />
 
 

@@ -1,16 +1,25 @@
 package umk.zychu.inzynierka.model;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="orlik")
 public class Orlik extends BaseEntity {
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
+	private Collection<GraphicEntity> graphicCollection;
 	
 	@NotBlank
 	@Column(name = "address")
@@ -32,6 +41,8 @@ public class Orlik extends BaseEntity {
 	@Column(name = "required_shoes")	
 	String shoes;
 	
+	public Orlik(){
+	}
 	
 	public void setAddress(String address){
 		this.address = address;

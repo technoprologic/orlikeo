@@ -83,7 +83,7 @@ public class EventsController {
 	public ModelAndView graphic(@PathVariable("orlik") int id) {
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<GraphicEntity> graphic = orlikService.getOrlikGraphicByOrlikId(id);
+		List<GraphicEntity> graphic = eventService.getOrlikGraphicByOrlik(orlikService.getOrlik(id));
 		List<JsonEventObject> graphicEntityList = new ArrayList<JsonEventObject>();
 
 		for (Iterator<GraphicEntity> i = graphic.iterator(); i.hasNext();) {
@@ -106,13 +106,14 @@ public class EventsController {
 			e.printStackTrace();
 		}
 		model.addObject("list", json);
+		model.addObject("orlikInfo", orlikService.getOrlik(id));
 		return model;
 	}
 
 	@RequestMapping(value = "/reserve/{id}", method = RequestMethod.GET)
 	public ModelAndView reserve(@PathVariable("id") int graphicId, ModelAndView model) {
-		GraphicEntity graphicEntity = orlikService.getGraphicEntityById(graphicId);
-		Orlik orlik = orlikService.getOrlik(graphicEntity.getOrlikId());
+		GraphicEntity graphicEntity = eventService.getGraphicEntityById(graphicId);
+		Orlik orlik = orlikService.getOrlik(graphicEntity.getOrlikId().getId());
 		model.setViewName("reserve");
 		model.addObject("orlik", orlik);
 		model.addObject("event", graphicEntity);
