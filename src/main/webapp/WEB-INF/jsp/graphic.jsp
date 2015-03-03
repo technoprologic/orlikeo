@@ -38,7 +38,7 @@
 					value.url = '${reserveUrl}/' + value.id;
 				});
 
-				/*   alert(JSON.stringify(json)); */
+			 /*   alert(JSON.stringify(json));  */
 
 				$('#calendar').fullCalendar({
 					header : {

@@ -1,17 +1,14 @@
 package umk.zychu.inzynierka.model;
  
  
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="user")
 public class User extends BaseEntity
@@ -48,8 +45,19 @@ public class User extends BaseEntity
 	@Column(name = "foot")
 	String foot;
 	
+	@JoinTable(name = "user_friend", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "friend_id", referencedColumnName = "id", nullable = false) })
+	@ManyToMany
+	private Collection<User> hasFriendCollection;
 	
 	
+	@ManyToMany(mappedBy = "hasFriendCollection")
+    private Collection<User> isFriendCollection;
+	
+	
+	@OneToMany(mappedBy = "user")
+	private List<UserEvent> userEvents;
+
 	//getter and setter methods
 	public String getEmail() {
 		return email;
@@ -123,10 +131,28 @@ public class User extends BaseEntity
 	public void setFoot(String foot) {
 		this.foot = foot;
 	}
+	
+	public void setHasFriendCollection(Collection<User> friendsOwnersCollection){
+		hasFriendCollection = friendsOwnersCollection;
+	}
+	
+	public Collection<User> getHasFriendCollection(){
+		return hasFriendCollection;
+	}
+	
+	public void setIsFriendCollection(Collection<User> friendsIsCollection){
+		isFriendCollection = friendsIsCollection;
+	}
+	
+	public Collection<User> getIsFriendCollection(){
+		return isFriendCollection;
+	}	
+	
+	public void setUserEvents(List<UserEvent> userEvents){
+		this.userEvents = userEvents;
+	}
+	
+	public List<UserEvent> getUserEvents(){
+		return this.userEvents;
+	}
 }
-
-//TODO indeks na user_id
-/*@ManyToMany(cascade = CascadeType.ALL)
-@JoinTable(name = "user_badge", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "badge_id") })
-private List<Badge> badges = new ArrayList<>();*/
-

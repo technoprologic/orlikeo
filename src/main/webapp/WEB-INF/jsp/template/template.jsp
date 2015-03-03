@@ -42,6 +42,7 @@
 		<tiles:insertAttribute name="navbar" />	
 		<div id="page-wrapper" >	
 			 <div class="container-fluid" >
+			 	<tiles:insertAttribute name="eventsMainWindow" />
 				<tiles:insertAttribute name="content" />
 	    	 </div>
         </div> <!-- page-wrapper -->

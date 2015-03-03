@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 
+
 import umk.zychu.inzynierka.model.User;
 
 @Repository
@@ -45,6 +46,21 @@ public class UserDAOimp implements UserDAO{
 			em.persist(user);
 		} else {
 			em.merge(user);
+		}
+	}
+
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<User> getUserFriends(String email) {
+		List<User> userFriends = new ArrayList<User>();
+		Query query = em.createQuery("SELECT u.hasFriendCollection FROM User u where u.email = :uEmail");
+		query.setParameter("uEmail", email);
+		userFriends = query.getResultList();
+		if(userFriends.size() > 0){
+			return userFriends;
+		}else{
+			return null;
 		}
 	}
 }

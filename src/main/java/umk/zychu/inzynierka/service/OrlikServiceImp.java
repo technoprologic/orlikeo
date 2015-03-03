@@ -1,19 +1,9 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
-
-
-import umk.zychu.inzynierka.model.GraphicEntity;
-//import umk.zychu.inzynierka.controller.DTObeans.RegisterOrlikBean;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.repository.OrlikDAO;
 
@@ -26,10 +16,9 @@ public class OrlikServiceImp implements OrlikService {
 	OrlikDAO orlikDAO;
 	
 	@Override
-	public Orlik getOrlik(int id){
+	public Orlik getOrlikById(long id){
 		return orlikDAO.getOrlikById(id);
 	}
-	
 	
 	public Map<String, String> getOrliksIdsAndNames()
 	{
@@ -39,7 +28,5 @@ public class OrlikServiceImp implements OrlikService {
 	@Override
 	public void saveOrlik(Orlik orlik){
 		orlikDAO.saveOrlik(orlik);
-	}
-	
-	
+	}	
 }

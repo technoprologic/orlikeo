@@ -39,7 +39,7 @@
 
 	<error-page>
 		<error-code>404</error-code>
-		<location>/WEB-INF/jsp/errors/</location>
+		<location>/WEB-INF/jsp/errors</location>
 	</error-page>
 	
 	

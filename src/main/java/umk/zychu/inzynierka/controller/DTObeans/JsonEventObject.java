@@ -1,9 +1,7 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import java.util.Date;
-
 public class JsonEventObject {
-	public int id;
+	public long id;
 	public String title;
 	public long start;
 	public long end;

@@ -1,26 +1,14 @@
 package umk.zychu.inzynierka.repository;
 
-
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.springframework.stereotype.Repository;
-
-
-
-
-
-
-
-import umk.zychu.inzynierka.model.GraphicEntity;
 import umk.zychu.inzynierka.model.Orlik;
 
 @Repository
@@ -31,7 +19,7 @@ public class OrlikDAOimp implements OrlikDAO{
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public Orlik getOrlikById(int id){
+	public Orlik getOrlikById(long id){
 		List<Orlik> orlikList = new ArrayList<Orlik>();
 		Query query = em.createQuery("from Orlik o where o.id = :id");
 		query.setParameter("id", id);

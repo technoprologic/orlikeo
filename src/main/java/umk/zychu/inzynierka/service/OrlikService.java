@@ -1,27 +1,10 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-
-
-import umk.zychu.inzynierka.model.GraphicEntity;
 import umk.zychu.inzynierka.model.Orlik;
 
-
 public interface OrlikService {
-	
-	Orlik getOrlik(int id);
-	
-
+	Orlik getOrlikById(long id);
 	void saveOrlik(Orlik orlik);
-	
-	
 	Map<String, String> getOrliksIdsAndNames();
-	
-	
-
-
-
 }

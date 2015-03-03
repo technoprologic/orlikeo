@@ -1,22 +1,21 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+
+
 
 public class ChoosenOrlikBean {
 
-	int Id;
+	long Id;
 
 	public ChoosenOrlikBean() {
 		Id = -1;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		Id = id;
 	}
 
-	public int getId() {
+	public long getId() {
 		return Id;
 	}
 }

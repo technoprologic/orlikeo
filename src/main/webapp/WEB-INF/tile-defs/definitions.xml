@@ -6,10 +6,12 @@
 	<definition name="defaultTemplate" template="/WEB-INF/jsp/template/template.jsp">
 		<put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
 		<put-attribute name="leftMenuContent" value="/WEB-INF/jsp/template/leftMenuContent.jsp" />
+		<put-attribute name="eventsMainWindow" value="" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
 	</definition>
 	<definition name="home" extends="defaultTemplate">
+		<put-attribute name="eventsMainWindow" value="/WEB-INF/jsp/template/eventStatesMainWindow.jsp" />
 		<put-attribute name="content" value="/WEB-INF/jsp/home.jsp" />
 	</definition>
 	<definition name="profile" extends="defaultTemplate">
@@ -34,11 +36,15 @@
 	<definition name="reserve" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/reserve.jsp" />
 	</definition>
-	<definition name="organized" extends="defaultTemplate">
+	<definition name="eventsInState" extends="defaultTemplate">
+		<put-attribute name="eventsMainWindow" value="/WEB-INF/jsp/template/eventStatesMainWindow.jsp" />
 		<put-attribute name="content" value="/WEB-INF/jsp/organizedEvents.jsp" />
 	</definition>
 	<definition name="details" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/detailsEvents.jsp" />
+	</definition>
+		<definition name="eventCreated" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/eventCreated.jsp" />
 	</definition>
 	
 	<!-- Friends -->
@@ -59,6 +65,9 @@
 	</definition>
 	<definition name="register" extends="clearTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/registerUser.jsp" />
+	</definition>
+	
+	<definition name="error" template="/WEB-INF/jsp/errors/error404.jsp">
 	</definition>
 </tiles-definitions>
 

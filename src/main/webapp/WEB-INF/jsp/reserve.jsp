@@ -6,7 +6,7 @@
 
 
 
-<c:url value="/events/organized" var="registerEventUrl" />
+<c:url value="/events/register" var="registerEventUrl" />
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/graphic" var="graphicEventUrl" />
 
@@ -29,58 +29,36 @@
 </div>
 
 
-
-
-
-
-<form class="form" action="${registerEventUrl}">
+<form:form modelAttribute="registerEventForm" class="form" action="${registerEventUrl}" method="POST">
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Zaproś znajomych</legend>
 		<table data-toggle="table" style="background-color: white" >
 			<thead>
 				<tr>
-					<th>Zaproś </th>
-					<th>Pozwól zapraszać</th>
+					<th>Zaproszenie</th>
+					<th>Prawo zapraszania</th>
 					<th>Użytkownik</th>
+					<th>Wiek</th>
 					<th>Pozycja</th>
-					<th>Poziom zaufania</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td><input type="checkbox" disabled="disabled" checked="checked"  name="inviteUsrId" value="23"></td>
-					<td><input type="checkbox" checked="checked" class="allow" name="allowUsrId" value="23"></td>
-					<td>Mariusz Zych</td>
-					<td>Obrońca</td>
-					<td>83%</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" class="invite" name="inviteUsrId" value="23"></td>
-					<td><input type="checkbox" class="allow" name="allowUsrId" value="23"></td>
-					<td>Jan Worek</td>
-					<td>Napastnik</td>
-					<td>80%</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" class="invite" name="inviteUsrId" value="23"></td>
-					<td><input type="checkbox" class="allow" name="allowUsrId" value="23"></td>
-					<td>Emag Dnim</td>
-					<td>Obrońca</td>
-					<td>86%</td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" class="invite" name="inviteUsrId" value="23"></td>
-					<td><input type="checkbox" class="allow" name="allowUsrId" value="23"></td>
-					<td>Mateusz Tamborek</td>
-					<td>Napastnik</td>
-					<td>90%</td>
-				</tr>
+			<c:forEach items="${ registerEventForm.getUserFriends() }" var="friend" varStatus="i">                    
+                    <tr>
+                    <td><form:checkbox path="userFriends[${i.index}].invited" class="invite" value="true" /></td>
+					<td><form:checkbox path="userFriends[${i.index}].allowed" class="allow" valu="true" /></td>
+					<td><form:hidden path="userFriends[${i.index}].email" value="${ friend.getEmail() }" /> ${ friend.getEmail() }</td>
+					<td>${ friend.getAge() }</td>
+					<td>${ friend.getPosition() }</td>
+			    </tr>
+			</c:forEach> 
+
 			</tbody>
 		</table>
 		
 		<div class="control-group .">
-		
+		<form:hidden path="graphicId" value="${ registerEventForm.getGraphicId() }" />
 			<div>
 				<input type="checkbox"  id="inviteAllStates">
 				<label for="inviteAllStates">Zaproś wszystkich</label>
@@ -105,16 +83,19 @@
 		<!-- Buttons -->
 		<div class="control-group .">
 			<div class="controls">
-				<!-- Confirm changes -->
+<!-- 				Confirm changes
 				<button id="singlebutton" name="singlebutton"
-					class="btn btn-primary  pull-right">Zapisz zmiany / Zaproś</button>
+					class="btn btn-primary  pull-right">Zapisz zmiany / Zaproś</button> -->
 				<!-- New event -->
 				<button id="singlebutton" name="singlebutton"
 					class="btn btn-primary  pull-right">Utwórz wydarzenie</button>
 			</div>
 		</div>
 	</fieldset>
-</form>
+</form:form>
+
+
+
 <script>
 
 $(document).ready(function() {

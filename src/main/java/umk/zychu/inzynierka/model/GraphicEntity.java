@@ -1,14 +1,14 @@
 package umk.zychu.inzynierka.model;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Null;
 
 
 @SuppressWarnings("serial")
@@ -16,16 +16,11 @@ import javax.validation.constraints.Null;
 @Table(name="orlik_graphic")
 public class GraphicEntity extends BaseEntity{
 
-
-	@ManyToOne(optional=false)
-	@JoinColumn(name="orlik_id", referencedColumnName="id")
-	Orlik orlik;
-	
 	@Column(name="title")
 	String title;
 	
-	@Column(name="event_id", nullable = true)
-	Integer eventId;
+	@Column(name = "orlik_id")
+	long orlikId;
 	
 	@Column(name="start_time")
 	Date startTime;
@@ -36,32 +31,30 @@ public class GraphicEntity extends BaseEntity{
 	@Column(name="available")
 	Boolean available;
 	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="orlik_id", referencedColumnName="id", insertable = false, updatable = false)
+	Orlik orlik;
+	
+	@OneToMany(mappedBy="graphic")
+	List<Event> events;
 	
 	public GraphicEntity(){
 	}
 	
-	public void setOrlikId(Orlik orlikObj){
-		orlik = orlikObj;
+	public void setOrlikId(long id){
+		orlikId = id;
 	}
 	
-	public Orlik getOrlikId(){
-		return orlik;
+	public long getOrlikId(){
+		return orlikId;
 	}
 		
 	public void setTitle(String name){
-		title=name;
+		title = name;
 	}
 	
 	public String getTitle(){
 		return title;
-	}
-	
-	public void setEventId(Integer id){
-		eventId = id;
-	}
-	
-	public Integer getEventId(){
-		return eventId;
 	}
 	
 	public void setStartTime(Date date){
@@ -87,4 +80,21 @@ public class GraphicEntity extends BaseEntity{
 	public Boolean getAvailable(){
 		return available;
 	}
+	
+	public void setOrlik(Orlik orlik){
+		this.orlik = orlik;
+	}
+	
+	public Orlik getOrlik(){
+		return orlik;
+	}
+	
+	public void setEvent(List<Event> events){
+		this.events = events;
+	}
+	
+	public List<Event> getEvents(){
+		return this.events;
+	}
+	
 }

@@ -1,12 +1,9 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.repository.UserDAO;
@@ -18,15 +15,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserDAO userDAO;
 	
-/*	@Autowired
-	BadgeService badgeService;*/
-	
 	@Override
 	public User getUser(String email) {
 		return userDAO.getUserByEmail(email);
 	}
 	
-
 	@Override
 	public void saveUser(User user) {
 		userDAO.saveUser(user);
@@ -46,5 +39,8 @@ public class UserServiceImpl implements UserService {
 		saveUser(newUser);
 	}
 
-
+	@Override
+	public List<User> getUserFriends(String email) {
+		return userDAO.getUserFriends(email);
+	}
 }

@@ -13,12 +13,11 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseEntity  implements Serializable  {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
-	//Integer [-2147483648, +2147483647]
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -26,7 +25,7 @@ public class BaseEntity  implements Serializable  {
 		return id == null;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
