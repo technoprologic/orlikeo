@@ -13,14 +13,16 @@
 	<div class="col-lg-12">
 		<h1 class="page-header">
 			Grafik <small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both" 
-      pattern="dd-MM-yyyy-HH-mm" /> Orlik <c:out value="${orlikInfo.getCity()}" /> ul. <c:out value="${orlikInfo.getAddress()}" /></small>
+      pattern="dd-MM-yyyy-HH-mm" /> Orlik <c:out value="${orlikInfo.city}" /> ul. <c:out value="${orlikInfo.address}" /></small>
 		</h1>
 		<ul>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlikInfo.getLights() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlikInfo.getWater() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlikInfo.getShower() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlikInfo.getShoes()}"/></li>
-			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: Francesco Totti, Angela Merkel, Tusek Złodziejaszek</li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy:<c:forEach items="${managers}" var="manager" varStatus="i">
+																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
+																	</c:forEach></li>
 		</ul>
 	</div>
 </div>

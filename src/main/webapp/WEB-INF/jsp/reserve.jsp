@@ -16,14 +16,16 @@
 			<a href="${createEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
 			Orlik ${orlik.getCity()} ul.${orlik.getAddress()} <small><a
 				href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
-				<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${event.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
+				<fmt:formatDate value="${ event.startTime }" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${event.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
 		</h1>
 		<ul>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlik.getShower() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlik.getShoes()}"/></li>
-			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: Francesco Totti, Angela Merkel, Tusek Złodziejaszek</li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy:<c:forEach items="${managers}" var="manager" varStatus="i">
+																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
+																	</c:forEach></li>
 		</ul>
 	</div>
 </div>
@@ -73,11 +75,11 @@
 		<div class="control-group">
 		  <label class="control-label" for="maxPlayers">Limit graczy</label>
 		  <div class="controls">
-		    <select id="maxPlayers" name="maxPlayers" class="input-medium">
-		      <option>12 (bez zmian)</option>
-		      <option selected="selected" >14 (po 1 na zmianę)</option>
-		      <option>16 (po 2 na zmianę)</option>
-		    </select>
+		    <form:select path="usersLimit" id="maxPlayers" name="maxPlayers" class="input-medium">
+		      <form:option value="12">12 (bez zmian)</form:option>
+		      <form:option selected="selected" value="14" >14 (po 1 na zmianę)</form:option>
+		      <form:option value="16">16 (po 2 na zmianę)</form:option>
+		    </form:select>
 		  </div>
 		</div>
 		<!-- Buttons -->

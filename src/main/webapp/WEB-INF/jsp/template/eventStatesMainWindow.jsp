@@ -6,17 +6,20 @@
 
 
 
-<c:url value="/events/allInState" var="allInState" />
-
-Page Heading
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Wydarzenia <small><i class="glyphicon glyphicon-picture"></i> Wszystkie / Organizowane / Zaproszenia </small>
+			<c:choose>
+				<c:when test="${page == 'fast'}">Szybki przegląd</c:when>
+				<c:when test="${page == 'all'}">Wydarzenia <small> <i class="glyphicon glyphicon-picture"></i> Wszystkie 
+				</c:when> 
+				<c:when test="${page == 'organized'}">Wydarzenia <small> <i class="glyphicon glyphicon-picture"></i> Organizowane</c:when>
+				<c:when test="${page == 'invitations'}">Wydarzenia <small> <i class="glyphicon glyphicon-picture"></i> Zaproszenia</c:when> 
+			</c:choose></small>
 		</h1>
 	</div>
 </div>
-/.row
+
 
 
 
@@ -25,168 +28,156 @@ Page Heading
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
-					<i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach w których uczestniczysz
+			<c:choose>
+				<c:when test="${page == 'fast'}"><i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach w których uczestniczysz</c:when> 
+				<c:when test="${page == 'all'}"><i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach w których uczestniczysz</c:when> 
+				<c:when test="${page == 'organized'}"><i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach, które organizujesz</c:when>
+				<c:when test="${page == 'invitations'}"><i class="glyphicon glyphicon-info-sign"></i> Informacje o wydarzeniach na które Cię zaproszono</c:when> 
+			</c:choose>
 				</h3>
 			</div>
 			<div class="panel-body">
-
-				<div class="col-md-2">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i> 12/14
-								</div>
-								<div class="col-xs-12 text-right">
-									<div class="large">Nadchodzące</div>
-									<div>Orlik Sp9</div>
-									<div>13.11.2014</div>
-									<div>18:00 - 20:00</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (2)</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div class="panel panel-green">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;"
-										class="glyphicon glyphicon-thumbs-up"></i>11/12
-								</div>
-								<div class="col-xs-12 text-right">
-									<div class="large">Przyjęty</div>
-									<div>Orlik Sp9</div>
-									<div>13.11.2014</div>
-									<div>18:00 - 20:00</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (3)</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div class="panel panel-red">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-warning-sign"></i> 7/12
-								</div>
-								<div class="col-xs-12 text-right">
-									<div class="large">Zagrożony</div>
-									<div>Orlik Sp9</div>
-									<div>13.11.2014</div>
-									<div>18:00 - 20:00</div>
-								</div>
-							</div>
-						</div>
-						<a href="${EventsUrl}?state=threatened">
-							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (2)</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div class="panel panel-yellow">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-send"></i> 10/14
-								</div>
-								<div class="col-xs-12 text-right">
-									<div class="large">Do akceptacji</div>
-									<div>Orlik Sp9</div>
-									<div>13.11.2014</div>
-									<div>18:00 - 20:00</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (1)</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
+			
+			
+			<c:forEach items="${eventWindowsList}" var="windowBlock" varStatus="i">
+				<c:choose>
+			    	<c:when test="${not empty windowBlock }">
+					    <c:set var="willCome" scope="session" value="${ windowBlock.goingToCome }"/>
+						<c:set var="limit" scope="session" value="${ windowBlock.playersLimit }"/>
+						<c:set var="address" scope="session" value="${ windowBlock.address }"/>
+						<c:set var="city" scope="session" value="${ windowBlock.city }"/>
+						<c:set var="start" scope="session" value="${ windowBlock.startTime }"/>
+						<c:set var="end" scope="session" value="${ windowBlock.endTime }"/>
+						<c:set var="state" scope="session" value="${ windowBlock.stateId }"/>
+						<c:set var="inSameState" scope="session" value="${ windowBlock.countedInSameState }"/>
+			    	</c:when>
+			    	<c:otherwise>
+			        	<c:set var="willCome" scope="session" value="0"/>
+						<c:set var="limit" scope="session" value="0"/>
+						<c:set var="address" scope="session" value="brak"/>
+						<c:set var="city" scope="session" value="brak"/>
+						<c:set var="start" scope="session" value="${ null }"/>
+						<c:set var="end" scope="session" value="${ null }"/>
+						<c:set var="state" scope="session" value="${ null }"/>
+						<c:set var="inSameState" scope="session" value="0"/>
+			    	</c:otherwise>
+				</c:choose>
 				
+				<c:set var="displayOrder" scope="session" value="${ eventWindowsList.size() - i.index - 1 }"/>
+				
+			
 				<div class="col-md-2">
-					<div class="panel panel-silver">
+						<c:choose>
+							<c:when test="${ displayOrder  == 5 }">
+								<div class="panel panel-primary">
+							</c:when>
+							<c:when test="${ displayOrder  == 4 }">
+								<div class="panel panel-green">
+							</c:when>
+							<c:when test="${ displayOrder  == 3 }">
+								<div class="panel panel-red">
+							</c:when>
+							<c:when test="${ displayOrder  == 2 }">
+								<div class="panel panel-yellow">
+							</c:when>
+							<c:when test="${ displayOrder  == 1 }">
+								<div class="panel panel-silver">
+							</c:when>
+							<c:when test="${ displayOrder  == 0 }">
+								<div class="panel panel-silver-dark">
+							</c:when>
+						</c:choose>
 						<div class="panel-heading">
 							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-down"></i> 3/12
+								<div class="col-xs-3">		
+									<c:choose>
+										<c:when test="${ displayOrder  == 5 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-plane"></i>
+										</c:when>
+										<c:when test="${ displayOrder  == 4 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-up"></i>
+										</c:when>
+										<c:when test="${ displayOrder  == 3 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-warning-sign"></i>
+										</c:when>
+										<c:when test="${ displayOrder  == 2 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-send"></i>
+										</c:when>
+										<c:when test="${ displayOrder  == 1 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-thumbs-down"></i>
+										</c:when>
+										<c:when test="${ displayOrder  == 0 }">
+											<i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i>
+										</c:when>
+									</c:choose> ${willCome}/${limit}
 								</div>
 								<div class="col-xs-12 text-right">
-									<div class="large">W budowie</div>
-									<div>${ eventsInBuildState[0].graphic.orlik.address } </div>
-									<div><fmt:formatDate value="${eventsInBuildState[0].graphic.startTime}" type="both" 
-      pattern="dd.MM.yyyy" /></div>
-									<div><fmt:formatDate value="${eventsInBuildState[0].graphic.startTime}" type="both" 
-      pattern="HH:mm" /> - <fmt:formatDate value="${eventsInBuildState[0].graphic.endTime}" type="both" 
-      pattern="HH:mm" /></div>
+									<div class="large"><c:choose>
+															<c:when test="${ displayOrder  == 5 }">
+																Nadchodzący
+															</c:when>
+															<c:when test="${ displayOrder  == 4 }">
+																Przyjęty
+															</c:when>
+															<c:when test="${ displayOrder  == 3 }">
+																Zagrożony
+															</c:when>
+															<c:when test="${ displayOrder  == 2 }">
+																Do akceptacji
+															</c:when>
+															<c:when test="${ displayOrder  == 1 }">
+																W budowie
+															</c:when>
+															<c:when test="${ displayOrder  == 0 }">
+																Kosz
+															</c:when>
+														</c:choose></div>
+									<div>${ address } </div>
+									<c:if test="${ start != null }">
+										<div><fmt:formatDate value="${start}" type="both" pattern="dd.MM.yyyy" /></div>
+										<div><fmt:formatDate value="${start}" type="both" pattern="HH:mm" /> - <fmt:formatDate value="${end}" type="both" pattern="HH:mm" /></div>
+									</c:if>
 								</div>
 							</div>
 						</div>
-						<a href="${ allInState }/${ eventsInBuildState[0].state.id }">
+					<c:choose>
+						<c:when test="${not empty state }">
+							<c:choose>
+								<c:when test="${ displayOrder  == 5 }">
+									<c:choose>
+										<c:when test="${ page == 'fast' ||  page == 'all' }"><a href="<c:url value="/events/allInState/6" />"></c:when>
+										<c:when test="${ page == 'organized' }"><a href="<c:url value="/events/listDetails/6/1" />"></c:when>
+										<c:when test="${ page == 'invitations' }"><a href="<c:url value="/events/listDetails/6/2" />"></c:when>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<c:choose>
+										<c:when test="${ page == 'fast' ||  page == 'all' }"><a href="<c:url value="/events/allInState/${state}" />"></c:when>
+										<c:when test="${ page == 'organized' }"><a href="<c:url value="/events/listDetails/${state}/1" />"></c:when>
+										<c:when test="${ page == 'invitations' }"><a href="<c:url value="/events/listDetails/${state}/2" />"></c:when>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+						<c:otherwise>
+							<a href="#">
+						</c:otherwise>
+					</c:choose>	
 							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (${ eventsInBuildState.size() })</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
+								<span class="pull-left">Sprawdź wszystkie (${ inSameState })</span> <span class="pull-right"><i class="glyphicon glyphicon-eye-open"></i></span>
 								<div class="clearfix"></div>
 							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-2">
-					<div class="panel panel-silver-dark">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i style="font-size: 2.5em;" class="glyphicon glyphicon-trash"></i> 0/16
-								</div>
-								<div class="col-xs-12 text-right">
-									<div class="large">Kosz</div>
-									<div>Brak</div>
-									<div>Brak</div>
-									<div>Brak</div>
-								</div>
-							</div>
+							</a>
 						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">Sprawdź wszystkie (0)</span> <span
-									class="pull-right"><i
-									class="glyphicon glyphicon-eye-open"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
 					</div>
-				</div>
+			</c:forEach>
+			
 			</div>
 		</div>
 	</div>
 </div>
-/.row
+
+
+
+
+

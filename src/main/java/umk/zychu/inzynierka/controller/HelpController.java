@@ -9,6 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelpController {
 
+	
+	
+	
 	@RequestMapping(value = "/help", method = RequestMethod.GET)
 	public ModelAndView help(ModelMap model) {
 

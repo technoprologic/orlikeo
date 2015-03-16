@@ -8,10 +8,10 @@
 <c:url value="/home" var="homeUrl" />
 <c:url value="/account/profile" var="profileUrl" />
 <c:url value="/events/create" var="createEventUrl" />
-<c:url value="/events/organized" var="EventsUrl" />
-<c:url value="/events/invitations" var="invitationsEventsUrl" />
+<c:url value="/events/all" var="allEvents" />
+<c:url value="/events/list" var="EventsUrl" />
 <c:url value="/friends" var="friendsUrl" />
-<c:url value="/friends//addFriend" var="addFriendUrl" />
+<c:url value="/friends/search" var="searchFriends" />
 
 <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -138,26 +138,26 @@
                 <li class="active">
                         <a href="${homeUrl}" data-toggle="collapse" data-target="#main"><i class="glyphicon glyphicon-eye-open"></i> SZYBKI PRZEGLĄD </a>
                     </li>
-                    <li class="active">
+                    <li class="active" >
                         <a href="javascript:;" data-toggle="collapse" data-target="#events"><i class="glyphicon glyphicon-list"></i> WYDARZENIA </a>
-                        <ul id="events" class="collapse">
+                        <ul id="events" class="collapse" >
                             <li>
                                 <a href="${createEventUrl}"><i class="glyphicon glyphicon-plus"></i> Utwórz nowe </a>
                             </li>
                             <li>
-                                <a href="${EventsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Wszystkie </a> 
+                                <a href="${ allEvents }"><i class="glyphicon glyphicon-pushpin"></i> Wszystkie </a> 
                             </li>
                             <li>
-                                <a href="${EventsUrl}?sort=organized"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
+                                <a href="${EventsUrl}/1"><i class="glyphicon glyphicon-pushpin"></i> Organizowane </a> 
                             </li>
                             <li>
-                                <a href="${EventsUrl}?sort=invitations"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>
+                                <a href="${EventsUrl}/2"><i class="glyphicon glyphicon-list-alt"></i> Zaproszenia </a>
                             </li>
                         </ul>
                     </li>
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#friends"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
-                        <ul id="friends" class="collapse">
+                        <ul id="friends" class="collapse" >
                             <li>
                                 <a href="${addFriendUrl }"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
                             </li>
@@ -165,7 +165,7 @@
                                 <a href="${friendsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
                             </li>
                             <li>
-                                <a href="#"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
+                                <a href="${searchFriends}"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
                             </li>
                         </ul>
                     </li>

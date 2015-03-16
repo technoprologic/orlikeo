@@ -10,8 +10,8 @@
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/graphic" var="graphicEventUrl" />
 
-<c:set var="graphic" scope="session" value="${event.getGraphic()}"/>
-<c:set var="orlik" scope="session" value="${graphic.orlik }"/>
+<c:set var="graphic" scope="session" value="${eventDetails.graphic}"/>
+<c:set var="orlik" scope="session" value="${eventDetails.orlik }"/>
 
 
 
@@ -44,30 +44,36 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach items="${ usersEvent }" var="userEvent" varStatus="i">   
-			<c:set var="decision" scope="session" value="${userEvent.userDecision}"/>                 
+			<c:forEach items="${ usersEventDetailList }" var="usersEventDetail" varStatus="i">   
+			<c:set var="decision" scope="session" value="${ usersEventDetail.userEvent.userDecision }"/>  
+			<c:set var="permission" scope="session" value="${ usersEventDetail.userEvent.userPermission }"/> 
+			<c:set var="email" scope="session" value="${ usersEventDetail.user.email}"/>
+			<c:set var="userPrincipal" scope="session" value="${ pageContext.request.userPrincipal }"/>               
                     <tr>
-					<td>${ userEvent.userPermission ? "TAK" : "NIE" }</td>
+					<td>${ permission ? "TAK" : "NIE" }</td>
 					<td><c:choose>
 						    <c:when test="${decision == 1}">
-						    	<c:if test="${not empty pageContext.request.userPrincipal}">
+						    	<c:if test="${not empty userPrincipal}">
     								Zaproszony
 								</c:if>
 						    </c:when>
 						    <c:when test="${decision == 2}">
-						        <c:if test="${not empty pageContext.request.userPrincipal}">
-    								${pageContext.request.userPrincipal.name == userEvent.getUser().email ? "Organizator" : "Zaakceptował" }
+						        <c:if test="${not empty userPrincipal}">
+    								${userPrincipal.name == email ? "Organizator" : "Zaakceptował" }
 								</c:if>
 						    </c:when>
 						    <c:when test="${decision == 3}">
 						        Odrzucił
 						    </c:when>
+						    <c:when test="${decision == 4}">
+						    	Nie zaproszony
+						    </c:when>
 						    <c:otherwise>
 						        Nie wiadomo co zrobił
 						    </c:otherwise>
 						</c:choose></td>
-					<td>${ userEvent.getUser().email }</td>
-					<td>${pageContext.request.userPrincipal.name}</td>
+					<td>${ email }</td>
+					<td></td>
 			    </tr>
 			</c:forEach> 
 

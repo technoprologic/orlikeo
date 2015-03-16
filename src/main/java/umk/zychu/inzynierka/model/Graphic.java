@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name="orlik_graphic")
-public class GraphicEntity extends BaseEntity{
+public class Graphic extends BaseEntity{
 
 	@Column(name="title")
 	String title;
@@ -31,14 +31,14 @@ public class GraphicEntity extends BaseEntity{
 	@Column(name="available")
 	Boolean available;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
 	@JoinColumn(name="orlik_id", referencedColumnName="id", insertable = false, updatable = false)
 	Orlik orlik;
 	
 	@OneToMany(mappedBy="graphic")
 	List<Event> events;
 	
-	public GraphicEntity(){
+	public Graphic(){
 	}
 	
 	public void setOrlikId(long id){

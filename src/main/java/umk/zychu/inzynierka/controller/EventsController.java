@@ -1,7 +1,6 @@
 package umk.zychu.inzynierka.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,18 +26,24 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import umk.zychu.inzynierka.service.EventService;
+import umk.zychu.inzynierka.service.GraphicService;
 import umk.zychu.inzynierka.service.OrlikService;
+import umk.zychu.inzynierka.service.UserEventService;
 import umk.zychu.inzynierka.service.UserService;
 import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
+import umk.zychu.inzynierka.controller.DTObeans.CreatedEventDetails;
+import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
+import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
+import umk.zychu.inzynierka.controller.DTObeans.UserGameInfo;
+import umk.zychu.inzynierka.controller.DTObeans.UsersEventDetail;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.Event;
-import umk.zychu.inzynierka.model.GraphicEntity;
+import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.model.UserEvent;
 
 @Controller
 @RequestMapping("/events")
@@ -53,7 +58,12 @@ public class EventsController {
 	private EventService eventService;
 	@Autowired
 	private UserService userService;
-
+	@Autowired
+	private GraphicService graphicService;
+	@Autowired
+	private UserEventService userEventService;
+	
+	
 	@Autowired
 	private ChoosenOrlikBeanValidator choosenOrlikBeanValidator;
 
@@ -62,6 +72,8 @@ public class EventsController {
 		binder.setValidator(choosenOrlikBeanValidator);
 	}
 
+	
+	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String initForm(Map<String, Object> model) {
 		ChoosenOrlikBean choosenOrlikBean = new ChoosenOrlikBean();
@@ -70,26 +82,30 @@ public class EventsController {
 		return "create";
 	}
 
+	
+	
 	@RequestMapping(value = "/graphic", method = RequestMethod.POST)
 	public String graphic(
 			@ModelAttribute @Valid ChoosenOrlikBean chooseOrlikBean,
 			ModelMap model, BindingResult result, HttpServletRequest request) {
 
-		if (result.hasErrors()) {
-			return "create";
+		if (result.hasErrors() || chooseOrlikBean.getId() == 0) {
+			return "redirect:create";
 		}
 		return "redirect:graphic/" + chooseOrlikBean.getId();
 	}
 
+	
+	
 	@RequestMapping(value = "/graphic/{orlik}", method = RequestMethod.GET)
 	public ModelAndView graphic(@PathVariable("orlik") long id) {
 
 		ObjectMapper mapper = new ObjectMapper();
-		List<GraphicEntity> graphic = eventService.getOrlikGraphicByOrlik(orlikService.getOrlikById(id));
+		List<Graphic> graphic = graphicService.getOrlikGraphicByOrlik(orlikService.getOrlikById(id).get());
 		List<JsonEventObject> graphicEntityList = new ArrayList<JsonEventObject>();
 
-		for (Iterator<GraphicEntity> i = graphic.iterator(); i.hasNext();) {
-			GraphicEntity graphicEntity = i.next();
+		for (Graphic i : graphic) {
+			Graphic graphicEntity = i;
 			JsonEventObject jObj = new JsonEventObject();
 			jObj.id = graphicEntity.getId();
 			jObj.title = graphicEntity.getTitle();
@@ -108,29 +124,44 @@ public class EventsController {
 			e.printStackTrace();
 		}
 		model.addObject("list", json);
-		model.addObject("orlikInfo", orlikService.getOrlikById(id));
+		model.addObject("orlikInfo", orlikService.getOrlikById(id).get());
+		
+		List<User> managers = orlikService.getOrlikManagersByOrlikId(id);
+		model.addObject("managers", managers);
 		return model;
 	}
 
+	
+	
 	@RequestMapping(value = "/reserve/{id}", method = RequestMethod.GET)
 	public String reserve(@PathVariable("id") long graphicId, Model model) {
-		GraphicEntity graphicEntity = eventService.getGraphicEntityById(graphicId);
-		Orlik orlik = orlikService.getOrlikById(graphicEntity.getOrlik().getId());	
-		List<User> userFriends = userService.getUserFriends(SecurityContextHolder.getContext().getAuthentication().getName());
-		List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
-		for(User user : userFriends){
-			RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getAge(), user.getPosition());
-			users.add(e);
+		try {
+			Graphic graphicEntity = graphicService.getGraphicById(graphicId).get();
+			Orlik orlik = graphicEntity.getOrlik();	
+			List<User> userFriends = userService.getUserFriends(SecurityContextHolder.getContext().getAuthentication().getName());
+			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
+			for(User user : userFriends){
+				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getAge(), user.getPosition());
+				users.add(e);
+			}
+			
+			RegisterEventForm form = new RegisterEventForm();
+			form.setGraphicId(graphicId);
+			form.setUserFriends(users);
+			model.addAttribute("orlik", orlik);
+			model.addAttribute("event", graphicEntity);
+			model.addAttribute("registerEventForm", form);
+			
+			List<User> managers = orlikService.getOrlikManagersByOrlikId(orlik.getId());
+			model.addAttribute("managers", managers);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		RegisterEventForm form = new RegisterEventForm();
-		form.setGraphicId(graphicId);
-		form.setUserFriends(users);
-		model.addAttribute("orlik", orlik);
-		model.addAttribute("event", graphicEntity);
-		model.addAttribute("registerEventForm", form);
 		return "reserve";
 	}
+	
+	
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register( @ModelAttribute("registerEventForm") RegisterEventForm form, ModelMap model, BindingResult result, HttpServletRequest request) {
@@ -138,26 +169,38 @@ public class EventsController {
 		if(result.hasErrors()) return "error";
 		
 		Event event = eventService.registerEventForm(form);
-		System.out.println(event.getId());
-		List <UserEvent> usersEvent = eventService.getUserEvent(event.getId());	
-		model.addAttribute("event", event);
-		model.addAttribute("usersEvent", usersEvent);
+		
+		List<CreatedEventDetails> createdEventDetails  = eventService.getEventAndGraphicAndOrlikByEvent(event);
+		model.addAttribute("eventDetails", createdEventDetails.get(0));
+		
+		List<UsersEventDetail> usersEventDetailList = userEventService.getUsersEventdetail(event);
+		model.addAttribute("usersEventDetailList", usersEventDetailList);
+		
 		return "eventCreated";
 	}
 
 	
 
-	@RequestMapping(value = "/organized", method = RequestMethod.GET)
-	public ModelAndView organized(ModelMap model) {
-
-		return new ModelAndView("organized");
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public String organized(ModelMap model) {
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<EventWindowBlock> eventWindowBlockList = eventService.getEventsBlockWindowList(user);
+		model.addAttribute("eventWindowsList", eventWindowBlockList );
+		List<UserGameDetails>  userGamesDetailsList = eventService.getGamesDetails(user);
+		model.addAttribute("userGamesDetailsList", userGamesDetailsList);
+		model.addAttribute("page", "all");
+		return "eventsInState";
 	}
-
+	
+	
+	
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	public ModelAndView details(ModelMap model) {
 
 		return new ModelAndView("details");
 	}
+	
+	
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(ModelMap model) {
@@ -165,12 +208,98 @@ public class EventsController {
 		return new ModelAndView("edit");
 	}
 	
-	@RequestMapping(value="/allInState/{state}", method = RequestMethod.GET)
-	public String allInState(@PathVariable("state") long stateId, Model model){
-		List<Event> events = eventService.getUserEvents(SecurityContextHolder.getContext().getAuthentication().getName(), stateId);
-		model.addAttribute("eventsInBuildState", events);
+	
+	
+	@RequestMapping(value="/list/{roleId}", method = RequestMethod.GET)
+	public String mainPageEventsByRole(@PathVariable("roleId") long roleId, Model model){
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		List<EventWindowBlock> eventWindowBlockList = eventService.getEventsBlockWindowByRoleList(user, roleId);
+		model.addAttribute("eventWindowsList", eventWindowBlockList );
+		
+		List<UserGameDetails>  userGamesDetailsList = eventService.getGamesDetailsByRoleId(user, roleId);
+		model.addAttribute("userGamesDetailsList", userGamesDetailsList);
+		
+		if(roleId == 1){
+			model.addAttribute("page", "organized");
+			
+		}else if(roleId == 2){
+			model.addAttribute("page", "invitations");
+		}
+		
 		return "eventsInState";
 	}
+	
+	
+	@RequestMapping(value="/allInState/{stateId}", method = RequestMethod.GET)
+	public String allInState(@PathVariable("stateId") long stateId, Model model){
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		List<EventWindowBlock> eventWindowBlockList = eventService.getEventsBlockWindowList(user);
+		model.addAttribute("eventWindowsList", eventWindowBlockList );
+		
+		List<UserGameDetails>  userGamesDetailsList = eventService.getGamesDetailsByStateId(user, stateId);
+		model.addAttribute("userGamesDetailsList", userGamesDetailsList);
+		
+		model.addAttribute("stateId", stateId);
+		model.addAttribute("page", "all");
+		return "eventsInState";
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/listDetails/{stateId}/{roleId}", method = RequestMethod.GET)
+	public String detailedPageEventsByRole(@PathVariable("stateId") long stateId, @PathVariable("roleId") long roleId, Model model){
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<UserGameDetails>  userGamesDetailsList = eventService.getGamesDetailsByRoleIdAndStateId(user, roleId, stateId);
+		
+		List<EventWindowBlock> eventWindowBlockList = eventService.getEventsBlockWindowByRoleList(user, roleId);
+		model.addAttribute("eventWindowsList", eventWindowBlockList );
+		
+		if(roleId == 1){
+			model.addAttribute("page", "organized");
+			
+		}else if(roleId == 2){
+			model.addAttribute("page", "invitations");
+		}
+		model.addAttribute("stateId", stateId);
+		model.addAttribute("userGamesDetailsList", userGamesDetailsList);
+		return "eventsInState";
+	}
+	
+	
+
+	
+	@RequestMapping(value="/join/{eventId}", method = RequestMethod.GET)
+	public String joinEvent(@PathVariable("eventId") long eventId){
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		if(eventService.isInvitedOnTheEvent(user, eventId) > 0){
+			eventService.setJoinDecision(user.getId(), eventId);
+		}
+		return "home";
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/reject/{eventId}", method = RequestMethod.GET)
+	public String rejectEvent(@PathVariable("eventId") long eventId){
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		System.out.println("OKO: " + eventService.isInvitedOnTheEvent(user, eventId));
+		
+		if(eventService.isInvitedOnTheEvent(user, eventId) > 0){
+			eventService.setQuitDecision(user.getId(), eventId);
+		}
+		return "home";
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	

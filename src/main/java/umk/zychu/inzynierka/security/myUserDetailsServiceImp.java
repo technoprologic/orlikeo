@@ -13,14 +13,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.repository.UserDAO;
+import umk.zychu.inzynierka.repository.UserDaoRepository;
 
 
 @Service("myUserDetailsService")
 public class myUserDetailsServiceImp implements UserDetailsService  {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserDaoRepository userDAO;
 		
 	 @Transactional(readOnly = true)
 	  public UserDetails loadUserByUsername(String email)

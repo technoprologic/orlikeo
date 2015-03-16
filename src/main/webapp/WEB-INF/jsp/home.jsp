@@ -7,7 +7,7 @@
 
 
 
-<div class="row">
+<!-- <div class="row">
 	<div class="col-lg-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -84,8 +84,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-lg-8">
+	</div> -->
+	
+	
+	
+<!-- 	<div class="col-lg-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">
@@ -108,7 +111,10 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
+	
 </div>
 /.row
+
+<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />"></script>
 

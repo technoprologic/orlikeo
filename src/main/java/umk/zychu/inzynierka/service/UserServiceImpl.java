@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.repository.UserDAO;
+import umk.zychu.inzynierka.repository.UserDaoRepository;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserDAO userDAO;
+	UserDaoRepository userDAO;
 	
 	@Override
 	public User getUser(String email) {
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void saveUser(User user) {
-		userDAO.saveUser(user);
+		userDAO.save(user);
 	}
 
 	@Override

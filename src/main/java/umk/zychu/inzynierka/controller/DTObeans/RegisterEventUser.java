@@ -9,9 +9,6 @@ public class RegisterEventUser {
 	int age;
 	String position;
 	
-	
-	
-	
 	public void setUserId(long userId){
 		this.userId = userId;
 	}

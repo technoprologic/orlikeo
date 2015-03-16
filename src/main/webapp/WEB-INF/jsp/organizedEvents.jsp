@@ -9,58 +9,147 @@
 <c:url value="/events/edit" var="editEventUrl" />
 <c:url value="/events/remove" var="removeEventUrl" />
 <c:url value="/events/details" var="detailsEventUrl" />
+<c:url value="/events/join" var="joinEventUrl" />
+<c:url value="/events/reject" var="rejectEventUrl" />
 
-
-
- <c:set var="userEvent" scope="session" value="${ event.usersEvent }"/>
-
-		<!-- Form Name -->
-<legend>Wydarzenia - wszystkie / organizowane / zaproszenia (Zagrożone)</legend>
+<legend><c:choose>
+				<c:when test="${page == 'all' || page == 'fast' }"><i class="glyphicon glyphicon-info-sign"></i> Lista wszystkich </c:when> 
+				<c:when test="${page == 'organized'}"><i class="glyphicon glyphicon-info-sign"></i> Lista organizowanych </c:when>
+				<c:when test="${page == 'invitations'}"><i class="glyphicon glyphicon-info-sign"></i> Lista na które Cię zaproszono </c:when> 
+			</c:choose> <c:if test="${not empty stateId }" >
+				<c:choose>
+					<c:when test="${ stateId == 1 }">- w koszu</c:when>
+					<c:when test="${ stateId == 2 }">- w budowie</c:when>
+					<c:when test="${ stateId == 3 }">- do akceptacji</c:when>
+					<c:when test="${ stateId == 4 }">- zagrożonych</c:when>
+					<c:when test="${ stateId == 5 }">- przyjetych</c:when>
+					<c:when test="${ stateId == 6 }">- nadchodzących</c:when>
+				</c:choose>
+				</c:if></legend>
 <table data-toggle="table" id="table-pagination"  data-pagination="true" data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
-            <th data-field="orlikId" data-align="right" data-sortable="true">Orlik</th>
-            <th data-field="eventDate" data-align="right" data-sortable="true">Data</th>
+            <th data-field="orlikId" data-align="left" data-sortable="true">Orlik</th>
+            <th data-field="eventDate" data-align="left" data-sortable="true">Data</th>
             <th data-field="eventTime" data-align="center" data-sortable="true">Godzina</th>
             <th data-field="eventStatus" data-align="center" data-sortable="true" >Status</th>
             <th data-field="eventDecision" data-align="center" data-sortable="true" >Decyzja</th>
             <th data-field="eventPlayers" data-align="center" data-sortable="true" >Graczy</th>
-            <th data-align="center">Edytuj / Usuń / Szczegóły / Dołącz</th>
+            <th data-align="center">Akcja</th>
         </tr>
     </thead>
     <tbody>
-    	<c:forEach items="${ eventsInBuildState }" var="event" varStatus="i">
-    	<tr>
-    		<td>${ event.graphic.orlik.address } </td>
-    		<td><fmt:formatDate value="${event.graphic.startTime}" type="both" 
-      pattern="dd.MM.yyyy" /></td>
-    		<td><fmt:formatDate value="${event.graphic.startTime}" type="both" 
-      pattern="HH:mm" /> - <fmt:formatDate value="${event.graphic.startTime}" type="both" 
-      pattern="HH:mm" /></td>
-      		
-    		<td>${event.state.getState()}</td>
-    		
+		<c:forEach items="${ userGamesDetailsList }"  var="event" varStatus="i" >
+		
+			<c:set var="address" scope="session" value="${ event.address }"/>
+			<c:set var="eventId" scope="session" value="${ event.eventId }"/>
+			<c:set var="stateId"  value="${ event.stateId }"/>
+			<c:set var="decisionId" scope="session" value="${ event.userEvent.userDecision }"/>
+			<c:set var="roleId" scope="session" value="${ event.userEvent.roleId }"/>
+			<c:set var="userPermission" scope="session" value="${ event.userEvent.userPermission }"/>
+			<c:set var="graphic" scope="session" value="${ event.graphic }"/>
+			<c:set var="players" scope="session" value="${ event.willCome }"/>
+			<c:set var="limit" scope="session" value="${ event.playersLimit }"/>
 
-    		
-    		
-    		<td><c:forEach items="${ userEvent }" var="event" varStatus="j">
-    			<c:out value="${ event }"/> 
-    		</c:forEach><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>12/14</td>    		
-    		<td><a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a>
-    			<a href="${removeEventUrl}/${event.id}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a>
-    			<a href="${detailsEventUrl}/${event.id}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    	<tr>
+    		<td>${ address } </td>
+    		<td><fmt:formatDate value="${graphic.startTime}" type="both" pattern="dd.MM.yyyy" /></td>
+    		<td><fmt:formatDate value="${graphic.startTime}" type="both" pattern="HH:mm" /> - <fmt:formatDate value="${graphic.endTime}" type="both" pattern="HH:mm" /></td>
+    		<td><c:choose>
+    			<c:when test="${ stateId == 1 }">
+    				Kosz
+    			</c:when>
+    			<c:when test="${ stateId == 2 }">
+    				W budowie
+    			</c:when>
+    			<c:when test="${ stateId == 3 }">
+    				Do akceptacji
+    			</c:when>
+    			<c:when test="${ stateId == 4 }">
+    				Zagrożony
+    			</c:when>
+    			<c:when test="${ stateId == 5 }">
+    				Przyjęty
+    			</c:when>
+    			</c:choose></td>
+    		<td>
+    		<c:choose>
+    			<c:when test="${ roleId == 1 }"><i style="color: gold" class="glyphicon glyphicon-star"></i></c:when>
+    			<c:when test="${ roleId == 2 }">
+					<c:choose>
+    					<c:when test="${ decisionId == 1 }">
+    						<i style="color: blue" class="glyphicon glyphicon glyphicon-star-empty"></i>
+    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
+    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
+    					</c:when>
+    					<c:when test="${ decisionId == 2 }">
+    						<i style="color: green" class="glyphicon glyphicon-plus"></i>
+    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
+    					</c:when>
+    					<c:when test="${ decisionId == 3 }">
+    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
+    						<i style="color: red" class="glyphicon glyphicon-minus"></i>
+    					</c:when>
+    					<c:when test="${ decisionId == 4 }">
+    					<c:choose>
+    						<c:when test="${ userPermission == false }"><i class=" glyphicon glyphicon-question-sign"></i></c:when>
+    						<c:when test="${ userPermission == true }"><i class="glyphicon glyphicon-random"></i></c:when>
+    					</c:choose>
+    					</c:when>
+    				</c:choose>
+				</c:when>
+    		</c:choose></td>
+    		<td>${ players }/${ limit }</td>    		
+    		<td>
+    			<c:if  test="${ roleId == 1  }"><a href="${editEventUrl}/${eventId}" title="Edytuj"> <i class="glyphicon glyphicon-edit"></i></a></c:if>
+    			<c:if  test="${ roleId == 1  }"><a href="${removeEventUrl}/${eventId}" title="Usuń"> <i class="glyphicon glyphicon-remove"></i></a></c:if>
+    			<a href="${detailsEventUrl}/${eventId}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>    		
     	</tr>
     	</c:forEach>  
     </tbody>
 </table>
 
-<c:if test="${not empty pageContext.request.userPrincipal}">
-    User: <c:out value="${pageContext.request.userPrincipal.name}" />
-</c:if>
+
+
+
+
+<legend>Legenda</legend>
+<table data-toggle="table" id="table-pagination" style="background-color:white">
+    <thead style="background-color:#999999">
+        <tr>
+            <th data-align="center" >Znak</th>
+            <th data-align="left" >Opis</th>
+        </tr>
+    </thead>
+    <tbody>
+       	<tr>
+    		<td><i style="color: gold" class="glyphicon glyphicon-star"></i></td>
+    		<td>Jesteś organizatorem</td>
+    	</tr>
+    	<tr>
+    		<td><i style="color: blue" class="glyphicon glyphicon glyphicon-star-empty"></i></td>
+    		<td>Nie dokonałeś wyboru</td>
+    	</tr>
+    	<tr>
+    		<td><i style="color:green" class="glyphicon glyphicon-plus"></i></td>
+    		<td>Weźmiesz udział w wydarzeniu</td>
+    	</tr> 
+     	<tr>
+    		<td><i style="color: red" class="glyphicon glyphicon-minus"></i></td>
+    		<td>Nie bierzesz udziału w wydarzeniu</td>
+    	</tr>
+     	<tr>
+    		<td><i style="color: silver" class="glyphicon glyphicon-random"></i></td>
+    		<td>Otrzymałeś tylko prawa zapraszania swoich znajomych</td>
+    	</tr>
+    	<tr>
+    		<td><i class=" glyphicon glyphicon-question-sign"></i></td>
+    		<td>Nie powinieneś tego znaku nigdy zobaczyć</td>
+    	</tr>
+    </tbody>
+</table>
+
 
 <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />"></script>
-
-
 

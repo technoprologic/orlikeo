@@ -54,7 +54,18 @@ public class User extends BaseEntity
 	@ManyToMany(mappedBy = "hasFriendCollection")
     private Collection<User> isFriendCollection;
 	
+	@ManyToMany(mappedBy = "orlikManagers")
+    private List<Orlik> isOrliksManager;
 	
+	
+	public List<Orlik> getIsOrliksManager() {
+		return isOrliksManager;
+	}
+
+	public void setIsOrliksManager(List<Orlik> isOrliksManager) {
+		this.isOrliksManager = isOrliksManager;
+	}
+
 	@OneToMany(mappedBy = "user")
 	private List<UserEvent> userEvents;
 

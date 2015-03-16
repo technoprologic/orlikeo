@@ -8,7 +8,7 @@
 <c:url value="/friends/user" var="detailsUrl" />
 
 
-Page Heading
+
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
@@ -16,86 +16,28 @@ Page Heading
 		</h1>
 	</div>
 </div>
-/.row
-
-
-
 
 <table data-toggle="table" id="table-pagination"  data-pagination="true" data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="uId" data-align="left" data-sortable="true">Użytkownik</th>
             <th data-field="email" data-align="center" data-sortable="true">Email</th>
-            <th data-field="phone" data-align="center" data-sortable="true">Telefona</th>
-            <th data-field="responsibility" data-align="center" data-sortable="true" >Stopień zaufania</th>
             <th data-align="center">Szczegóły </th>
         </tr>
     </thead>
     <tbody>
+    <c:forEach items="${friends}" var="friend" varStatus="i">
+		<c:set var="name" scope="session" value="${ friend.name }"/>
+		<c:set var="surname" scope="session" value="${ friend.surname }"/>
+		<c:set var="email" scope="session" value="${ friend.email }"/>
+		<c:set var="userId" scope="session" value="${ friend.id }"/>
     	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td>${name} ${surname}</td>
+    		<td>${email}</td>		
+    		<td><a href="${detailsUrl}?id=${userId}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>    		
     	</tr>  
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>  
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>  
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>   
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>  
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>  
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>   
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td>jshdjshd@jds.pl</td>
-    		<td>645 263 456</td>
-    		<td>90%</td> 		
-    		<td><a href="${detailsUrl}?id=33" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
-    		</td>    		
-    	</tr>       	
+   </c:forEach>     	
     </tbody>
 </table>
 

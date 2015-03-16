@@ -1,12 +1,17 @@
 package umk.zychu.inzynierka.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 
@@ -15,10 +20,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name="orlik")
 public class Orlik extends BaseEntity {
 	
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
-	private Collection<GraphicEntity> graphicCollection;
-	
+
 	@NotBlank
 	@Column(name = "address")
 	String address;
@@ -39,7 +41,26 @@ public class Orlik extends BaseEntity {
 	@Column(name = "required_shoes")	
 	String shoes;
 	
+	
+	@OneToMany(mappedBy = "orlik")
+	private Collection<Graphic> graphicCollection;
+	
+	
+	@ManyToMany
+	@JoinTable(name = "orlik_manager", joinColumns = { @JoinColumn(name = "orlik_id", referencedColumnName = "id", nullable = false) }, 
+	inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) })
+	List<User> orlikManagers;
+	
+	public List<User> getOrlikManagers() {
+		return orlikManagers;
+	}
+
+	public void setOrlikManagers(List<User> orlikManagers) {
+		this.orlikManagers = orlikManagers;
+	}
+
 	public Orlik(){
+		super();
 	}
 	
 	public void setAddress(String address){

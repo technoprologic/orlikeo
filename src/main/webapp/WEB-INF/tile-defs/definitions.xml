@@ -40,6 +40,9 @@
 		<put-attribute name="eventsMainWindow" value="/WEB-INF/jsp/template/eventStatesMainWindow.jsp" />
 		<put-attribute name="content" value="/WEB-INF/jsp/organizedEvents.jsp" />
 	</definition>
+		<definition name="eventsInStateByRole" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/organizedEvents.jsp" />
+	</definition>
 	<definition name="details" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/detailsEvents.jsp" />
 	</definition>
@@ -51,8 +54,8 @@
 	<definition name="friends" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/friends.jsp" />
 	</definition>
-		<definition name="addFriend" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/addFriend.jsp" />
+		<definition name="searchFriends" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/searchFriends.jsp" />
 	</definition>
 	
 	

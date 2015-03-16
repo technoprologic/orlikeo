@@ -27,12 +27,22 @@ public class Event extends BaseEntity {
 	@Column(name="creation_date")
 	Date creationDate;
 	
-	@Column(name = "user_organizer_id")
-	Long userId;
 	
+	@Column(name = "players_limit")
+	int playersLimit;
+	
+	public int getPlayersLimit() {
+		return playersLimit;
+	}
+
+
+	public void setPlayersLimit(int playersLimit) {
+		this.playersLimit = playersLimit;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "graphic_id", referencedColumnName = "id", insertable = false, updatable = false)
-	GraphicEntity graphic;
+	Graphic graphic;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
 	List<UserEvent> usersEvent;
@@ -69,19 +79,12 @@ public class Event extends BaseEntity {
 		return creationDate;
 	}
 	
-	public void setUserId(Long id){
-		this.userId = id;
-	}
-
-	public long getUserId(){
-		return this.userId;
-	}
 	
-	public void setGraphic(GraphicEntity graphic){
+	public void setGraphic(Graphic graphic){
 		this.graphic = graphic;
 	}
 	
-	public GraphicEntity getGraphic(){
+	public Graphic getGraphic(){
 		return this.graphic;
 	}
 	
@@ -107,10 +110,10 @@ public class Event extends BaseEntity {
 		
 	}
 	
-	public Event(long graphicId, long stateId, long id ){
+	public Event(long graphicId, int playersLimit, long stateId ){
 		this.graphicId = graphicId;
 		this.stateId = stateId;
-		this.userId = id;
+		this.playersLimit = playersLimit;
 		this.creationDate = new Date();
 	}
 }

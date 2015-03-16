@@ -20,7 +20,7 @@ public class UserEvent extends BaseEntity implements Serializable {
 	
 	
 	@Column(name = "user_role")
-	long userRole;
+	long roleId;
 	
 	
 	@Column(name = "user_decision")
@@ -50,8 +50,6 @@ public class UserEvent extends BaseEntity implements Serializable {
 	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
 	User user;
 	
-	public void UserEntity(){
-	}
 	
 	public void setEventId(long eventId){
 		this.eventId = eventId;
@@ -86,12 +84,12 @@ public class UserEvent extends BaseEntity implements Serializable {
 		return this.user;
 	}
 	
-	public void setUserRole(long role){
-		this.userRole = role;
+	public void setRoleId(long roleId){
+		this.roleId = roleId;
 	}
 	
-	public long getUserRole(){
-		return userRole;
+	public long getRoleId(){
+		return roleId;
 	}
 
 	public void setUserDecision(long decision){
