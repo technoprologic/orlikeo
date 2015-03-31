@@ -1,10 +1,13 @@
 package umk.zychu.inzynierka.model;
  
  
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -45,17 +48,22 @@ public class User extends BaseEntity
 	@Column(name = "foot")
 	String foot;
 	
-	@JoinTable(name = "user_friend", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "friend_id", referencedColumnName = "id", nullable = false) })
-	@ManyToMany
-	private Collection<User> hasFriendCollection;
+	
+	@OneToMany(mappedBy="friendRequester")
+	private List<Friendship> friendRequesterList;
+	
+	@OneToMany(mappedBy="friendAccepter")
+	private List<Friendship> friendAccepterList;
 	
 	
-	@ManyToMany(mappedBy = "hasFriendCollection")
-    private Collection<User> isFriendCollection;
+	@OneToMany(mappedBy = "actionUserId")
+	private List<Friendship> actionUsersList;
+	
 	
 	@ManyToMany(mappedBy = "orlikManagers")
     private List<Orlik> isOrliksManager;
+	
+	
 	
 	
 	public List<Orlik> getIsOrliksManager() {
@@ -143,22 +151,6 @@ public class User extends BaseEntity
 		this.foot = foot;
 	}
 	
-	public void setHasFriendCollection(Collection<User> friendsOwnersCollection){
-		hasFriendCollection = friendsOwnersCollection;
-	}
-	
-	public Collection<User> getHasFriendCollection(){
-		return hasFriendCollection;
-	}
-	
-	public void setIsFriendCollection(Collection<User> friendsIsCollection){
-		isFriendCollection = friendsIsCollection;
-	}
-	
-	public Collection<User> getIsFriendCollection(){
-		return isFriendCollection;
-	}	
-	
 	public void setUserEvents(List<UserEvent> userEvents){
 		this.userEvents = userEvents;
 	}
@@ -166,4 +158,5 @@ public class User extends BaseEntity
 	public List<UserEvent> getUserEvents(){
 		return this.userEvents;
 	}
+	
 }

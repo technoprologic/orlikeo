@@ -57,7 +57,7 @@
 		<definition name="searchFriends" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/searchFriends.jsp" />
 	</definition>
-	
+
 	
 	<!-- template for clear business content (without menu etc.) -->
 	<definition name="clearTemplate" template="/WEB-INF/jsp/template/clearTemplate.jsp">

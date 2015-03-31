@@ -21,11 +21,35 @@ public class UserEventServiceImp implements UserEventService {
 		return userEventDAO.getJoinTest(id);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public List<UsersEventDetail> getUsersEventdetail(Event event) {
 		
 		return userEventDAO.getUsersEventDetail(event);
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
+	
+
+	
+	
+	
 }

@@ -37,7 +37,6 @@ import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
-import umk.zychu.inzynierka.controller.DTObeans.UserGameInfo;
 import umk.zychu.inzynierka.controller.DTObeans.UsersEventDetail;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.Event;
@@ -138,7 +137,8 @@ public class EventsController {
 		try {
 			Graphic graphicEntity = graphicService.getGraphicById(graphicId).get();
 			Orlik orlik = graphicEntity.getOrlik();	
-			List<User> userFriends = userService.getUserFriends(SecurityContextHolder.getContext().getAuthentication().getName());
+			User loggedUser = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+			List<User> userFriends = userService.getUserFriendships(loggedUser);
 			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
 			for(User user : userFriends){
 				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getAge(), user.getPosition());

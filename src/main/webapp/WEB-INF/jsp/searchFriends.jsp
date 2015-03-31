@@ -8,7 +8,7 @@
 <c:url value="/friends/search" var="searchFriends" />
 <c:url value="/friends/profile" var="userDetails" />
 
-
+<c:url value="/friends/friendRequest" var="inviteFriend" />
 
 <div class="row">
 	<div class="col-lg-12">
@@ -34,7 +34,9 @@
 					</div>
 				</div>
                 <button type="submit" class="btn btn-lg btn-primary btn-block" disabled>Szukaj</button>
-                <c:if test="${ not empty error }"> Nie znaleziono takiego użytkownika</c:if>
+                <c:if test="${ not empty notFound }"> Nie znaleziono takiego użytkownika</c:if>
+                <c:if test="${ not empty isAlreadyAfriend }"> Już jesteście znajomymi, zaproszenie zostało wysłane lub użytkownik czeka na akceptację! </c:if>
+                <c:if test="${ not empty selfRequest }"> sam do siebie głupcze! </c:if>
             </form:form>
             </div>
         </div>
@@ -43,7 +45,7 @@
 
 
 
-<c:if test="${ not empty user }">
+<c:if test="${ not empty userEmail }">
 		
 		<legend>Lista biorących udział w wydarzeniu</legend>
 		<table data-toggle="table" style="background-color: white" >
@@ -55,11 +57,12 @@
 			</thead>
 			<tbody>
                	<tr>
-					<td>${ user.email }</td>
+					<td>${ userEmail }</td>
 					<td><div class="container">
 							
 							<form:form method="POST" action="${ inviteFriend }" >
 								<%-- <a href="${ userDetails }?user=${user.email}" class="btn btn-info" role="button">Zobacz profil</a> --%>
+								<input  type="hidden" class="form-control" name="email" id="validate-email"  value="${ userEmail }" >
 								<button type="submit" class="btn  btn-primary" >Zaproś</button>
 							</form:form>
 							</div>

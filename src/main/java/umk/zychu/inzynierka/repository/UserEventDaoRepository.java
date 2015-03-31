@@ -27,4 +27,9 @@ public interface UserEventDaoRepository extends BaseRepository<UserEvent, Long>{
 	List<UsersEventDetail> getUsersEventDetail(@Param("event") Event event);
 	
 	
+	
+	
+	
+	
+	
 }
