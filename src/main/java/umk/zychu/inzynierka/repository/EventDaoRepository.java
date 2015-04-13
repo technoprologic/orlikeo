@@ -15,6 +15,7 @@ import umk.zychu.inzynierka.controller.DTObeans.UserGameInfo;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.User;
 
+@Transactional
 public interface EventDaoRepository extends BaseRepository<Event, Long>{
 	
 
@@ -55,7 +56,7 @@ public interface EventDaoRepository extends BaseRepository<Event, Long>{
 	public final static String JOIN_EVENT_GRAPHIC_ORLIK = "SELECT new umk.zychu.inzynierka.controller.DTObeans.CreatedEventDetails(e, g, o) " 
 			+ "FROM Event e JOIN e.graphic g JOIN g.orlik o WHERE e = :event";
 	@Query(JOIN_EVENT_GRAPHIC_ORLIK)
-	List<CreatedEventDetails> getEventAndGraphicAndOrlikByEvent(@Param("event") Event event);
+	CreatedEventDetails getEventAndGraphicAndOrlikByEvent(@Param("event") Event event);
 	
 	
 	
@@ -151,6 +152,61 @@ public interface EventDaoRepository extends BaseRepository<Event, Long>{
 	@Modifying  
 	@Transactional
 	int setQuitDecision(@Param("userId") long userId, @Param("eventId") long eventId);
+	
+	
+	public final static String COUNT_INVITED_PLAYERS_ON_EVENT = "SELECT COUNT(ue.id) FROM UserEvent ue WHERE ue.event = :event AND ue.roleId = 2";
+	@Query(COUNT_INVITED_PLAYERS_ON_EVENT)
+	long countInvitedPlayers(@Param("event") Event event);
+	
+	
+	public static final String GET_USER_ORGANIZER = "SELECT DISTINCT ue.user.email FROM UserEvent ue WHERE ue.event = :event AND ue.roleId = 1";
+	@Query(GET_USER_ORGANIZER)
+	String getUserEventOrganizer(@Param("event") Event event);
+	
+	
+	public static final String DELETE_EVENT_BY_ID = "DELETE FROM Event e WHERE e.id = :id";
+	@Modifying
+	@Query(DELETE_EVENT_BY_ID)
+	void removeEventById(@Param("id") long id);
+	
+	
+	
+	public static final String UPDATE_EVENT_PLAYERS_LIMIT = "UPDATE Event e SET e.playersLimit = :usersLimit WHERE e.id = :eventId";
+	@Modifying
+	@Query(UPDATE_EVENT_PLAYERS_LIMIT)
+	void updateEventPlayersLimit(@Param("usersLimit") int usersLimit, @Param("eventId") long eventId);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

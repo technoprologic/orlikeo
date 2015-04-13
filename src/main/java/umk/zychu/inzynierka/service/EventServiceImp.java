@@ -9,8 +9,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import umk.zychu.inzynierka.controller.DTObeans.CreatedEventDetails;
+import umk.zychu.inzynierka.controller.DTObeans.EditEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
@@ -68,7 +70,6 @@ public class EventServiceImp implements EventService{
 	@Override
 	public Event registerEventForm(RegisterEventForm form) {
 		
-		//TODO enum class / userlimit
 		int STATE=2;
 			
 		try{
@@ -86,7 +87,7 @@ public class EventServiceImp implements EventService{
 			
 			for(RegisterEventUser regEventUser : (List<RegisterEventUser>)form.getUserFriends()){
 				
-				if(regEventUser.getAllowed() || regEventUser.getInvited()){
+				if(regEventUser.getAllowed() || regEventUser.getInvited() ){
 					UserEvent userEvent = new UserEvent();
 					userEvent.setEventId(event.getId());
 					userEvent.setUserId(userDAO.getUserByEmail(regEventUser.getEmail()).getId());
@@ -149,8 +150,11 @@ public class EventServiceImp implements EventService{
 	
 	
 	@Override
-	public List<CreatedEventDetails> getEventAndGraphicAndOrlikByEvent(Event event) {
-		return eventDAO.getEventAndGraphicAndOrlikByEvent(event);
+	public CreatedEventDetails getEventAndGraphicAndOrlikByEvent(Event event) {
+		
+		CreatedEventDetails createdEventDetails = eventDAO.getEventAndGraphicAndOrlikByEvent(event);
+		createdEventDetails.setInvitedPlayers(eventDAO.countInvitedPlayers(createdEventDetails.getEvent()));
+		return createdEventDetails;
 	}
 
 	
@@ -303,6 +307,78 @@ public class EventServiceImp implements EventService{
 	@Override
 	public void setQuitDecision(long userId, long eventId) {
 		eventDAO.setQuitDecision(userId, eventId);
+		
+	}
+
+
+
+	@Override
+	public String getEventUserOrganizerEmail(Event event) {
+		return eventDAO.getUserEventOrganizer(event);
+	}
+
+
+
+	@Override
+	public void deleteEventById(long id) {
+		
+		userEventDAO.removeUsersEventsByEventId(id);
+		eventDAO.removeEventById(id);
+		
+		
+		
+	}
+
+
+
+	@Override
+	public void updateEvent(EditEventForm form) {
+		
+		try{
+			for(RegisterEventUser editEventUser : (List<RegisterEventUser>)form.getUserFriends()){
+				System.out.println("START: ");
+				long id = userDAO.getUserByEmail(editEventUser.getEmail()).getId();
+				
+				if(editEventUser.getAllowed() || editEventUser.getInvited()){
+					
+					if(userEventDAO.ifUserEventExists(form.getEventId(), id) > 0){
+						long invited = 0;
+						if(editEventUser.getInvited()){
+							invited = 1;
+						}else{
+							invited = 4;
+						}
+						
+						userEventDAO.updateUserEvent(form.getEventId(), id, editEventUser.getAllowed(), invited);
+						System.out.println("USER: " + editEventUser.getEmail() + "allowed: " + editEventUser.getAllowed() + ", invited: " + editEventUser.getInvited());
+					}else{
+						UserEvent userEvent = new UserEvent(id, 2, 1, editEventUser.getAllowed(), form.getEventId());
+						userEventDAO.save(userEvent);
+					}
+					
+				}else{	
+					userEventDAO.removeUserEventByEventId(id, form.getEventId());
+					System.out.println("USEREVENT Removed: " + editEventUser.getEmail());
+				}
+			}
+			
+			eventDAO.updateEventPlayersLimit(form.getUsersLimit(), form.getEventId());
+			System.out.println("USERS LIMIT UPDATED: ");
+			System.out.println("END: ");
+		}catch(Exception e){
+			System.out.println("Exception dupa : " + e.getMessage());
+		}
+		
+	}
+
+
+
+	@Override
+	public void updateEventGraphic(long eventId, long graphicId) {
+		
+		Event event = eventDAO.findById(eventId).get();
+		event.setGraphicId(graphicId);
+		eventDAO.save(event);
 		
 	}
 	

@@ -1,222 +1,179 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
 
+<c:url value="/events/register" var="registerEventUrl" />
+<c:url value="/events/create" var="createEventUrl" />
+<c:url value="/events/graphic" var="graphicEventUrl" />
 
-<c:url value="/events/reserve" var="editEventUrl" />
-<c:url value="/events/reserve" var="editEventUrl" />
-<c:url value="/events/organized" var="removeEventUrl" />
+
+<c:url value="/events/join" var="joinEventUrl" />
+<c:url value="/events/reject" var="rejectEventUrl" />
+<c:url value="/events/remove" var="removeEventUrl" />
+
+
+<c:set var="graphic"  value="${eventDetails.graphic}"/>
+<c:set var="orlik"    value="${eventDetails.orlik }"/>
+<c:set var="event"    value="${eventDetails.event }"/>
+
 
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">
-			Orlik Toruń Sp9 ul.Rzepakowa 9  <small><i class="glyphicon glyphicon-picture"></i> 17:30 - 19:00 </small>
-			<a href="${editEventUrl}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
-    		<a href="${joinEventUrl}?join=true" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em"></i></a> /
-    		<a href="${joinEventUrl}?join=false" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em"></i></a>
-    		<a href="${removeEventUrl}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
+		<h1 class="page-header"> 
+			<c:if test="${ organizerEmail}">
+				<a href="${createEventUrl}" title="Zmień boisko"><i class="glyphicon glyphicon-edit"></i></a>
+			</c:if>
+			${orlik.city} ul.${orlik.getAddress()} <small>
+			<c:if test="${ organizerEmail}">
+				<a href="${graphicEventUrl}" title="Zmień godzinę"><i class="glyphicon glyphicon-edit"></i></a>
+			</c:if>
+				<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${graphic.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
+				<c:choose >
+					<c:when test="${ organizerEmail}" >
+						<a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+						<a href="${removeEventUrl}/${event.id}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when test="${ decision == 1 }">
+								<a href="${joinEventUrl}/${event.id}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i></a> /
+	    						<a href="${rejectEventUrl}/${event.id}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i></a>
+	    						
+							</c:when>
+							<c:when test="${ decision == 2}">
+								<i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i> /
+	    						<a href="${rejectEventUrl}/${event.id}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:grey;"></i></a>
+							</c:when>
+							<c:when test="${ decision == 3}">
+								<a href="${joinEventUrl}/${event.id}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color: grey;"></i></a> /
+	    						<i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i>
+							</c:when>
+						</c:choose>
+					</c:otherwise>
+	    		</c:choose>
 		</h1>
 		<ul>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Oświetlenie: Tak</li>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Bieżąca woda: Tak</li>
-			<li><i class="glyphicon glyphicon-thumbs-down"></i> Prysznic: Tak</li>
-			<li><i class="glyphicon glyphicon-road"></i> Nawierzchnia: Turf</li>
-			<li><i class="glyphicon glyphicon-hand-up"></i> Obowiązujące obuwie: Turf</li>
-			<li><i class="glyphicon glyphicon-user"></i> Animator: Francesco Totti</li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlik.getShower() == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlik.getShoes()}"/></li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy:<c:forEach items="${managers}" var="manager" varStatus="i">
+																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
+																	</c:forEach></li>
 		</ul>
 		<ul>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Aktualny status: Zagrożony</li>
-			<li><i class="glyphicon glyphicon-thumbs-up"></i> Liczba osób zaproszonych: 19</li>
-			<li><i class="glyphicon glyphicon-thumbs-down"></i> Nadanych praw zapraszania: 2</li>
+			<li> Aktualny status:<c:choose>
+									<c:when test="${ event.stateId == 1}"> <i class="glyphicon glyphicon-trash"></i> W koszu</c:when>
+									<c:when test="${ event.stateId == 2}"> <i class="glyphicon glyphicon-thumbs-down"></i> W budowie</c:when>
+									<c:when test="${ event.stateId == 3}"> <i class="glyphicon glyphicon-send"></i> Do akceptacji</c:when>
+									<c:when test="${ event.stateId == 4}"> <i class="glyphicon glyphicon-warning-sign"></i> Zagrożony</c:when>
+									<c:when test="${ event.stateId == 5}"> <i class="glyphicon glyphicon-thumbs-up"></i> Przyjęty</c:when>
+								</c:choose></li>
+			<li> Liczba osób zaproszonych: ${eventDetails.invitedPlayers}</li>
 		</ul>
 	</div>
 </div>
 
+
+</br>
+</br>
+</br>
 <div class="row">
 		<!-- Form Name -->
-<legend>Wezmą udział (7)</legend>
+<legend>Wezmą udział (${usersJoinedDecision.size()})</legend>
 <table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
-            <th data-field="eventDate" data-align="center" data-sortable="true">Prawo zapraszania</th>
-            <th data-field="eventTime" data-align="center" data-sortable="true">Zaproszony przez</th>
-            <th data-field="eventStatus" data-align="center" data-sortable="true" >Dołączył</th>
-            <th data-field="eventPlayers" data-align="center" data-sortable="true" >Poziom zaufania</th>
         </tr>
     </thead>
     <tbody>
+    <c:forEach items="${usersJoinedDecision }" var="user">
     	<tr>
-    		<td>Mateusz Tamborek</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>12.12.2014 22:58</td>
-    		<td>95%</td>    		
-    	</tr>
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>12.12.2014 13:57</td>
-    		<td>92%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Georgio Armani</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>13.12.2014 07:43</td>
-    		<td>91%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Stefano Alfano</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>11.12.2014 03:58</td>
-    		<td>89%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Miszcz Miszczów</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>10.12.2014 13:05</td>
-    		<td>90%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Kopacz Pospolity</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>09.12.2014 14:25</td>
-    		<td>99%</td> 
-    	</tr>
-    	<tr>
-    		<td>Ronaldo Messi</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>11.12.2014 12:51</td>
-    		<td>100%</td> 
-    	</tr>       	
+    		<td>${user.email }</td>		
+    	</tr> 
+    </c:forEach>      	
     </tbody>
 </table>
 </div>
-<div class="row" style="margin-top:40px">
+
+
+
+
+
+
+</br>
+</br>
+</br>
+<div class="row">
 		<!-- Form Name -->
-<legend>Niezdecydowani (7)</legend>
-<table data-toggle="table" id="table-pagination"   data-search="true" style="background-color:white">
+<legend>Niezdecydowani (${usersWithoutDecision.size()})</legend>
+<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
-            <th data-field="eventDate" data-align="center" data-sortable="true">Prawo zapraszania</th>
-            <th data-field="eventTime" data-align="center" data-sortable="true">Zaproszony przez</th>
-            <th data-field="eventStatus" data-align="center" data-sortable="true" >Wysłano</th>
-            <th data-field="eventPlayers" data-align="center" data-sortable="true" >Poziom zaufania</th>
         </tr>
     </thead>
     <tbody>
+    <c:forEach items="${usersWithoutDecision }" var="user">
     	<tr>
-    		<td>Mateusz Tamborek</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>12.12.2014 22:58</td>
-    		<td>95%</td>    		
-    	</tr>
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>12.12.2014 13:57</td>
-    		<td>92%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Georgio Armani</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>13.12.2014 07:43</td>
-    		<td>91%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Stefano Alfano</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>11.12.2014 03:58</td>
-    		<td>89%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Miszcz Miszczów</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>10.12.2014 13:05</td>
-    		<td>90%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Kopacz Pospolity</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>09.12.2014 14:25</td>
-    		<td>99%</td> 
-    	</tr>
-    	<tr>
-    		<td>Ronaldo Messi</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>11.12.2014 12:51</td>
-    		<td>100%</td> 
+    		<td>${user.email }</td>
     	</tr> 
+    </c:forEach>       	
     </tbody>
 </table>
 </div>
-<div class="row" style="margin-top:40px">
+
+</br>
+</br>
+</br>
+<div class="row">
 		<!-- Form Name -->
-<legend>Odrzucili (7)</legend>
-<table data-toggle="table" id="table-pagination"   data-search="true" style="background-color:white">
- <thead style="background-color:#999999">
+<legend>Odrzucili (${usersRejectedDecision.size()})</legend>
+<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+    <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
-            <th data-field="eventDate" data-align="center" data-sortable="true">Prawo zapraszania</th>
-            <th data-field="eventTime" data-align="center" data-sortable="true">Zaproszony przez</th>
-            <th data-field="eventStatus" data-align="center" data-sortable="true" >Odrzucił</th>
-            <th data-field="eventPlayers" data-align="center" data-sortable="true" >Poziom zaufania</th>
         </tr>
     </thead>
     <tbody>
+    <c:forEach items="${usersRejectedDecision }" var="user">
     	<tr>
-    		<td>Mateusz Tamborek</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>12.12.2014 22:58</td>
-    		<td>95%</td>    		
-    	</tr>
-    	<tr>
-    		<td>Mariusz Zych</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>12.12.2014 13:57</td>
-    		<td>92%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Georgio Armani</td>
-    		<td><i class="glyphicon glyphicon-ok"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>13.12.2014 07:43</td>
-    		<td>91%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Stefano Alfano</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>11.12.2014 03:58</td>
-    		<td>89%</td> 
-    	</tr>  
-    	<tr>
-    		<td>Miszcz Miszczów</td>
-    		<td><i class="glyphicon glyphicon-minus"></i></td>
-    		<td>Mariusz Zych</td>
-    		<td>10.12.2014 13:05</td>
-    		<td>90%</td> 
-    	</tr>  
+    		<td>${user.email }</td>
+    	</tr> 
+    </c:forEach>  	
     </tbody>
 </table>
 </div>
+
+</br>
+</br>
+</br>
+<div class="row">
+		<!-- Form Name -->
+<legend>Mogących tylko zapraszać (${usersPermittedOnly.size()})</legend>
+<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+    <thead style="background-color:#999999">
+        <tr>
+            <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
+        </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${usersPermittedOnly }" var="user">
+    	<tr>
+    		<td>${user.email }</td>
+    	</tr> 
+    </c:forEach>  	
+    </tbody>
+</table>
+</div>
+</br>
+</br>
+</br>
 <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />"></script>

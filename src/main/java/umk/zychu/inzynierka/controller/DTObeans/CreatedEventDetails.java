@@ -15,11 +15,22 @@ public class CreatedEventDetails {
 	
 	Graphic graphic;
 	
+	long invitedPlayers;
 	
+	
+	public long getInvitedPlayers() {
+		return invitedPlayers;
+	}
+
+	public void setInvitedPlayers(long invitedPlayers) {
+		this.invitedPlayers = invitedPlayers;
+	}
+
 	public CreatedEventDetails(Event event, Graphic graphic, Orlik orlik) {
 		this.event = event;
 		this.graphic = graphic;
 		this.orlik = orlik;
+		this.invitedPlayers = 0;
 	}
 	
 	public void setEvent(Event event){

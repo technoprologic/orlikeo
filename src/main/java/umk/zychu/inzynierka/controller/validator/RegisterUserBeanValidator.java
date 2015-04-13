@@ -10,7 +10,7 @@ import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.service.UserService;
 
 @Component
-public class    RegisterUserBeanValidator implements Validator {
+public class RegisterUserBeanValidator implements Validator {
 	
 	@Autowired
 	UserService userService;

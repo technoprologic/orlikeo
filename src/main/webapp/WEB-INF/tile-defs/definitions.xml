@@ -46,8 +46,11 @@
 	<definition name="details" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/detailsEvents.jsp" />
 	</definition>
-		<definition name="eventCreated" extends="defaultTemplate">
+	<definition name="eventCreated" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/eventCreated.jsp" />
+	</definition>
+	<definition name="eventEdit" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/eventEdit.jsp" />
 	</definition>
 	
 	<!-- Friends -->
@@ -56,6 +59,9 @@
 	</definition>
 		<definition name="searchFriends" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/searchFriends.jsp" />
+	</definition>
+	<definition name="editAccount" extends="defaultTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/editAccountForm.jsp" />
 	</definition>
 
 	

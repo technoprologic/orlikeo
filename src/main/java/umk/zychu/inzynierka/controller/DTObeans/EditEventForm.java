@@ -1,11 +1,12 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+public class EditEventForm extends RegisterEventForm{
 
+	public EditEventForm() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-
-public class ChoosenOrlikBean {
-
-	long Id;
 	long eventId;
 
 	public long getEventId() {
@@ -14,18 +15,6 @@ public class ChoosenOrlikBean {
 
 	public void setEventId(long eventId) {
 		this.eventId = eventId;
-	}
-
-	public ChoosenOrlikBean() {
-		Id = -1;
-	}
-
-	public void setId(long id) {
-		Id = id;
-	}
-
-	public long getId() {
-		return Id;
 	}
 	
 	

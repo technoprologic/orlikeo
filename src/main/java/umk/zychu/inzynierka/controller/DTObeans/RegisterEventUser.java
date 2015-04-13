@@ -2,6 +2,12 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 public class RegisterEventUser {
 	
+	public RegisterEventUser() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	long userId;
 	boolean allowed;
 	boolean invited;
@@ -25,8 +31,8 @@ public class RegisterEventUser {
 		return this.allowed;
 	}
 	
-	public void setInvited(boolean invited){
-		this.invited = invited;
+	public void setInvited(boolean decision){
+		this.invited = decision;
 	}
 	
 	public boolean getInvited(){
@@ -59,13 +65,11 @@ public class RegisterEventUser {
 		return this.position;
 	}
 	
-	public RegisterEventUser(){}
-	
-	
-	public RegisterEventUser(long userId, boolean hasRight, boolean isInvited, String email, int age, String position){
+
+	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, int age, String position){
 		this.userId = userId;
 		this.allowed = hasRight;
-		this.invited = isInvited;
+		this.invited = decision;
 		this.email = email;
 		this.age = age;
 		this.position = position;

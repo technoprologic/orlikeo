@@ -8,6 +8,8 @@ public class RegisterEventForm {
 	
 	private int usersLimit;
 	
+	
+	
 	private List<RegisterEventUser> userFriends;
 
 	

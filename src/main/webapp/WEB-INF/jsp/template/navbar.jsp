@@ -5,6 +5,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
+<c:set var="username"   scope="session"  value="${username}"/>
+
 <c:url value="/home" var="homeUrl" />
 <c:url value="/account/profile" var="profileUrl" />
 <c:url value="/events/create" var="createEventUrl" />
@@ -12,6 +14,9 @@
 <c:url value="/events/list" var="EventsUrl" />
 <c:url value="/friends" var="friendsUrl" />
 <c:url value="/friends/search" var="searchFriends" />
+
+
+
 
 <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -24,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="${homeUrl}">Orlikeo!</a>
+                <a class="navbar-brand" href="${homeUrl}"><i class="glyphicon glyphicon-globe"></i>rlikeo!</a>
             </div>
             
             
@@ -114,7 +119,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <sec:authentication property="principal.username"/> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="${profileUrl}"><i class="glyphicon glyphicon-cog"></i> Profil</a>
+                            <a href="${profileUrl}/<c:out value="${username}" />"><i class="glyphicon glyphicon-cog"></i> Profil</a>
                         </li>
                         <li>
                             <a href="#"><i class="glyphicon glyphicon-envelope"></i> Skrzynka</a>

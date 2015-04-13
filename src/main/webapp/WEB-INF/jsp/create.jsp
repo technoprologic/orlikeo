@@ -7,18 +7,26 @@
 
 <c:url value="/events/graphic" var="terminarzUrl" />
 
+<c:if test="${ not empty eventId } ">
+</c:if>
+
+
+
+
+<c:choose>
+	<c:when test="${ not empty eventId }"><c:url value="/events/editGraphic" var="terminarzUrl" /></c:when>
+	<c:otherwise><c:url value="/events/graphic" var="terminarzUrl" /></c:otherwise>
+</c:choose>
+
+
+
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Nowe wydarzenie / Zmień miejsce <small><i
-				class="glyphicon glyphicon-picture"></i> Wybór orlika / Orlik Toruń
-				Sp9 ul.Rzepakowa 9 </small>
+			Wybierz orlik <small><i
+				class="glyphicon glyphicon-picture"></i></small>
 		</h1>
-		<ol class="breadcrumb">
-			<li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
-			 <a href="<%=request.getContextPath()%>/events/graphic/1">Grafik</a>
-		</ol>
 	</div>
 </div>
 <div class="container">
@@ -35,6 +43,9 @@
 							    <form:options items="${orliks}" placeholder="${Placeholder}"/>
 							</form:select>
 						</div>
+						<c:if test="${not empty eventId}">
+							<form:hidden path="eventId" value="${eventId}"/>
+						</c:if>
 						<form:button type="submit" class="btn btn-primary pull-right"
 							id="btnContactUs">Dalej</form:button>
 					</form:form>

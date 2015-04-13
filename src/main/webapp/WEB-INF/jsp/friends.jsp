@@ -5,7 +5,7 @@
 
 
 
-<c:url value="/friends/user" var="detailsUrl" />
+<c:url value="/friends/userDetail" var="detailsUrl" />
 <c:url value="/friends/acceptUser" var="acceptUserUrl" />
 
 
@@ -37,7 +37,7 @@
     	<tr>
     		<td>${name} ${surname}</td>
     		<td>${email}</td>		
-    		<td><a href="${detailsUrl}?id=${userId}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsUrl}/${email}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>    		
     	</tr>  
    </c:forEach>     	
@@ -78,9 +78,9 @@
 		<c:set var="userId"  value="${ friend.id }"/>
     	<tr>
     		<td>${name} ${surname}</td>
-    		<td>${ email } oko</td>		
+    		<td>${ email } </td>		
     		<td>
-    		<a href="${detailsUrl}/${ email }" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>	    
+    		<a href="${detailsUrl}/${email}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>	    
 		    <div class="modal fade" id="confirm-add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		        <div class="modal-dialog">
 		            <div class="modal-content">
@@ -141,7 +141,7 @@
     	<tr>
     		<td>${name} ${surname}</td>
     		<td>${email}</td>		
-    		<td><a href="${detailsUrl}?id=${userId}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
+    		<td><a href="${detailsUrl}/${email}" title="Szczegóły"> <i class="glyphicon glyphicon-eye-open"></i></a>
     		</td>    		
     	</tr>  
    </c:forEach>     	

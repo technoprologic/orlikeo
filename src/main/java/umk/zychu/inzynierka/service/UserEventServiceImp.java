@@ -30,7 +30,7 @@ public class UserEventServiceImp implements UserEventService {
 	
 	
 	@Override
-	public List<UsersEventDetail> getUsersEventdetail(Event event) {
+	public List<UsersEventDetail> getUsersEventDetail(Event event) {
 		
 		return userEventDAO.getUsersEventDetail(event);
 	}

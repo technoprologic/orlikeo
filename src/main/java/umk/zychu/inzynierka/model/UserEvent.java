@@ -15,6 +15,21 @@ import javax.persistence.Table;
 public class UserEvent extends BaseEntity implements Serializable {
 	
 	
+	public UserEvent() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public UserEvent(long userId, long roleId, long userDecision,
+			boolean userPermission, long eventId) {
+		super();
+		this.userId = userId;
+		this.roleId = roleId;
+		this.userDecision = userDecision;
+		this.userPermission = userPermission;
+		this.eventId = eventId;
+	}
+
 	@Column(name = "user_id")
 	long userId;
 	

@@ -5,14 +5,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-
-<c:url value="/events/reserve" var="reserveUrl" />
+<c:choose>
+	<c:when test="${not empty evId }"><c:url value="/events/reserve/${evId}" var="reserveUrl" /></c:when>
+	<c:otherwise><c:url value="/events/reserve" var="reserveUrl" /></c:otherwise>
+</c:choose>
 
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Grafik <small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both" 
+			Grafik ${eventId}<small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both" 
       pattern="dd-MM-yyyy-HH-mm" /> Orlik <c:out value="${orlikInfo.city}" /> ul. <c:out value="${orlikInfo.address}" /></small>
 		</h1>
 		<ul>
@@ -38,6 +40,7 @@
 					value.start = new Date(value.start);
 					value.end = new Date(value.end);
 					value.url = '${reserveUrl}/' + value.id;
+					
 				});
 
 			 /*   alert(JSON.stringify(json));  */

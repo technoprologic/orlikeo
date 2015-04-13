@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.repository.query.Param;
 
 import umk.zychu.inzynierka.controller.DTObeans.CreatedEventDetails;
+import umk.zychu.inzynierka.controller.DTObeans.EditEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
@@ -24,7 +25,7 @@ public interface EventService {
 	Optional<Event> getEventById(long id);
 	List<UserEvent> getUserEvent(long id);
 	
-	List<CreatedEventDetails> getEventAndGraphicAndOrlikByEvent(Event event);
+	CreatedEventDetails getEventAndGraphicAndOrlikByEvent(Event event);
 	
 	List<UserGameInfo> getAllUserEventsByState(User user, long stateId);
 	List<UserGameDetails> getGamesDetails(User user);
@@ -36,4 +37,8 @@ public interface EventService {
 	int isInvitedOnTheEvent(User user, long eventId);
 	void setJoinDecision(long userId, long eventId);
 	void setQuitDecision(long userId, long eventId);
+	String getEventUserOrganizerEmail(Event event);
+	void deleteEventById(long id);
+	void updateEvent(EditEventForm form);
+	void updateEventGraphic(long eventId, long graphicId);
 }

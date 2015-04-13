@@ -42,24 +42,24 @@
 			<c:forEach items="${eventWindowsList}" var="windowBlock" varStatus="i">
 				<c:choose>
 			    	<c:when test="${not empty windowBlock }">
-					    <c:set var="willCome" scope="session" value="${ windowBlock.goingToCome }"/>
-						<c:set var="limit" scope="session" value="${ windowBlock.playersLimit }"/>
-						<c:set var="address" scope="session" value="${ windowBlock.address }"/>
-						<c:set var="city" scope="session" value="${ windowBlock.city }"/>
-						<c:set var="start" scope="session" value="${ windowBlock.startTime }"/>
-						<c:set var="end" scope="session" value="${ windowBlock.endTime }"/>
-						<c:set var="state" scope="session" value="${ windowBlock.stateId }"/>
-						<c:set var="inSameState" scope="session" value="${ windowBlock.countedInSameState }"/>
+					    <c:set var="willCome"  value="${ windowBlock.goingToCome }"/>
+						<c:set var="limit"  value="${ windowBlock.playersLimit }"/>
+						<c:set var="address"  value="${ windowBlock.address }"/>
+						<c:set var="city"  value="${ windowBlock.city }"/>
+						<c:set var="start"  value="${ windowBlock.startTime }"/>
+						<c:set var="end"  value="${ windowBlock.endTime }"/>
+						<c:set var="state"  value="${ windowBlock.stateId }"/>
+						<c:set var="inSameState"  value="${ windowBlock.countedInSameState }"/>
 			    	</c:when>
 			    	<c:otherwise>
-			        	<c:set var="willCome" scope="session" value="0"/>
-						<c:set var="limit" scope="session" value="0"/>
-						<c:set var="address" scope="session" value="brak"/>
-						<c:set var="city" scope="session" value="brak"/>
-						<c:set var="start" scope="session" value="${ null }"/>
-						<c:set var="end" scope="session" value="${ null }"/>
-						<c:set var="state" scope="session" value="${ null }"/>
-						<c:set var="inSameState" scope="session" value="0"/>
+			        	<c:set var="willCome"  value="0"/>
+						<c:set var="limit"  value="0"/>
+						<c:set var="address"  value="brak"/>
+						<c:set var="city"  value="brak"/>
+						<c:set var="start"  value="${ null }"/>
+						<c:set var="end"  value="${ null }"/>
+						<c:set var="state"  value="${ null }"/>
+						<c:set var="inSameState"  value="0"/>
 			    	</c:otherwise>
 				</c:choose>
 				

@@ -41,15 +41,15 @@
     <tbody>
 		<c:forEach items="${ userGamesDetailsList }"  var="event" varStatus="i" >
 		
-			<c:set var="address" scope="session" value="${ event.address }"/>
-			<c:set var="eventId" scope="session" value="${ event.eventId }"/>
+			<c:set var="address" value="${ event.address }"/>
+			<c:set var="eventId"  value="${ event.eventId }"/>
 			<c:set var="stateId"  value="${ event.stateId }"/>
-			<c:set var="decisionId" scope="session" value="${ event.userEvent.userDecision }"/>
-			<c:set var="roleId" scope="session" value="${ event.userEvent.roleId }"/>
-			<c:set var="userPermission" scope="session" value="${ event.userEvent.userPermission }"/>
-			<c:set var="graphic" scope="session" value="${ event.graphic }"/>
-			<c:set var="players" scope="session" value="${ event.willCome }"/>
-			<c:set var="limit" scope="session" value="${ event.playersLimit }"/>
+			<c:set var="decisionId"  value="${ event.userEvent.userDecision }"/>
+			<c:set var="roleId"  value="${ event.userEvent.roleId }"/>
+			<c:set var="userPermission"  value="${ event.userEvent.userPermission }"/>
+			<c:set var="graphic"  value="${ event.graphic }"/>
+			<c:set var="players"  value="${ event.willCome }"/>
+			<c:set var="limit" value="${ event.playersLimit }"/>
 
     	<tr>
     		<td>${ address } </td>

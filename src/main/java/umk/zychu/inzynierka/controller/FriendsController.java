@@ -9,12 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.servlet.ModelAndView;
 
+import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.service.UserService;
 
@@ -42,8 +44,7 @@ public class FriendsController {
 		
 		List<User> friendsReceivedRequests = userService.getReceivedUserFriendshipRequests(user);
 		model.addAttribute("friendsReceivedRequests", friendsReceivedRequests);
-		
-		
+			
 		return "friends";
 	}
 	
@@ -117,7 +118,6 @@ public class FriendsController {
 
 
 
-
 	@RequestMapping(value="/acceptUser", method = RequestMethod.GET)
 	public String acceptFriendRequest(@RequestParam("email") String email){
 		try{	
@@ -130,6 +130,74 @@ public class FriendsController {
 	}
 
 
+	
+	@RequestMapping(value="/userDetail/{email:.+}", method = RequestMethod.GET)
+	public String otherUserProfile(@PathVariable("email") String email, ModelMap model){
+		
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		User userRequest = userService.getUser(email);
+		boolean allowToSeeProfile = true;
+		
+		if(!userService.checkIfTheyHadContacted(user, userRequest)){
+			model.addAttribute("contact", "without");
+		}else{
+			Friendship friendship = userService.getUsersFriendship(user, userRequest);
+			if(friendship != null){
+				System.out.println("user1: " + friendship.getFriendRequester().getEmail() 
+								+ " user1: " + friendship.getFriendAccepter().getEmail()
+								+ " actionUser: " + friendship.getActionUser().getEmail()
+								+ " state: " + friendship.getState());
 
+				int friendshipState = friendship.getState();
+				long actionUserId = friendship.getActionUserId();
+				
+				switch(friendshipState){
+					case 1:if(user.getId() == actionUserId){
+								model.addAttribute("contact", "pendingRequester");
+							}else{
+								model.addAttribute("contact", "pendingReceiver");
+							}
+							break;
+					case 2: model.addAttribute("contact", "friends");
+							break;
+					case 3:if(user.getId() == actionUserId){
+						model.addAttribute("contact", "decliner");
+					}else{
+						model.addAttribute("contact", "declined");
+					}
+					allowToSeeProfile = false;
+					break;
+					case 4:if(user.getId() == actionUserId){
+								model.addAttribute("contact", "blocker");
+							}else{
+								model.addAttribute("contact", "blocked");
+							}
+							allowToSeeProfile = false;
+							break;
+				}
+			}
+		}
+		if(allowToSeeProfile){
+			model.addAttribute("user", userRequest);
+		}
+		return "profile";
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

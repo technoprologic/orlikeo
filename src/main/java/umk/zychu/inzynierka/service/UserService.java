@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
+import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.User;
@@ -24,4 +26,8 @@ public interface UserService {
 	List<User> getReceivedUserFriendshipRequests(User user);
 	void inviteUserToFriends(User user, User invitedUser);
 	void accceptUserInvitation(String email);
+	Friendship getUsersFriendship(User user, User userRequest);
+	boolean checkOldPasswordCorrectness(String oldPassword);
+	void changePassword(ChangePasswordForm form);
+	void updateUserDetails(EditAccountForm form);
 }

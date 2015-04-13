@@ -41,13 +41,13 @@ public class HomeController {
 	
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView home(ModelMap model) {
-		
+	public ModelAndView home(ModelMap model) {	
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		List<EventWindowBlock> eventWindowBlockList = eventService.getEventsBlockWindowList(user);
 		debug(eventWindowBlockList);
 		model.addAttribute("eventWindowsList", eventWindowBlockList );
 		model.addAttribute("page", "fast");
+		model.put("username", SecurityContextHolder.getContext().getAuthentication().getName());
 		return new ModelAndView("home");
 	}
 	

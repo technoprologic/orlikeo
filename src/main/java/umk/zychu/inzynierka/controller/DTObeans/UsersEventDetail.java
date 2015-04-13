@@ -19,7 +19,7 @@ public class UsersEventDetail {
 		this.userEvent = userEvent;
 	}
 	
-	public UserEvent getuserEvent(){
+	public UserEvent getUserEvent(){
 		return this.userEvent;
 	}
 	

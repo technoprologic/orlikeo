@@ -15,91 +15,46 @@
 
 <div class="container">
 <div class="row" style="padding: 50px 0px">
-	<div class="col-sm-6 col-md-4 col-md-offset-4 vcenter">
-	        <h1 class="text-center login-title">Zarejestruj nowe konto</h1>
-	                <div class="account-wall">
-		<form:form action="${registerUrl}" class="form-signin" modelAttribute="registerUserBean" method="POST" >
-			<div class="form-group">
-				<form:label path="email"><spring:message code="web.register.email.label"/></form:label>
-				<br/>
-				<form:errors path="email" cssClass="error" />
-				<spring:message code="web.register.email.placeholder" var="emailPlaceholder"/>
-				<form:input path="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" required="required"  placeholder="${emailPlaceholder}"  class="form-control" />
-			</div>
+	<div class="col-sm-6 col-md-4 col-md-offset-4 vcenter"><h1 class="text-center login-title">Zarejestruj nowe konto</h1>
+		<div class="account-wall">
+			<form:form action="${registerUrl}" class="form-signin" modelAttribute="registerUserBean" method="POST" >
+				
 				<div class="form-group">
-				<form:label path="password"><spring:message code="web.register.password.label"/></form:label>
-				<br/>
-				<form:errors path="password" cssClass="error"/>
-				<spring:message code="web.register.password.placeholder" var="passwordPlaceholder"/>
-				<form:password path="password" required="required" placeholder="${passwordPlaceholder}" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label><spring:message code="web.register.repeated_password.label"/></label>
-				<br/>
-				<form:errors path="repeatedPassword" cssClass="error"/>
-				<spring:message code="web.register.repeated_password.placeholder" var="repeatedPasswordPlaceholder" />
-				<form:password path="repeatedPassword" required="required" placeholder="${repeatedPasswordPlaceholder}" class="form-control"  />
-			</div>
-			<div class="form-group">
-				<form:checkbox path="acceptRegulation"/>
-				<label><spring:message code="web.register.regulation.accept"/> <a href="${regulation} }"><spring:message code="web.register.regulation.link_label"/></a></label>
-				<br/>
-				<form:errors path="acceptRegulation" cssClass="error"/>
-			</div>
-			<button class="btn btn-lg btn-success btn-block" type="submit">
-				<spring:message code="web.register.submit_button.label"/> 
-			</button>
-		</form:form>
-	</div>
-	</div>
-</div>
-</div>
-
-
-<%-- 
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm-6 col-md-4 col-md-offset-4">
-        <h1 class="text-center login-title">Zarejestruj nowe konto</h1>
-        <div class="account-wall">
-            <form method="get" class="form-signin" action="${register}">
-            
-				<div class="form-group">
-        			<label for="validate-text">Imię</label>
-					<div class="input-group">
-						<input type="text" class="form-control" name="validate-text" id="validate-text"  required>
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
-				</div>
-						
-				<div class="form-group">
-        			<label for="validate-text">Nazwisko</label>
-					<div class="input-group">
-						<input type="text" class="form-control" name="validate-text" id="validate-text"  required>
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
+					<form:label path="email"><spring:message code="web.register.email.label"/></form:label>
+					<br/>
+					<form:errors path="email" cssClass="error" />
+					<spring:message code="web.register.email.placeholder" var="emailPlaceholder"/>
+					<form:input path="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" required="required"  placeholder="${emailPlaceholder}"  class="form-control" />
 				</div>
 				
 				<div class="form-group">
-        			<label for="validate-email">Adres e-mail</label>
-					<div class="input-group" data-validate="email">
-						<input type="text" class="form-control" name="validate-email" id="validate-email"  required>
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
+					<form:label path="password"><spring:message code="web.register.password.label"/></form:label>
+					<br/>
+					<form:errors path="password" cssClass="error"/>
+					<spring:message code="web.register.password.placeholder" var="passwordPlaceholder"/>
+					<form:password path="password" required="required" placeholder="${passwordPlaceholder}" class="form-control" />
 				</div>
-				
+			
 				<div class="form-group">
-        			<label for="validate-text">Hasło</label>
-					<div class="input-group">
-						<input type="password" class="form-control" name="validate-text" id="validate-text"  required>
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
+					<label><spring:message code="web.register.repeated_password.label"/></label>
+					<br/>
+					<form:errors path="repeatedPassword" cssClass="error"/>
+					<spring:message code="web.register.repeated_password.placeholder" var="repeatedPasswordPlaceholder" />
+					<form:password path="repeatedPassword" required="required" placeholder="${repeatedPasswordPlaceholder}" class="form-control"  />
 				</div>
-                <button type="submit" class="btn btn-lg btn-primary btn-block" disabled>Zarejestruj</button>
-            </form>
-            </div>
-        </div>
-    </div>
-</div> --%>
+			
+				<div class="form-group">
+					<form:checkbox path="acceptRegulation"/>
+					<label><spring:message code="web.register.regulation.accept"/> <a href="${regulation}"><spring:message code="web.register.regulation.link_label"/></a></label>
+					<br/>
+					<form:errors path="acceptRegulation" cssClass="error"/>
+				</div>
+			
+				<button class="btn btn-lg btn-success btn-block" type="submit">
+					<spring:message code="web.register.submit_button.label"/> 
+				</button>
+			</form:form>
+		</div>
+	</div>
+</div>
+</div>

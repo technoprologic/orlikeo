@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
+import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.FriendshipPK;
@@ -29,23 +31,29 @@ public class UserServiceImpl implements UserService {
 	FriendshipDaoRepository friendshipDAO;
 	
 	
-	
+
 	@Override
 	public User getUser(String email) {
 		return userDAO.getUserByEmail(email);
 	}
+	
+	
 	
 	@Override
 	public void saveUser(User user) {
 		userDAO.save(user);
 	}
 
+	
+	
 	@Override
 	public boolean checkIfUserExists(String email) {
 		
 		return userDAO.getUserByEmail(email)!=null;
 	}
 
+	
+	
 	@Override
 	public void createNewUser(RegisterUserBean registerUserBean) {
 		User newUser = new User();
@@ -54,19 +62,13 @@ public class UserServiceImpl implements UserService {
 		saveUser(newUser);
 	}
 
-/*	@Override
-	public List<User> getUserFriends(String email) {
-		return userDAO.getUserFriends(email);
-	}*/
 
-	@Override
-	public List<User> getUserFriendships(User user) {
-		// TODO Auto-generated method stub
 		
+	@Override
+	public List<User> getUserFriendships(User user) {		
 		  List<User> friends  = new ArrayList<User>();
 		  List<Friendship> friendships = friendshipDAO.getUserFriendships(user);
 		  
-
 		  Iterator<Friendship> iterator = friendships.iterator();
 		  while (iterator.hasNext()) {
 		     Friendship friendship = (Friendship) iterator.next();
@@ -85,10 +87,8 @@ public class UserServiceImpl implements UserService {
 		  return friends;
 	}
 	
-	
-	
-	
-	
+		
+
 	@Override
 	public boolean checkIfTheyHadContacted(User userRequest1, User userRequest2) {
 
@@ -118,6 +118,8 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	
+	
 	@Override
 	public List<User> getPendedUserFriendshipRequests(User user) {
 		  List<User> friendsPendedRequests  = new ArrayList<User>();
@@ -136,7 +138,6 @@ public class UserServiceImpl implements UserService {
 		  return friendsPendedRequests;
 	}
 
-	
 	
 	
 	@Override
@@ -159,32 +160,9 @@ public class UserServiceImpl implements UserService {
 
 	
 	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void inviteUserToFriends(User user, User invitedUser) {
-/*		
-		Friendship friendship = new Friendship();
-		if(user.getId() > invitedUser.getId()){
-			friendship.setFriendRequester(user);
-			friendship.setFriendAccepter(invitedUser);
 
-		}
-		
-		if(invitedUser.getId() > user.getId() ){
-			friendship.setFriendRequester(invitedUser);
-			friendship.setFriendAccepter(user);
-		}
-		
-		friendship.setActionUser(user);
-		friendship.setState(1);
-		friendshipDAO.save(friendship);*/
-		
-		
 		Friendship friendship = new Friendship();
 		
 		
@@ -206,43 +184,54 @@ public class UserServiceImpl implements UserService {
 
 	
 	
-	
-	
-	
-	
 	@Override
 	public void accceptUserInvitation(String email) {
-		// TODO Auto-generated method stub
 		User user = getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		User userToAccept = getUser(email);
-		
-/*		if(user.getId() > userToAccept.getId())
-			friendshipDAO.acceptFriendship(user.getId(), userToAccept.getId(), user.getId());
-		else if(user.getId() < userToAccept.getId())
-			friendshipDAO.acceptFriendship(userToAccept.getId(), user.getId(), user.getId());*/
-		
+	
 		if(user.getId() > userToAccept.getId())
 			friendshipDAO.acceptFriendship(user, userToAccept, user);
 		else if(user.getId() < userToAccept.getId())
 			friendshipDAO.acceptFriendship(userToAccept, user, user);
 	}
+
+	
+		
+	@Override
+	public Friendship getUsersFriendship(User user, User userRequest) {
+		Friendship friendship = friendshipDAO.getUsersFriendship(user, userRequest);
+		return friendship;
+	}
+
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public boolean checkOldPasswordCorrectness(String oldPassword) {
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		if(userDAO.checkOldPasswordCorrectness(user, oldPassword) > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
+
+	@Override
+	public void changePassword(ChangePasswordForm form) {	
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		userDAO.changeUserPassword(user, form.getOldPassword(), form.getNewPassword());
+	}
+
+
+
+	@Override
+	public void updateUserDetails(EditAccountForm form) {
+		// TODO Auto-generated method stub
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		userDAO.updateUserDetails(user, form.getName(), form.getSurname(), form.getAge(), form.getPosition(), form.getWeight(), form.getHeight(), form.getFoot());
+		
+	}
 	
 	
 	

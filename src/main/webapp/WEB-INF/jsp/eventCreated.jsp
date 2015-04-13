@@ -10,8 +10,8 @@
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/graphic" var="graphicEventUrl" />
 
-<c:set var="graphic" scope="session" value="${eventDetails.graphic}"/>
-<c:set var="orlik" scope="session" value="${eventDetails.orlik }"/>
+<c:set var="graphic"  value="${eventDetails.graphic}"/>
+<c:set var="orlik"    value="${eventDetails.orlik }"/>
 
 
 
@@ -28,7 +28,9 @@
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlik.getShower() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlik.getShoes()}"/></li>
-			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: Francesco Totti, Angela Merkel, Tusek Złodziejaszek</li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: <c:forEach items="${managers}" var="manager" varStatus="i">
+																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
+																	</c:forEach></li>
 		</ul>
 	</div>
 </div>
@@ -45,10 +47,10 @@
 			</thead>
 			<tbody>
 			<c:forEach items="${ usersEventDetailList }" var="usersEventDetail" varStatus="i">   
-			<c:set var="decision" scope="session" value="${ usersEventDetail.userEvent.userDecision }"/>  
-			<c:set var="permission" scope="session" value="${ usersEventDetail.userEvent.userPermission }"/> 
-			<c:set var="email" scope="session" value="${ usersEventDetail.user.email}"/>
-			<c:set var="userPrincipal" scope="session" value="${ pageContext.request.userPrincipal }"/>               
+			<c:set var="decision"  value="${ usersEventDetail.userEvent.userDecision }"/>  
+			<c:set var="permission"  value="${ usersEventDetail.userEvent.userPermission }"/> 
+			<c:set var="email"  value="${ usersEventDetail.user.email}"/>
+			<c:set var="userPrincipal"  value="${ pageContext.request.userPrincipal }"/>               
                     <tr>
 					<td>${ permission ? "TAK" : "NIE" }</td>
 					<td><c:choose>

@@ -7,7 +7,7 @@ import umk.zychu.inzynierka.model.Event;
 
 public interface UserEventService {
 	List<Object[]> getJoinTest(long id);
-	List<UsersEventDetail> getUsersEventdetail(Event event);
+	List<UsersEventDetail> getUsersEventDetail(Event event);
 
 	
 }
