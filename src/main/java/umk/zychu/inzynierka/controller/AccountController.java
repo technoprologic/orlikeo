@@ -1,6 +1,8 @@
 package umk.zychu.inzynierka.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,11 +23,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.controller.validator.ChangingPasswordFormValidator;
 import umk.zychu.inzynierka.controller.validator.EditAccountFormValidator;
 import umk.zychu.inzynierka.model.User;
@@ -34,6 +35,7 @@ import umk.zychu.inzynierka.service.*;
 @RequestMapping("/account")
 public class AccountController {
 	
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
 	@Autowired
@@ -55,6 +57,8 @@ public class AccountController {
 	
 	@InitBinder("editAccountForm")
 	private void initBinder2(WebDataBinder binder){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 		binder.setValidator(editAccountFormValidator);
 	}
 
@@ -101,7 +105,7 @@ public class AccountController {
 		EditAccountForm form = new EditAccountForm(
 				user.getName(), 
 				user.getSurname(), 
-				user.getAge(), 
+				user.getDateOfBirth(), 
 				user.getPosition(), 
 				user.getWeight(), 
 				user.getHeight(), 

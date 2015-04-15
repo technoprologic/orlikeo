@@ -36,13 +36,13 @@
 					<form:input  path="surname" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,45}" type="text" class="form-control"  placeholder="${ surnamePlaceholder }" />
 				</div>
         		
-        		<!-- age -->
+        		<!-- dateOfBirth -->
                 <div class="form-group">
-					<form:label path="age"><spring:message code="web.account.edit.age.label"/></form:label>
+					<form:label path="dateOfBirth"><spring:message code="web.account.edit.birthdate.label"/></form:label>
 					<br/>	
-					<form:errors path="age" cssClass="error" />
-					<spring:message code="web.account.edit.age.placeholder" var="agePlaceholder"/>
-					<form:input  path="age" pattern="[0-9]{1,3}" type="text" class="form-control"  placeholder="${ agePlaceholder }"/>
+					<form:errors path="dateOfBirth" cssClass="error" />
+					<spring:message code="web.account.edit.birthdate.placeholder" var="birthdatePlaceholder"/>
+					<form:input  path="dateOfBirth"  pattern="(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.](19|20|)\d\d" type="text" class="form-control"  placeholder="${ birthdatePlaceholder }"/>
 				</div>
         		
         		<!-- position -->

@@ -1,17 +1,22 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import java.time.LocalDate;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class EditAccountForm {
 
 	public EditAccountForm() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public EditAccountForm(String name, String surname, int age,
+	public EditAccountForm(String name, String surname, Date dateOfBirth,
 			String position, int weight, int height, String foot) {
 		super();
 		this.name = name;
 		this.surname = surname;
-		this.age = age;
+		this.dateOfBirth = dateOfBirth;
 		this.position = position;
 		this.weight = weight;
 		this.height = height;
@@ -30,11 +35,11 @@ public class EditAccountForm {
 		this.surname = surname;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
-	public void setAge(int age) {
-		this.age = age;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 	public String getPosition() {
 		return position;
@@ -62,7 +67,8 @@ public class EditAccountForm {
 	}
 	String name;
 	String surname;
-	int age;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	Date dateOfBirth;
 	String position;
 	int weight;
 	int height;

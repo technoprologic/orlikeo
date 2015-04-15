@@ -1,5 +1,7 @@
 package umk.zychu.inzynierka.repository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,11 +32,11 @@ public interface UserDaoRepository extends BaseRepository<User, Long>{
 	
 	
 	
-	public static final String UPDATE_USER_DETAILS = "UPDATE User u SET u.name = :name, u.surname = :surname, u.age = :age, "
+	public static final String UPDATE_USER_DETAILS = "UPDATE User u SET u.name = :name, u.surname = :surname, u.dateOfBirth = :birthday, "
 			 + "u.position = :position, u.weight = :weight, u.height = :height, u.foot = :foot WHERE u = :user";
 	@Modifying
 	@Query(UPDATE_USER_DETAILS)
-	void updateUserDetails(@Param("user") User user, @Param("name") String name, @Param("surname") String surname, @Param("age") int age,
+	void updateUserDetails(@Param("user") User user, @Param("name") String name, @Param("surname") String surname, @Param("birthday") Date date,
 			@Param("position") String position, @Param("weight") int weight, @Param("height") int height, @Param("foot") String foot);
 	
 		

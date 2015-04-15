@@ -1,5 +1,8 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 public class RegisterEventUser {
 	
 	public RegisterEventUser() {
@@ -12,7 +15,7 @@ public class RegisterEventUser {
 	boolean allowed;
 	boolean invited;
 	String email;
-	int age;
+	Date dateOfBirth;
 	String position;
 	
 	public void setUserId(long userId){
@@ -47,12 +50,12 @@ public class RegisterEventUser {
 		return this.email;
 	}
 	
-	public void setAge(int age){
-		this.age = age;
+	public void setDateOfBirth(Date dateOfBirth){
+		this.dateOfBirth = dateOfBirth;
 	}
 	
-	public int getAge(){
-		return this.age;
+	public Date getDateOfBirth(){
+		return this.dateOfBirth;
 	}
 	
 	
@@ -66,12 +69,12 @@ public class RegisterEventUser {
 	}
 	
 
-	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, int age, String position){
+	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, Date dateOfBirth, String position){
 		this.userId = userId;
 		this.allowed = hasRight;
 		this.invited = decision;
 		this.email = email;
-		this.age = age;
+		this.dateOfBirth = dateOfBirth;
 		this.position = position;
 	}
 	

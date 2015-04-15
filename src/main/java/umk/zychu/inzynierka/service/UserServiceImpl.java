@@ -229,7 +229,7 @@ public class UserServiceImpl implements UserService {
 	public void updateUserDetails(EditAccountForm form) {
 		// TODO Auto-generated method stub
 		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-		userDAO.updateUserDetails(user, form.getName(), form.getSurname(), form.getAge(), form.getPosition(), form.getWeight(), form.getHeight(), form.getFoot());
+		userDAO.updateUserDetails(user, form.getName(), form.getSurname(), form.getDateOfBirth(), form.getPosition(), form.getWeight(), form.getHeight(), form.getFoot());
 		
 	}
 	

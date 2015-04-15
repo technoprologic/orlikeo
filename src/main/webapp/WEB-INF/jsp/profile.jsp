@@ -69,8 +69,8 @@
                         <td><a href="mailto:${user.email}">${user.email}</a></td>
                       </tr>
                       <tr>
-						<td>Wiek:</td>
-                        <td>${user.age}</td>
+						<td>Data urodzenia:</td>
+                        <td><fmt:formatDate value="${user.dateOfBirth}" type="both" pattern="dd.MM.yyyy" /></td>
                       </tr>
                       <tr>
 						<td>Pozycja:</td>

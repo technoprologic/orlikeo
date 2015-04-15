@@ -1,8 +1,8 @@
 package umk.zychu.inzynierka.model;
  
  
-import java.util.ArrayList;
-import java.util.Collection;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @SuppressWarnings("serial")
 @Entity
@@ -33,8 +34,10 @@ public class User extends BaseEntity
 	@Column(name = "surname")
 	String surname;
 	
-	@Column(name = "age")
-	int age;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "date_of_birth")
+	Date dateOfBirth;
 	
 	@Column(name = "position")
 	String position;
@@ -110,12 +113,12 @@ public class User extends BaseEntity
 		this.surname = surname;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 	
-	public void setAge(int age){
-		this.age = age;
+	public void setDateOfBirth(Date dateOfBirth){
+		this.dateOfBirth = dateOfBirth;
 	}
 	
 	

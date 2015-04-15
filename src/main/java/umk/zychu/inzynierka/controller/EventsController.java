@@ -182,7 +182,7 @@ public class EventsController {
 			List<User> userFriends = userService.getUserFriendships(loggedUser);
 			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
 			for(User user : userFriends){
-				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getAge(), user.getPosition());
+				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getDateOfBirth(), user.getPosition());
 				users.add(e);
 			}
 			
@@ -439,7 +439,7 @@ public class EventsController {
 															userEvent.getUserPermission(), 
 															decision, 
 															userEvent.getUser().getEmail(), 
-															userEvent.getUser().getAge(), 
+															userEvent.getUser().getDateOfBirth(), 
 															userEvent.getUser().getPosition());
 					users.add(e);
 				}
@@ -460,7 +460,7 @@ public class EventsController {
 							false, 
 							false, 
 							friend.getEmail(), 
-							friend.getAge(), 
+							friend.getDateOfBirth(), 
 							friend.getPosition());
 					users.add(e1);
 				}
