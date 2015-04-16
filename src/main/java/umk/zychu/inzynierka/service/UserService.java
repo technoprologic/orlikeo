@@ -30,4 +30,7 @@ public interface UserService {
 	boolean checkOldPasswordCorrectness(String oldPassword);
 	void changePassword(ChangePasswordForm form);
 	void updateUserDetails(EditAccountForm form);
+	void cancelFriendInvitation(String email);
+	void blockUser(String email);
+	void rejectUserFriendRequest(String email);
 }

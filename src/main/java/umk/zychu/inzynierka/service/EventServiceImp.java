@@ -338,21 +338,24 @@ public class EventServiceImp implements EventService{
 			for(RegisterEventUser editEventUser : (List<RegisterEventUser>)form.getUserFriends()){
 				System.out.println("START: ");
 				long id = userDAO.getUserByEmail(editEventUser.getEmail()).getId();
-				
+				System.out.println("USER: " + editEventUser.getEmail() + "allowed: " + editEventUser.getAllowed() + ", invited: " + editEventUser.getInvited());
 				if(editEventUser.getAllowed() || editEventUser.getInvited()){
+			
+					
+					long invited = 0;
+					if(editEventUser.getInvited()){
+						invited = 1;
+						
+					}else{
+						invited = 4;
+					}
 					
 					if(userEventDAO.ifUserEventExists(form.getEventId(), id) > 0){
-						long invited = 0;
-						if(editEventUser.getInvited()){
-							invited = 1;
-						}else{
-							invited = 4;
-						}
-						
+
 						userEventDAO.updateUserEvent(form.getEventId(), id, editEventUser.getAllowed(), invited);
-						System.out.println("USER: " + editEventUser.getEmail() + "allowed: " + editEventUser.getAllowed() + ", invited: " + editEventUser.getInvited());
+						
 					}else{
-						UserEvent userEvent = new UserEvent(id, 2, 1, editEventUser.getAllowed(), form.getEventId());
+						UserEvent userEvent = new UserEvent(id, 2, invited, editEventUser.getAllowed(), form.getEventId());
 						userEventDAO.save(userEvent);
 					}
 					

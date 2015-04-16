@@ -4,17 +4,13 @@ package umk.zychu.inzynierka.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.servlet.ModelAndView;
 
 import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.User;
@@ -66,21 +62,9 @@ public class FriendsController {
 	@RequestMapping(value="/search", method = RequestMethod.POST)
 	public String searchFriendsPost(@RequestParam("email") String email, ModelMap model) {
 		if(userService.checkIfUserExists(email)){
-			User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 			User friendTarget = userService.getUser(email);
-			if(user.getEmail().equals(email))
-			{
-				model.addAttribute("selfRequest", true);
-				model.addAttribute("display", true);
-			
-			}else if(userService.checkIfTheyHadContacted(user, friendTarget)){
-				model.addAttribute("isAlreadyAfriend", true);
-				System.out.println("kontaktowali się już");
-			}else{
-				model.addAttribute("userEmail", friendTarget.getEmail());
-				System.out.println("user dodany do widoku");
-			}	
-			
+			model.addAttribute("userEmail", friendTarget.getEmail());
+			System.out.println("user dodany do widoku");			
 		}else{
 			model.addAttribute("notFound", true);
 		}
@@ -97,36 +81,34 @@ public class FriendsController {
 	
 	
 	
+	@SuppressWarnings("finally")
 	@RequestMapping(value="/friendRequest", method = RequestMethod.POST)
 	public String addFriend(@RequestParam("email") String email, ModelMap model) {
-		
-		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-		User invitedUser = userService.getUser(email);
-		
-		
-		
-		
-		System.out.println("userId: " + user.getId() + " and friendId: " + invitedUser.getId());
-		
-		
-		userService.inviteUserToFriends(user, invitedUser);
-			
-		
-		return "searchFriends";
+		try{
+			User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+			User invitedUser = userService.getUser(email);
+			System.out.println("userId: " + user.getId() + " and friendId: " + invitedUser.getId());
+			userService.inviteUserToFriends(user, invitedUser);
+		}catch(Exception e){
+			System.out.println("Exception: " + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		}
 	}
 
 
 
 
-	@RequestMapping(value="/acceptUser", method = RequestMethod.GET)
+	@SuppressWarnings("finally")
+	@RequestMapping(value="/acceptUser", method = RequestMethod.POST)
 	public String acceptFriendRequest(@RequestParam("email") String email){
 		try{	
 			userService.accceptUserInvitation(email);
-			return "redirect:/friends";
 		}catch(Exception e){
 			System.out.println("Exception: " + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
 		}
-		return "redirect:/friends";
 	}
 
 
@@ -136,6 +118,11 @@ public class FriendsController {
 		
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		User userRequest = userService.getUser(email);
+		
+		if(user.getEmail().equals(userRequest.getEmail())){
+			return "redirect:/account/profile/" + email;
+		}
+		
 		boolean allowToSeeProfile = true;
 		
 		if(!userService.checkIfTheyHadContacted(user, userRequest)){
@@ -152,7 +139,7 @@ public class FriendsController {
 				long actionUserId = friendship.getActionUserId();
 				
 				switch(friendshipState){
-					case 1:if(user.getId() == actionUserId){
+					case 1:	if(user.getId() == actionUserId){
 								model.addAttribute("contact", "pendingRequester");
 							}else{
 								model.addAttribute("contact", "pendingReceiver");
@@ -160,15 +147,15 @@ public class FriendsController {
 							break;
 					case 2: model.addAttribute("contact", "friends");
 							break;
-					case 3:if(user.getId() == actionUserId){
-						model.addAttribute("contact", "decliner");
-					}else{
-						model.addAttribute("contact", "declined");
-					}
-					allowToSeeProfile = false;
-					break;
-					case 4:if(user.getId() == actionUserId){
+					case 3:	if(user.getId() == actionUserId){
+								model.addAttribute("contact", "decliner");
+							}else{
+								model.addAttribute("contact", "declined");
+							}
+							break;
+					case 4:	if(user.getId() == actionUserId){
 								model.addAttribute("contact", "blocker");
+								model.addAttribute("unblockEmail", userRequest.getEmail());
 							}else{
 								model.addAttribute("contact", "blocked");
 							}
@@ -180,20 +167,85 @@ public class FriendsController {
 		if(allowToSeeProfile){
 			model.addAttribute("user", userRequest);
 		}
+		
 		return "profile";
 	}
 
 	
 	
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
+	public String cancelInvitation(@RequestParam("email") String email){
+		try{
+			userService.cancelFriendInvitation(email);
+			
+		}catch(Exception e){
+			System.out.println("Błąd...exception" + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		} 
+		
+	}
 	
 	
 	
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/block", method = RequestMethod.POST)
+	public String blockUser(@RequestParam("email") String email){
+		try{
+			userService.blockUser(email);
+		}catch(Exception e){
+			System.out.println("Błąd...exception" + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		} 
+		
+	}
 	
 	
 	
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/reject", method = RequestMethod.POST)
+	public String rejectFriendRequest(@RequestParam("email") String email){
+		try{
+			userService.rejectUserFriendRequest(email);
+		}catch(Exception e){
+			System.out.println("Błąd...exception" + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		} 
+		
+	}
 	
 	
 	
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/unblock", method = RequestMethod.POST)
+	public String unblockUser(@RequestParam("email") String email){
+		try{
+			userService.cancelFriendInvitation(email);
+		}catch(Exception e){
+			System.out.println("Błąd...exception" + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		} 
+		
+	}
+	
+	
+	@SuppressWarnings("finally")
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String removeFriendship(@RequestParam("email") String email){
+		try{
+			userService.cancelFriendInvitation(email);
+		}catch(Exception e){
+			System.out.println("Błąd...exception" + e);
+		}finally{
+			return "redirect:/friends/userDetail/" + email;
+		} 
+		
+	}
+		
 	
 	
 	

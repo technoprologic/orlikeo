@@ -92,7 +92,7 @@ public class AccountController {
 		else{
 			userService.changePassword(form);
 			String email = SecurityContextHolder.getContext().getAuthentication().getName();
-			return "redirect:/account/profile/"+email;
+			return "redirect:/account/profile/" + email;
 		}
 	}
 	
@@ -101,7 +101,6 @@ public class AccountController {
 	public String editAccount(Locale locale, Map<String, Object> model){
 		
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-		
 		EditAccountForm form = new EditAccountForm(
 				user.getName(), 
 				user.getSurname(), 

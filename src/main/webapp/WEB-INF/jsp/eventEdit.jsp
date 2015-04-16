@@ -44,17 +44,17 @@
 					<th>Zaproszenie</th>
 					<th>Prawo zapraszania</th>
 					<th>Użytkownik</th>
-					<th>Wiek</th>
+					<th>Data urodzenia</th>
 					<th>Pozycja</th>
 				</tr>
 			</thead>
 			<tbody>
 			<c:forEach items="${ editEventForm.getUserFriends() }" var="friend" varStatus="i">                    
                     <tr>
-                    <td><form:checkbox path="userFriends[${i.index}].invited" class="invite" value="true" /></td>
-					<td><form:checkbox path="userFriends[${i.index}].allowed" class="allow" valu="true" /></td>
+                    <td><form:checkbox path="userFriends[${i.index}].invited" class="invite"  /></td>
+					<td><form:checkbox path="userFriends[${i.index}].allowed" class="allow" /></td>
 					<td><form:hidden path="userFriends[${i.index}].email" value="${ friend.getEmail() }" /> ${ friend.getEmail() }</td>
-					<td>${ friend.getAge() }</td>
+					<td><fmt:formatDate value="${ friend.dateOfBirth }" type="both" pattern="dd.MM.yyyy" /></td>
 					<td>${ friend.getPosition() }</td>
 			    </tr>
 			</c:forEach> 

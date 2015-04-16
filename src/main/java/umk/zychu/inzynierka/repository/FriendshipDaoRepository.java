@@ -15,9 +15,9 @@ public interface FriendshipDaoRepository extends BaseRepository<Friendship, Frie
 	
 	
 	public final static String COUNT_USERS_DEPENDENCIES = "SELECT COUNT(f.id.userId) FROM Friendship f WHERE "
-			+ "f.id.userId = :requesterId AND f.id.friendId = :accepterId ";
+			+ "( f.friendRequester.id = :id1 AND f.friendAccepter.id = :id2 ) OR ( f.friendRequester.id = :id2 AND f.friendAccepter.id = :id1 )";
 	@Query(COUNT_USERS_DEPENDENCIES)
-	long countUsersEmailDependencies(@Param("requesterId") long requesterId, @Param("accepterId") long accepterId);
+	long countUsersEmailDependencies(@Param("id1") long requesterId, @Param("id2") long accepterId);
 	
 		
 	
@@ -58,12 +58,39 @@ public interface FriendshipDaoRepository extends BaseRepository<Friendship, Frie
 	
 	
 	
-	
-	public static final String USERS_FRIENDSHIP= "SELECT DISTINCT f FROM Friendship f WHERE "
+	public static final String USERS_FRIENDSHIP= "SELECT f FROM Friendship f WHERE "
 			+ "( f.friendRequester = :user1 AND f.friendAccepter = :user2 ) OR ( f.friendRequester = :user2 AND f.friendAccepter = :user1 )";
 	@Query(USERS_FRIENDSHIP)
 	Friendship getUsersFriendship(@Param("user1") User user, @Param("user2") User userRequest);
 	
+	
+	public static final String BLOCK_USER = "UPDATE Friendship f SET f.state = 4, f.actionUser = :user1 WHERE "
+			+ "( f.friendRequester = :user1 AND f.friendAccepter = :user2 ) OR ( f.friendRequester = :user2 AND f.friendAccepter = :user1 )";
+	@Modifying
+	@Query(BLOCK_USER)
+	void blockFriendship(@Param("user1") User user, @Param("user2") User userRequest);
+	
+	
+	
+	public static final String REJECT_FRIEND_INVITATION = "UPDATE Friendship f SET f.state = 3, f.actionUser = :user1 WHERE "
+			+ "( f.friendRequester = :user1 AND f.friendAccepter = :user2 ) OR ( f.friendRequester = :user2 AND f.friendAccepter = :user1 )";
+	@Modifying
+	@Query(REJECT_FRIEND_INVITATION)
+	void rejectFriendship(@Param("user1") User user, @Param("user2") User userRequest);
+	
+	
+	
+	public static final String RETRY_INVITATION = "UPDATE Friendship f SET f.state = 1, f.actionUser = :user1 WHERE "
+			+ "( f.friendRequester = :user1 AND f.friendAccepter = :user2 ) OR ( f.friendRequester = :user2 AND f.friendAccepter = :user1 )";
+	@Modifying
+	@Query(RETRY_INVITATION)
+	void retryInvitation(@Param("user1") User user, @Param("user2") User userRequest);
+	
 
+	
+	
+	
+	
+	
 	
 }

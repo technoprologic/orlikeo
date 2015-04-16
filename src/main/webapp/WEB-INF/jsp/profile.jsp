@@ -14,19 +14,19 @@
 
 
 <!-- INVITE USER-->
-<c:url value="/friends/invite" var="inviteUserUrl" />
+<c:url value="/friends/friendRequest" var="inviteUserUrl" />
 <!-- ACCEPT INVITATION-->
-<c:url value="/friends/accept" var="acceptInvitationUrl" />
+<c:url value="/friends/acceptUser" var="acceptInvitationUrl" />
 <!-- REJECT INVITATION-->
 <c:url value="/friends/reject" var="rejectInvitationUrl" />
 <!-- REMOVE FROM FRIENDS-->
 <c:url value="/friends/remove" var="removeFriendshipUrl" />
 <!-- CANCEL INVITATION-->
-<c:url value="/friends/cancelInvitation" var="cancelInvitationUrl" />
+<c:url value="/friends/cancel" var="cancelInvitationUrl" />
 <!-- BLOCK USER-->
 <c:url value="/friends/block" var="blockUserUrl" />
 <!-- UNBLOCK USER-->
-<c:url value="/friends/unblockUser" var="unblockUserUrl" />
+<c:url value="/friends/unblock" var="unblockUserUrl" />
 
 
 <div class="row">
@@ -34,23 +34,10 @@
 		<h1 class="page-header">
 			Profil zawodnika <small><i class="glyphicon glyphicon-info-sign"></i> Informacje</small>
 		</h1>
-		
-<%-- 		<br>
-		INVITE <a href="${inviteUserUrl}/${targetEmail}" title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></a> <br>
-		ACCEPT <a href="${acceptInvitationUrl}/${targetEmail}" title="Akceptuj zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-ok-sign"></i></a> <br>
-		REJECT <a href="${rejectInvitationUrl}/${targetEmail}" title="Odrzuć zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-remove-sign"></i></a> <br>
-		REMOVE <a href="${removeFriendshipUrl}/${targetEmail}" title="Usuń ze znajomych" class="btn btn-default"><i class="glyphicon glyphicon-minus-sign"></i></a> <br>
-		CANCEL <a href="${cancelInvitationUrl}/${targetEmail}" title="Cofnij zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-stop"></i></a><br>
-		BLOCK  <a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a> <br>		
-		UNBLOCK <a href="${unblockUserUrl}/${targetEmail}" title="Odblokuj" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i></a><br>
-		<br> --%>
-		
-  
-
 	</div>
 </div>
 
-<c:if test="${not empty user}">
+
 <div class="container" >
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
@@ -101,33 +88,80 @@
 				</c:if>
 		<c:choose>
 					<c:when test="${ contact == 'pendingRequester'}">Wysłano zaproszenie do użytkownika 
-						<a href="${cancelInvitationUrl}/${targetEmail}" title="Cofnij zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-stop"></i></a>
-						<a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a>
+						<form:form action="${cancelInvitationUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Cofnij zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-stop"></i></button>
+						</form:form>
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
 					</c:when>
 					<c:when test="${ contact == 'pendingReceiver'}">Otrzymałeś zaproszenie od użytkownika 
-						<a href="${acceptInvitationUrl}/${targetEmail}" title="Akceptuj zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-ok-sign"></i></a> 
-						<a href="${rejectInvitationUrl}/${targetEmail}" title="Odrzuć zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-remove-sign"></i></a>
-						<a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a>
+						<form:form action="${acceptInvitationUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Akceptuj" class="btn btn-default"><i class="glyphicon glyphicon-ok-sign"></i></button>
+						</form:form>
+						<form:form action="${rejectInvitationUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Odrzuć zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-remove-sign"></i></button>
+						</form:form>
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
 					</c:when>
 					<c:when test="${ contact == 'friends'}">Jesteście znajomymi 
-						<a href="${removeFriendshipUrl}/${targetEmail}" title="Usuń ze znajomych" class="btn btn-default"><i class="glyphicon glyphicon-minus-sign"></i></a>
-						<a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a>
+						<form:form action="${removeFriendshipUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Usuń ze znajomych" class="btn btn-default"><i class="glyphicon glyphicon-minus-sign"></i></button>
+						</form:form>
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
 					</c:when>
 					<c:when test="${ contact == 'decliner'}">Odrzuciłeś zaproszenie użytkownika 
-						<a href="${inviteUserUrl}/${targetEmail}" title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></a>
-						<a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a>
+						<form:form action="${inviteUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
+						</form:form>
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
 					</c:when>
 					<c:when test="${ contact == 'declined'}">Użytkownik odrzucił Twoje zaproszenie 
-						<a href="${inviteUserUrl}/${targetEmail}" title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></a>
-						<a href="${blockUserUrl}/${targetEmail}" title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></a>
+						<form:form action="${inviteUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
+						</form:form>					
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
 					</c:when>
 					<c:when test="${ contact == 'blocker'}">Zablokowałeś użytkownika 
-						<a href="${unblockUserUrl}/${targetEmail}" title="Odblokuj" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
+						<form:form action="${unblockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${unblockEmail}"/>">
+							<button title="Odblokuj" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i></button>
+						</form:form>
 					</c:when>
-					<c:when test="${ contact == 'blocked'}">Zostałeś zablokowany przez użytkownika</c:when>
+					<c:when test="${ contact == 'blocked'}">
+						Zostałeś zablokowany przez użytkownika
+					</c:when>
+					<c:when test="${ contact == 'without'}">
+						<form:form action="${inviteUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
+						</form:form>
+						<form:form action="${blockUserUrl}" method="POST">
+							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
+							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
+						</form:form>
+					</c:when> 
 		</c:choose>
 			</div>
           </div>
         </div>
 </div>
-</c:if>

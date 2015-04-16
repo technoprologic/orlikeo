@@ -16,7 +16,7 @@
 <c:url value="/events/join" var="joinEventUrl" />
 <c:url value="/events/reject" var="rejectEventUrl" />
 <c:url value="/events/remove" var="removeEventUrl" />
-
+<c:url value="/events/edit" var="editEventUrl" />
 
 <c:set var="graphic"  value="${eventDetails.graphic}"/>
 <c:set var="orlik"    value="${eventDetails.orlik }"/>
@@ -25,26 +25,25 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header"> 
-			<c:if test="${ organizerEmail}">
+		<h1 class="page-header">
+			<%-- <c:if test="${ organizerEmail}">
 				<a href="${createEventUrl}" title="Zmień boisko"><i class="glyphicon glyphicon-edit"></i></a>
-			</c:if>
+			</c:if> --%>
 			${orlik.city} ul.${orlik.getAddress()} <small>
-			<c:if test="${ organizerEmail}">
+			<%-- <c:if test="${ organizerEmail}">
 				<a href="${graphicEventUrl}" title="Zmień godzinę"><i class="glyphicon glyphicon-edit"></i></a>
-			</c:if>
+			</c:if> --%>
 				<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${graphic.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
 				<c:choose >
 					<c:when test="${ organizerEmail}" >
 						<a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
-						<a href="${removeEventUrl}/${event.id}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
+						<%-- <a href="${removeEventUrl}/${event.id}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a> --%>
 					</c:when>
 					<c:otherwise>
 						<c:choose>
 							<c:when test="${ decision == 1 }">
 								<a href="${joinEventUrl}/${event.id}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i></a> /
-	    						<a href="${rejectEventUrl}/${event.id}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i></a>
-	    						
+	    						<a href="${rejectEventUrl}/${event.id}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i></a>	
 							</c:when>
 							<c:when test="${ decision == 2}">
 								<i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i> /

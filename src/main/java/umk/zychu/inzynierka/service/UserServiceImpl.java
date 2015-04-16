@@ -162,24 +162,29 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void inviteUserToFriends(User user, User invitedUser) {
-
-		Friendship friendship = new Friendship();
-		
-		
-		if(user.getId() > invitedUser.getId()){
-			FriendshipPK pk = new FriendshipPK(user.getId(), invitedUser.getId());
-			friendship.setId(pk);
+		try{
+			Friendship friendship = new Friendship();
+			friendship.setActionUserId(user.getId());
+			
+			if(friendshipDAO.countUsersEmailDependencies(user.getId(), invitedUser.getId()) > 0){
+				friendshipDAO.retryInvitation(user, invitedUser);
+			}else{
+				if(user.getId() > invitedUser.getId()){
+					FriendshipPK pk = new FriendshipPK(user.getId(), invitedUser.getId());
+					friendship.setId(pk);
+				}
+				
+				if(invitedUser.getId() > user.getId() ){
+					FriendshipPK pk = new FriendshipPK(invitedUser.getId(), user.getId());
+					friendship.setId(pk);
+				}
+				friendship.setState(1);
+				friendshipDAO.save(friendship);
+			}
+		}catch(Exception e){
+			System.out.println("BABOL " + e);
 		}
-		
-		if(invitedUser.getId() > user.getId() ){
-			FriendshipPK pk = new FriendshipPK(invitedUser.getId(), user.getId());
-			friendship.setId(pk);
-		}
-		
 
-		friendship.setActionUserId(user.getId());
-		friendship.setState(1);
-		friendshipDAO.save(friendship);
 	}
 
 	
@@ -232,8 +237,48 @@ public class UserServiceImpl implements UserService {
 		userDAO.updateUserDetails(user, form.getName(), form.getSurname(), form.getDateOfBirth(), form.getPosition(), form.getWeight(), form.getHeight(), form.getFoot());
 		
 	}
+
+
+
+	@Override
+	public void cancelFriendInvitation(String email) {
+		
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		User userRequest = userDAO.getUserByEmail(email);
+		
+		if(friendshipDAO.countUsersEmailDependencies(user.getId(), userRequest.getId()) > 0){
+			Friendship f = friendshipDAO.getUsersFriendship(user, userRequest);
+			System.out.println("STATE" + f.getState());
+			friendshipDAO.delete(f);
+		}
+		
+	}
+
+
+
+	@Override
+	public void blockUser(String email) {
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		User userRequest = userDAO.getUserByEmail(email);
 	
-	
+		if(friendshipDAO.countUsersEmailDependencies(user.getId(), userRequest.getId()) > 0){
+			friendshipDAO.blockFriendship(user, userRequest);
+		}else{
+			this.inviteUserToFriends(user, userRequest);
+			this.blockUser(email);
+		}
+		
+	}
+
+
+
+	@Override
+	public void rejectUserFriendRequest(String email) {
+		User user = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		User userRequest = userDAO.getUserByEmail(email);
+		friendshipDAO.rejectFriendship(user, userRequest);
+	}
+
 	
 	
 	

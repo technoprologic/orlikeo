@@ -163,9 +163,9 @@
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#friends"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
                         <ul id="friends" class="collapse" >
-                            <li>
+<%--                             <li>
                                 <a href="${addFriendUrl }"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
-                            </li>
+                            </li> --%>
                             <li>
                                 <a href="${friendsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
                             </li>
