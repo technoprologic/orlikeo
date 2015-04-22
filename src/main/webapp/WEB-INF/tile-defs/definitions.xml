@@ -63,6 +63,14 @@
 	<definition name="editAccount" extends="defaultTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/editAccountForm.jsp" />
 	</definition>
+	
+	<!-- JAVAPLANNER -->
+	<definition name="javaplanner" extends="defaultTemplate" >
+		<put-attribute name="content" value="/WEB-INF/jsp/javaplanner.jsp" />
+	</definition>
+		<definition name="javaplannerEvents" >
+		<put-attribute name="content" value="/WEB-INF/jsp/events.jsp" />
+	</definition>
 
 	
 	<!-- template for clear business content (without menu etc.) -->

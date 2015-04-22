@@ -29,12 +29,22 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</pluginRepository>
+    <pluginRepository>
+      <id>apache</id>
+      <url>http://repo2.maven.org/maven2/org/apache/tomcat/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
 	</pluginRepositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java-version>1.7</java-version>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<java-version>1.8</java-version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -259,6 +269,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.javaplanner</groupId>
+			<artifactId>javaplanner</artifactId>
+			<version>1.5</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
     	<dependencies>
@@ -322,6 +337,11 @@
     			<artifactId>spring-context-support</artifactId>
     			<version>4.0.6.RELEASE</version>
     		</dependency>
+        <dependency>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>2.0</version>
+        </dependency>
     	</dependencies>
     </dependencyManagement>
 	<profiles>
@@ -336,7 +356,15 @@
 			<id>openshift</id>
 			<build>
 				<finalName>jbossews</finalName>
-				<plugins>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.6</source>
+              <target>1.6</target>
+            </configuration>
+          </plugin>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.1.1</version>
@@ -344,7 +372,21 @@
 							<outputDirectory>webapps</outputDirectory>
 							<warName>ROOT</warName>
 						</configuration>
-					</plugin>
+					</plugin> 
+          <!-- To define the plugin version in your parent POM -->
+          <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.0</version>
+            <configuration>
+              <!-- Tomcat 7 has a different manager path - text - than other versions -->
+              <url>http://localhost:8080/manager/text</url>
+              <server>localhost</server>
+              <!-- Refer to the server settings in your ~/.m2/settings.xml -->
+              <path>/${project.build.finalName}</path>
+
+            </configuration>
+          </plugin>
 				</plugins>
 			</build>
 		</profile>

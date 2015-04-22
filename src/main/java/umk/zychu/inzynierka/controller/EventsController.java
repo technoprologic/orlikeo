@@ -49,6 +49,7 @@ import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.model.UserEvent;
 
+
 @Controller
 @RequestMapping("/events")
 public class EventsController {

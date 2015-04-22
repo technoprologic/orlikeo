@@ -132,7 +132,19 @@
 	</filter-mapping>
 	-->
 	
-	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Text Manager interface (for scripts)</web-resource-name>
+			<url-pattern>/text/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>manager-script</role-name>
+		</auth-constraint>
+	</security-constraint>
+  <security-role>
+    <description>security role assignment for Non-Existent Role – this prevents direct access to JSPs</description>
+    <role-name>tomcat</role-name>
+  </security-role>
  
 
 <!-- 
