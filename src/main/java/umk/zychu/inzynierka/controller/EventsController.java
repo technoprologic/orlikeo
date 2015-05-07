@@ -41,7 +41,6 @@ import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.DTObeans.UsersEventDetail;
-import umk.zychu.inzynierka.controller.util.EventsManager;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.Friendship;
