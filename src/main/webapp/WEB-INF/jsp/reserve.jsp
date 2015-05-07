@@ -51,7 +51,7 @@
                     <td><form:checkbox path="userFriends[${i.index}].invited" class="invite" value="true" /></td>
 					<td><form:checkbox path="userFriends[${i.index}].allowed" class="allow" value="true" /></td>
 					<td><form:hidden path="userFriends[${i.index}].email" value="${ friend.getEmail() }" /> ${ friend.getEmail() }</td>
-					<td>${ friend.getAge() }</td>
+					<%-- <td>${ friend.getAge() }</td> --%>
 					<td>${ friend.getPosition() }</td>
 			    </tr>
 			</c:forEach> 

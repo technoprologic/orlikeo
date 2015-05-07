@@ -38,5 +38,18 @@
 			<beans:property name="paramName" value="lang" />
 		</beans:bean>
 	</interceptors>
+	
+		<beans:bean id="restTemplate" 
+			class="org.springframework.web.client.RestTemplate">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="formHttpMessageConverter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="formHttpMessageConverter"
+		class="org.springframework.http.converter.FormHttpMessageConverter" />
+	
 
 </beans:beans>

@@ -1,17 +1,24 @@
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
+<%-- <div class="planner" id="planner">${body}</div>
 
+ --%>
+ 
 
 
 <html>
 <body>
-${body }
-
-
+<div class="planner" id="planner"><%= getPlanner(request) %></div>
+<%@ page import="com.dhtmlx.planner.data.*, com.dhtmlx.planner.*, umk.zychu.inzynierka.controller.util.*" %>
+<%!
+           String getPlanner(HttpServletRequest request) throws Exception {
+           DHXPlanner s = new DHXPlanner("./resources/codebase/",DHXSkin.TERRACE);
+           s.setWidth(900);
+           s.setInitialDate(2015, 04, 06);
+           s.load(request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) + "/events", DHXDataFormat.JSON);
+           s.data.dataprocessor.setURL(request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()) +  "/events");
+           return s.render();
+}
+%>
 </body>
 </html>

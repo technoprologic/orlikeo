@@ -65,7 +65,9 @@
 	</definition>
 	
 	<!-- JAVAPLANNER -->
-	<definition name="javaplanner" extends="defaultTemplate" >
+	<definition name="javaplanner1"  template="/WEB-INF/jsp/javaplanner.jsp" >
+	</definition>
+	<definition name="javaplanner2" extends="defaultTemplate" >
 		<put-attribute name="content" value="/WEB-INF/jsp/javaplanner.jsp" />
 	</definition>
 		<definition name="javaplannerEvents" >
