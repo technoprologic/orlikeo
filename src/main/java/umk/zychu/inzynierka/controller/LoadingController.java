@@ -4,18 +4,13 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import umk.zychu.inzynierka.controller.util.EventsManager;
+import com.dhtmlx.planner.controls.DHXLocalization;
+
 import umk.zychu.inzynierka.service.EventXService;
-
-
 
 
 @Controller
@@ -24,10 +19,10 @@ public class LoadingController {
 	@Autowired
 	private EventXService xService;
 
-	@Autowired
+/*	@Autowired
 	EntityManager manager;
 
-/*	@RequestMapping("/planner")
+	@RequestMapping("/planner")
 	public String planner(HttpServletRequest request, ModelMap model)
 			throws Exception {
 		try {
@@ -60,27 +55,7 @@ public class LoadingController {
 		return "javaplanner1";
 	}
 	
-    @RequestMapping(value = "/events",method = RequestMethod.GET)
-    @ResponseBody public String events(@RequestParam(value = "editing", required = false) Boolean ed, HttpServletRequest request) {
-            EventsManager evs = new EventsManager(request, manager);
-            System.out.println("/events: " + ed);
-            return evs.run();
-    }
-    
-    
-    @RequestMapping(value = "/events",method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
-    @ResponseBody public String events2(@RequestParam(value = "editing", required = false) Boolean ed, HttpServletRequest request) {
-            EventsManager evs = new EventsManager(request, manager);
-            System.out.println("/events: " + ed);
-            return evs.run();
-    }
-    
-/*    @RequestMapping(value = "/events", method = RequestMethod.GET)
-    @ResponseBody public String events2(@RequestParam("editing") Boolean ed ,HttpServletRequest request) {
-            EventsManager evs = new EventsManager(request, manager);
-            System.out.println(ed);
-            return evs.run();
-    }*/
 	
+
 
 }

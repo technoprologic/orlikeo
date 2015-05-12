@@ -13,17 +13,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.dhtmlx.planner.DHXEv;
 import com.dhtmlx.planner.DHXEvent;
 
 @Entity
 @Table(name = "calendar")
 public class EventX implements Serializable{
 
-    @Id
+    public EventX() {
+		super();
+	}
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="event_id")
     private Integer id;
 	
+	public EventX(DHXEv event) {
+		// TODO Auto-generated constructor stub
+		this.contacts = event.getText();
+		this.notes = event.getText();
+		
+		this.start_date = event.getStart_date();
+		this.end_date = event.getEnd_date();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -96,5 +111,14 @@ public class EventX implements Serializable{
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "EventX [id=" + id + ", contacts=" + contacts + ", notes="
+				+ notes + ", table=" + table + ", start_date=" + start_date
+				+ ", end_date=" + end_date + "]";
 	}
 }

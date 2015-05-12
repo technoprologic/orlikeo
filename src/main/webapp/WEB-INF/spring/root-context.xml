@@ -21,6 +21,8 @@
 	<import resource="spring-security.xml" />
 	<import resource="datasource-config.xml" />
 
+
+
 	<context:component-scan base-package="umk.zychu.inzynierka">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />

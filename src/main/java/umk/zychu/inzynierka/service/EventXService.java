@@ -12,4 +12,7 @@ import com.dhtmlx.planner.DHXEvent;
 public interface EventXService {
 
 	Collection<EventX> getCustomEvents();
+	void save(EventX event);
+	void update(EventX event);
+	void delete(EventX entity);
 }

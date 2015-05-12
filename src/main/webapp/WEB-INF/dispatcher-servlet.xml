@@ -8,10 +8,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<context:component-scan base-package="umk.zychu.inzynierka.controller" />
-<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	<context:component-scan base-package="umk.zychu.inzynierka.controller" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
- -->
+
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 

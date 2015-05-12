@@ -36,7 +36,7 @@ import umk.zychu.inzynierka.service.*;
 public class AccountController {
 	
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 	
 	@Autowired
 	private UserService userService;
