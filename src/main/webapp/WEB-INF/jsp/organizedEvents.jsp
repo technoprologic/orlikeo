@@ -12,6 +12,9 @@
 <c:url value="/events/join" var="joinEventUrl" />
 <c:url value="/events/reject" var="rejectEventUrl" />
 
+
+
+
 <legend><c:choose>
 				<c:when test="${page == 'all' || page == 'fast' }"><i class="glyphicon glyphicon-info-sign"></i> Lista wszystkich </c:when> 
 				<c:when test="${page == 'organized'}"><i class="glyphicon glyphicon-info-sign"></i> Lista organizowanych </c:when>
@@ -41,20 +44,50 @@
     <tbody>
 		<c:forEach items="${ userGamesDetailsList }"  var="event" varStatus="i" >
 		
-			<c:set var="address" value="${ event.address }"/>
-			<c:set var="eventId"  value="${ event.eventId }"/>
-			<c:set var="stateId"  value="${ event.stateId }"/>
-			<c:set var="decisionId"  value="${ event.userEvent.userDecision }"/>
-			<c:set var="roleId"  value="${ event.userEvent.roleId }"/>
-			<c:set var="userPermission"  value="${ event.userEvent.userPermission }"/>
-			<c:set var="graphic"  value="${ event.graphic }"/>
-			<c:set var="players"  value="${ event.willCome }"/>
-			<c:set var="limit" value="${ event.playersLimit }"/>
+		<c:set var="eventId"  value="${ event.eventId }"/>
+		<c:set var="stateId"  value="${ event.stateId }"/>
+		<c:set var="decisionId"  value="${ event.userEvent.userDecision }"/>
+		<c:set var="roleId"  value="${ event.userEvent.roleId }"/>
+		<c:set var="userPermission"  value="${ event.userEvent.userPermission }"/>
+		<c:set var="players"  value="${ event.willCome }"/>
+		<c:set var="limit" value="${ event.playersLimit }"/>
+		
+		
+		
+		
+		
+		<c:set var="available"  value="${true}"/>
+		<c:if test="${ stateId == 1 }">
+			<c:set var="available"  value="${false}" />
+		</c:if>
 
+		
+		<c:choose>
+			<c:when test="${ available }">
+				<c:set var="address" value="${ event.address }"/>
+				<c:set var="graphic"  value="${ event.graphic }"/>
+			</c:when>
+			<c:otherwise>
+				<c:set var="address" value="BRAK"/>
+				<c:set var="graphic"  value=""/>
+			</c:otherwise>
+		</c:choose>
+		
+		
+			
     	<tr>
     		<td>${ address } </td>
+    	<c:choose>
+    		<c:when test="${ available }">
     		<td><fmt:formatDate value="${graphic.startTime}" type="both" pattern="dd.MM.yyyy" /></td>
-    		<td><fmt:formatDate value="${graphic.startTime}" type="both" pattern="HH:mm" /> - <fmt:formatDate value="${graphic.endTime}" type="both" pattern="HH:mm" /></td>
+    		<td><fmt:formatDate value="${graphic.startTime}" type="both" pattern="HH:mm" /> - <fmt:formatDate value="${graphic.endTime}" type="both" pattern="HH:mm" /></td>    				
+    		</c:when>
+    		<c:otherwise>
+    		<td></td>
+    		<td></td>  
+    		</c:otherwise>
+    	</c:choose>
+
     		<td><c:choose>
     			<c:when test="${ stateId == 1 }">
     				Kosz
@@ -74,30 +107,30 @@
     			</c:choose></td>
     		<td>
     		<c:choose>
-    			<c:when test="${ roleId == 1 }"><i style="color: gold" class="glyphicon glyphicon-star"></i></c:when>
-    			<c:when test="${ roleId == 2 }">
-					<c:choose>
-    					<c:when test="${ decisionId == 1 }">
-    						<i style="color: blue" class="glyphicon glyphicon glyphicon-star-empty"></i>
-    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
-    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
-    					</c:when>
-    					<c:when test="${ decisionId == 2 }">
-    						<i style="color: green" class="glyphicon glyphicon-plus"></i>
-    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
-    					</c:when>
-    					<c:when test="${ decisionId == 3 }">
-    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
-    						<i style="color: red" class="glyphicon glyphicon-minus"></i>
-    					</c:when>
-    					<c:when test="${ decisionId == 4 }">
-    					<c:choose>
-    						<c:when test="${ userPermission == false }"><i class=" glyphicon glyphicon-question-sign"></i></c:when>
-    						<c:when test="${ userPermission == true }"><i class="glyphicon glyphicon-random"></i></c:when>
-    					</c:choose>
-    					</c:when>
-    				</c:choose>
-				</c:when>
+    			<c:when test="${ roleId == 1 }"><i style="color: gold" class="glyphicon glyphicon-star"></i></c:when>		
+	    			<c:when test="${ roleId == 2 &&  stateId != 1}">
+						<c:choose>
+	    					<c:when test="${ decisionId == 1 }">
+	    						<i style="color: blue" class="glyphicon glyphicon glyphicon-star-empty"></i>
+	    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
+	    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
+	    					</c:when>
+	    					<c:when test="${ decisionId == 2 }">
+	    						<i style="color: green" class="glyphicon glyphicon-plus"></i>
+	    						<a href="${rejectEventUrl}/${eventId}" title="Odrzuć"> <i style="color: grey" class="glyphicon glyphicon-minus"></i></a>
+	    					</c:when>
+	    					<c:when test="${ decisionId == 3 }">
+	    						<a href="${joinEventUrl}/${eventId}" title="Dołącz"> <i style="color: grey" class="glyphicon glyphicon-plus"></i></a>
+	    						<i style="color: red" class="glyphicon glyphicon-minus"></i>
+	    					</c:when>
+	    					<c:when test="${ decisionId == 4 }">
+	    					<c:choose>
+	    						<c:when test="${ userPermission == false }"><i class=" glyphicon glyphicon-question-sign"></i></c:when>
+	    						<c:when test="${ userPermission == true }"><i class="glyphicon glyphicon-random"></i></c:when>
+	    					</c:choose>
+	    					</c:when>
+	    				</c:choose>
+					</c:when> 
     		</c:choose></td>
     		<td>${ players }/${ limit }</td>    		
     		<td>

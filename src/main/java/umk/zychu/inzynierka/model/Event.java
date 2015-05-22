@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -44,7 +45,7 @@ public class Event extends BaseEntity {
 	@JoinColumn(name = "graphic_id", referencedColumnName = "id", insertable = false, updatable = false)
 	Graphic graphic;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "event")
 	List<UserEvent> usersEvent;
 
 

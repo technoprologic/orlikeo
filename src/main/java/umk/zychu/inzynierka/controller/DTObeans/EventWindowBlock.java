@@ -55,6 +55,15 @@ public class EventWindowBlock {
 		this.countedInSameState = 0;
 	}
 	
+
+	public EventWindowBlock(long eventId, long stateId, int limit) {
+		super();
+		this.eventId = eventId;
+		this.stateId = stateId;
+		this.playersLimit = limit;
+		this.goingToCome = 0;
+		this.countedInSameState = 0;
+	}
 	
 	
 	public long getEventId() {

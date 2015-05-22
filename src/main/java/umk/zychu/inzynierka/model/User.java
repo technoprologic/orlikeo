@@ -76,6 +76,12 @@ public class User extends BaseEntity
 	public void setIsOrliksManager(List<Orlik> isOrliksManager) {
 		this.isOrliksManager = isOrliksManager;
 	}
+	
+	
+	@OneToMany(mappedBy = "inviter")
+	private List<UserEvent> usersEventsFriendsInvited;
+	
+	
 
 	@OneToMany(mappedBy = "user")
 	private List<UserEvent> userEvents;

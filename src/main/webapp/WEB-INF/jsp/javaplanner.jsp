@@ -17,6 +17,7 @@
 	type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
 	var tables = document.getElementsByTagName("meta");
+	var orlik = ${ orlik }
 </script>
 
 </head>
@@ -27,7 +28,9 @@
 				com.dhtmlx.planner.*, 
 				umk.zychu.inzynierka.controller.util.*, 
 				java.time.LocalDateTime,
-				com.dhtmlx.planner.controls.DHXLocalization"%>
+				com.dhtmlx.planner.controls.DHXLocalization,
+				java.util.Iterator,
+				com.dhtmlx.planner.controls.*"%>
 	<%!String getPlanner(HttpServletRequest request) throws Exception {
 		DHXPlanner s = new DHXPlanner("./resources/codebase/", DHXSkin.TERRACE);
 		s.setWidth(900);
@@ -40,37 +43,11 @@
 		s.data.dataprocessor.setURL(request.getRequestURL().toString()
 				.replace(request.getRequestURI(), request.getContextPath())
 				+ "/api/rest/events");
-		s.config.setDetailsOnCreate(true);
+ 		s.config.setDetailsOnCreate(true);
+		DHXLightboxCheckbox check = new DHXLightboxCheckbox("allow", "REZERWACJE");
+		check.setType("checkbox");
+		s.lightbox.add(check);  
 		return s.render();
 	}%>
-	
-	
-<!-- 	<script type="text/javascript" charset="utf-8">
-	
-		
-
-		window.scheduler.config.lightbox.sections = [ {
-			name : "text",
-			height : 50,
-			map_to : "text",
-			type : "textarea",
-			focus : true
-		}, {
-			name : "checkme",
-			map_to : "participation",
-			type : "checkbox",
-			checked_value : "registrable",
-			unchecked_value : "unchecked",
-			height : 40
-		}, {
-			name : "time",
-			height : 72,
-			type : "time",
-			map_to : "auto"
-		} ];
-		
-		window.scheduler.locale.labels.section_checkme = "I'm going to participate";
-	</script> -->
-	
 </body>
 </html>

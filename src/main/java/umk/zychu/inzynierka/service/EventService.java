@@ -1,5 +1,6 @@
 package umk.zychu.inzynierka.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +42,6 @@ public interface EventService {
 	void deleteEventById(long id);
 	void updateEvent(EditEventForm form);
 	void updateEventGraphic(long eventId, long graphicId);
+	Collection<Event> getAllWithGraphic(Graphic entity);
+	void update(Event event);
 }

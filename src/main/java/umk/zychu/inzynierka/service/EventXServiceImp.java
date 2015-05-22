@@ -44,7 +44,7 @@ public class EventXServiceImp implements EventXService{
 	
 	@Override
 	public void update(EventX event){
-		xRepository.update(event.getId(), event.getNotes(), event.getTable(), event.getStart_date(), event.getEnd_date());
+		xRepository.update(event.getId(), event.getNotes(), event.getTable(), event.getStart_date(), event.getEnd_date(), event.getAllow());
 	}
 
 

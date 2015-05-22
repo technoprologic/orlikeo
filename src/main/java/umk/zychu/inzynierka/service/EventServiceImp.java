@@ -1,6 +1,7 @@
 package umk.zychu.inzynierka.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -92,6 +93,7 @@ public class EventServiceImp implements EventService{
 					userEvent.setEventId(event.getId());
 					userEvent.setUserId(userDAO.getUserByEmail(regEventUser.getEmail()).getId());
 					userEvent.setRoleId(UserEventRole.GUEST.getValue());
+					userEvent.setInviterId(userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId());
 					
 					if(regEventUser.getInvited()){
 						userEvent.setUserDecision(UserEventDecision.INVITED.getValue());
@@ -164,6 +166,12 @@ public class EventServiceImp implements EventService{
 	public List<EventWindowBlock> getEventsBlockWindowList(User user) {
 
 		List<EventWindowBlock> eventWindowBlockList = new ArrayList<EventWindowBlock>();
+		/*EventWindowBlock allWithoutGraphic = (List<EventWindowBlock>) eventDAO.getAllWindowBlocksInBasket(user);
+		
+		
+		
+		eventWindowBlockList.addAll(allWithoutGraphic);*/
+		
 		for(int stateId=1; stateId<=5; stateId++){
 			try{		
 				if(!eventDAO.getWindowBlockInState(user, (long)stateId).isEmpty()){
@@ -321,12 +329,8 @@ public class EventServiceImp implements EventService{
 
 	@Override
 	public void deleteEventById(long id) {
-		
 		userEventDAO.removeUsersEventsByEventId(id);
-		eventDAO.removeEventById(id);
-		
-		
-		
+		eventDAO.removeEventById(id);	
 	}
 
 
@@ -334,44 +338,51 @@ public class EventServiceImp implements EventService{
 	@Override
 	public void updateEvent(EditEventForm form) {
 		
+		Event ev = eventDAO.findById(form.getEventId()).get();
+		String organizerEmail = eventDAO.getUserEventOrganizer(ev);
+		String loggedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 		try{
+			if(organizerEmail.equals(loggedUserEmail)){
+				eventDAO.updateEventPlayersLimit(form.getUsersLimit(), ev.getId());
+			}
 			for(RegisterEventUser editEventUser : (List<RegisterEventUser>)form.getUserFriends()){
-				System.out.println("START: ");
-				long id = userDAO.getUserByEmail(editEventUser.getEmail()).getId();
-				System.out.println("USER: " + editEventUser.getEmail() + "allowed: " + editEventUser.getAllowed() + ", invited: " + editEventUser.getInvited());
-				if(editEventUser.getAllowed() || editEventUser.getInvited()){
-			
+				
+				Boolean isOrganizer = editEventUser.getEmail().equals(organizerEmail);
+				if (!isOrganizer) {
 					
-					long invited = 0;
-					if(editEventUser.getInvited()){
-						invited = 1;
-						
-					}else{
-						invited = 4;
-					}
-					
-					if(userEventDAO.ifUserEventExists(form.getEventId(), id) > 0){
+					long formUserId = userDAO.getUserByEmail(
+							editEventUser.getEmail()).getId();
+					if (editEventUser.getAllowed()
+							|| editEventUser.getInvited()) {
+						long invited = 0;
+						if (editEventUser.getInvited()) {
 
-						userEventDAO.updateUserEvent(form.getEventId(), id, editEventUser.getAllowed(), invited);
-						
-					}else{
-						UserEvent userEvent = new UserEvent(id, 2, invited, editEventUser.getAllowed(), form.getEventId());
-						userEventDAO.save(userEvent);
+							invited = 1;
+
+						} else {
+							invited = 4;
+						}
+						if (userEventDAO.ifUserEventExists(form.getEventId(),
+								formUserId) > 0) {
+							userEventDAO.updateUserEvent(form.getEventId(),
+									formUserId, editEventUser.getAllowed(),
+									invited);
+						} else {
+							User logged = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+							UserEvent userEvent = new UserEvent(formUserId, 2,
+									invited, editEventUser.getAllowed(),
+									form.getEventId(), logged.getId());
+							userEventDAO.save(userEvent);
+						}
+					} else {
+						userEventDAO.removeUserEventByEventId(formUserId,
+								form.getEventId());
 					}
-					
-				}else{	
-					userEventDAO.removeUserEventByEventId(id, form.getEventId());
-					System.out.println("USEREVENT Removed: " + editEventUser.getEmail());
 				}
 			}
-			
-			eventDAO.updateEventPlayersLimit(form.getUsersLimit(), form.getEventId());
-			System.out.println("USERS LIMIT UPDATED: ");
-			System.out.println("END: ");
 		}catch(Exception e){
-			System.out.println("Exception dupa : " + e.getMessage());
+			System.out.println("Exception  : " + e.getMessage());
 		}
-		
 	}
 
 
@@ -382,6 +393,24 @@ public class EventServiceImp implements EventService{
 		Event event = eventDAO.findById(eventId).get();
 		event.setGraphicId(graphicId);
 		eventDAO.save(event);
+		
+	}
+
+
+
+	@Override
+	public Collection<Event> getAllWithGraphic(Graphic entity) {
+		// TODO Auto-generated method stub
+		return eventDAO.getAllWithGraphic(entity);
+	}
+
+
+
+	@Override
+	public void update(Event event) {
+		// TODO Auto-generated method stub
+		
+		eventDAO.update(event.getId(), event.getStateId(), event.getGraphicId(), event.getPlayersLimit());
 		
 	}
 	

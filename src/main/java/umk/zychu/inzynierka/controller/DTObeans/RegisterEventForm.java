@@ -4,16 +4,21 @@ import java.util.List;
 
 public class RegisterEventForm {
 	
-	private long graphicId;
+	protected long graphicId;
 	
-	private int usersLimit;
+	protected int usersLimit;
 	
-	
-	
-	private List<RegisterEventUser> userFriends;
+	protected List<RegisterEventUser> userFriends;
 
+	protected String organizerEmail;
 	
 	
+	public String getOrganizerEmail() {
+		return organizerEmail;
+	}
+	public void setOrganizerEmail(String organizerEmail) {
+		this.organizerEmail = organizerEmail;
+	}
 	public void setGraphicId(long id){
 		this.graphicId = id;
 	}

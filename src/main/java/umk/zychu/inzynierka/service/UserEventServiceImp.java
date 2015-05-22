@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import umk.zychu.inzynierka.controller.DTObeans.UsersEventDetail;
 import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.UserEvent;
 import umk.zychu.inzynierka.repository.UserEventDaoRepository;
 
 
@@ -33,6 +34,20 @@ public class UserEventServiceImp implements UserEventService {
 	public List<UsersEventDetail> getUsersEventDetail(Event event) {
 		
 		return userEventDAO.getUsersEventDetail(event);
+	}
+
+
+
+
+
+
+
+
+
+	@Override
+	public void update(UserEvent ue) {
+		// TODO Auto-generated method stub
+		userEventDAO.update(ue.getId(), ue.getRoleId(), ue.getUserDecision(), ue.getUserPermission());
 	}
 
 	

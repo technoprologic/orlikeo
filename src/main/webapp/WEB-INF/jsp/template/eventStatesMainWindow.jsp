@@ -40,8 +40,12 @@
 			
 			
 			<c:forEach items="${eventWindowsList}" var="windowBlock" varStatus="i">
+				
+
+			
+			
 				<c:choose>
-			    	<c:when test="${not empty windowBlock }">
+			    	<c:when test="${not empty windowBlock && available }">
 					    <c:set var="willCome"  value="${ windowBlock.goingToCome }"/>
 						<c:set var="limit"  value="${ windowBlock.playersLimit }"/>
 						<c:set var="address"  value="${ windowBlock.address }"/>
@@ -62,6 +66,18 @@
 						<c:set var="inSameState"  value="0"/>
 			    	</c:otherwise>
 				</c:choose>
+				
+				<c:set var="available"  value="${true}"/>
+				<c:if test="${ state == 1 }">
+					<c:set var="available"  value="${false}" />
+				</c:if>
+				
+				<c:if test="${ not available }">
+					<c:set var="address"  value="brak orlika"/>
+					<c:set var="city"  value="brak"/>
+					<c:set var="start"  value="${ null }"/>
+					<c:set var="end"  value="${ null }"/>
+				</c:if>
 				
 				<c:set var="displayOrder" scope="session" value="${ eventWindowsList.size() - i.index - 1 }"/>
 				

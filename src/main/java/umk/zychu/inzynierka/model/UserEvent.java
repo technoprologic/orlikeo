@@ -15,19 +15,44 @@ import javax.persistence.Table;
 public class UserEvent extends BaseEntity implements Serializable {
 	
 	
+	@Override
+	public String toString() {
+		return "UserEvent [userId=" + userId + ", roleId=" + roleId
+				+ ", userDecision=" + userDecision + ", userPermission="
+				+ userPermission + ", eventId=" + eventId + ", role=" + role
+				+ ", decision=" + decision + ", event=" + event + ", user="
+				+ user + "]";
+	}
+
 	public UserEvent() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public UserEvent(long userId, long roleId, long userDecision,
-			boolean userPermission, long eventId) {
+			boolean userPermission, long eventId, Long loggedUserId) {
 		super();
 		this.userId = userId;
 		this.roleId = roleId;
 		this.userDecision = userDecision;
 		this.userPermission = userPermission;
 		this.eventId = eventId;
+		this.inviterId = loggedUserId;
+	}
+
+	public Long getInviterId() {
+		return inviterId;
+	}
+
+	public void setInviterId(Long inviterId) {
+		this.inviterId = inviterId;
+	}
+
+	public User getInviter() {
+		return inviter;
+	}
+
+	public void setInviter(User inviter) {
+		this.inviter = inviter;
 	}
 
 	@Column(name = "user_id")
@@ -47,6 +72,14 @@ public class UserEvent extends BaseEntity implements Serializable {
 	
 	@Column(name = "event_id")
 	long eventId;
+	
+	
+	@Column(name = "inviter_id")
+	Long inviterId;
+	
+	@ManyToOne
+	@JoinColumn(name = "inviter_id", referencedColumnName = "id", insertable = false, updatable = false)
+	User inviter;
 	
 	
 	@ManyToOne

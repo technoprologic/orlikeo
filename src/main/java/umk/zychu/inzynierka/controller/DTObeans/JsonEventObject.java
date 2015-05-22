@@ -5,6 +5,6 @@ public class JsonEventObject {
 	public String title;
 	public long start;
 	public long end;
-	public Boolean allDay;
+	public Boolean available;
 	public String url;
 }

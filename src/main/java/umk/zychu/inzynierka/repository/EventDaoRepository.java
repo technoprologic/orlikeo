@@ -1,5 +1,6 @@
 package umk.zychu.inzynierka.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameInfo;
 import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.User;
+import umk.zychu.inzynierka.model.UserEvent;
 
 @Transactional
 public interface EventDaoRepository extends BaseRepository<Event, Long>{
@@ -175,6 +178,27 @@ public interface EventDaoRepository extends BaseRepository<Event, Long>{
 	@Modifying
 	@Query(UPDATE_EVENT_PLAYERS_LIMIT)
 	void updateEventPlayersLimit(@Param("usersLimit") int usersLimit, @Param("eventId") long eventId);
+	
+	
+	public static final String EVENTS_WITH_GRAPHIC = "SELECT ev FROM Event ev WHERE ev.graphic = :entity"; 
+	@Query(EVENTS_WITH_GRAPHIC)
+	Collection<Event> getAllWithGraphic(@Param("entity") Graphic entity);
+
+	
+	public static final String UPDATE_EVENT = "UPDATE Event e SET e.stateId = :stateId, e.graphicId = :graphicId, e.playersLimit = :playersLimit"
+			+ " WHERE e.id = :id";
+	@Modifying
+	@Query(UPDATE_EVENT)
+	void update(@Param("id") Long id, @Param("stateId") long stateId, @Param("graphicId") long graphicId,
+			 @Param("playersLimit") int playersLimit);
+	
+	
+	
+	public static final String ALL_IN_BASKET = 
+			"SELECT new umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock(e.id, e.stateId, e.playersLimit )  " 
+			+ "FROM Event e JOIN e.usersEvent ue WHERE ue.user = :user AND e.stateId = 1 AND e.graphicId = NULL";
+	@Query(ALL_IN_BASKET)
+	Collection<? extends EventWindowBlock> getAllWindowBlocksInBasket(User user);
 	
 	
 	

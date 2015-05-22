@@ -6,18 +6,19 @@ This software is covered by GPL license. You also can obtain Commercial or Enter
 (c) Dinamenta, UAB.
 */
 
+/*
+ * 
+ * 
+ * 
+Lines addded by 254157@stud.umk.pl
 
+	url += (url.indexOf("?") == -1 ? "?" : "&") + "orlik=" + orlik;
+	ev = extra_data || {"orlik" : orlik };
+		
+Where orlik is variable in javaplanner.jsp
+*/
 
 window.dhtmlXScheduler = window.scheduler = { version: "4.3.0" };
-
-
-/*this.scheduler.config.lightbox.sections=[	
-	{ name:"description", height:50, map_to:"text", type:"textarea", focus:true },
-	{ name:"checkme", map_to:"single_checkbox", type:"checkbox", checked_value: "registrable", unchecked_value: "unchecked", height:40 },
-	{ name:"time", height:72, type:"time", map_to:"auto"}	
-];
-
-this.scheduler.locale.labels.section_checkme = "I'm going to participate"; */	
 
 
 if (!window.dhtmlx) {
@@ -3689,7 +3690,7 @@ scheduler.addEvent = function(start_date, end_date, text, id, extra_data) {
 		return this.addEventNow();
 	var ev = start_date;
 	if (arguments.length != 1) {
-		ev = extra_data || {"csrf": "ds"};
+		ev = extra_data || {"orlik" : orlik };
 		ev.start_date = start_date;
 		ev.end_date = end_date;
 		ev.text = text;
@@ -4791,6 +4792,7 @@ scheduler._load = function(url, from) {
 	}
 
 	url += (url.indexOf("?") == -1 ? "?" : "&") + "timeshift=" + (new Date()).getTimezoneOffset();
+	url += (url.indexOf("?") == -1 ? "?" : "&") + "orlik=" + orlik;
 	if (this.config.prevent_cache)    url += "&uid=" + this.uid();
 	var to;
 	from = from || this._date;
@@ -5667,18 +5669,10 @@ scheduler.getLightbox=function(){ //scheduler.config.wide_form=true;
 		document.body.insertBefore(d,document.body.firstChild);
 		this._lightbox=d;
 		
-		
-		/* ADDITIONAL BY ZYCHU */
-		var sxns  = [ 
-		              { name:"checkme", map_to:"participation", type:"checkbox", 
-		    checked_value: "registrable", unchecked_value: "unchecked", height:40 } ];
-		
-		
-		/* ADDITIONAL */
 
 		
 		var sns=this.config.lightbox.sections;
-		window.alert(sns.toString());
+
 		html="";
 		for (var i=0; i < sns.length; i++) {
 			var block=this.form_blocks[sns[i].type];

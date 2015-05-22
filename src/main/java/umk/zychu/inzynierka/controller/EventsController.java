@@ -1,9 +1,15 @@
 package umk.zychu.inzynierka.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,7 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,10 +46,8 @@ import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.DTObeans.UsersEventDetail;
-import umk.zychu.inzynierka.controller.util.EventsManager;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.Event;
-import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
@@ -118,7 +121,7 @@ public class EventsController {
 			jObj.start = (graphicEntity.getStartTime()).getTime();
 			jObj.end = (graphicEntity.getEndTime()).getTime();
 			jObj.url = null;
-			jObj.allDay = false;
+			jObj.available = graphicEntity.getAvailable();
 			graphicEntityList.add(jObj);
 		}
 
@@ -154,7 +157,7 @@ public class EventsController {
 			jObj.start = (graphicEntity.getStartTime()).getTime();
 			jObj.end = (graphicEntity.getEndTime()).getTime();
 			jObj.url = null;
-			jObj.allDay = false;
+			jObj.available = graphicEntity.getAvailable();
 			graphicEntityList.add(jObj);
 		}
 
@@ -176,7 +179,7 @@ public class EventsController {
 
 	
 	@RequestMapping(value = "/reserve/{graphicId}", method = RequestMethod.GET)
-	public String reserve(@PathVariable("graphicId") long graphicId, Model model) {
+	public String reserve(@PathVariable("graphicId") Integer graphicId, Model model) {
 		try {
 			Graphic graphicEntity = graphicService.getGraphicById(graphicId).get();
 			Orlik orlik = graphicEntity.getOrlik();	
@@ -184,7 +187,7 @@ public class EventsController {
 			List<User> userFriends = userService.getUserFriendships(loggedUser);
 			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
 			for(User user : userFriends){
-				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getDateOfBirth(), user.getPosition());
+				RegisterEventUser e = new RegisterEventUser(user.getId(), false, false, user.getEmail(), user.getDateOfBirth(), user.getPosition(), null);
 				users.add(e);
 			}
 			
@@ -194,6 +197,7 @@ public class EventsController {
 			model.addAttribute("orlik", orlik);
 			model.addAttribute("event", graphicEntity);
 			model.addAttribute("registerEventForm", form);
+			model.addAttribute("reserve", true);
 			
 			List<User> managers = orlikService.getOrlikManagersByOrlikId(orlik.getId());
 			model.addAttribute("managers", managers);
@@ -209,7 +213,12 @@ public class EventsController {
 	@RequestMapping(value = "/reserve/{eventId}/{graphicId}", method = RequestMethod.GET)
 	public String reserve(@PathVariable("eventId") long eventId, @PathVariable("graphicId") long graphicId,  Model model) {
 		try {
-			eventService.updateEventGraphic(eventId, graphicId);
+			Event ev = eventService.getEventById(eventId).get();
+			ev.setGraphicId(graphicId);
+			if(ev.getStateId() == 1){
+				ev.setStateId(2);
+			}
+			eventService.update(ev);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -340,60 +349,61 @@ public class EventsController {
 	@RequestMapping(value = "/details/{event}", method = RequestMethod.GET)
 	public String details(@PathVariable("event") long id, ModelMap model) {
 
-		Event event = eventService.getEventById(id).get();
-
-		CreatedEventDetails createdEventDetails  = eventService.getEventAndGraphicAndOrlikByEvent(event);
-		model.addAttribute("eventDetails", createdEventDetails);
+		try{
+			Event event = eventService.getEventById(id).get();
 	
-		List<User> managers = orlikService.getOrlikManagersByOrlikId(event.getGraphic().getOrlikId());
-		model.addAttribute("managers", managers);
-			
-		List<UsersEventDetail> usersEventDetailList = userEventService.getUsersEventDetail(event);
-		List<User> usersJoinedDecision = new ArrayList<User>();
-		List<User> usersWithoutDecision = new ArrayList<User>();
-		List<User> usersRejectedDecision = new ArrayList<User>();
-		List<User> usersPermittedOnly = new ArrayList<User>();
+			CreatedEventDetails createdEventDetails  = eventService.getEventAndGraphicAndOrlikByEvent(event);
+			model.addAttribute("eventDetails", createdEventDetails);
 		
-		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-		int decision = -1;
-		
-		Iterator<UsersEventDetail> iterator = usersEventDetailList.iterator();
-		while (iterator.hasNext()) {
-			UsersEventDetail userEventDetail = (UsersEventDetail) iterator.next();
-			if(user.getId() == userEventDetail.getUser().getId()){
-				decision = (int)userEventDetail.getUserEvent().getUserDecision();
-				System.out.println(decision);
+			List<User> managers = orlikService.getOrlikManagersByOrlikId(event.getGraphic().getOrlikId());
+			model.addAttribute("managers", managers);
 				
-			}
-	
-			switch((int)userEventDetail.getUserEvent().getUserDecision()){
-			  	case 1: usersWithoutDecision.add(userEventDetail.getUser());
-			  			break;
-			  	case 2: usersJoinedDecision.add(userEventDetail.getUser());
-			  			break;
-			  	case 3: usersRejectedDecision.add(userEventDetail.getUser());
-			  			break;
-			  	case 4: usersPermittedOnly.add(userEventDetail.getUser());
-			  			break;
-			  }
-		}
-		model.addAttribute("usersWithoutDecision", usersWithoutDecision);
-		model.addAttribute("usersJoinedDecision", usersJoinedDecision);
-		model.addAttribute("usersPermittedOnly", usersPermittedOnly);
-		model.addAttribute("usersRejectedDecision", usersRejectedDecision);
-		model.addAttribute("decision", decision);
-		
-		String organizerEmail = eventService.getEventUserOrganizerEmail(event);
-		
-		if(organizerEmail.equals(SecurityContextHolder.getContext().getAuthentication().getName().toString())){
-			model.addAttribute("organizerEmail", true);
-		}
-		else{
-			model.addAttribute("organizerEmail", false);
-		}
+			List<UsersEventDetail> usersEventDetailList = userEventService.getUsersEventDetail(event);
+			List<User> usersJoinedDecision = new ArrayList<User>();
+			List<User> usersWithoutDecision = new ArrayList<User>();
+			List<User> usersRejectedDecision = new ArrayList<User>();
+			List<User> usersPermittedOnly = new ArrayList<User>();
 			
-		System.out.println(organizerEmail  + " vs " + SecurityContextHolder.getContext().getAuthentication().getName().toString());		
+			User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+			int decision = -1;
+			Boolean allowed = false;
+			
+	
+			for(UsersEventDetail userEventDetail : usersEventDetailList ){
+				if(user.getId() == userEventDetail.getUser().getId()){
+					decision = (int)userEventDetail.getUserEvent().getUserDecision();
+					allowed = userEventDetail.getUserEvent().getUserPermission();
+				}
 		
+				switch((int)userEventDetail.getUserEvent().getUserDecision()){
+				  	case 1: usersWithoutDecision.add(userEventDetail.getUser());
+				  			break;
+				  	case 2: usersJoinedDecision.add(userEventDetail.getUser());
+				  			break;
+				  	case 3: usersRejectedDecision.add(userEventDetail.getUser());
+				  			break;
+				  	case 4: usersPermittedOnly.add(userEventDetail.getUser());
+				  			break;
+				  }
+			}
+			model.addAttribute("usersWithoutDecision", usersWithoutDecision);
+			model.addAttribute("usersJoinedDecision", usersJoinedDecision);
+			model.addAttribute("usersPermittedOnly", usersPermittedOnly);
+			model.addAttribute("usersRejectedDecision", usersRejectedDecision);
+			model.addAttribute("decision", decision);
+			model.addAttribute("allowed", allowed);
+			
+			String organizerEmail = eventService.getEventUserOrganizerEmail(event);
+			
+			if(organizerEmail.equals(SecurityContextHolder.getContext().getAuthentication().getName().toString())){
+				model.addAttribute("organizerEmail", true);
+			}
+			else{
+				model.addAttribute("organizerEmail", false);
+			}
+		}catch(Exception e){
+			logger.debug("EXCEPTION " + e);
+		}
 		return "details";
 	}
 	
@@ -423,8 +433,16 @@ public class EventsController {
 	@RequestMapping(value = "/edit/{eventId}", method = RequestMethod.GET)
 	public String editGet(@PathVariable("eventId") long id, ModelMap model) {
 
-		try {
-			Event event = eventService.getEventById(id).get();		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Optional<Event> eventOpt = eventService.getEventById(id);
+		if(eventOpt.isPresent()){
+			Optional<UserEvent> userEvent = eventOpt.get().getUsersEvent().stream().filter(ev -> ev.getUser().getEmail().equals(username)).findFirst();
+			if(!userEvent.isPresent() || !userEvent.get().getUserPermission()){
+				return "redirect:/events/all";
+			}
+		}
+		try {	
+			Event event = eventOpt.get();
 			Graphic graphic = event.getGraphic();
 			Orlik orlik = graphic.getOrlik();
 			User loggedUser = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -432,28 +450,47 @@ public class EventsController {
 			List<User> friends = userService.getUserFriendships(loggedUser);
 			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
 			
+			
+			Boolean isOrganizer = false;
+			String organizerEmail="";
+			
 			for(UserEvent userEvent : usersEvents){
 				if(userEvent.getUserId() != loggedUser.getId()){  
 					
 					boolean decision = false;
 					if(userEvent.getUserDecision() != 4) decision = true;
+					
+					String inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
+					System.out.println("EEEEEEEEEEEEEE :  " + inviterEmail);
+					
+					
+					
+					
+					
+					
 					RegisterEventUser e = new RegisterEventUser(userEvent.getUserId(), 
 															userEvent.getUserPermission(), 
 															decision, 
 															userEvent.getUser().getEmail(), 
 															userEvent.getUser().getDateOfBirth(), 
-															userEvent.getUser().getPosition());
+															userEvent.getUser().getPosition(), inviterEmail);
 					users.add(e);
 				}
+					
+				if( userEvent.getRoleId() == 1){
+						organizerEmail = userEvent.getUser().getEmail();
+						isOrganizer = organizerEmail.equals(loggedUser.getEmail()) ? true : false;
+				}
+				
 			}
 			
 			for(User friend : friends){
 				boolean isInvited = false;
+				String inviterEmail = null;
 				for(UserEvent userEvent : usersEvents){
 					if(friend.getId() == userEvent.getUserId()){
 						isInvited = true;
-						System.out.println("friendid: " + friend.getId() + " == " + userEvent.getUser().getId());
-						
+						inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
 					}
 				}
 					
@@ -463,18 +500,17 @@ public class EventsController {
 							false, 
 							friend.getEmail(), 
 							friend.getDateOfBirth(), 
-							friend.getPosition());
+							friend.getPosition(), inviterEmail);
 					users.add(e1);
 				}
 			}
 			
-			EditEventForm form = new EditEventForm();
-			form.setGraphicId(id);
-			form.setUserFriends(users);
+			EditEventForm form = new EditEventForm(id, users, organizerEmail);
 			model.addAttribute("orlik", orlik);
 			model.addAttribute("graphic", graphic);
 			model.addAttribute("event", event);
 			model.addAttribute("editEventForm", form);
+			model.addAttribute("isOrganizer", isOrganizer);
 			
 			List<User> managers = orlikService.getOrlikManagersByOrlikId(orlik.getId());
 			model.addAttribute("managers", managers);
@@ -482,7 +518,6 @@ public class EventsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return "eventEdit";
 	}
 	
@@ -497,7 +532,17 @@ public class EventsController {
 		if(result.hasErrors()){
 			return "redirect:/events";
 		}
-		eventService.updateEvent(form);
+		
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Optional<Event> event = eventService.getEventById(form.getEventId());
+		if(event.isPresent()){
+			Optional<UserEvent> userEvent = event.get().getUsersEvent().stream().filter(ev -> ev.getUser().getEmail().equals(username)).findFirst();
+			if(userEvent.isPresent() && userEvent.get().getUserPermission()){
+				eventService.updateEvent(form);
+			}else{
+				return "redirect:/events/all";
+			}
+		}
 		return "redirect:/events/edit/" + form.getEventId();
 	}
 	
@@ -522,6 +567,7 @@ public class EventsController {
 	public String editGraphic(
 			@ModelAttribute @Valid ChoosenOrlikBean chooseOrlikBean,
 			ModelMap model, BindingResult result, HttpServletRequest request) {
+		
 
 		if (result.hasErrors() || chooseOrlikBean.getId() == 0) {
 			return "redirect:/events/create/" + chooseOrlikBean.getEventId();

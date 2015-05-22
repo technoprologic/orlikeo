@@ -1,5 +1,6 @@
 package umk.zychu.inzynierka.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +26,29 @@ public class GraphicServiceImp implements GraphicService{
 	}
 	
 	@Override
-	public Optional<Graphic> getGraphicById(long graphicId){
+	public Optional<Graphic> getGraphicById(Integer graphicId){
 		System.out.println("GRAPHIC ID: " + graphicId);
 		return graphicDAO.findById(graphicId);
+	}
+	
+	@Override
+	public Collection<Graphic> getOrlikGraphicByOrlikId(Long id) {
+		return graphicDAO.getOrlikGraphicByOrlikId(id);
+	}
+
+	@Override
+	public void update(Graphic entity) {
+		graphicDAO.update(entity.getId(), entity.getTitle(), entity.getStartTime(), entity.getEndTime(), entity.getAvailable());
+	}
+	
+	@Override
+	public void save(Graphic graphic){
+		graphicDAO.save(graphic);
+	}
+
+	@Override
+	public void delete(Graphic entity) {
+		graphicDAO.delete(entity);
 	}
 
 }

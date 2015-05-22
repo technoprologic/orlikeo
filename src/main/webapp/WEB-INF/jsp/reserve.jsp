@@ -13,11 +13,18 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
+
+			
+<%-- 		<c:if test="${ not reserve }">
 			<a href="${createEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
-			Orlik ${orlik.getCity()} ul.${orlik.getAddress()} <small><a
-				href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
-				<fmt:formatDate value="${ event.startTime }" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${event.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
+		</c:if> --%>
+			Orlik ${orlik.getCity()} ul.${orlik.getAddress()} <small>
+<%-- 		<c:if test="${ not reserve }">
+			<a href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
+		</c:if> --%>
+			<fmt:formatDate value="${ event.startTime }" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${event.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${event.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
 		</h1>
+		
 		<ul>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
@@ -51,7 +58,7 @@
                     <td><form:checkbox path="userFriends[${i.index}].invited" class="invite" value="true" /></td>
 					<td><form:checkbox path="userFriends[${i.index}].allowed" class="allow" value="true" /></td>
 					<td><form:hidden path="userFriends[${i.index}].email" value="${ friend.getEmail() }" /> ${ friend.getEmail() }</td>
-					<%-- <td>${ friend.getAge() }</td> --%>
+					<td><%-- ${ friend.getAge() } --%></td>
 					<td>${ friend.getPosition() }</td>
 			    </tr>
 			</c:forEach> 

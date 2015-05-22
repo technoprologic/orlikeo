@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dhtmlx.planner.controls.DHXLocalization;
 
@@ -16,8 +17,6 @@ import umk.zychu.inzynierka.service.EventXService;
 @Controller
 public class LoadingController {
 
-	@Autowired
-	private EventXService xService;
 
 /*	@Autowired
 	EntityManager manager;
@@ -49,9 +48,10 @@ public class LoadingController {
 	
 	
 	@RequestMapping("/planner")
-	public String planner(HttpServletRequest request, ModelMap model)
+	public String planner(@RequestParam("orlik") long id, HttpServletRequest request, ModelMap model)
 			throws Exception {
 		System.out.println(request.getRequestURL().toString().replace(request.getRequestURI(), request.getContextPath()));
+		model.addAttribute("orlik", id);
 		return "javaplanner1";
 	}
 	
@@ -59,3 +59,14 @@ public class LoadingController {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

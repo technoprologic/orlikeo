@@ -22,24 +22,28 @@
 <c:set var="orlik"    value="${eventDetails.orlik }"/>
 <c:set var="event"    value="${eventDetails.event }"/>
 
+<c:set var="available"  value="${true}"/>
+<c:if test="${ event.stateId == 1 }">
+	<c:set var="available"  value="${false}" />
+</c:if>
+
+
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			<%-- <c:if test="${ organizerEmail}">
-				<a href="${createEventUrl}" title="Zmień boisko"><i class="glyphicon glyphicon-edit"></i></a>
-			</c:if> --%>
-			${orlik.city} ul.${orlik.getAddress()} <small>
-			<%-- <c:if test="${ organizerEmail}">
-				<a href="${graphicEventUrl}" title="Zmień godzinę"><i class="glyphicon glyphicon-edit"></i></a>
-			</c:if> --%>
+		<c:choose>
+			<c:when test="${ available }">
+			${orlik.city} ul.${orlik.getAddress()}  <small>
 				<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${graphic.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
 				<c:choose >
-					<c:when test="${ organizerEmail}" >
+					<c:when test="${organizerEmail}" >
 						<a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
-						<%-- <a href="${removeEventUrl}/${event.id}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a> --%>
 					</c:when>
 					<c:otherwise>
+						<c:if test="${ allowed}" >
+						<a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+						</c:if>
 						<c:choose>
 							<c:when test="${ decision == 1 }">
 								<a href="${joinEventUrl}/${event.id}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i></a> /
@@ -55,8 +59,16 @@
 							</c:when>
 						</c:choose>
 					</c:otherwise>
-	    		</c:choose>
+	    		</c:choose>	
+	    	</c:when>
+	    	<c:otherwise>
+	    		Brak orlika <c:if test="${ allowed }">
+	    						<a href="${editEventUrl}/${event.id}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+	    					</c:if> 
+	    	</c:otherwise>
+		</c:choose>
 		</h1>
+		<c:if test="${ available }">
 		<ul>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
@@ -66,6 +78,7 @@
 																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
 																	</c:forEach></li>
 		</ul>
+		</c:if>
 		<ul>
 			<li> Aktualny status:<c:choose>
 									<c:when test="${ event.stateId == 1}"> <i class="glyphicon glyphicon-trash"></i> W koszu</c:when>

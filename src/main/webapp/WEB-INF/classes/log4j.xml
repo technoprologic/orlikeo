@@ -23,19 +23,19 @@
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core" >
-		<level value="all" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.social" >
-		<level value="all" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.beans" >
-		<level value="all" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.context" >
-		<level value="all" />
+		<level value="error" />
 	</logger>
 
 	<logger name="org.springframework.web" >

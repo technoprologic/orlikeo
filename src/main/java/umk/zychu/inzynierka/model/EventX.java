@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import umk.zychu.inzynierka.controller.DTObeans.DHXCustomEvent;
+
 import com.dhtmlx.planner.DHXEv;
 import com.dhtmlx.planner.DHXEvent;
 
@@ -30,13 +32,23 @@ public class EventX implements Serializable{
     @Column(name="event_id")
     private Integer id;
 	
+	public EventX(DHXCustomEvent event) {
+		// TODO Auto-generated constructor stub
+		this.id = event.getId();
+		this.contacts = event.getText();
+		this.notes = event.getText();
+		this.start_date = event.getStart_date();
+		this.end_date = event.getEnd_date();
+		this.allow = event.getAllow();
+	}
+
 	public EventX(DHXEv event) {
 		// TODO Auto-generated constructor stub
 		this.contacts = event.getText();
 		this.notes = event.getText();
-		
 		this.start_date = event.getStart_date();
 		this.end_date = event.getEnd_date();
+		this.allow = false;
 	}
 
 	public Integer getId() {
@@ -67,10 +79,20 @@ public class EventX implements Serializable{
 	@Column(name = "end_date")
 	Date end_date;
 
+	@Column(name = "allow")
+	Boolean allow;
 	
 
 
 
+
+	public Boolean getAllow() {
+		return allow;
+	}
+
+	public void setAllow(Boolean allow) {
+		this.allow = allow;
+	}
 
 	public Date getStart_date() {
 		return start_date;

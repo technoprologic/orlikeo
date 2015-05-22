@@ -16,14 +16,17 @@ public interface EventXRepository extends BaseRepository<EventX, Integer>{
 	@Query(GET_X_EVENTS)
 	Collection<EventX> getXevents();
 	
-	
-	
-	
+
 	
 	public static final String UPDATE_EVENT_X = "UPDATE EventX ex "
-			+ " SET ex.notes = :notes, ex.table = :table, ex.start_date = :start_date, ex.end_date = :end_date "
+			+ " SET ex.notes = :notes, ex.table = :table, ex.start_date = :start_date, ex.end_date = :end_date, ex.allow = :allow "
 			+ " WHERE ex.id = :id";
 	@Modifying
 	@Query(UPDATE_EVENT_X)
-	void update(@Param("id") Integer id, @Param("notes") String notes , @Param("table") String table, @Param("start_date") Date start_date, @Param("end_date") Date end_date);
+	void update(@Param("id") Integer id, 
+			@Param("notes") String notes , 
+			@Param("table") String table, 
+			@Param("start_date") Date start_date, 
+			@Param("end_date") Date end_date, 
+			@Param("allow") Boolean allow);
 }

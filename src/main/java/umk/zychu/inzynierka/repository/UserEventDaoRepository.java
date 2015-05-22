@@ -65,6 +65,14 @@ public interface UserEventDaoRepository extends BaseRepository<UserEvent, Long>{
 	
 	
 	
+	public static final String UPDATE = "UPDATE  UserEvent ue SET ue.roleId = :roleId, ue.userDecision = :userDecision, ue.userPermission = :userPermission"
+			+ " WHERE ue.id = :id";
+	@Modifying
+	@Query(UPDATE)
+	void update(@Param("id") Long id, @Param("roleId") long roleId, @Param("userDecision") long userDecision, @Param("userPermission") boolean userPermission);
+	
+	
+	
 	
 	
 	

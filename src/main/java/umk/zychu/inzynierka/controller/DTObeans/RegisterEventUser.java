@@ -15,9 +15,22 @@ public class RegisterEventUser {
 	boolean allowed;
 	boolean invited;
 	String email;
+	String inviter;
 	Date dateOfBirth;
 	String position;
 	
+	
+	
+	public String getInviter() {
+		return inviter;
+	}
+
+	public void setInviter(String inviter) {
+		this.inviter = inviter;
+	}
+
+
+
 	public void setUserId(long userId){
 		this.userId = userId;
 	}
@@ -69,13 +82,14 @@ public class RegisterEventUser {
 	}
 	
 
-	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, Date dateOfBirth, String position){
+	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, Date dateOfBirth, String position, String inviter){
 		this.userId = userId;
 		this.allowed = hasRight;
 		this.invited = decision;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
 		this.position = position;
+		this.inviter = inviter;
 	}
 	
 }

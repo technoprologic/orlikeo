@@ -15,7 +15,6 @@ import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.repository.OrlikDaoRepository;
 
 @Service
-@Transactional
 public class OrlikServiceImp implements OrlikService {
 	
 	

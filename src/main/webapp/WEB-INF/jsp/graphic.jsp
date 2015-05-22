@@ -39,8 +39,12 @@
 				$.each(json, function(index, value) {
 					value.start = new Date(value.start);
 					value.end = new Date(value.end);
-					value.url = '${reserveUrl}/' + value.id;
-					
+					if(value.available){
+						value.url = '${reserveUrl}/' + value.id;
+					}
+					else{
+						value.url = '';
+					}
 				});
 
 			 /*   alert(JSON.stringify(json));  */

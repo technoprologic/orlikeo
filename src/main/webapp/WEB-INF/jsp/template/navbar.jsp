@@ -14,7 +14,8 @@
 <c:url value="/events/list" var="EventsUrl" />
 <c:url value="/friends" var="friendsUrl" />
 <c:url value="/friends/search" var="searchFriends" />
-
+<c:url value="/planner" var="plannerUrl" />
+<c:url value="/pane" var="paneUrl" />
 
 
 
@@ -178,13 +179,10 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#animator"><i class="glyphicon glyphicon-user"></i> ANIMATOR </a>
                         <ul id="animator" class="collapse" >
                             <li>
-                                <a href="${addFriendUrl }"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
+                                <a href="${plannerUrl}?orlik=1"><i class="glyphicon glyphicon-plus"></i> Grafik </a>
                             </li>
                             <li>
-                                <a href="${friendsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
-                            </li>
-                            <li>
-                                <a href="${searchFriends}"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
+                                <a href="${paneUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Panel </a> 
                             </li>
                         </ul>
                     </li>
