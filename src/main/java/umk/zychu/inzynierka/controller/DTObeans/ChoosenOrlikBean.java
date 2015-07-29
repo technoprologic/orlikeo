@@ -1,18 +1,15 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-
-
-
 public class ChoosenOrlikBean {
 
-	long Id;
-	long eventId;
+	Integer Id;
+	Integer eventId;
 
-	public long getEventId() {
+	public Integer getEventId() {
 		return eventId;
 	}
 
-	public void setEventId(long eventId) {
+	public void setEventId(Integer eventId) {
 		this.eventId = eventId;
 	}
 
@@ -20,13 +17,11 @@ public class ChoosenOrlikBean {
 		Id = -1;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		Id = id;
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return Id;
-	}
-	
-	
+	}	
 }

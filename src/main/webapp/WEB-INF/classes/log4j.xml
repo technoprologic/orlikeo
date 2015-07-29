@@ -39,14 +39,25 @@
 	</logger>
 
 	<logger name="org.springframework.web" >
-		<level value="all" />
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework">
-		<level value="all"></level>
+		<level value="error"></level>
 	</logger>
 	
-	<logger name="umk.zychu.inzynierka" additivity="false" >
+	<logger name="org.springframework.web.socket">
+		<level value="error"></level>
+	</logger>
+	
+	<logger name="org.hibernate">
+    	<level value="error"/>
+	</logger>
+	<logger name="org.springframework.data">
+    	<level value="error"/>
+	</logger>
+	
+	<logger name="umk.zychu.inzynierka" additivity="true" >
 		<level value="all" />
 		<appender-ref ref="console"/>
 		<appender-ref ref="file"/>

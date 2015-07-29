@@ -1,446 +1,469 @@
 package umk.zychu.inzynierka.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import umk.zychu.inzynierka.controller.DTObeans.CreatedEventDetails;
-import umk.zychu.inzynierka.controller.DTObeans.EditEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
-import umk.zychu.inzynierka.controller.DTObeans.UserGameInfo;
 import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.EventState;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
+import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.model.UserEvent;
+import umk.zychu.inzynierka.model.UserEventRole;
 import umk.zychu.inzynierka.repository.EventDaoRepository;
-import umk.zychu.inzynierka.repository.GraphicDaoRepository;
-import umk.zychu.inzynierka.repository.UserDaoRepository;
-import umk.zychu.inzynierka.repository.UserEventDaoRepository;
-import umk.zychu.inzynierka.util.UserEventDecision;
-import umk.zychu.inzynierka.util.UserEventRole;
 
 @Service
-public class EventServiceImp implements EventService{
-	
+@Transactional
+public class EventServiceImp implements EventService {
+
 	@Autowired
 	EventDaoRepository eventDAO;
-	
 	@Autowired
-	UserEventDaoRepository userEventDAO;
-	
+	UserEventService userEventService;
 	@Autowired
-	GraphicDaoRepository graphicDAO;
-	
+	GraphicService graphicService;
 	@Autowired
-	UserDaoRepository userDAO;
-	
-	
-	@Override
-	public Optional<Event> getEventById(long id){
-		return eventDAO.findById(id);
-	}
-	
-	
-	
-	@Override
-	public List<Graphic> getOrlikGraphicByOrlik(Orlik orlik){
-		return graphicDAO.getOrlikGraphicByOrlik(orlik);
-	}
-	
+	UserService userService;
+	@Autowired
+	UserEventDecisionService decisionService;
+	@Autowired
+	UserEventRoleService roleService;
+	@Autowired
+	EventStateService stateService;
 
+	private static final org.slf4j.Logger logger = LoggerFactory
+			.getLogger(EventServiceImp.class);
 
 	@Override
-	public void saveUserEvent(UserEvent event) {
-		userEventDAO.save(event);
+	public Optional<Event> getEventById(Integer id) {
+		eventDAO.findOne(id);
+		return Optional.ofNullable(eventDAO.findOne(id));
 	}
 
-	
-	
 	@Override
 	public Event registerEventForm(RegisterEventForm form) {
-		
-		int STATE=2;
-			
-		try{
-			
-			Event event = new Event(form.getGraphicId(),form.getUsersLimit(), STATE);
-			eventDAO.save(event);
-			
-			UserEvent organizerUserEvent = new UserEvent();
-			organizerUserEvent.setEventId(event.getId());
-			organizerUserEvent.setUserId(userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId());
-			organizerUserEvent.setRoleId(UserEventRole.ORGANIZER.getValue());
-			organizerUserEvent.setUserDecision(UserEventDecision.ACCEPTED.getValue());
-			organizerUserEvent.setUserPermission(true);
-			userEventDAO.save(organizerUserEvent); 
-			
-			for(RegisterEventUser regEventUser : (List<RegisterEventUser>)form.getUserFriends()){
-				
-				if(regEventUser.getAllowed() || regEventUser.getInvited() ){
-					UserEvent userEvent = new UserEvent();
-					userEvent.setEventId(event.getId());
-					userEvent.setUserId(userDAO.getUserByEmail(regEventUser.getEmail()).getId());
-					userEvent.setRoleId(UserEventRole.GUEST.getValue());
-					userEvent.setInviterId(userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getId());
-					
-					if(regEventUser.getInvited()){
-						userEvent.setUserDecision(UserEventDecision.INVITED.getValue());
-						}
-					else { 
-						userEvent.setUserDecision(UserEventDecision.NOT_INVITED.getValue());
-					}
-					
-					userEvent.setUserPermission(regEventUser.getAllowed());
-					userEventDAO.save(userEvent);
-				}	
+		try {
+			User userOrganizer = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+			Graphic graphic = graphicService.findOne(form.getGraphicId());
+			EventState state = stateService.findOne(EventState.IN_PROGRESS);
+			Integer playersLimit = form.getUsersLimit();
+			Event event = new Event(userOrganizer, graphic, state, playersLimit);
+			UserEventRole organizerRole = roleService.findOne(UserEventRole.ORGANIZER);
+			UserDecision organizerDecision = decisionService.findOne(UserDecision.ACCEPTED);
+			UserEvent organizerUserEvent = new UserEvent(userOrganizer, organizerRole, organizerDecision, true, event, null);
+			List<UserEvent> usersEvents = new LinkedList<UserEvent>();
+			usersEvents.add(organizerUserEvent);
+			ArrayList<RegisterEventUser> regUsersList = (ArrayList<RegisterEventUser>)form.getEventFormMembers();
+			for (RegisterEventUser regEventUser : regUsersList) {
+				if (regEventUser.getAllowed() || regEventUser.getInvited()) {
+					User userTarget = userService.getUser(regEventUser.getEmail());
+					UserDecision decision = (regEventUser.getInvited()) ? decisionService
+							.findOne(UserDecision.INVITED)
+							: decisionService.findOne(UserDecision.NOT_INVITED);
+					UserEventRole role = roleService.findOne(UserEventRole.GUEST);
+					Boolean permission = regEventUser.getAllowed();
+					UserEvent ue = new UserEvent(userTarget, role, decision, permission, event, userOrganizer);
+					usersEvents.add(ue);
+				}
 			}
-			return event;
-			
-		}catch(Exception e){
-			System.out.println("Exception : " + e.getMessage());
+			event.setUsersEvent(usersEvents);
+			return eventDAO.save(event);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 
-	
-	
 	@Override
-	public List<UserEvent> getUserEvent(long id) {
-		return userEventDAO.getUserEvent(id);
-	}
-
-	
-	
-	@Override
-	public List<UserGameDetails> getGamesDetailsByStateId(User user, long state){
-		
-		
-		List<UserGameDetails> userGamesDetailsList = eventDAO.getGamesDetailsByStateId(user, state);
-		for(UserGameDetails gameDetails :userGamesDetailsList){
-			long eventId = gameDetails.getEventId();
-			gameDetails.setWillCome(eventDAO.countUsersEventDecisions(eventId, 2));
-		}
-		return userGamesDetailsList;
-	}
-
-	
-	
-	@Override
-	public List<UserGameDetails> getGamesDetails(User user){
-		
-		List<UserGameDetails> userGamesDetailsList = eventDAO.getGamesDetails(user);
-		for(UserGameDetails gameDetails :userGamesDetailsList){
-			long eventId = gameDetails.getEventId();
-			gameDetails.setWillCome(eventDAO.countUsersEventDecisions(eventId, 2));
-		}
-		
-		return userGamesDetailsList;
+	public List<UserGameDetails> getGamesDetailsByStateId(User user,
+			Integer stateId) {
+		EventState state = stateService.findOne(stateId);
+		List<UserEvent> userEvents = user.getUserEvents().stream()
+			.filter(ue -> ue.getEvent().getState().equals(state))
+			.collect(Collectors.toList());
+		return generateUserGameDetailsList(userEvents);
 	}
 	
-	
-	
 	@Override
-	public CreatedEventDetails getEventAndGraphicAndOrlikByEvent(Event event) {
-		
-		CreatedEventDetails createdEventDetails = eventDAO.getEventAndGraphicAndOrlikByEvent(event);
-		createdEventDetails.setInvitedPlayers(eventDAO.countInvitedPlayers(createdEventDetails.getEvent()));
-		return createdEventDetails;
+	public List<UserGameDetails> getGamesDetails(User user) {
+		List<UserEvent> userEvents = user.getUserEvents();	
+		return generateUserGameDetailsList(userEvents);
 	}
 
-	
-	
-	@SuppressWarnings("deprecation")
 	@Override
-	public List<EventWindowBlock> getEventsBlockWindowList(User user) {
-
-		List<EventWindowBlock> eventWindowBlockList = new ArrayList<EventWindowBlock>();
-		/*EventWindowBlock allWithoutGraphic = (List<EventWindowBlock>) eventDAO.getAllWindowBlocksInBasket(user);
-		
-		
-		
-		eventWindowBlockList.addAll(allWithoutGraphic);*/
-		
-		for(int stateId=1; stateId<=5; stateId++){
-			try{		
-				if(!eventDAO.getWindowBlockInState(user, (long)stateId).isEmpty()){
-					EventWindowBlock tmpEventWindowBlock = eventDAO.getWindowBlockInState(user, (long)stateId).get(0);
-					long id = tmpEventWindowBlock.getEventId();
-					tmpEventWindowBlock.setGoingToCome(eventDAO.countUsersEventDecisions(id, 2));	
-					tmpEventWindowBlock.setCountedInSameState(eventDAO.countUserEventsByStateId(user, stateId));
-					eventWindowBlockList.add(tmpEventWindowBlock);
-				}else{
-					eventWindowBlockList.add(null);
-				}
-			}catch(Exception e){
-					System.out.println(e.toString());
-				}
-		}
-		
-		try{
-			Date now = new Date();
-			System.out.println(now.getDate());
-			long end = now.getTime() + 172400000;
-			Date todayAndTomorrow = new Date(end);
-			todayAndTomorrow = new Date(todayAndTomorrow.getYear(), todayAndTomorrow.getMonth(), todayAndTomorrow.getDate());
-			
-			
-			System.out.println(todayAndTomorrow);
-			
-			if(!eventDAO.getIncomingWindowBlock(user, 5, now, todayAndTomorrow).isEmpty()){
-				EventWindowBlock eventWindowBlock = eventDAO.getIncomingWindowBlock(user, 5, now, todayAndTomorrow).get(0);
-				long id = eventWindowBlock.getEventId();
-				eventWindowBlock.setGoingToCome(eventDAO.countUsersEventDecisions(id, 2));
-				eventWindowBlock.setCountedInSameState(eventDAO.countIncomingUserGames(user, 5, now, todayAndTomorrow));
-				eventWindowBlockList.add(eventWindowBlock);
-			}else{
-				eventWindowBlockList.add(null);
-			}	
-		}catch(Exception e){
-			System.out.println(e.toString());
-		}	
-		
-		Collections.reverse(eventWindowBlockList);
-		return eventWindowBlockList;
+	public UserGameDetails getGameDetails(Event event) {	
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		UserEvent userEvent = user.getUserEvents().stream()
+			.filter(ue ->ue.getEvent().equals(event))
+			.findFirst()
+			.get();
+		return	generateUserGameDetails(userEvent);
 	}
-
-
 	
 	@Override
-	public List<UserGameInfo> getAllUserEventsByState(User user, long stateId) {
-		return eventDAO.getAllUserGamesInfo(user, stateId);
+	public List<UserGameDetails> getGamesDetailsByRoleId(User user,
+			Integer roleId) {
+		UserEventRole role = roleService.findOne(roleId);
+		List<UserEvent> userEvents = user.getUserEvents().stream()
+			.filter(ue -> ue.getRole().equals(role))
+			.collect(Collectors.toList());
+		return generateUserGameDetailsList(userEvents);
 	}
-
-	
-	
-	@Override
-	public List<EventWindowBlock> getEventsBlockWindowByRoleList(User user, long roleId) {
-		List<EventWindowBlock> eventWindowBlockList = new ArrayList<EventWindowBlock>();
-		for(int stateId=1; stateId<=5; stateId++){
-			try{		
-				if(!eventDAO.getWindowBlockInStateByRole(user, (long)stateId, roleId).isEmpty()){
-					EventWindowBlock tmpEventWindowBlock = eventDAO.getWindowBlockInStateByRole(user, (long)stateId, roleId).get(0);
-					long id = tmpEventWindowBlock.getEventId();
-					tmpEventWindowBlock.setGoingToCome(eventDAO.countUsersEventDecisions(id, 2));	
-					tmpEventWindowBlock.setCountedInSameState(eventDAO.countUserEventsByStateIdByRoleId(user, stateId, roleId));
-					eventWindowBlockList.add(tmpEventWindowBlock);
-				}else{
-					eventWindowBlockList.add(null);
-				}
-			}catch(Exception e){
-					System.out.println(e.toString());
-				}
-		}
-		
-		try{
-			Date now = new Date();
-			System.out.println(now.getDate());
-			long end = now.getTime() + 172400000;
-			Date todayAndTomorrow = new Date(end);
-			todayAndTomorrow = new Date(todayAndTomorrow.getYear(), todayAndTomorrow.getMonth(), todayAndTomorrow.getDate());
-			
-			
-			System.out.println(todayAndTomorrow);
-			
-			if(!eventDAO.getIncomingWindowBlockByRoleId(user, 5, now, todayAndTomorrow, roleId).isEmpty()){
-				EventWindowBlock eventWindowBlock = eventDAO.getIncomingWindowBlockByRoleId(user, 5, now, todayAndTomorrow, roleId).get(0);
-				long id = eventWindowBlock.getEventId();
-				eventWindowBlock.setGoingToCome(eventDAO.countUsersEventDecisions(id, 2));
-				eventWindowBlock.setCountedInSameState(eventDAO.countIncomingUserGamesByRoleId(user, 5, now, todayAndTomorrow, roleId));
-				eventWindowBlockList.add(eventWindowBlock);
-			}else{
-				eventWindowBlockList.add(null);
-			}	
-		}catch(Exception e){
-			System.out.println(e.toString());
-		}	
-		
-		Collections.reverse(eventWindowBlockList);
-		return eventWindowBlockList;
-	}
-
-
-
-	@Override
-	public List<UserGameDetails> getGamesDetailsByRoleId(User user, long roleId) {
-		List<UserGameDetails> userGamesDetailsList = eventDAO.getGamesDetailsByRoleId(user, roleId);
-		for(UserGameDetails gameDetails :userGamesDetailsList){
-			long eventId = gameDetails.getEventId();
-			gameDetails.setWillCome(eventDAO.countUsersEventDecisions(eventId, 2));
-		}
-		
-		return userGamesDetailsList;
-	}
-
-
 
 	@Override
 	public List<UserGameDetails> getGamesDetailsByRoleIdAndStateId(User user,
-			long roleId, long stateId) {
-		List<UserGameDetails> userGamesDetailsList = eventDAO.getGamesDetailsByRoleIdAndStateId(user, roleId, stateId);
-		for(UserGameDetails gameDetails :userGamesDetailsList){
-			long eventId = gameDetails.getEventId();
-			gameDetails.setWillCome(eventDAO.countUsersEventDecisions(eventId, 2));
+			Integer roleId, Integer stateId) {
+		UserEventRole role = roleService.findOne(roleId);
+		EventState state = stateService.findOne(stateId);
+		List<UserEvent> userEvents = user.getUserEvents().stream()
+			.filter(ue -> ue.getRole().equals(role)
+						&& ue.getEvent().getState().equals(state))
+			.collect(Collectors.toList());
+		return generateUserGameDetailsList(userEvents);
+	}
+
+	@Override
+	public Boolean isEventMember(Event event) {
+		String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userService.getUser(userEmail);
+		Optional<UserEvent> userEventOpt = user.getUserEvents().stream()
+			.filter(ue ->ue.getEvent().equals(event))
+			.findFirst();
+		
+		if(userEventOpt.isPresent()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@Override
+	public User getEventOrganizerUser(Event event) {
+		UserEventRole role = roleService.findOne(UserEventRole.ORGANIZER);
+		Optional<User> eventOrganizerOpt = event.getUsersEvent().stream()
+			.filter(ue -> ue.getRole().equals(role) 
+					&& ue.getEvent().equals(event))
+			.map(ue ->ue.getUser())
+			.findFirst();
+		if(eventOrganizerOpt.isPresent()){
+			return eventOrganizerOpt.get();
+		}
+		else{
+			return null;
+		}
+	}
+
+	@Override
+	public void deleteEventById(Integer id) throws IllegalArgumentException{
+		if(eventDAO.exists(id)){
+			Event event = eventDAO.findOne(id);
+			event.getUsersEvent().forEach(ue -> userEventService.delete(ue));
+			eventDAO.delete(event);
+		}
+	}
+
+	@Override
+	public void updateEvent(RegisterEventForm form) {
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+		Event event = eventDAO.findOne(form.getEventId());
+		// remove userOrganizer && editing user
+		form.getEventFormMembers()
+			.removeIf(reu -> reu.getEmail().equals(event.getUserOrganizer().getEmail()) || reu.getEmail().equals(user.getEmail())); 
+		// remove all who's !invited && has !rights && their && !has userEvent
+		form.getEventFormMembers()
+			.removeIf(reu -> !reu.getAllowed() 
+						&& !reu.getInvited() 
+						&& !userEventService.findOne(event, userService.getUser(reu.getEmail()))
+			.isPresent());
+		if(!event.getUserOrganizer().equals(user)){
+			form.getEventFormMembers()
+				.removeIf(reu -> userEventService.findOne(event, userService.getUser(reu.getEmail())).isPresent() 
+							&& !userEventService.findOne(event, userService.getUser(reu.getEmail())).get().getInviter().equals(user));
+		}else{
+			event.setPlayersLimit(form.getUsersLimit());
+			eventDAO.save(event);
+		}
+		updateUsersEvents(form.getEventFormMembers(), event);
+	}
+
+	private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+
+		// are still event members
+		eventFormMembers
+				.stream()
+				.filter(reu -> reu.getAllowed() || reu.getInvited())
+				.forEach(
+						reu -> {
+							User u = userService.getUser(reu.getEmail());
+							Optional<UserEvent> ueOpt = userEventService
+									.findOne(event, u);
+							if (ueOpt.isPresent()) {
+								UserEvent ue = ueOpt.get();
+								ue.setInviter(user);
+								if (reu.getAllowed() && reu.getInvited()) {
+									ue.setUserPermission(true);
+									ue.setDecision(decisionService
+											.findOne(UserDecision.INVITED));
+								} else if (!reu.getAllowed()
+										&& reu.getInvited()) {
+									ue.setUserPermission(false);
+									ue.setDecision(decisionService
+											.findOne(UserDecision.INVITED));
+								} else if (reu.getAllowed()
+										&& !reu.getInvited()) {
+									ue.setUserPermission(true);
+									ue.setDecision(decisionService
+											.findOne(UserDecision.NOT_INVITED));
+								}
+								userEventService.save(ue);
+							}
+						});
+		//are new to the event
+		eventFormMembers.stream()
+								.filter(reu -> (reu.getAllowed() || reu.getInvited())
+										&& !userEventService.findOne(event, userService.getUser(reu.getEmail()))
+										.isPresent())
+								.forEach(reu -> {
+									User u = userService.getUser(reu.getEmail());
+									UserEventRole role = roleService.findOne(UserEventRole.GUEST);
+									UserDecision decision = decisionService.findOne(UserDecision.NOT_INVITED);
+									Boolean permission = false;
+									if(reu.getAllowed() && reu.getInvited()){
+										decision = decisionService.findOne(UserDecision.INVITED);
+										permission = true;
+									}else if(!reu.getAllowed() && reu.getInvited()){
+										decision = decisionService.findOne(UserDecision.INVITED);
+										permission = false;
+									}else if(reu.getAllowed() && !reu.getInvited()){
+										decision = decisionService.findOne(UserDecision.NOT_INVITED);
+										permission = true;
+									}
+									UserEvent ue = new UserEvent (u, role, decision, permission, event, user);
+									userEventService.save(ue);
+								});
+		// are no longer event members
+		eventFormMembers
+				.stream()
+				.filter(reu -> !reu.getAllowed() && !reu.getInvited())
+				.forEach(
+						reu -> {
+							User u = userService.getUser(reu.getEmail());
+							Optional<UserEvent> ueOpt = userEventService
+									.findOne(event, u);
+							if (ueOpt.isPresent()) {
+								UserEvent ue = ueOpt.get();
+								event.getUsersEvent().remove(ue);
+								eventDAO.save(event);
+							}
+						});
+		
+	}
+
+	@Override
+	public Event save(Event event) {
+		return eventDAO.saveAndFlush(event);
+	}
+		
+	private List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents) {
+		List<UserGameDetails> userGamesDetailsList = new LinkedList<UserGameDetails>();
+		Iterator<UserEvent> it = userEvents.iterator();
+		while(it.hasNext()){
+			UserEvent userEvent = it.next();
+			UserGameDetails userGameDetails = generateUserGameDetails(userEvent);
+			userGamesDetailsList.add(userGameDetails);
 		}
 		return userGamesDetailsList;
 	}
 
-
-
-	@Override
-	public int isInvitedOnTheEvent(User user, long eventId) {
-		return eventDAO.isInvitedOnTheEvent(user, eventId);
-	}
-
-
-
-	@Override
-	public void setJoinDecision(long userId, long eventId) {
-		eventDAO.setJoinDecision(userId, eventId);
-	}
-
-
-
-	@Override
-	public void setQuitDecision(long userId, long eventId) {
-		eventDAO.setQuitDecision(userId, eventId);
-		
-	}
-
-
-
-	@Override
-	public String getEventUserOrganizerEmail(Event event) {
-		return eventDAO.getUserEventOrganizer(event);
-	}
-
-
-
-	@Override
-	public void deleteEventById(long id) {
-		userEventDAO.removeUsersEventsByEventId(id);
-		eventDAO.removeEventById(id);	
-	}
-
-
-
-	@Override
-	public void updateEvent(EditEventForm form) {
-		
-		Event ev = eventDAO.findById(form.getEventId()).get();
-		String organizerEmail = eventDAO.getUserEventOrganizer(ev);
-		String loggedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-		try{
-			if(organizerEmail.equals(loggedUserEmail)){
-				eventDAO.updateEventPlayersLimit(form.getUsersLimit(), ev.getId());
-			}
-			for(RegisterEventUser editEventUser : (List<RegisterEventUser>)form.getUserFriends()){
-				
-				Boolean isOrganizer = editEventUser.getEmail().equals(organizerEmail);
-				if (!isOrganizer) {
-					
-					long formUserId = userDAO.getUserByEmail(
-							editEventUser.getEmail()).getId();
-					if (editEventUser.getAllowed()
-							|| editEventUser.getInvited()) {
-						long invited = 0;
-						if (editEventUser.getInvited()) {
-
-							invited = 1;
-
-						} else {
-							invited = 4;
-						}
-						if (userEventDAO.ifUserEventExists(form.getEventId(),
-								formUserId) > 0) {
-							userEventDAO.updateUserEvent(form.getEventId(),
-									formUserId, editEventUser.getAllowed(),
-									invited);
-						} else {
-							User logged = userDAO.getUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-							UserEvent userEvent = new UserEvent(formUserId, 2,
-									invited, editEventUser.getAllowed(),
-									form.getEventId(), logged.getId());
-							userEventDAO.save(userEvent);
-						}
-					} else {
-						userEventDAO.removeUserEventByEventId(formUserId,
-								form.getEventId());
-					}
-				}
-			}
-		}catch(Exception e){
-			System.out.println("Exception  : " + e.getMessage());
+	private UserGameDetails generateUserGameDetails(UserEvent userEvent) {
+		UserDecision accept = decisionService.findOne(UserDecision.ACCEPTED);
+		UserDecision not_invited = decisionService.findOne(UserDecision.NOT_INVITED);
+		Event event = userEvent.getEvent();
+		Integer orlikId = 0;
+		String address = "";
+		String city = "";
+		Date startDate = null;
+		Date endDate = null;
+		Boolean lights = false, water = false, shower = false;
+		String shoes = "-";
+		if(event.getGraphic() != null){
+			Graphic graphic = event.getGraphic();
+			startDate = graphic.getStartTime();
+			endDate = graphic.getEndTime();
+			Orlik orlik = graphic.getOrlik();
+			orlikId = orlik.getId();
+			address = orlik.getAddress();
+			city = orlik.getCity();
+			lights = orlik.getLights();
+			water = orlik.getWater();
+			shower = orlik.getShower();
+			shoes = orlik.getShoes();
 		}
+		Integer eventId = event.getId();
+		Integer stateId = event.getState().getId();
+		String organizerEmail = event.getUserOrganizer().getEmail();
+		Integer decisionId = userEvent.getDecision().getId();
+		Integer roleId = userEvent.getRole().getId();
+		Boolean permission = userEvent.getUserPermission();
+		long willCome = event.getUsersEvent().stream()
+								.filter(ue-> ue.getDecision().equals(accept))
+								.count();
+		int playersLimit = event.getPlayersLimit();
+		long invited = event.getUsersEvent().stream()
+								.filter(ue -> !ue.getDecision().equals(not_invited))
+								.count();
+		return  new UserGameDetails(
+				eventId, 
+				stateId, 
+				orlikId,
+				address, 
+				city,
+				organizerEmail,
+				startDate,
+				endDate,
+				decisionId,
+				roleId,
+				permission,
+				playersLimit, 
+				willCome,
+				invited,
+				lights,
+				water,
+				shower,
+				shoes);
 	}
-
-
 
 	@Override
-	public void updateEventGraphic(long eventId, long graphicId) {
-		
-		Event event = eventDAO.findById(eventId).get();
-		event.setGraphicId(graphicId);
-		eventDAO.save(event);
-		
+	public List<EventWindowBlock> getEventWindowBlocks(UserEventRole role) {
+		List<EventWindowBlock> windowBlocks = new ArrayList<EventWindowBlock>();
+		List<EventState> states = stateService.findAll();
+		for (EventState state : states) {
+			windowBlocks.add(getBlock(state, role, false));
+		}
+		windowBlocks.add(getBlock(stateService.findOne(EventState.APPROVED), role, true));
+		Collections.sort(windowBlocks, new Comparator<EventWindowBlock>(){
+			@Override
+			public int compare(EventWindowBlock lhs, EventWindowBlock rhs){
+				return rhs.getDisplayOrder() - lhs.getDisplayOrder();
+			}
+		});
+		return windowBlocks;
 	}
 
+	private EventWindowBlock getBlock(EventState state, UserEventRole role,
+			Boolean incoming) {
+		User user = userService.getUser(SecurityContextHolder.getContext()
+				.getAuthentication().getName());
+		List<UserEvent> userEvents = new ArrayList<UserEvent>();
+		userEvents.addAll(user.getUserEvents());
+		if (state != null)
+			userEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
+		if (role != null)
+			userEvents.removeIf(ue -> !ue.getRole().equals(role));
+		if (incoming) {
+			Date now = new Date();
+			System.out.println(now.getDate());
+			long end = now.getTime() + 172400000;
+			Date endDate = new Date(end);
+			Date todayAndTomorrow = new Date(endDate.getYear(),
+					endDate.getMonth(), endDate.getDate());
+			userEvents.removeIf(ue -> !(ue.getEvent().getGraphic()
+					.getStartTime().after(now) && ue.getEvent().getGraphic()
+					.getStartTime().before(todayAndTomorrow)));
+		}
+		Collections.sort(userEvents, new Comparator<UserEvent>() {
+			@Override
+			public int compare(UserEvent lhs, UserEvent rhs) {
+				// return 1 if rhs should be before lhs
+				// return -1 if lhs should be before rhs
+				// return 0 otherwise
+				Graphic lgraphic = lhs.getEvent().getGraphic();
+				Graphic rgraphic = rhs.getEvent().getGraphic();
+				if(lgraphic == null || rgraphic == null){
+					if(lgraphic == null && rgraphic == null)
+						return 0;
+					else if(lgraphic == null)
+						return 1;
+					else
+						return -1;
+				}
+				if (rgraphic.getStartTime()
+						.before(lgraphic.getStartTime()))
+					return 1;
+				else if (lgraphic.getStartTime()
+						.before(rgraphic.getStartTime()))
+					return -1;
+				else
+					return 0;
+			}
+		});
+		Event event = !userEvents.isEmpty() ? userEvents.get(0).getEvent() : null; 
+		Graphic graphic = event != null ? event.getGraphic() : null;
+		Orlik orlik = graphic != null ? graphic.getOrlik() : null;
+		UserDecision decision = decisionService.findOne(UserDecision.ACCEPTED);
+		long goingToCome = event != null ? event.getUsersEvent().stream()
+												.filter(ue -> ue.getDecision().equals(decision)).count() : 0;
+		String address = orlik != null ? orlik.getAddress() : "brak";
+		String city = orlik != null ? orlik.getCity() : "brak";
+		Date startTime = graphic != null ? graphic.getStartTime() : null;
+		Date endTime = graphic != null ? graphic.getEndTime() : null;
+		Integer playersLimit = event != null ? event.getPlayersLimit() : 0;
+		Integer size = userEvents.size();
+		String label;
+		Integer displayOrder;
+		switch (state.getId()) {
+		case 1:
+			label = "Kosz";
+			displayOrder = 0;
+			address = "brak orlika";
+			break;
+		case 2:
+			label = "W budowie";
+			displayOrder = 1;
+			break;
+		case 3:
+			label = "Do akceptacji";
+			displayOrder = 2;
+			break;
+		case 4:
+			label = "Zagrożony";
+			displayOrder = 3;
+			break;
+		case 5:
+			if (incoming) {
+				label = "Przyjęty";
+				displayOrder = 4;
+			} else {
+				label = "Nadchodzący";
+				displayOrder = 5;
+			}
+			break;
+		default:
+			label = "";
+			displayOrder = -1;
+			break;
+		}
 
-
-	@Override
-	public Collection<Event> getAllWithGraphic(Graphic entity) {
-		// TODO Auto-generated method stub
-		return eventDAO.getAllWithGraphic(entity);
-	}
-
-
-
-	@Override
-	public void update(Event event) {
-		// TODO Auto-generated method stub
-		
-		eventDAO.update(event.getId(), event.getStateId(), event.getGraphicId(), event.getPlayersLimit());
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		EventWindowBlock block = new EventWindowBlock(label, displayOrder,
+				state.getId(), address, city, startTime, endTime, playersLimit,
+				goingToCome, size, incoming);
+		return block;
+	}	
 }

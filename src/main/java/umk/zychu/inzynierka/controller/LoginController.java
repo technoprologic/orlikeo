@@ -1,7 +1,6 @@
 package umk.zychu.inzynierka.controller;
 
-/*import java.security.Principal;
-*/
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,16 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController {
 
-
-	// Spring Security see this :
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error ) {
-
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username or password!");
 		}
-
 		model.setViewName("login");
 		return model;
 	}
@@ -40,6 +35,5 @@ public class LoginController {
 		model.addObject("msg", "You've been logged out successfully.");
 		model.setViewName("login");
 		return model;
-	}
-	
+	}	
 }

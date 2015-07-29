@@ -29,7 +29,6 @@ public class RegisterController {
 	
 	@Autowired
 	private UserService userService;
-	
 	@Autowired
 	private RegisterUserBeanValidator registerUserBeanValidator;
 	
@@ -45,10 +44,8 @@ public class RegisterController {
 		return "register";
 	}
 
-	
 	@RequestMapping(value="/new_user", method=RequestMethod.POST)
-	public String processRegister(@ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result, HttpServletRequest request ){
-		
+	public String processRegister(@ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result, HttpServletRequest request ){		
 		if(result.hasErrors()){
 			logger.debug("ERRRRROOOOOOOOOOOOORRRRRRRRRRRRRRRRRR: " + result);
 			return "register";
@@ -56,15 +53,7 @@ public class RegisterController {
 		else{
 			logger.debug("New user registered");
 			userService.createNewUser(registerUserBean);
-			//TODO wlaczyc wysylanie maili oraz zastapic to jakimis szablonami
-			//mailService.sendMail(registerUserBean.getEmail()
-		//	authenticateUserAndSetSession(registerUserBean, request);
 			return "redirect:/login";
-		}
-		
-		
+		}		
 	}
-	
-	
-	
 }

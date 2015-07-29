@@ -1,9 +1,6 @@
 package umk.zychu.inzynierka.model;
 
-import java.util.Collection;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,16 +8,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
-
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name="orlik")
 public class Orlik extends BaseEntity {
 	
-
 	@NotBlank
 	@Column(name = "address")
 	String address;
@@ -41,12 +37,12 @@ public class Orlik extends BaseEntity {
 	@Column(name = "required_shoes")	
 	String shoes;
 	
-	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "orlik")
-	private Collection<Graphic> graphicCollection;
-	
+	private List<Graphic> graphicCollection;
 	
 	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "orlik_manager", joinColumns = { @JoinColumn(name = "orlik_id", referencedColumnName = "id", nullable = false) }, 
 	inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) })
 	List<User> orlikManagers;
@@ -109,5 +105,19 @@ public class Orlik extends BaseEntity {
 	
 	public String getShoes(){
 		return shoes;		
+	}
+
+	/**
+	 * @return the graphicCollection
+	 */
+	public List<Graphic> getGraphicCollection() {
+		return graphicCollection;
+	}
+
+	/**
+	 * @param graphicCollection the graphicCollection to set
+	 */
+	public void setGraphicCollection(List<Graphic> graphicCollection) {
+		this.graphicCollection = graphicCollection;
 	}
 }

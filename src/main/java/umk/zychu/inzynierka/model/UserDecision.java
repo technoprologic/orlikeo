@@ -2,10 +2,8 @@ package umk.zychu.inzynierka.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,6 +15,8 @@ public class UserDecision extends BaseEntity {
 	@Column(name = "decision")
 	String userDecision;
 
+	@OneToMany( mappedBy = "decision")
+	List<UserEvent> usersEvent;
 	
 	UserDecision(){
 		super();
@@ -35,9 +35,6 @@ public class UserDecision extends BaseEntity {
 		return this.userDecision;
 	}
 
-	@OneToMany( mappedBy = "decision", cascade = CascadeType.ALL)
-	List<UserEvent> usersEvent;
-
 	public void setUsersEvent(List<UserEvent> events) {
 		this.usersEvent = events;
 	}
@@ -45,4 +42,7 @@ public class UserDecision extends BaseEntity {
 	public List<UserEvent> getUsersEvent() {
 		return this.usersEvent;
 	}
+
+	public static final Integer INVITED = 1, ACCEPTED = 2, REJECTED = 3,
+			NOT_INVITED = 4;
 }

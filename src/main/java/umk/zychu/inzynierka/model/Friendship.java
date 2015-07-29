@@ -3,127 +3,83 @@ package umk.zychu.inzynierka.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
-
 @SuppressWarnings("serial")
 @Entity 
-@Table(name = "user_friends")
-public class Friendship implements Serializable{
+@Table(name = "friendship")
+public class Friendship extends BaseEntity implements Serializable{
 
-	@EmbeddedId
-	FriendshipPK id;
-	
-    public FriendshipPK getId() {
-        return id;
-    }
-
-    public void setId(FriendshipPK id) {
-        this.id = id;
-    }
-    
-    public void setId(long id1, long id2) {
-        this.id.userId = id1;
-        this.id.friendId = id2;
-    }
-
-	
-    @ManyToOne 
-    @JoinColumn(name="user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private User friendRequester;
-    
-    
 	@ManyToOne 
-    @JoinColumn(name="friend_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="user_id", referencedColumnName = "id")
+    private User friendRequester;
+	
+	@ManyToOne 
+    @JoinColumn(name="friend_id", referencedColumnName = "id")
     private User friendAccepter;
 	
 	
 	@ManyToOne 
-    @JoinColumn(name="action_user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="action_user_id", referencedColumnName = "id")
     private User actionUser;
+	
+	@Column(name = "state")
+    Integer state;
     
-    
-
-    public Friendship() {
+	public Friendship() {
 		super();
 	}
-
-
-
-	public User getActionUser() {
-		return actionUser;
+		
+	public Friendship(User friendRequester, User friendAccepter) {
+		super();
+		this.actionUser = friendRequester;
+		if(friendRequester.getId() < friendAccepter.getId()){
+			User tmpUser = friendRequester;
+			friendRequester = friendAccepter;
+			friendAccepter = tmpUser;
+		}
+		this.friendRequester = friendRequester;
+		this.friendAccepter = friendAccepter;
+		this.state = 1;
 	}
-
-
-	public void setActionUser(User actionUser) {
-		this.actionUser = actionUser;
-	}
-
-
+	
 	public User getFriendRequester() {
 		return friendRequester;
 	}
-
 
 	public void setFriendRequester(User friendRequester) {
 		this.friendRequester = friendRequester;
 	}
 
-
 	public User getFriendAccepter() {
 		return friendAccepter;
 	}
-
 
 	public void setFriendAccepter(User friendAccepter) {
 		this.friendAccepter = friendAccepter;
 	}
 
-	
-	
-	
-	@Column(name="action_user_id")
-	long actionUserId;
-
-
-
-	public long getActionUserId() {
-		return actionUserId;
+	public User getActionUser() {
+		return actionUser;
 	}
 
-	public void setActionUserId(long actionUserId) {
-		this.actionUserId = actionUserId;
+	public void setActionUser(User actionUser) {
+		this.actionUser = actionUser;
 	}
 
-
-
-
-	@Column(name = "state")
-    int state;
-
-
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
 
-
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
-	
-	
-	
-	
+		
+	public static final int INVITED=1, 
+							ACCEPTED=2, 
+							DECLINED=3, 
+							BLOCKED = 4;
 }
-
-
-
-

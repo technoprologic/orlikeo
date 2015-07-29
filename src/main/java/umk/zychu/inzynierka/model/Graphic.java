@@ -23,20 +23,12 @@ import com.dhtmlx.planner.DHXEv;
 @Table(name="orlik_graphic")
 public class Graphic implements Serializable{
 
-	@Override
-	public String toString() {
-		return "Graphic [title=" + title + ", orlikId=" + orlikId
-				+ ", startTime=" + startTime + ", endTime=" + endTime
-				+ ", available=" + available + ", orlik=" + orlik + ", events="
-				+ events + ", id=" + id + "]";
-	}
-
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+	
 	@Column(name="title")
 	String title;
-	
-	@Column(name = "orlik_id")
-	long orlikId;
 	
 	@Column(name="start_time")
 	Date startTime;
@@ -48,9 +40,8 @@ public class Graphic implements Serializable{
 	Boolean available;
 	
 	@ManyToOne
-	@JoinColumn(name="orlik_id", referencedColumnName="id", insertable = false, updatable = false)
+	@JoinColumn(name="orlik_id", referencedColumnName="id")
 	Orlik orlik;
-	
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="graphic")
 	List<Event> events;
@@ -58,23 +49,15 @@ public class Graphic implements Serializable{
 	public Graphic(){
 	}
 	
-	public Graphic(DHXEv event) {
-		// TODO Auto-generated constructor stub
+	public Graphic(DHXEv event, Orlik orlik) {
+		super();
 		this.title = event.getText();
-		this.orlikId  = -1;
 		this.startTime = event.getStart_date();
 		this.endTime = event.getEnd_date();
 		this.available = false;
-	}
-
-	public void setOrlikId(long id){
-		orlikId = id;
+		this.orlik = orlik;
 	}
 	
-	public long getOrlikId(){
-		return orlikId;
-	}
-		
 	public void setTitle(String name){
 		title = name;
 	}
@@ -123,11 +106,6 @@ public class Graphic implements Serializable{
 		return this.events;
 	}
 	
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-	
 	public Integer getId() {
 		return id;
 	}
@@ -139,5 +117,90 @@ public class Graphic implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((available == null) ? 0 : available.hashCode());
+		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
+		result = prime * result + ((events == null) ? 0 : events.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((orlik == null) ? 0 : orlik.hashCode());
+		result = prime * result
+				+ ((startTime == null) ? 0 : startTime.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Graphic)) {
+			return false;
+		}
+		Graphic other = (Graphic) obj;
+		if (available == null) {
+			if (other.available != null) {
+				return false;
+			}
+		} else if (!available.equals(other.available)) {
+			return false;
+		}
+		if (endTime == null) {
+			if (other.endTime != null) {
+				return false;
+			}
+		} else if (!endTime.equals(other.endTime)) {
+			return false;
+		}
+		if (events == null) {
+			if (other.events != null) {
+				return false;
+			}
+		} else if (!events.equals(other.events)) {
+			return false;
+		}
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (orlik == null) {
+			if (other.orlik != null) {
+				return false;
+			}
+		} else if (!orlik.equals(other.orlik)) {
+			return false;
+		}
+		if (startTime == null) {
+			if (other.startTime != null) {
+				return false;
+			}
+		} else if (!startTime.equals(other.startTime)) {
+			return false;
+		}
+		if (title == null) {
+			if (other.title != null) {
+				return false;
+			}
+		} else if (!title.equals(other.title)) {
+			return false;
+		}
+		return true;
+	}	
 }

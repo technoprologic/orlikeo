@@ -16,6 +16,8 @@
 <c:url value="/friends/search" var="searchFriends" />
 <c:url value="/planner" var="plannerUrl" />
 <c:url value="/pane" var="paneUrl" />
+<c:url value="/websocket" var="socket" />
+<c:url value="/websocket2" var="socket2" />
 
 
 
@@ -164,11 +166,8 @@
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#friends"><i class="glyphicon glyphicon-user"></i><i class="glyphicon glyphicon-user"></i> ZNAJOMI </a>
                         <ul id="friends" class="collapse" >
-<%--                             <li>
-                                <a href="${addFriendUrl }"><i class="glyphicon glyphicon-plus"></i> Dodaj znajomego </a>
-                            </li> --%>
                             <li>
-                                <a href="${friendsUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
+                                <a href="${friendsUrl}"><i class="glyphicon glyphicon-pushpin"></i> Moi znajomi </a> 
                             </li>
                             <li>
                                 <a href="${searchFriends}"><i class="glyphicon glyphicon-list-alt"></i> Szukaj znajomych </a>
@@ -182,7 +181,18 @@
                                 <a href="${plannerUrl}?orlik=1"><i class="glyphicon glyphicon-plus"></i> Grafik </a>
                             </li>
                             <li>
-                                <a href="${paneUrl}?sort=all"><i class="glyphicon glyphicon-pushpin"></i> Panel </a> 
+                                <a href="${paneUrl}"><i class="glyphicon glyphicon-pushpin"></i> Panel </a> 
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="active">
+                        <a href="javascript:;" data-toggle="collapse" data-target="#socket"><i class="glyphicon glyphicon-user"></i> socket </a>
+                        <ul id="socket" class="collapse" >
+                            <li>
+                                <a href="${socket}"><i class="glyphicon glyphicon-plus"></i> websocket </a>
+                            </li>
+                            <li>
+                                <a href="${socket2}"><i class="glyphicon glyphicon-pushpin"></i> websocket2 </a> 
                             </li>
                         </ul>
                     </li>

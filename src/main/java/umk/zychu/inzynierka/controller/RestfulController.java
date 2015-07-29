@@ -64,7 +64,6 @@ public class RestfulController {
 		EventsManager evs = new EventsManager(request, services);
 		System.out.println("/events: " + ed);
 		return evs.run();
-
 	}
 
 	@RequestMapping(value = "/events", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
@@ -74,7 +73,6 @@ public class RestfulController {
 		EventsManager evs = new EventsManager(request, services);
 		return evs.run();
 	}
-
 }
 
 
