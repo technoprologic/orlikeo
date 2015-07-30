@@ -10,9 +10,7 @@ public class CustomUserDetails extends SocialUser {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-
 	private String firstName;
-
 	private String lastName;
 
 	public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -46,5 +44,4 @@ public class CustomUserDetails extends SocialUser {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 }

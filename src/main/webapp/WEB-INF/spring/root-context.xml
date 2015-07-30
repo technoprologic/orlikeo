@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop 
@@ -11,7 +12,9 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
 	
 <!-- 	TE PROPERTASY SA DOSTEPNE JEDYNIE DLA ROOT CONTEXT 
 	<context:property-placeholder location="classpath:application.properties"/> -->
@@ -20,6 +23,11 @@
 	<import resource="tiles-context.xml" />
 	<import resource="spring-security.xml" />
 	<import resource="datasource-config.xml" />
+	<import resource="rabbit-context.xml" />
+
+	
+
+
 
 	<context:component-scan base-package="umk.zychu.inzynierka">
 		<context:exclude-filter type="annotation"
@@ -40,4 +48,22 @@
 <!-- 	       	   </props> -->
 <!-- 		</property> -->
 <!-- 	</bean> -->
+
+<!-- 	<websocket:message-broker
+		application-destination-prefix="/app">
+		<websocket:stomp-endpoint path="/hello">
+			<websocket:sockjs />
+		</websocket:stomp-endpoint>
+		<websocket:stomp-endpoint path="/ws">
+			<websocket:sockjs />
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/topic, /queue" />
+		<websocket:client-inbound-channel>
+			<websocket:interceptors>
+				<bean class="foo.PresenceChannelInterceptor"></bean>
+			</websocket:interceptors>
+		</websocket:client-inbound-channel>
+	</websocket:message-broker> -->
+
+
 </beans>

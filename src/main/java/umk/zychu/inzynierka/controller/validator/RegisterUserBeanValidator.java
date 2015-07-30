@@ -56,8 +56,6 @@ public class RegisterUserBeanValidator implements Validator {
 		
 		if(!rub.getAcceptRegulation()){
 			errors.rejectValue("acceptRegulation", REGULATION_NOT_ACCEPTED);
-		}
-		
+		}	
 	}
-
 }

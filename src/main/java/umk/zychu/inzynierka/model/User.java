@@ -1,13 +1,15 @@
 package umk.zychu.inzynierka.model;
  
  
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,32 +45,50 @@ public class User extends BaseEntity
 	String position;
 	
 	@Column(name = "weight")
-	int weight;
+	Integer weight;
 	
 	@Column(name = "height")
-	int  height;
+	Integer  height;
 	
 	@Column(name = "foot")
 	String foot;
 	
-	
-	@OneToMany(mappedBy="friendRequester")
+	@OneToMany(mappedBy="friendRequester", fetch = FetchType.EAGER)
 	private List<Friendship> friendRequesterList;
-	
-	@OneToMany(mappedBy="friendAccepter")
+
+	@OneToMany(mappedBy="friendAccepter", fetch = FetchType.EAGER)
 	private List<Friendship> friendAccepterList;
 	
-	
-	@OneToMany(mappedBy = "actionUserId")
+	@OneToMany(mappedBy = "actionUser", fetch = FetchType.EAGER)
 	private List<Friendship> actionUsersList;
-	
 	
 	@ManyToMany(mappedBy = "orlikManagers")
     private List<Orlik> isOrliksManager;
 	
+	@OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
+	private List<UserEvent> usersEventsFriendsInvited;
 	
+	@OneToMany(mappedBy="userOrganizer", fetch = FetchType.EAGER)
+	private List<Event> organizedEventsList; 
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "user")
+	private List<UserEvent> userEvents;
 	
+	public List<Friendship> getFriendships(){
+		List<Friendship> friendships = new ArrayList<Friendship>();
+		friendships.addAll(getFriendAccepterList());
+		friendships.addAll(getFriendRequesterList());
+		return friendships;
+	}
+	
+	public List<Event> getOrganizedEventsList() {
+		return organizedEventsList;
+	}
+	public void setOrganizedEventsList(List<Event> organizedEventsList) {
+		this.organizedEventsList = organizedEventsList;
+	}
+
 	public List<Orlik> getIsOrliksManager() {
 		return isOrliksManager;
 	}
@@ -76,9 +96,6 @@ public class User extends BaseEntity
 	public void setIsOrliksManager(List<Orlik> isOrliksManager) {
 		this.isOrliksManager = isOrliksManager;
 	}
-
-	@OneToMany(mappedBy = "user")
-	private List<UserEvent> userEvents;
 
 	//getter and setter methods
 	public String getEmail() {
@@ -121,7 +138,6 @@ public class User extends BaseEntity
 		this.dateOfBirth = dateOfBirth;
 	}
 	
-	
 	public String getPosition() {
 		return position;
 	}
@@ -138,11 +154,11 @@ public class User extends BaseEntity
 		this.weight = weight;
 	}
 
-	public int getHeight() {
+	public Integer getHeight() {
 		return height;
 	}
 	
-	public void setHeight(int height) {
+	public void setHeight(Integer height) {
 		this.height = height;
 	}
 	
@@ -162,4 +178,35 @@ public class User extends BaseEntity
 		return this.userEvents;
 	}
 	
+	public List<Friendship> getActionUsersList() {
+		return actionUsersList;
+	}
+	public void setActionUsersList(List<Friendship> actionUsersList) {
+		this.actionUsersList = actionUsersList;
+	}
+	public List<UserEvent> getUsersEventsFriendsInvited() {
+		return usersEventsFriendsInvited;
+	}
+	public void setUsersEventsFriendsInvited(
+			List<UserEvent> usersEventsFriendsInvited) {
+		this.usersEventsFriendsInvited = usersEventsFriendsInvited;
+	}
+	public List<Friendship> getFriendRequesterList() {
+		return friendRequesterList;
+	}
+	public List<Friendship> getFriendAccepterList() {
+		return friendAccepterList;
+	}
+	public void setWeight(Integer weight) {
+		this.weight = weight;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "User [email=" + email + ", userEvents=" + userEvents
+				+ "]";
+	}
 }

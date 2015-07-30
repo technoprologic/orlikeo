@@ -11,64 +11,50 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name="event")
 public class Event extends BaseEntity {
 
+	@Column(name = "players_limit")
+	Integer playersLimit;
 	
-	@Column(name="graphic_id")
-	long graphicId;
-	
-
-	@Column(name="state_id")
-	long stateId;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	List<UserEvent> usersEvent;
 	
 	@Column(name="creation_date")
 	Date creationDate;
+
+	@ManyToOne
+	@JoinColumn(name = "graphic_id", referencedColumnName = "id", nullable = true)
+	Graphic graphic;
 	
+	@ManyToOne
+	@JoinColumn(name = "state_id", referencedColumnName = "id")
+	EventState state;
 	
-	@Column(name = "players_limit")
-	int playersLimit;
+	@ManyToOne
+	@JoinColumn(name="user_organizer", referencedColumnName="id")
+	User userOrganizer;
 	
-	public int getPlayersLimit() {
+	public Integer getPlayersLimit() {
 		return playersLimit;
 	}
-
-
-	public void setPlayersLimit(int playersLimit) {
+	
+	public void setPlayersLimit(Integer playersLimit) {
 		this.playersLimit = playersLimit;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "graphic_id", referencedColumnName = "id", insertable = false, updatable = false)
-	Graphic graphic;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
-	List<UserEvent> usersEvent;
-
-
-	@ManyToOne
-	@JoinColumn(name = "state_id", referencedColumnName = "id", insertable = false, updatable = false)
-	EventState state;
-	
-	
-	
-	public void setGraphicId(long id){
-		graphicId = id;
+	public void setUsersEvent(List<UserEvent> usersEvent){
+		this.usersEvent = usersEvent;
 	}
 	
-	
-	public long getGraphicId(){
-		return graphicId;
-	}
-	
-	public void setStateId(long id){
-		stateId = id;
-	}
-	
-	public long getStateId(){
-		return stateId;
+	public List<UserEvent> getUsersEvent(){
+		return this.usersEvent;
 	}
 	
 	public void setCreationDate(Date date){
@@ -79,21 +65,12 @@ public class Event extends BaseEntity {
 		return creationDate;
 	}
 	
-	
 	public void setGraphic(Graphic graphic){
 		this.graphic = graphic;
 	}
 	
 	public Graphic getGraphic(){
 		return this.graphic;
-	}
-	
-	public void setUsersEvent(List<UserEvent> usersEvent){
-		this.usersEvent = usersEvent;
-	}
-	
-	public List<UserEvent> getUsersEvent(){
-		return this.usersEvent;
 	}
 	
 	public void setState(EventState state){
@@ -104,16 +81,24 @@ public class Event extends BaseEntity {
 		return state;
 	}
 	
+	public User getUserOrganizer() {
+		return userOrganizer;
+	}
 	
+	public void setUserOrganizer(User userOrganizer) {
+		this.userOrganizer = userOrganizer;
+	}
 	
 	public Event(){
-		
+		super();
 	}
 	
-	public Event(long graphicId, int playersLimit, long stateId ){
-		this.graphicId = graphicId;
-		this.stateId = stateId;
+	public Event(User organizer, Graphic graphic, EventState state, Integer playersLimit){
+		super();
+		this.userOrganizer = organizer;
+		this.graphic = graphic;
+		this.state = state;
 		this.playersLimit = playersLimit;
-		this.creationDate = new Date();
-	}
+		if(this.isNew()) this.creationDate = new Date();
+	}	
 }

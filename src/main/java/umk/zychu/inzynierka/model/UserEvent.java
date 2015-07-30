@@ -2,6 +2,7 @@ package umk.zychu.inzynierka.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,74 +15,51 @@ import javax.persistence.Table;
 @Table(name = "user_event")
 public class UserEvent extends BaseEntity implements Serializable {
 	
-	
 	public UserEvent() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public UserEvent(long userId, long roleId, long userDecision,
-			boolean userPermission, long eventId) {
-		super();
-		this.userId = userId;
-		this.roleId = roleId;
-		this.userDecision = userDecision;
-		this.userPermission = userPermission;
-		this.eventId = eventId;
+	public UserEvent (User userTarget, UserEventRole eventRole, 
+			UserDecision userDecision, Boolean permission, Event event, User userInviter){
+		this.user = userTarget;
+		this.role = eventRole;
+		this.decision = userDecision;
+		this.userPermission = permission;
+		this.event = event;
+		this.inviter = userInviter;
 	}
-
-	@Column(name = "user_id")
-	long userId;
-	
-	
-	@Column(name = "user_role")
-	long roleId;
-	
-	
-	@Column(name = "user_decision")
-	long userDecision;
-	
 	
 	@Column(name = "user_permission")
 	boolean userPermission;
 	
-	@Column(name = "event_id")
-	long eventId;
+	@ManyToOne()
+	@JoinColumn(name = "inviter_id", referencedColumnName = "id")
+	User inviter;
 	
 	
 	@ManyToOne
-	@JoinColumn(name = "user_role", referencedColumnName = "id", insertable = false, updatable = false)
-	EventRole role;
+	@JoinColumn(name = "user_role", referencedColumnName = "id")
+	UserEventRole role;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_decision", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_decision", referencedColumnName = "id")
 	UserDecision decision;
 	
 	@ManyToOne
-	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = true, updatable = true)
 	Event event;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	User user;
 	
-	
-	public void setEventId(long eventId){
-		this.eventId = eventId;
-	}
-	
-	public long getEventId(){
-		return this.eventId;
-	}
-	
-	public void setUserId(long userId){
-		this.userId = userId;
-	}
-	
-	public long getUserId(){
-		return this.userId;
+	public User getInviter() {
+		return inviter;
 	}
 
+	public void setInviter(User inviter) {
+		this.inviter = inviter;
+	}
 	
 	public void setEvent(Event event){
 		this.event = event;
@@ -99,23 +77,6 @@ public class UserEvent extends BaseEntity implements Serializable {
 		return this.user;
 	}
 	
-	public void setRoleId(long roleId){
-		this.roleId = roleId;
-	}
-	
-	public long getRoleId(){
-		return roleId;
-	}
-
-	public void setUserDecision(long decision){
-		this.userDecision = decision;
-	}
-	
-	
-	public long getUserDecision(){
-		return this.userDecision;
-	}
-	
 	public void setUserPermission(boolean permission){
 		this.userPermission = permission;
 	}
@@ -124,11 +85,11 @@ public class UserEvent extends BaseEntity implements Serializable {
 		return this.userPermission;
 	}
 	
-	public void setRole(EventRole role){
+	public void setRole(UserEventRole role){
 		this.role = role;
 	}
 	
-	public EventRole getRole(){
+	public UserEventRole getRole(){
 		return this.role;
 	}
 	

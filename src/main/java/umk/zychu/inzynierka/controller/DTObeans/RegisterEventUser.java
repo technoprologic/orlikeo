@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class RegisterEventUser {
@@ -11,34 +10,47 @@ public class RegisterEventUser {
 	}
 
 
-	long userId;
-	boolean allowed;
-	boolean invited;
+	Integer userId;
+	Boolean allowed;
+	Boolean invited;
 	String email;
+	String inviter;
 	Date dateOfBirth;
 	String position;
 	
-	public void setUserId(long userId){
+	
+	
+	public String getInviter() {
+		return inviter;
+	}
+
+	public void setInviter(String inviter) {
+		this.inviter = inviter;
+	}
+
+
+
+	public void setUserId(Integer userId){
 		this.userId = userId;
 	}
 	
-	public long getUserId(){
+	public Integer getUserId(){
 		return userId;
 	}
 	
-	public void setAllowed(boolean allowed){
+	public void setAllowed(Boolean allowed){
 		this.allowed = allowed;
 	}
 	
-	public boolean getAllowed(){
+	public Boolean getAllowed(){
 		return this.allowed;
 	}
 	
-	public void setInvited(boolean decision){
+	public void setInvited(Boolean decision){
 		this.invited = decision;
 	}
 	
-	public boolean getInvited(){
+	public Boolean getInvited(){
 		return this.invited;
 	}
 	
@@ -69,13 +81,14 @@ public class RegisterEventUser {
 	}
 	
 
-	public RegisterEventUser(long userId, boolean hasRight, boolean decision, String email, Date dateOfBirth, String position){
+	public RegisterEventUser(Integer userId, Boolean hasRight, Boolean decision, String email, Date dateOfBirth, String position, String inviter){
 		this.userId = userId;
 		this.allowed = hasRight;
 		this.invited = decision;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
 		this.position = position;
+		this.inviter = inviter;
 	}
 	
 }

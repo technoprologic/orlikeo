@@ -10,8 +10,6 @@ import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
 @Component
 public class ChoosenOrlikBeanValidator implements Validator {
 	
-
-
 	private static final String ORLIK_NOT_CHOOSED = "web.event.select.pitch";
 	
 	@Override
@@ -21,16 +19,10 @@ public class ChoosenOrlikBeanValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empty", ORLIK_NOT_CHOOSED);
-		
-		
 		ChoosenOrlikBean rub = (ChoosenOrlikBean) target;
-		
 		if(rub.getId()<1){
 			errors.rejectValue("empty", ORLIK_NOT_CHOOSED);
 		}
-		
 	}
-
 }
