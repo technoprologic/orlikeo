@@ -36,11 +36,6 @@
    <script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
 </head>
 <body>
-
-  
-
-
-
     <div id="wrapper">
 		<tiles:insertAttribute name="navbar" />	
 		<div id="page-wrapper" >	
@@ -55,9 +50,7 @@
     <script src="<c:url value="/resources/mytheme/bootstrap/js/jquery.js" />" ></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.js" />" ></script>
-
 </body>
-
 </html>
 
 

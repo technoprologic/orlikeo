@@ -4,13 +4,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
-
 <c:url value="/events/edit" var="editEventUrl" />
 <c:url value="/events/remove" var="removeEventUrl" />
 <c:url value="/events/details" var="detailsEventUrl" />
-<c:url value="/events/decision/" var="eventDecisionUrl" />"
-
+<c:url value="/events/decision/" var="eventDecisionUrl" />
 
 <legend><c:choose>
 				<c:when test="${page == 'all' || page == 'fast' }"><i class="glyphicon glyphicon-info-sign"></i> Lista wszystkich </c:when> 
@@ -39,27 +36,23 @@
         </tr>
     </thead>
     <tbody>
-		<c:forEach items="${ userGamesDetailsList }"  var="details" varStatus="i" >
-		
-		<c:set var="eventId"  value="${ details.getEventId() }"/>
-		<c:set var="stateId"  value="${ details.getStateId() }"/>
-		<c:set var="decisionId"  value="${ details.getDecisionId() }"/>
-		<c:set var="roleId"  value="${ details.getRoleId() }"/>
-		<c:set var="userPermission"  value="${ details.getPermission() }"/>
-		<c:set var="players"  value="${ details.getWillCome() }"/>
-		<c:set var="address"  value="${ details.getAddress() }"/>
-		<c:set var="startDate" value="${ details.getStartDate() }" />
-		<c:set var="endDate" value="${ details.getEndDate() }" />
-		<c:set var="limit" value="${ details.getPlayersLimit()}"/>
-		<c:set var="invited" value="${ details.getInvited()}"/>
-		
-		
-		
-		
-		<c:set var="available"  value="${true}"/>
-		<c:if test="${ stateId == 1 }">
-			<c:set var="available"  value="${false}" />
-		</c:if>
+		<c:forEach items="${ userGamesDetailsList }"  var="details" varStatus="i" >		
+			<c:set var="eventId"  value="${ details.getEventId() }"/>
+			<c:set var="stateId"  value="${ details.getStateId() }"/>
+			<c:set var="decisionId"  value="${ details.getDecisionId() }"/>
+			<c:set var="roleId"  value="${ details.getRoleId() }"/>
+			<c:set var="userPermission"  value="${ details.getPermission() }"/>
+			<c:set var="players"  value="${ details.getWillCome() }"/>
+			<c:set var="address"  value="${ details.getAddress() }"/>
+			<c:set var="startDate" value="${ details.getStartDate() }" />
+			<c:set var="endDate" value="${ details.getEndDate() }" />
+			<c:set var="limit" value="${ details.getPlayersLimit()}"/>
+			<c:set var="invited" value="${ details.getInvited()}"/>
+
+			<c:set var="available"  value="${true}"/>
+			<c:if test="${ stateId == 1 }">
+				<c:set var="available"  value="${false}" />
+			</c:if>
 
 <fmt:formatDate value="${startDate}" type="both" pattern="dd.MM.yyyy" />
 <fmt:formatDate value="${endDate}" type="both" pattern="HH:mm" /> - <fmt:formatDate value="${endDate}" type="both" pattern="HH:mm" /> 
@@ -134,9 +127,6 @@
 </table>
 
 
-
-
-
 <legend>Legenda</legend>
 <table data-toggle="table" id="table-pagination" style="background-color:white">
     <thead style="background-color:#999999">
@@ -175,4 +165,3 @@
 
 
 <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />"></script>
-
