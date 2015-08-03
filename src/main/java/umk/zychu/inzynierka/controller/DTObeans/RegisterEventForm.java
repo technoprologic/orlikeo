@@ -8,15 +8,12 @@ public class RegisterEventForm {
 	Integer graphicId;
 	Integer usersLimit;
 	List<RegisterEventUser> eventFormMembers;
-	String organizerEmail;
 	
 	public RegisterEventForm(){}
 	
-	public RegisterEventForm(Integer id, List<RegisterEventUser> users,
-			String organizerEmail) {
+	public RegisterEventForm(Integer id, List<RegisterEventUser> users) {
 		eventId = id;
 		eventFormMembers = users;
-		this.organizerEmail = organizerEmail;
 	}
 
 	public Integer getEventId() {
@@ -33,14 +30,6 @@ public class RegisterEventForm {
 	
 	public void setEventFormMembers(List<RegisterEventUser> eventFormMembers) {
 		this.eventFormMembers = eventFormMembers;
-	}
-	
-	public String getOrganizerEmail() {
-		return organizerEmail;
-	}
-	
-	public void setOrganizerEmail(String organizerEmail) {
-		this.organizerEmail = organizerEmail;
 	}
 	
 	public void setGraphicId(Integer id){

@@ -3,19 +3,15 @@ package umk.zychu.inzynierka.controller.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.stream.Stream;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import umk.zychu.inzynierka.controller.DTObeans.DHXCustomEvent;
-import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.EventState;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.UserDecision;
-import umk.zychu.inzynierka.model.UserEvent;
 import umk.zychu.inzynierka.model.UserEventRole;
 
 import com.dhtmlx.planner.DHXEv;

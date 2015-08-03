@@ -23,4 +23,5 @@ public interface EventService {
 	void updateEvent(RegisterEventForm form);
 	Event save(Event event);
 	List<EventWindowBlock> getEventWindowBlocks(UserEventRole role);
+	RegisterEventForm generateRegisterEventForm(Event event);
 }

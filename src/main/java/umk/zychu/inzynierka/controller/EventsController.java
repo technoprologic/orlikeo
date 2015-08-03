@@ -354,7 +354,6 @@ public class EventsController {
 		catch(Exception e){
 			System.out.println("Exception : " + e);
 		}
-		
 		return "redirect:/events/all";
 		
 	}
@@ -373,59 +372,17 @@ public class EventsController {
 		}
 		try {	
 			Event event = eventOpt.get();
+			UserGameDetails gameDetails = eventService.getGameDetails(event);
+			model.addAttribute("eventDetails", gameDetails);
+			RegisterEventForm form = eventService.generateRegisterEventForm(event);
+			model.addAttribute("editEventForm", form);
 			Graphic graphic = event.getGraphic();
 			Orlik orlik = graphic == null ? null : graphic.getOrlik();	
-			List<UserEvent> usersEvents = event.getUsersEvent();
-			List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED);
-			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
-			Boolean isOrganizer = false;
-			String organizerEmail="";
-			for (UserEvent userEvent : usersEvents) {
-				boolean decision = false;
-				if (userEvent.getDecision().getId() != 4)
-					decision = true;
-				String inviterEmail = userEvent.getInviter() != null ? userEvent
-						.getInviter().getEmail() : null;
-				RegisterEventUser e = new RegisterEventUser(userEvent.getUser()
-						.getId(), userEvent.getUserPermission(), decision,
-						userEvent.getUser().getEmail(), userEvent.getUser()
-								.getDateOfBirth(), userEvent.getUser()
-								.getPosition(), inviterEmail);
-				users.add(e);
-				if (userEvent.getRole().getId() == 1) {
-					organizerEmail = userEvent.getUser().getEmail();
-					isOrganizer = organizerEmail.equals(loggedUser.getEmail()) ? true
-							: false;
-				}
-			}
-			for(User friend : friends){
-				boolean isInvited = false;
-				String inviterEmail = null;
-				for(UserEvent userEvent : usersEvents){
-					if(friend.getId() == userEvent.getUser().getId()){
-						isInvited = true;
-						inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
-					}
-				}		
-				if(isInvited == false){
-					RegisterEventUser e1 = new RegisterEventUser(friend.getId(), 
-							false, 
-							false, 
-							friend.getEmail(), 
-							friend.getDateOfBirth(), 
-							friend.getPosition(), inviterEmail);
-					users.add(e1);
-				}
-			}
-			RegisterEventForm form = new RegisterEventForm(id, users, organizerEmail);
-			model.addAttribute("orlik", orlik);
-			model.addAttribute("graphic", graphic);
-			model.addAttribute("event", event);
-			model.addAttribute("editEventForm", form);
-			model.addAttribute("isOrganizer", isOrganizer);
-			List<User> managers = orlikService.getOrlikManagersByOrlik(orlik);
+			List<User> managers = orlik == null ? new ArrayList<User>() : orlik.getOrlikManagers();
 			model.addAttribute("managers", managers);
-			
+			boolean isOrganizer = event.getUserOrganizer().equals(loggedUser);
+			model.addAttribute("isOrganizer", isOrganizer);
+			model.addAttribute("editFormUser", loggedUser.getEmail());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

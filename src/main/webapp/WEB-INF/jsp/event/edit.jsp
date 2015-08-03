@@ -6,13 +6,35 @@
 
 
 
+
+<c:set var="eventId" value="${eventDetails.eventId}"/>
+<c:set var="orlikId" value="${eventDetails.orlikId }" />
+<c:set var="stateId" value="${eventDetails.stateId}"/> 
+<c:set var="address" value="${eventDetails.address}"/> 
+<c:set var="city" value="${eventDetails.city}"/>
+<c:set var="organizerEmail" value="${eventDetails.organizerEmail}"/>
+<c:set var="startDate" value="${eventDetails.startDate}"/>
+<c:set var="endDate" value="${eventDetails.endDate}"/>
+<c:set var="decisionId" value="${eventDetails.decisionId}"/>
+<c:set var="roleId" value="${eventDetails.roleId}"/>
+<c:set var="permission" value="${eventDetails.permission}"/>
+<c:set var="playersLimit" value="${eventDetails.playersLimit}"/>
+<c:set var="willCome" value="${eventDetails.willCome}"/>
+<c:set var="invited" value="${eventDetails.invited}"/>
+<c:set var="lights" value="${eventDetails.lights}"/>
+<c:set var="water" value="${eventDetails.water}"/>
+<c:set var="shower" value="${eventDetails.shower}"/>
+<c:set var="shoes" value="${eventDetails.shoes}"/>
+
+<c:set var="editingUser" value="${editFormUser}"/>
+
 <c:url value="/events/edit" var="editEventUrl" />
 <c:url value="/events/create" var="createEventUrl" />
-<c:url value="/events/graphic/${orlik.id }/${event.id}" var="graphicEventUrl" />
+<c:url value="/events/graphic/${orlikId}/${eventId}" var="graphicEventUrl" />
 
 
 <c:choose>
-	<c:when test="${ event.getState().getId() == 1 }"><c:set var="available" value="${false}"/></c:when>
+	<c:when test="${stateId == 1 }"><c:set var="available" value="${false}"/></c:when>
 	<c:otherwise><c:set var="available"  value="${true}"/></c:otherwise>
 </c:choose>
 
@@ -21,17 +43,16 @@
 	<div class="col-lg-12">
 		<h1 class="page-header">
 		<c:if test="${ isOrganizer }" >
-		<a href="${createEventUrl}/${event.id}"><i class="glyphicon glyphicon-edit"></i></a>
+		<a href="${createEventUrl}/${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
 		</c:if>
-		
+
 		<c:choose>
 			<c:when test="${ available }">
-			Orlik ${orlik.city} ul.${orlik.getAddress()} <small>
+			Orlik ${city} ul.${address}<small>
 			<c:if test="${ isOrganizer }">
 				<a href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
 			</c:if>
-				<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${graphic.getEndTime()}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${graphic.getStartTime()}" type="both" pattern="dd.MM.yyyy" />)</small>
-		
+				<fmt:formatDate value="${startDate}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${endDate}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${startDate}" type="both" pattern="dd.MM.yyyy" />)</small>
 			</c:when>
 			<c:otherwise>
 				Brak Orlika
@@ -40,10 +61,10 @@
 		</h1>
 		<c:if test="${ available }">
 		<ul>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${orlik.getLights() == true ? 'TAK': 'NIE'}"/></li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlik.getWater() == true ? 'TAK': 'NIE'}"/></li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlik.getShower() == true ? 'TAK': 'NIE'}"/></li>
-			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlik.getShoes()}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Oświetlenie: <c:out value="${lights == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${water == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${shower == true ? 'TAK': 'NIE'}"/></li>
+			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${shoes}"/></li>
 			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: <c:forEach items="${managers}" var="manager" varStatus="i">
 																		<c:out value="${manager.email}"/><c:if test="${ i.index < managers.size()-1 }">, </c:if>
 																	</c:forEach></li>
@@ -62,7 +83,7 @@
 			<thead>
 				<tr>
 					<th>Zaproszenie</th>
-					<c:if test="${ isOrganizer }">
+					<c:if test="${ isOrganizer }" >
 						<th>Prawo zapraszania</th>
 					</c:if>
 					<th>Zaprosił</th>
@@ -73,48 +94,72 @@
 			<tbody>
 			<c:forEach items="${ editEventForm.getEventFormMembers() }" var="friend" varStatus="i">                    
                     <tr>
-                    <c:set var="friendUserEmail" value="${friend.getEmail()}" />
-                    <c:set var="organizerEmail" value="${editEventForm.getOrganizerEmail()}" />
+                    <c:set var="friendEmail" value="${friend.getEmail()}" />
+                    <c:set var="inviterEmail" value="${friend.getInviter()}" />
                     <c:choose>
                     	<c:when test="${ isOrganizer }">
-                    		<td><form:checkbox path="eventFormMembers[${i.index}].invited"  class="invite" /><span style="margin-left:20px">${friend.getEmail()}</span> </td>
-                    		<td><form:checkbox  path="eventFormMembers[${i.index}].allowed" class="allow" /></td>
-                    	</c:when>
-                    	<c:when test="${ friend.getInviter() eq organizerEmail }">
-                    		<td><c:choose>
-                    				<c:when test="${ friend.invited }">
-                    					<form:hidden path="eventFormMembers[${i.index}].invited" value="true"/>
-                    					<i style="color: gold" class="glyphicon glyphicon-star"></i>
-                    				</c:when>
-                    				<c:otherwise>
-                    					<i style="color: silver" class="glyphicon glyphicon-random"></i>
-                    				</c:otherwise>
-                    			</c:choose>
-                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  /><span style="margin-left:20px">${friend.getEmail()}</span> 
-                    		</td>
-                    	</c:when>
-                    	<c:when test="${ friendUserEmail eq organizerEmail }">
-                    		<td><form:hidden path="eventFormMembers[${i.index}].invited"  value="true"  />
-                    			<i style="color: gold; margin-right:20px" class="glyphicon glyphicon-star"></i>
-                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  value="true" />${organizerEmail}
-                    		</td>
+                    		<c:choose>
+                    			<c:when test="${ organizerEmail eq friendEmail }">
+                    				<td>
+	                    				<i style="color: gold;"class="glyphicon glyphicon-star"></i>
+	                    				<span style="margin-left:20px">${friendEmail}</span>
+	                    				<form:hidden path="eventFormMembers[${i.index}].invited"  class="invite" />
+                    				</td>
+                    				<td>
+                    					<i style="color: gold; margin-right:20px" class="glyphicon glyphicon-star"></i>
+                    					<form:hidden  path="eventFormMembers[${i.index}].allowed" class="allow" />
+                    				</td>
+                    			</c:when>
+                    			<c:otherwise>
+                    				<td><form:checkbox path="eventFormMembers[${i.index}].invited"  class="invite" /><span style="margin-left:20px">${friendEmail}</span></td>
+                    				<td><form:checkbox  path="eventFormMembers[${i.index}].allowed" class="allow" /></td>
+                    			</c:otherwise>		
+                    		</c:choose>	
                     	</c:when>
                     	<c:otherwise>
-                    		<td><form:checkbox path="eventFormMembers[${i.index}].invited" class="invite" />
-                    			<form:hidden  path="eventFormMembers[${i.index}].allowed" />
-                    			<span style="margin-left:20px">${friend.getEmail()}</span>
-                    		</td>
+                    		<c:choose>
+                    			<c:when test="${ friendEmail eq organizerEmail }">
+                    				<td><i style="color: gold; margin-right:20px" class="glyphicon glyphicon-star"></i>
+                    					<form:hidden path="eventFormMembers[${i.index}].invited"  value="true"  />
+                    					<form:hidden  path="eventFormMembers[${i.index}].allowed"  value="true" />${organizerEmail} 
+                    				</td>
+                    			</c:when>
+                    			<c:when test="${ inviterEmail eq organizerEmail }">
+		                    		<td><c:choose>
+		                    				<c:when test="${ friend.invited }">
+		                    					<form:hidden path="eventFormMembers[${i.index}].invited" value="true"/>
+		                    					<i style="color: gold" class="glyphicon glyphicon-star"></i>
+		                    				</c:when>
+		                    				<c:otherwise>
+		                    					<i style="color: gold" class="glyphicon glyphicon-random"></i>
+		                    				</c:otherwise>
+		                    			</c:choose>
+		                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  /><span style="margin-left:20px">${friendEmail}</span> 
+		                    		</td>
+		                    	</c:when>
+		                    	<c:when test="${ not empty inviterEmail and inviterEmail ne editingUser }">
+		                    		<td>
+		                    			<i style="color: silver; margin-right:20px" class="glyphicon glyphicon-check"></i>${friendEmail}
+		                    			<form:hidden path="eventFormMembers[${i.index}].invited"  class="invite" />
+                    					<form:hidden  path="eventFormMembers[${i.index}].allowed" class="allow" /></td>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<td><form:checkbox path="eventFormMembers[${i.index}].invited" class="invite" />
+	                    			<form:hidden  path="eventFormMembers[${i.index}].allowed" />
+	                    			<span style="margin-left:20px">${friendEmail}</span></td>
+		                    	</c:otherwise>
+                    		</c:choose>
                     	</c:otherwise>
                     </c:choose>
-					<td><form:hidden path="eventFormMembers[${i.index}].email" value="${ friend.getEmail() }" /> 
+					<td><form:hidden path="eventFormMembers[${i.index}].email" value="${ friendEmail }" /> 
 					<c:choose >
-						<c:when test="${ not empty friend.getInviter() }">
+						<c:when test="${ not empty inviterEmail }">
 							<c:choose>
-								<c:when test="${ friendUserEmail eq organizerEmail or organizerEmail eq friend.getInviter()}">
+								<c:when test="${ organizerEmail eq inviterEmail }">
 									<i style="color: gold;" class="glyphicon glyphicon-star"></i>
 								</c:when>
 								<c:otherwise>
-									${ friend.getInviter() }
+									${ inviterEmail }
 								</c:otherwise>
 							</c:choose>
 						</c:when>
@@ -132,8 +177,8 @@
 		</table>
 		
 		<div class="control-group">
-		<form:hidden path="graphicId" value="${ editEventForm.getGraphicId() }" />
-		<form:hidden path="eventId" value="${ event.id }" />
+		<form:hidden path="graphicId" value="${ editEventForm.getGraphicId()}" />
+		<form:hidden path="eventId" value="${ eventId }" />
 			<div>
 				<input type="checkbox"  id="inviteAllStates">
 				<label for="inviteAllStates">Zaproś wszystkich</label>
@@ -155,17 +200,17 @@
 			    <form:select path="usersLimit" id="maxPlayers" name="maxPlayers" class="input-medium">
 			    
 			    <c:choose>
-			    	<c:when test="${event.playersLimit == 12 }">
+			    	<c:when test="${playersLimit == 12 }">
 			    		<form:option value="12" selected="selected">12 (bez zmian)</form:option>
 			    		<form:option value="14" >14 (po 1 na zmianę)</form:option>
 			      		<form:option value="16" >16 (po 2 na zmianę)</form:option>
 			    	</c:when>
-			    		<c:when test="${event.playersLimit == 14 }">
+			    		<c:when test="${playersLimit == 14 }">
 			    		<form:option value="12">12 (bez zmian)</form:option>
 			    		<form:option value="14" selected="selecet" >14 (po 1 na zmianę)</form:option>
 			      		<form:option value="16" >16 (po 2 na zmianę)</form:option>
 			    	</c:when>
-			    		<c:when test="${event.playersLimit == 16 }">
+			    		<c:when test="${playersLimit == 16 }">
 			    		<form:option   value="12" >12 (bez zmian</form:option>
 			    		<form:option value="14" >14 (po 1 na zmianę)</form:option>
 			      		<form:option value="16" selected="selected">16 (po 2 na zmianę)</form:option>
@@ -176,11 +221,11 @@
 			</div>
 			</c:when>
 			<c:otherwise>
-				<form:hidden path="usersLimit" value="${event.playersLimit}"/>
+				<form:hidden path="usersLimit" value="${playersLimit}"/>
 			</c:otherwise>
 		</c:choose>
 		<!-- Buttons -->
-		<div class="control-group .">
+		<div class="control-group">
 			<div class="controls">
 				<button id="singlebutton" name="singlebutton"
 					class="btn btn-primary  pull-right">Zapisz zmiany</button>

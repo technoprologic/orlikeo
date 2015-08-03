@@ -9,17 +9,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.EventState;
+import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
@@ -46,6 +49,8 @@ public class EventServiceImp implements EventService {
 	UserEventRoleService roleService;
 	@Autowired
 	EventStateService stateService;
+	@Autowired
+	FriendshipService friendshipService;
 
 	private static final org.slf4j.Logger logger = LoggerFactory
 			.getLogger(EventServiceImp.class);
@@ -204,7 +209,8 @@ public class EventServiceImp implements EventService {
 
 	private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-
+		UserDecision invited = decisionService.findOne(UserDecision.INVITED);
+		UserDecision notInvited = decisionService.findOne(UserDecision.NOT_INVITED);
 		// are still event members
 		eventFormMembers
 				.stream()
@@ -219,18 +225,19 @@ public class EventServiceImp implements EventService {
 								ue.setInviter(user);
 								if (reu.getAllowed() && reu.getInvited()) {
 									ue.setUserPermission(true);
-									ue.setDecision(decisionService
-											.findOne(UserDecision.INVITED));
+									if(ue.getDecision().equals(notInvited)){
+										ue.setDecision(invited);
+									}
 								} else if (!reu.getAllowed()
 										&& reu.getInvited()) {
 									ue.setUserPermission(false);
-									ue.setDecision(decisionService
-											.findOne(UserDecision.INVITED));
+									if(ue.getDecision().equals(notInvited)){
+										ue.setDecision(invited);
+									};
 								} else if (reu.getAllowed()
 										&& !reu.getInvited()) {
 									ue.setUserPermission(true);
-									ue.setDecision(decisionService
-											.findOne(UserDecision.NOT_INVITED));
+									ue.setDecision(notInvited);
 								}
 								userEventService.save(ue);
 							}
@@ -465,5 +472,46 @@ public class EventServiceImp implements EventService {
 				state.getId(), address, city, startTime, endTime, playersLimit,
 				goingToCome, size, incoming);
 		return block;
+	}
+
+	@Override
+	public RegisterEventForm generateRegisterEventForm(Event event) {
+		List<UserEvent> usersEvents = event.getUsersEvent();
+		List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED);
+		List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
+
+		for (UserEvent userEvent : usersEvents) {
+			boolean decision = false;
+			if (userEvent.getDecision().getId() != 4)
+				decision = true;
+			String inviterEmail = userEvent.getInviter() != null ? userEvent
+					.getInviter().getEmail() : null;
+			RegisterEventUser e = new RegisterEventUser(userEvent.getUser()
+					.getId(), userEvent.getUserPermission(), decision,
+					userEvent.getUser().getEmail(), userEvent.getUser()
+							.getDateOfBirth(), userEvent.getUser()
+							.getPosition(), inviterEmail);
+			users.add(e); 
+		}
+		for(User friend : friends){
+			boolean isInvited = false;
+			String inviterEmail = null;
+			for(UserEvent userEvent : usersEvents){
+				if(friend.getId() == userEvent.getUser().getId()){
+					isInvited = true;
+					inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
+				}
+			}		
+			if(isInvited == false){
+				RegisterEventUser e1 = new RegisterEventUser(friend.getId(), 
+						false, 
+						false, 
+						friend.getEmail(), 
+						friend.getDateOfBirth(), 
+						friend.getPosition(), inviterEmail);
+				users.add(e1);
+			}
+		}
+		return new RegisterEventForm(event.getId(), users);
 	}	
 }

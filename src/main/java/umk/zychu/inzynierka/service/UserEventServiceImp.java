@@ -8,16 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.model.UserEvent;
-import umk.zychu.inzynierka.repository.EventDaoRepository;
-import umk.zychu.inzynierka.repository.EventStateDaoRepository;
 import umk.zychu.inzynierka.repository.UserEventDaoRepository;
-import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
 
 @Service
 public class UserEventServiceImp implements UserEventService {
@@ -80,10 +75,8 @@ public class UserEventServiceImp implements UserEventService {
 	@Override
 	@Modifying
 	public void delete(UserEvent userEvent) {
-		System.out.println("xxx");
 		UserEvent tmp = userEventDAO.findOne(userEvent.getId());
 		System.out.println("equals? : " + tmp.equals(userEvent) + tmp.hashCode() + " : " + userEvent.hashCode());
 		userEventDAO.delete(userEvent);
-		System.out.println("xxx");
 	}	
 }

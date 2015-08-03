@@ -3,12 +3,6 @@ package umk.zychu.inzynierka.controller.DTObeans;
 import java.util.Date;
 
 public class RegisterEventUser {
-	
-	public RegisterEventUser() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 
 	Integer userId;
 	Boolean allowed;
@@ -18,8 +12,11 @@ public class RegisterEventUser {
 	Date dateOfBirth;
 	String position;
 	
-	
-	
+	public RegisterEventUser() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getInviter() {
 		return inviter;
 	}
@@ -27,8 +24,6 @@ public class RegisterEventUser {
 	public void setInviter(String inviter) {
 		this.inviter = inviter;
 	}
-
-
 
 	public void setUserId(Integer userId){
 		this.userId = userId;
@@ -80,7 +75,6 @@ public class RegisterEventUser {
 		return this.position;
 	}
 	
-
 	public RegisterEventUser(Integer userId, Boolean hasRight, Boolean decision, String email, Date dateOfBirth, String position, String inviter){
 		this.userId = userId;
 		this.allowed = hasRight;
