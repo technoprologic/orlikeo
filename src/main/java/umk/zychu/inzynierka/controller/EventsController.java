@@ -194,6 +194,13 @@ public class EventsController {
 					EventState eventState = eventStateService.findOne(EventState.IN_PROGRESS);
 					event.setState(eventState);
 				}
+				UserDecision rejected = decisionService.findOne(UserDecision.REJECTED);
+				UserDecision accepted = decisionService.findOne(UserDecision.ACCEPTED);
+				UserDecision invited = decisionService.findOne(UserDecision.INVITED);
+				event.getUsersEvent().stream()
+					.filter(ue -> !ue.getUser().equals(ue.getEvent().getUserOrganizer()) 
+							&& (ue.getDecision().equals(rejected) || ue.getDecision().equals(accepted)))
+					.forEach(ue -> ue.setDecision(invited));
 				event = eventService.save(event);
 			}
 		} catch (Exception e) {
