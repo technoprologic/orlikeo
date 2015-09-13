@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -9,51 +9,18 @@
         http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/websocket
-		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-
-	<websocket:message-broker
-		application-destination-prefix="/app">
-		<websocket:stomp-endpoint path="/hello">
-			<websocket:sockjs />
-		</websocket:stomp-endpoint>
-		<websocket:simple-broker prefix="/topic, /queue" />
-		<websocket:client-inbound-channel>
-			<websocket:interceptors>
-				<bean class="umk.zychu.inzynierka.foo.PresenceChannelInterceptor"></bean>
-			</websocket:interceptors>
-		</websocket:client-inbound-channel>
-	</websocket:message-broker>
-
-
-
-
-
-
-
-
-
-
-
+        <!-- MUST BE HERE -->
+        <import resource="websocket-context.xml" />
 
 
 
 	<context:component-scan base-package="umk.zychu.inzynierka.controller" />
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven>
-		<!-- <mvc:message-converters register-defaults="true"> <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/> 
-			<bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/> 
-			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/> 
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter" 
-			/> <bean class="org.springframework.http.converter.FormHttpMessageConverter" 
-			/> <bean class="org.springframework.http.converter.ResourceHttpMessageConverter" 
-			/> <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/> 
-			</mvc:message-converters> -->
-	</mvc:annotation-driven>
+	<mvc:annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
@@ -71,14 +38,9 @@
 		<property name="defaultLocale" value="pl" />
 	</bean>
 
-	<!-- <beans:bean id="connectController" class="umk.zychu.inzynierka.controller.CustomConnectController" 
-		autowire="constructor"></beans:bean> -->
-
 	<mvc:interceptors>
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 			<property name="paramName" value="lang" />
 		</bean>
 	</mvc:interceptors>
-
-
 </beans>

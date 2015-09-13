@@ -42,7 +42,7 @@
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Zaproś znajomych</legend>
-		<table data-toggle="table" style="background-color: white" >
+		<table id="eventReserveTable" style="background-color: white" >
 			<thead>
 				<tr>
 					<th>Zaproszenie</th>

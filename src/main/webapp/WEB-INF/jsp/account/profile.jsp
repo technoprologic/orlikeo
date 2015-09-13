@@ -12,23 +12,6 @@
 
 
 
-
-<!-- INVITE USER-->
-<c:url value="/friends/friendRequest" var="inviteUserUrl" />
-<!-- ACCEPT INVITATION-->
-<c:url value="/friends/acceptUser" var="acceptInvitationUrl" />
-<!-- REJECT INVITATION-->
-<c:url value="/friends/reject" var="rejectInvitationUrl" />
-<!-- REMOVE FROM FRIENDS-->
-<c:url value="/friends/remove" var="removeFriendshipUrl" />
-<!-- CANCEL INVITATION-->
-<c:url value="/friends/cancel" var="cancelInvitationUrl" />
-<!-- BLOCK USER-->
-<c:url value="/friends/block" var="blockUserUrl" />
-<!-- UNBLOCK USER-->
-<c:url value="/friends/unblock" var="unblockUserUrl" />
-
-
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
@@ -87,78 +70,36 @@
 					<a href="${removeAccountUrl}" class="btn btn-danger" title="Usuń konto"><i class="glyphicon glyphicon-remove"> </i></a>
 				</c:if>
 		<c:choose>
-					<c:when test="${ contact == 'pendingRequester'}">Wysłano zaproszenie do użytkownika 
-						<form:form action="${cancelInvitationUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Cofnij zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-stop"></i></button>
-						</form:form>
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'pendingRequester'}">Wysłano zaproszenie do użytkownika
+                        <button type="button" title="Cofnij" class="btn btn-warning" data-toggle="modal" data-target="#cancelInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-stop"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when>
-					<c:when test="${ contact == 'pendingReceiver'}">Otrzymałeś zaproszenie od użytkownika 
-						<form:form action="${acceptInvitationUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Akceptuj" class="btn btn-default"><i class="glyphicon glyphicon-ok-sign"></i></button>
-						</form:form>
-						<form:form action="${rejectInvitationUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Odrzuć zaproszenie" class="btn btn-default"><i class="glyphicon glyphicon-remove-sign"></i></button>
-						</form:form>
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'pendingReceiver'}">Otrzymałeś zaproszenie od użytkownika
+                        <button type="button" title="Akceptuj" class="btn btn-success" data-toggle="modal" data-target="#acceptInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ok-sign"></i></button>
+                        <button type="button" title="Odrzuć" class="btn btn-warning" data-toggle="modal" data-target="#declineInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-remove-sign"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when>
-					<c:when test="${ contact == 'friends'}">Jesteście znajomymi 
-						<form:form action="${removeFriendshipUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Usuń ze znajomych" class="btn btn-default"><i class="glyphicon glyphicon-minus-sign"></i></button>
-						</form:form>
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'friends'}">Jesteście znajomymi
+                        <button type="button" title="Usuń" class="btn btn-danger" data-toggle="modal" data-target="#removeFriendshipModal" data-whatever="${ email }"><i class="glyphicon glyphicon-minus-sign"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when>
-					<c:when test="${ contact == 'decliner'}">Odrzuciłeś zaproszenie użytkownika 
-						<form:form action="${inviteUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
-						</form:form>
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'decliner'}">Odrzuciłeś zaproszenie użytkownika
+                        <button type="button" title="Zaproś" class="btn btn-success" data-toggle="modal" data-target="#inviteUserModal" data-whatever="${ email }"><i class="glyphicon glyphicon-plus-sign"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when>
-					<c:when test="${ contact == 'declined'}">Użytkownik odrzucił Twoje zaproszenie 
-						<form:form action="${inviteUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
-						</form:form>					
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'declined'}">Użytkownik odrzucił Twoje zaproszenie
+                        <button type="button" title="Zaproś" class="btn btn-success" data-toggle="modal" data-target="#inviteUserModal" data-whatever="${ email }"><i class="glyphicon glyphicon-plus-sign"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when>
-					<c:when test="${ contact == 'blocker'}">Zablokowałeś użytkownika 
-						<form:form action="${unblockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${unblockEmail}"/>">
-							<button title="Odblokuj" class="btn btn-default"><i class="glyphicon glyphicon-refresh"></i></button>
-						</form:form>
+					<c:when test="${ contact == 'blocker'}">Zablokowałeś użytkownika
+                        <button type="button" title="Odblokuj" class="btn btn-success" data-toggle="modal" data-target="#unblockUser" data-whatever="${ email }"><i class="glyphicon glyphicon-refresh"></i></button>
 					</c:when>
 					<c:when test="${ contact == 'blocked'}">
 						Zostałeś zablokowany przez użytkownika
 					</c:when>
 					<c:when test="${ contact == 'without'}">
-						<form:form action="${inviteUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zaproś do znajomych" class="btn btn-default"><i class="glyphicon glyphicon-plus-sign"></i></button>
-						</form:form>
-						<form:form action="${blockUserUrl}" method="POST">
-							<input type="hidden"  name="email" value="<c:out value="${user.email}"/>">
-							<button title="Zablokuj" class="btn btn-default"><i class="glyphicon glyphicon-ban-circle"></i></button>
-						</form:form>
+                        <button type="button" title="Zaproś" class="btn btn-success" data-toggle="modal" data-target="#inviteUserModal" data-whatever="${ email }"><i class="glyphicon glyphicon-plus-sign"></i></button>
+                        <button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
 					</c:when> 
 		</c:choose>
 			</div>
@@ -166,3 +107,12 @@
         </div>
 </div>
 
+<%--
+<button type="button" title="Zaproś" class="btn btn-success" data-toggle="modal" data-target="#inviteUserModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-plus-sign"></i></button>
+<button type="button" title="Akceptuj" class="btn btn-success" data-toggle="modal" data-target="#acceptInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-ok-sign"></i></button>
+<button type="button" title="Odrzuć" class="btn btn-warning" data-toggle="modal" data-target="#declineInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-remove-sign"></i></button>
+<button type="button" title="Cofnij" class="btn btn-warning" data-toggle="modal" data-target="#cancelInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-stop"></i></button>
+<button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
+<button type="button" title="Odblokuj" class="btn btn-success" data-toggle="modal" data-target="#unblockUser" data-whatever="${ user.email }"><i class="glyphicon glyphicon-refresh"></i></button>
+<button type="button" title="Usuń" class="btn btn-danger" data-toggle="modal" data-target="#removeFriendshipModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-minus-sign"></i></button>
+--%>

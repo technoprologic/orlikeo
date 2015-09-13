@@ -3,36 +3,21 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
-
-<c:url value="/events/graphic" var="terminarzUrl" />
-
+<c:url value="/graphic" var="terminarzUrl" />
 <c:if test="${ not empty eventId } ">
-<c:out value="${ eventId }"></c:out>
+	<c:url value="/editGraphic" var="terminarzUrl" />
 </c:if>
-
-
-
-
-<c:choose>
-	<c:when test="${ not empty eventId }"><c:url value="/events/editGraphic" var="terminarzUrl" /></c:when>
-	<c:otherwise><c:url value="/events/graphic" var="terminarzUrl" /></c:otherwise>
-</c:choose>
-
-
-
 
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Wybierz orlik <small><i
+			Wybierz orlik ${ eventId } <small><i
 				class="glyphicon glyphicon-picture"></i></small>
 		</h1>
 	</div>
 </div>
 <div class="container">
 	<div class="row">
-
 		<div class="well well-sx">
 			<div class="row">
 				<div class="col-md-12">
@@ -53,6 +38,5 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>

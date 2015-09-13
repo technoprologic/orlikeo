@@ -12,32 +12,36 @@
 		http://www.springframework.org/schema/websocket
 		http://www.springframework.org/schema/websocket/spring-websocket-4.0.xsd" >
 
-
-
-
-
-
-
-
-
-
-	<websocket:message-broker
+<!--	<websocket:message-broker
 		application-destination-prefix="/app">
 		<websocket:stomp-endpoint path="/hello">
 			<websocket:sockjs />
-		</websocket:stomp-endpoint>	
-		<websocket:simple-broker prefix="/topic, /queue" />
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/notifications, /events, /show, /topic" />
 		<websocket:client-inbound-channel>
 			<websocket:interceptors>
 				<beans:bean class="umk.zychu.inzynierka.foo.PresenceChannelInterceptor"/>
+                <beans:bean class="umk.zychu.inzynierka.foo.UserEventsChannelInterceptor"/>
 			</websocket:interceptors>
 		</websocket:client-inbound-channel>
-	</websocket:message-broker>
+	</websocket:message-broker>-->
 
+<!--	<websocket:message-broker application-destination-prefix="/app">
+		<websocket:stomp-endpoint path="/hello">
+			<websocket:sockjs/>
+		</websocket:stomp-endpoint>
+		<websocket:simple-broker prefix="/topic, /queue, /oko"/>
+		<websocket:client-inbound-channel>
+			<websocket:interceptors>
+				<beans:bean class="umk.zychu.inzynierka.foo.MyChannelInterceptor" />
+			</websocket:interceptors>
+		</websocket:client-inbound-channel>
+	</websocket:message-broker>-->
 
+	<beans:import resource="appServlet/websocket-context.xml" />
 
    <context:annotation-config />
-   <context:component-scan base-package="umk.zychu.inzynierka" />
+   <context:component-scan base-package="umk.zychu.inzynierka.controller" />
    
    <http pattern="/resources/**" security="none"/>
   	<http auto-config="true" use-expressions="true">
@@ -56,12 +60,9 @@
 		<access-denied-handler error-page="/denied"/>
 		<logout logout-url="j_spring_security_logout" logout-success-url="/logout" delete-cookies="JSESSIONID" />
 		<!-- enable csrf protection disabled -->
-		<csrf/> 
+		<csrf/>
 	</http>
 
-
-
-  
   <authentication-manager>
      <authentication-provider user-service-ref="myUserDetailsService" >
          <password-encoder hash="plaintext" />

@@ -11,6 +11,7 @@ public class JsonEventObject {
 		end = (graphic.getEndTime()).getTime();
 		url = null;
 		available = graphic.getAvailable();
+		allDay = false;
 	}
 	
 	public long id;
@@ -19,4 +20,5 @@ public class JsonEventObject {
 	public long end;
 	public Boolean available;
 	public String url;
+	public Boolean allDay;
 }

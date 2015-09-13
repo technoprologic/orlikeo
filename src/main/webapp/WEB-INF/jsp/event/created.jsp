@@ -8,7 +8,7 @@
 
 <c:url value="/events/register" var="registerEventUrl" />
 <c:url value="/events/create" var="createEventUrl" />
-<c:url value="/events/graphic" var="graphicEventUrl" />
+<c:url value="/graphic" var="graphicEventUrl" />
 
 <c:set var="eventId" value="${eventDetails.eventId}"/>
 <c:set var="orlikId" value="${eventDetails.orlikId }" />
@@ -34,9 +34,9 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">Utworzyłeś wydarzenie
-			<a href="${createEventUrl}/${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
+			<a href="${createEventUrl}?event=${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
 			${city} ul.${address} <small><a
-				href="${graphicEventUrl}/${orlikId}/${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
+				href="${graphicEventUrl}/${orlikId}?event=${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
 				<fmt:formatDate value="${startDate}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${endDate}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${startDate}" type="both" pattern="dd.MM.yyyy" />)</small>
 		</h1>
 		<ul>

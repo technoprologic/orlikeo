@@ -1,82 +1,69 @@
-<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Oficiall Orlikeo service</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js" type="text/javascript" ></script>
+    <title>Hello WebSocket</title>
     <script src="<c:url value="/resources/websocket/sockjs-0.3.4.js" />" type="text/javascript" ></script>
     <script src="<c:url value="/resources/websocket/stomp.js" />" type="text/javascript" > </script>
+    <script src="<c:url value="/resources/mytheme/bootstrap/js/jquery.min.js" />" type="text/javascript" ></script>
+
     <script type="text/javascript">
+        // Create stomp client over sockJS protocol
+        var socket = new SockJS("/jbossews/hello");
+        var stompClient;
+        var obj = 0;
 
-    var stompClient = null;
-
-    function setConnected(connected) {
-        document.getElementById('connect').disabled = connected;
-        document.getElementById('disconnect').disabled = !connected;
-        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-        document.getElementById('response').innerHTML = '';
-    }
-
-    function connect() {
-        var socket = new SockJS('http://localhost:8080/jbossews/hello');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            setConnected(true);
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/user/queue/myqueue', function(greeting){
-                showGreeting(JSON.parse(greeting.body).content);
-            });
-        });
-    }
-
-    function disconnect() {
-        if (stompClient != null) {
-            stompClient.disconnect();
+        // Render user dedicated data from server into HTML, registered as callback
+        // when subscribing to dedicated topic
+        function renderNotifications(frame) {
+            var counter = frame.body;
+            console.log(frame.body);
+            if (counter == 0) {
+                $('#notifications').append(frame.body);
+            } else {
+                $('#notifications').append(
+                        "<span>"
+                        + counter + "</span><br>");
+            }
         }
-        setConnected(false);
-        console.log("Disconnected");
-    }
 
-    function sendName() {
-        var name = document.getElementById('name').value;
-        stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
-    }
+        // Callback function to be called when stomp client is connected to server
+        var connectCallbackNotifications = function() {
+            stompClient.subscribe('/topic/price', renderNotifications);
+        };
 
-    function showGreeting(message) {
-        var response = document.getElementById('response');
-        var p = document.createElement('p');
-        p.style.wordWrap = 'break-word';
-        p.appendChild(document.createTextNode(message));
-        response.appendChild(p);
-    }
+        // Callback function to be called when stomp client could not connect to server
+        var errorCallbackNotifications = function(error) {
+            console.log('STOMP: ' + error);
+            setTimeout(connect1, 1000);
+            console.log('STOMP: Reconecting in 10 seconds');
+        };
 
-
-    
+        function connect1(){
+            console.log('STOMP: Attempting connection');
+            // recreate the stompClient to use a new WebSocket
+            stompClient = Stomp.over(socket);
+            // Connect to server via websocket
+            var headerName = '${ _csrf.headerName }';
+            var csrf = '${ _csrf.token }';
+            var headers = {};
+            headers[headerName] = csrf;
+            stompClient.connect(headers, connectCallbackNotifications, errorCallbackNotifications);
+        }
+        connect1();
     </script>
 </head>
-<body onload="connect()">
+<body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
     Javascript and reload this page!</h2></noscript>
-<div>
-    <div>
-        <button id="connect" onclick="connect();">Connect</button>
-        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
-    </div>
-    <div id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name" />
-        <button id="sendName" onclick="sendName();">Send</button>
-        <p id="response"></p>
+<div id="notifications">
+    Animator
     </div>
 </div>
 </body>

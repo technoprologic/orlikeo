@@ -4,9 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
-
 <c:set var="eventId" value="${eventDetails.eventId}"/>
 <c:set var="orlikId" value="${eventDetails.orlikId }" />
 <c:set var="stateId" value="${eventDetails.stateId}"/> 
@@ -25,32 +22,27 @@
 <c:set var="water" value="${eventDetails.water}"/>
 <c:set var="shower" value="${eventDetails.shower}"/>
 <c:set var="shoes" value="${eventDetails.shoes}"/>
-
 <c:set var="editingUser" value="${editFormUser}"/>
-
 <c:url value="/events/edit" var="editEventUrl" />
 <c:url value="/events/create" var="createEventUrl" />
-<c:url value="/events/graphic/${orlikId}/${eventId}" var="graphicEventUrl" />
-
+<c:url value="/graphic/${orlikId}?event=${eventId}" var="graphicEventUrl" />
+<c:set value="/events/remove" var="removeEventUrl" />
 
 <c:choose>
 	<c:when test="${stateId == 1 }"><c:set var="available" value="${false}"/></c:when>
 	<c:otherwise><c:set var="available"  value="${true}"/></c:otherwise>
 </c:choose>
 
-
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
 		<c:if test="${ isOrganizer }" >
-		<a href="${createEventUrl}/${eventId}"><i class="glyphicon glyphicon-edit"></i></a>
+		<a href="${createEventUrl}?event=${eventId}" title="Zmień orlika"><button type="button" class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button></a>
 		</c:if>
-
 		<c:choose>
 			<c:when test="${ available }">
 			Orlik ${city} ul.${address}<small>
-			<c:if test="${ isOrganizer }">
-				<a href="${graphicEventUrl}"><i class="glyphicon glyphicon-edit"></i></a>
+			<c:if test="${ isOrganizer }"><a href="${graphicEventUrl}" title="Zmień godzinę"><button type="button"  class="btn btn-info"><i class="glyphicon glyphicon-edit"></i></button></a>
 			</c:if>
 				<fmt:formatDate value="${startDate}" type="both" pattern="HH.mm" /> - <fmt:formatDate value="${endDate}" type="both" pattern="HH.mm" /> (<fmt:formatDate value="${startDate}" type="both" pattern="dd.MM.yyyy" />)</small>
 			</c:when>
@@ -58,6 +50,14 @@
 				Brak Orlika
 			</c:otherwise>
 		</c:choose>
+				<c:if test="${ isOrganizer }" >
+					<button type="button" title="Usuń" class="btn btn-danger"
+							data-toggle="modal"
+							data-target="#removeEventModal"
+							data-ev="<c:out value='${eventId}' />"
+							data-href="<c:url value='${ removeEventUrl }' />">
+						<i class="glyphicon glyphicon-remove"></i></button>
+		</c:if>
 		</h1>
 		<c:if test="${ available }">
 		<ul>
@@ -73,13 +73,28 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+	window.saved = '${saved}';
+</script>
 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#example').dataTable(
+				{
+					"language": {
+						"url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+					},
+					"bFilter": false
+				});
+	} );
+</script>
 
 <form:form modelAttribute="editEventForm" class="form" action="${editEventUrl}" method="POST">
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Lista zaproszonych</legend>
-		<table data-toggle="table" style="background-color: white; " >
+		<table id="example"   style="background-color: white; " >
+
 			<thead>
 				<tr>
 					<th>Zaproszenie</th>
@@ -175,7 +190,6 @@
 
 			</tbody>
 		</table>
-		
 		<div class="control-group">
 		<form:hidden path="graphicId" value="${ editEventForm.getGraphicId()}" />
 		<form:hidden path="eventId" value="${ eventId }" />
@@ -233,15 +247,7 @@
 		</div>
 	</fieldset>
 </form:form>
-
-
-
-
 <script>
-
-
- 
-
 
 $(document).ready(function() {
     $('#inviteAllStates').click(function(event) {  //on click
@@ -268,11 +274,5 @@ $(document).ready(function() {
     });
    
 });
-
-
 </script>
-		
 
-
-
-<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />" ></script>

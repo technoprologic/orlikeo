@@ -1,22 +1,12 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import umk.zychu.inzynierka.model.Event;
-import umk.zychu.inzynierka.model.EventState;
-import umk.zychu.inzynierka.model.Graphic;
-import umk.zychu.inzynierka.model.UserDecision;
-import umk.zychu.inzynierka.model.UserEventRole;
-import umk.zychu.inzynierka.repository.EventDaoRepository;
-import umk.zychu.inzynierka.repository.EventStateDaoRepository;
+import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.repository.GraphicDaoRepository;
-import umk.zychu.inzynierka.repository.UserEventDaoRepository;
-import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
+
+import java.util.List;
 
 
 @Service
@@ -35,12 +25,19 @@ public class GraphicServiceImp implements GraphicService{
 	private EventStateService eventStateService;
 	@Autowired
 	private UserEventRoleService userEventRoleService;
+	@Autowired
+	private EventToApproveService eventToApproveService;
 	
 	@Override
 	public Graphic findOne(Integer graphicId){
 		return graphicDAO.findOne(graphicId);
 	}
-	
+
+	@Override
+	public List<Graphic> findAll() {
+		return graphicDAO.findAll();
+	}
+
 	@Override
 	public Graphic save(Graphic graphic){
 		return graphicDAO.save(graphic);
@@ -58,6 +55,7 @@ public class GraphicServiceImp implements GraphicService{
 		UserDecision rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
 		UserEventRole guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
 		EventState inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
+		EventState toAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
 		List<Event> events = graphic.getEvents();
 		if (!events.isEmpty()) {
 			for (Event e : events) {
@@ -70,6 +68,9 @@ public class GraphicServiceImp implements GraphicService{
 							userEventService.save(o);
 						});
 				e.setGraphic(null);
+				if(e.getState().equals(toAcceptState)){
+					eventToApproveService.removeEventFromWaitingForCheckByManager(e);
+				}
 				e.setState(inBasket);
 				eventService.save(e);
 			}

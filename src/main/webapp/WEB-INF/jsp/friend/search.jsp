@@ -12,39 +12,35 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">
-			Znajomi <small><i class="glyphicon glyphicon-user"></i> Wyszukaj Znajomego</small>
-		</h1>
+		<h1 class="page-header"> Znajomi </h1>
 	</div>
 </div>
 
 
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm-6 col-md-4 col-md-offset-4">
-        <h1 class="text-center login-title">Wyszukaj</h1>
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
         <div class="account-wall">
-            <form:form method="POST" class="form-signin" action="${ searchFriends }">
-				<div class="form-group">
-        			<label for="validate-email">Adres e-mail</label>
-					<div class="input-group" data-validate="email">
-						<input  type="text" class="form-control" name="email" id="validate-email"  required >
-						<span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
-					</div>
-				</div>
-                <button type="submit" class="btn btn-lg btn-primary btn-block" disabled>Szukaj</button>
-            </form:form>
+        <h1 class="text-center login-title"><i class="glyphicon glyphicon-user"></i> Wyszukaj Znajomego</h1><hr>
+          <form:form method="POST" data-toggle="validator" role="form" class="form-signin" action="${ searchFriends }">
+            <div class="form-group" style="text-align: center">
+              <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email" data-error="Nieprawidłowy adres email" required>
             </div>
-        </div>
+              <c:if test="${notFound}" ><div class="form-group" style="text-align: center; text-align: center; color: red">Nie znaleziono użytkownika.</div></c:if>
+            <div class="form-group" style="text-align: center">
+              <button type="submit" class="btn-lg btn-primary">Szukaj</button>
+            </div>
+          </form:form>
+      </div>
     </div>
+  </div>
 </div>
 
 
 
 <c:if test="${ not empty userEmail }">
 		<legend>Znaleziono</legend>
-		<table data-toggle="table" style="background-color: white" >
+		<table id="friendFoundedTable" >
 			<thead>
 				<tr>
 					<th>Użytkownik</th>
@@ -54,20 +50,10 @@
 			<tbody>
                	<tr>
 					<td>${ userEmail }</td>
-					<td><div class="container">
-							<a href="${ userDetails }/${userEmail}" class="btn btn-info" role="button">Zobacz profil</a>
-							<%-- <form:form method="POST" action="${ inviteFriend }" >
-								
-								<input  type="hidden" class="form-control" name="email" id="validate-email"  value="${ userEmail }" >
-								<button type="submit" class="btn  btn-primary" >Zaproś</button>
-							</form:form> --%>
-							</div>
+					<td>
+				        <a href="${ userDetails }/${userEmail}" class="btn btn-info" role="button">Zobacz profil</a>
 					</td>
 			    </tr>
 			</tbody>
 		</table>
 </c:if>
-
-
-
-<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />" ></script>

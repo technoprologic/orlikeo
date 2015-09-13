@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.EventState;
+import umk.zychu.inzynierka.model.EventToApprove;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.model.UserEvent;
@@ -27,25 +31,58 @@ public class UserEventServiceImp implements UserEventService {
 	UserService userService;
 	@Autowired
 	UserEventDecisionService userEventDecisionService;
+	
+	@Autowired
+	EventToApproveService eventToApproveService;
+	
+	private final int changeStatusBarrier = 3;
 
 	@Override
 	public UserEvent save(UserEvent event) {
 		return userEventDAO.save(event);
 	}
 
-	@Override 
+	@Override
+	@Transactional
 	public void setUserEventDecision(Event event, UserDecision decision) {
-		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-		user.getUserEvents().stream()
-							.filter(ue -> ue.getEvent().equals(event))
-							.findFirst()
-							.ifPresent(ue -> 
-							{ 
-								ue.setDecision(decision);
-								userEventDAO.save(ue);
-							});
+		User user = userService.getUser(SecurityContextHolder.getContext()
+				.getAuthentication().getName());
+		event.getUsersEvent().stream().filter(ue -> ue.getUser().equals(user))
+				.findFirst().ifPresent(ue -> {
+					ue.setDecision(decision);
+				});
+		changeEventStateIfRequired(event);
 	}
 	
+	@Override
+	public void changeEventStateIfRequired(Event event) {
+		EventState inProgress = eventStateService.findOne(EventState.IN_PROGRESS);
+		EventState readyToAccept = eventStateService.findOne(EventState.READY_TO_ACCEPT);
+		EventState approved = eventStateService.findOne(EventState.APPROVED);
+		EventState threatened = eventStateService.findOne(EventState.THREATENED);
+		UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
+		long counter = event.getUsersEvent().stream()
+				.filter(ue -> ue.getDecision().equals(accepted))
+				.count();
+		if(event.getState().equals(inProgress) && counter >= changeStatusBarrier) {
+			event.setState(readyToAccept);
+			eventToApproveService.addEventToCheckByManager(event);
+		}else if(event.getState().equals(readyToAccept) && counter < changeStatusBarrier){
+			event.setState(inProgress);
+			Optional<EventToApprove> optEventToApprove = eventToApproveService.findByEvent(event);
+			if(optEventToApprove.isPresent()){
+				EventToApprove evenToAprrove = optEventToApprove.get();
+				eventToApproveService.delete(evenToAprrove);
+			}
+		}else if(event.getState().equals(approved) && counter < changeStatusBarrier){
+			event.setState(threatened);
+			//TODO set time to find player, if not change state to IN_PROGRESS
+		}else if (event.getState().equals(threatened) && counter >= changeStatusBarrier){
+			event.setState(approved);
+		}
+		eventService.save(event);
+	}
+
 	@Override
 	public List<User> findUsersByEventAndDecision(Event event, UserDecision decision) {
 		List<User> members = event.getUsersEvent().stream()

@@ -1,9 +1,5 @@
 package umk.zychu.inzynierka.foo;
 
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ScheduledFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +12,17 @@ import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
+import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
+import umk.zychu.inzynierka.model.EventToApprove;
+import umk.zychu.inzynierka.model.User;
+import umk.zychu.inzynierka.service.*;
 
-import umk.zychu.inzynierka.service.UserService;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Collectors;
 
 @Service
 public class PresenceChannelInterceptor extends ChannelInterceptorAdapter {
@@ -25,37 +30,57 @@ public class PresenceChannelInterceptor extends ChannelInterceptorAdapter {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(PresenceChannelInterceptor.class);
 
-	
-	@Autowired
+    @Autowired
 	private SimpMessagingTemplate template;
 	@Autowired
-	private UserService service;
+	private EventService eventService;
+	@Autowired
+	private EventStateService eventStateService;
+	@Autowired
+	private OrlikService orlikService;
+	@Autowired
+	private EventToApproveService eventToApproveService;
+	@Autowired
+	private UserService userService;
+    @Autowired
+    private UserEventRoleService userEventRoleService;
 
-	private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
-	@SuppressWarnings("rawtypes")
-	private Map<String, ScheduledFuture> sessions;
-	private Random rand = new Random(System.currentTimeMillis());
+	private List<UserGameDetails> orlikGamesList = new ArrayList<UserGameDetails>();
+
+	private Map<String, ScheduledFuture> eventsSessions;
+	private Map<String, ScheduledFuture> notificationsSessions;
+
+    private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
 	@SuppressWarnings("rawtypes")
 	public PresenceChannelInterceptor() {
 		// TODO Auto-generated constructor stub
-		sessions = new Hashtable<String, ScheduledFuture>();
+		eventsSessions = new Hashtable<String, ScheduledFuture>();
+		notificationsSessions = new Hashtable<String, ScheduledFuture>();
 	}
 
-	private void userSpecificInfo(String username) {
-		template.convertAndSendToUser(username, "/topic/dedicated", username
-				+ " " + rand.nextInt(10));
+	private void sendEventsToManager(String username) {
+		orlikGamesList = orlikService.getAllByManager(username);
+		template.convertAndSendToUser(username, "/events/read", orlikGamesList);
+	}
+	
+	private void sendNotificationToManager(String username){
+		User manager = userService.getUser(username);
+		List<EventToApprove> eventsToApprove = eventToApproveService
+				.findAll()
+				.stream()
+				.filter(eta -> eta.getEvent().getGraphic() != null && eta.getEvent().getGraphic().getOrlik()
+						.getOrlikManagers().contains(manager)
+						&& !eta.isChecked())
+				.collect(Collectors.toList());
+		long counter = eventsToApprove.size();
+	    template.convertAndSendToUser(username, "/notifications/read", counter);
 	}
 
 	@Override
 	public void postSend(Message<?> message, MessageChannel channel,
 			boolean sent) {
-
-		System.out.println();
-		System.out.println();
-		System.out.println();
-
 		StompHeaderAccessor sha = StompHeaderAccessor.wrap(message);
 		// ignore non-STOMP messages like heartbeat messages
 		if (sha.getCommand() == null) {
@@ -63,26 +88,33 @@ public class PresenceChannelInterceptor extends ChannelInterceptorAdapter {
 					.println("ignored non-STOMP messages like heartbeat messages");
 			return;
 		}
-
-		
 		String sessionId = sha.getSessionId();
 		System.out.println("session " + " " + sha.getSessionId()
 				+ " and COMMAND IS " + sha.getCommand());
 		System.out.println("user " + " " + sha.getUser().getName());
 		System.out.println("SHA " + " " + sha.toString());
-
-		switch (sha.getCommand()) {
+        switch (sha.getCommand()) {
 		case CONNECT:
 			LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
-			break;
+            break;
 		case SUBSCRIBE:
 			LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
-			if (sha.getDestination().equals("/user/topic/dedicated")) {
-				sessions.put(sessionId,
-						scheduler.scheduleAtFixedRate(new Runnable() {
+			if (sha.getDestination().equals("/user/events/read")) {
+				eventsSessions.put(sessionId,
+						scheduler.scheduleWithFixedDelay(new Runnable() {
 							@Override
 							public void run() {
-								userSpecificInfo(sha.getUser().getName());
+								sendEventsToManager(sha.getUser().getName());
+							}
+						}, 5000));
+			}
+			if (sha.getDestination().equals("/user/notifications/read")) {
+				notificationsSessions.put(sessionId,
+						scheduler.scheduleWithFixedDelay(new Runnable() {
+							@Override
+							public void run() {
+								sendNotificationToManager(sha.getUser()
+										.getName());
 							}
 						}, 5000));
 			}
@@ -94,15 +126,15 @@ public class PresenceChannelInterceptor extends ChannelInterceptorAdapter {
 		case DISCONNECT:
 			LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
 			System.out.println("MY DISCONNECT sessionid: " + " " + sessionId);
-			sessions.remove(sessionId);
+			eventsSessions.remove(sessionId);
+            notificationsSessions.remove(sessionId);
+			break;
+		case SEND:
+			System.out.println("Send command: " + " " + sessionId);
 			break;
 		default:
 			System.out.println("MY CANT TAKE AN ACTION");
 			break;
-
 		}
-		System.out.println();
-		System.out.println();
-		System.out.println();
 	}
 }

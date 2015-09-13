@@ -9,18 +9,19 @@
 		</layout>
 	</appender>
 	
-	<appender name="file" class="org.apache.log4j.FileAppender">
+<!-- 	<appender name="file" class="org.apache.log4j.FileAppender">
 		<param name="file" value="${catalina.home}/logs/jbossews.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd.MM.yyyy HH:mm:ss} [%t] %-5p: %c - %m%n" />
 		</layout>
-	</appender>	
+	</appender>	 -->
 	
-	<logger name="org.hibernate.type.descriptor" additivity="false">
+
+	<logger name="org.hibernate.type.descriptor" additivity="true">
 		<level value="error"/>
 		<appender-ref ref="console"/>
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core" >
 		<level value="error" />
@@ -43,22 +44,23 @@
 	</logger>
 	
 	<logger name="org.springframework">
-		<level value="error"></level>
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.springframework.web.socket">
-		<level value="error"></level>
+		<level value="error" />
 	</logger>
 	
 	<logger name="org.hibernate">
     	<level value="error"/>
 	</logger>
+
 	<logger name="org.springframework.data">
     	<level value="error"/>
 	</logger>
 	
-	<logger name="umk.zychu.inzynierka" additivity="true" >
-		<level value="all" />
+	<logger name="umk.zychu.inzynierka" additivity="false" >
+		<level value="error" />
 		<appender-ref ref="console"/>
 		<appender-ref ref="file"/>
 	</logger>

@@ -53,22 +53,33 @@
 				<c:choose >
 					<c:when test="${isOrganizer}" >
 						<a href="${editEventUrl}/${eventId}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
+						<a href="${removeEventUrl}/${eventId}" title="Usuń"> <i class="glyphicon glyphicon-remove" style="margin-left:0.5em"></i></a>
 					</c:when>
 					<c:otherwise>
 						<c:if test="${allowed}" >
 						<a href="${editEventUrl}/${eventId}" title="Edytuj"> <i class="glyphicon glyphicon-edit" style="margin-left:0.5em"></i></a>
 						</c:if>
+						
+						<c:set var="accept" value="?decision=true" />
+		    			<c:set var="reject" value="?decision=false" />
+		    			<c:set var="urlSuffix" value="" />
+		    			<c:if test="${ not empty page }">
+		    				<c:set var="urlSuffix" value="${urlSuffix}&page=${ page }" />
+		    			</c:if>
+		    			<c:set var="acceptDecisionUrl" value="${eventDecisionUrl}/${eventId}${accept}${urlSuffix}" />
+		    			<c:set var="rejectDecisionUrl" value="${eventDecisionUrl}/${eventId}${reject}${urlSuffix}" />
+						
 						<c:choose>
 							<c:when test="${ decisionId == 1 }">
-								<a href="${eventDecisionUrl}/${eventId}/accept" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i></a> /
-	    						<a href="${eventDecisionUrl}/${eventId}/reject" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i></a>	
+								<a href="${acceptDecisionUrl}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i></a> /
+	    						<a href="${rejectDecisionUrl}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i></a>	
 							</c:when>
 							<c:when test="${ decisionId == 2}">
 								<i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color:green;"></i> /
-	    						<a href="${eventDecisionUrl}/${eventId}/reject" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:grey;"></i></a>
+	    						<a href="${rejectDecisionUrl}" title="Nie wezmę udziału"> <i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:grey;"></i></a>
 							</c:when>
 							<c:when test="${ decisionId == 3}">
-								<a href="${eventDecisionUrl}/${eventId}/accept" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color: grey;"></i></a> /
+								<a href="${acceptDecisionUrl}" title="Wezmę udział"> <i class="glyphicon glyphicon-plus" style="margin-left:0.5em; color: grey;"></i></a> /
 	    						<i class="glyphicon glyphicon-minus" style="margin-left:0.5em; color:red;"></i>
 							</c:when>
 						</c:choose>
@@ -118,7 +129,7 @@
 <div class="row">
 		<!-- Form Name -->
 <legend>Wezmą udział (${usersJoinedDecision.size()})</legend>
-<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+<table id="goingToComeTable" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
@@ -145,7 +156,7 @@
 <div class="row">
 		<!-- Form Name -->
 <legend>Niezdecydowani (${usersWithoutDecision.size()})</legend>
-<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+<table id="withoutDecisionTable" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
@@ -167,7 +178,7 @@
 <div class="row">
 		<!-- Form Name -->
 <legend>Odrzucili (${usersRejectedDecision.size()})</legend>
-<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+<table id="rejectedTable" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>
@@ -189,7 +200,7 @@
 <div class="row">
 		<!-- Form Name -->
 <legend>Mogących zapraszać (${usersPermittedOnly.size()})</legend>
-<table data-toggle="table" id="table-pagination"    data-search="true" style="background-color:white">
+<table id="canInviteTable" style="background-color:white">
     <thead style="background-color:#999999">
         <tr>
             <th data-field="orlikId" data-align="center" data-sortable="true"><i class="glyphicon glyphicon-user"></i> Użytkownik</th>

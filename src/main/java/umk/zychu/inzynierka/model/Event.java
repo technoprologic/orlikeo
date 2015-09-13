@@ -1,18 +1,11 @@
 package umk.zychu.inzynierka.model;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
@@ -40,7 +33,7 @@ public class Event extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name="user_organizer", referencedColumnName="id")
 	User userOrganizer;
-	
+
 	public Integer getPlayersLimit() {
 		return playersLimit;
 	}

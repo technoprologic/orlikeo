@@ -2,15 +2,9 @@ package umk.zychu.inzynierka.controller.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import umk.zychu.inzynierka.repository.EventStateDaoRepository;
 import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
-import umk.zychu.inzynierka.service.EventService;
-import umk.zychu.inzynierka.service.GraphicService;
-import umk.zychu.inzynierka.service.OrlikService;
-import umk.zychu.inzynierka.service.UserEventRoleService;
-import umk.zychu.inzynierka.service.UserEventService;
-
+import umk.zychu.inzynierka.service.*;
 
 
 @Component
@@ -30,7 +24,27 @@ public class AllServices{
 	private EventStateDaoRepository stateDAO;
 	@Autowired
 	private UserEventRoleService userEventRoleService;
-	
+	@Autowired
+	private EventToApproveService eventToApproveService;
+    @Autowired
+    private EventStateService eventStateService;
+
+    public EventStateService getEventStateService(){
+        return eventStateService;
+    }
+
+    public void setEventStateService(EventStateService eventStateService){
+        this.eventStateService = eventStateService;
+    }
+
+    public EventToApproveService getEventToApproveService() {
+		return eventToApproveService;
+	}
+
+	public void setEventToApproveService(EventToApproveService eventToApproveService) {
+		this.eventToApproveService = eventToApproveService;
+	}
+
 	public UserEventRoleService getUserEventRoleService() {
 		return userEventRoleService;
 	}

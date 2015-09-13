@@ -112,9 +112,4 @@
 			</div>
 		</div>
 	</div> -->
-	
 </div>
-/.row
-
-<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />"></script>
-

@@ -14,7 +14,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Grafik ${eventId}<small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both" 
+			Grafik <small><i class="glyphicon glyphicon-picture"></i> <fmt:formatDate value="${data}" type="both"
       pattern="dd-MM-yyyy-HH-mm" /> Orlik <c:out value="${orlikInfo.city}" /> ul. <c:out value="${orlikInfo.address}" /></small>
 		</h1>
 		<ul>
@@ -39,15 +39,15 @@
 				$.each(json, function(index, value) {
 					value.start = new Date(value.start);
 					value.end = new Date(value.end);
-					if(value.available){
+					if (value.available) {
 						value.url = '${reserveUrl}/' + value.id;
-					}
-					else{
+					} else {
 						value.url = '';
 					}
 				});
 
-			 /*   alert(JSON.stringify(json));  */
+				// debug //
+				// alert(JSON.stringify(json));  
 
 				$('#calendar').fullCalendar({
 					header : {
@@ -55,7 +55,7 @@
 						center : 'title',
 						right : 'month,agendaWeek,agendaDay'
 					},
-					editable : true,
+					editable : false,
 					events : json
 				});
 			})
@@ -148,4 +148,4 @@ $.getScript("<c:url value="/resources/mytheme/js/calendar.js" />",function(){
   });
 })
 
-</script> -->
+</script>  -->

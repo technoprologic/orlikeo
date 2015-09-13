@@ -1,8 +1,6 @@
 package umk.zychu.inzynierka.controller;
 
 
-import java.security.Principal;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +9,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.service.EventService;
+import umk.zychu.inzynierka.service.EventToApproveService;
 import umk.zychu.inzynierka.service.UserEventService;
 import umk.zychu.inzynierka.service.UserService;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = { "/", "", "/home" })
@@ -26,18 +27,22 @@ public class HomeController {
 		
 	@Autowired
 	EventService eventService;
+
+
+
 	@Autowired
 	UserEventService objectService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	EventToApproveService eventToApproveService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView home(ModelMap model, Principal principal) {	
 		User user = userService.getUser(principal.getName());
 		List<EventWindowBlock> eventWindowBlockList = eventService.getEventWindowBlocks(null);
 		model.addAttribute("eventWindowsList", eventWindowBlockList );
-		model.addAttribute("page", "fast");
-		model.put("username", user.getName());
+		model.addAttribute("page", "all");
 		debug(eventWindowBlockList);
 		return new ModelAndView("home");
 	}

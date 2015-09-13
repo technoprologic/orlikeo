@@ -343,6 +343,10 @@
     			<artifactId>spring-context-support</artifactId>
     			<version>4.1.6.RELEASE</version>
     		</dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+            </dependency>
         <dependency>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>

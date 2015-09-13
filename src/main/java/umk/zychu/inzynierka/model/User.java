@@ -1,18 +1,17 @@
 package umk.zychu.inzynierka.model;
  
  
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
@@ -74,6 +73,9 @@ public class User extends BaseEntity
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "user")
 	private List<UserEvent> userEvents;
+
+	@OneToMany(mappedBy = "user")
+	private List<UserNotification> userNotifications;
 	
 	public List<Friendship> getFriendships(){
 		List<Friendship> friendships = new ArrayList<Friendship>();

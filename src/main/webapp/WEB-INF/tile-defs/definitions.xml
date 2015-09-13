@@ -16,11 +16,24 @@
 
 	<!-- TEMPLATES -->
 	<definition name="defaultTemplate" template="/WEB-INF/jsp/template/template.jsp">
+        <put-attribute name="title" value=" - Witaj!" />
 		<put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
 		<put-attribute name="leftMenuContent" value="/WEB-INF/jsp/template/leftMenuContent.jsp" />
 		<put-attribute name="eventsMainWindow" value="" />
 		<put-attribute name="content" value="" />
+        <put-attribute name="modal" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
+        <put-list-attribute name="styles">
+            <add-attribute value="/WEB-INF/jsp/styles/bootstrapCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="scripts">
+            <add-attribute value="/WEB-INF/jsp/scripts/allPagesRequired.jsp" />
+            <add-attribute  value="/WEB-INF/jsp/scripts/stompNotifications.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleStyles">
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+        </put-list-attribute>
 	</definition>
 	<definition name="clearTemplate" template="/WEB-INF/jsp/template/clearTemplate.jsp">
 		<put-attribute name="content" value="" />
@@ -29,60 +42,112 @@
 	
 	<!-- ACCOUNT -->
 	<definition name="editAccount" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Edycja konta"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/account/edit.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/accountEditAndRegisterCSS.jsp" />
+        </put-list-attribute>
 	</definition>
 	<definition name="login" extends="clearTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/account/login.jsp" />
 	</definition>
 	<definition name="password" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Edycja hasła"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/account/password.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/accountEditAndRegisterCSS.jsp" />
+        </put-list-attribute>
 	</definition>
 	<definition name="register" extends="clearTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/account/register.jsp" />
 	</definition>
 	<definition name="profile" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Profil"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/account/profile.jsp" />
+        <put-attribute name="modal" value="/WEB-INF/jsp/scripts/friendActionButtonsModal.jsp" />
 	</definition>
 	
 	
 	<!-- EVENT -->
 	<definition name="create" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Utwórz wydarzenie"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/event/create.jsp" />
 	</definition>
 	<definition name="eventCreated" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Utworzone wydarzenie"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/event/created.jsp" />
 	</definition>
 	<definition name="details" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Szczegóły"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/event/details.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/eventDetailsTables.jsp" />
+        </put-list-attribute>
 	</definition>
 	<definition name="eventEdit" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Edycja wydarzenia"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/event/edit.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/jsp/event/removeEventConfirmModal.jsp" />
 	</definition>
 	<!-- organized -->
 	<definition name="eventsInState" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Wydarzenia"/>
 		<put-attribute name="eventsMainWindow" value="/WEB-INF/jsp/template/eventStatesMainWindow.jsp" />
 		<put-attribute name="content" value="/WEB-INF/jsp/event/organized.jsp" />
+		<put-attribute name="modal" value="/WEB-INF/jsp/event/removeEventConfirmModal.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/stompUserBlocksWindowsAndDetailsTable.jsp" />
+        </put-list-attribute>
 	</definition>
-	<definition name="eventsInStateByRole" extends="defaultTemplate">
-		<put-attribute name="content" value="/WEB-INF/jsp/event/organized.jsp" />
-	</definition>
-	
-	
+
 	<!-- FRIEND -->
 	<definition name="friends" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Znajomi"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/friend/friends.jsp" />
+        <put-attribute name="modal" value="/WEB-INF/jsp/scripts/friendActionButtonsModal.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/friendsTables.jsp" />
+        </put-list-attribute>
 	</definition>
 		<definition name="searchFriends" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Szukaj znajomych"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/friend/search.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/accountEditAndRegisterCSS.jsp" />
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/friendFoundedTable.jsp" />
+        </put-list-attribute>
 	</definition>
 
 
 	<!-- GRAPHIC -->
 	<definition name="graphic" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Grafik"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/graphic/graphic.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/calendarCSS.jsp" />
+        </put-list-attribute>
 	</definition>
 	<definition name="reserve" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Rezerwacje"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/graphic/reserve.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/eventReserveTable.jsp" />
+        </put-list-attribute>
 	</definition>
 
 	
@@ -90,14 +155,29 @@
 	<!-- PLANNER -->
 	<definition name="javaplanner"  template="/WEB-INF/jsp/planner/javaplanner.jsp" >
 	</definition>
+	<definition name="animatorPane" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Panel zatwierdzania"/>
+		<put-attribute name="content" value="/WEB-INF/jsp/planner/animatorPane.jsp" />
+        <put-list-attribute name="extensibleStyles">
+            <add-attribute value="/WEB-INF/jsp/styles/dataTablesCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+            <add-attribute  value="/WEB-INF/jsp/scripts/stompAnimatorEvents.jsp" />
+        </put-list-attribute>
+	</definition>
 
 
 	<!-- HOME&HELP -->
 	<definition name="home" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Strona główna"/>
 		<put-attribute name="eventsMainWindow" value="/WEB-INF/jsp/template/eventStatesMainWindow.jsp" />
 		<put-attribute name="content" value="/WEB-INF/jsp/home.jsp" />
+		<put-list-attribute name="extensibleScripts">
+			<add-attribute value="/WEB-INF/jsp/scripts/stompUserWindowBlocks.jsp" />
+		</put-list-attribute>
 	</definition>
-		<definition name="help" extends="defaultTemplate">
+	<definition name="help" extends="defaultTemplate">
+        <put-attribute name="title" value=" - Pomoc"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
 	

@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class UserGameDetails {
 
+
+
 	UserGameDetails() {
 		super();
 	}
@@ -196,5 +198,15 @@ public class UserGameDetails {
 
 	public void setPlayersLimit(Integer playersLimit) {
 		this.playersLimit = playersLimit;
+	}
+	
+	@Override
+	public String toString() {
+		return "UserGameDetails [eventId=" + eventId + ", stateId=" + stateId
+				+ ", orlikId=" + orlikId + ", address=" + address + ", city="
+				+ city + ", organizerEmail=" + organizerEmail + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", willCome=" + willCome
+				+ ", playersLimit=" + playersLimit + ", water=" + water
+				+ ", shower=" + shower + ", shoes=" + shoes + "]";
 	}
 }
