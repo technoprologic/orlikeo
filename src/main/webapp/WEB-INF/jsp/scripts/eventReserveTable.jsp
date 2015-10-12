@@ -6,6 +6,10 @@
 
 <script type="text/javascript">
     $(document).ready( function () {
-        $('#eventReserveTable').DataTable();
+        $('#eventReserveTable').dataTable( {
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+            }
+        } );
     } );
 </script>

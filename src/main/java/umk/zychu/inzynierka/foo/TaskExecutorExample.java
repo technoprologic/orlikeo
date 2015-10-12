@@ -10,6 +10,7 @@ import umk.zychu.inzynierka.model.UserEventRole;
 import umk.zychu.inzynierka.service.*;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import java.util.Date;
 
 @Component
@@ -84,15 +85,15 @@ public class TaskExecutorExample {
 			}
 		});
 	}
-
+	@Transactional
 	private void clearGraphics() {
 		graphicService.findAll().stream()
 				.filter(g -> fromNow - g.getEndTime().getTime() > halfAnHour + quarterOfAnHour)
 				.forEach(g -> graphicService.delete(g));
 	}
 
+	@Transactional
 	private void setGraphicAvailableForAllIfNotReserved() {
-
 		if(graphicService.findAll().stream()
 				.filter(g -> g.getAvailable() && g.getStartTime().getTime() - fromNow < quarterOfAnHour)
 				.flatMap(g -> g.getEvents().stream())
@@ -107,14 +108,14 @@ public class TaskExecutorExample {
 		}
 
 	}
-
+	@Transactional
 	private void removeAllEventsOutOfTerm() {
 		graphicService.findAll().stream()
 				.filter(g -> fromNow - g.getEndTime().getTime() > halfAnHour)
 				.flatMap(g -> g.getEvents().stream())
 				.forEach(e -> eventService.delete(e));
 	}
-
+	@Transactional
 	private void removeAllInBuildState(){
         System.out.println("WORK TO DO");
 		//reduce invitations
@@ -145,7 +146,7 @@ public class TaskExecutorExample {
 				.forEach(g -> g.setAvailable(false));
 
 	}
-
+	@Transactional
 	private void removeAllThreatenedAndToApprove() {
 		graphicService.findAll().stream()
 				.filter(g -> g.getStartTime().getTime() - fromNow < quarterOfAnHour)

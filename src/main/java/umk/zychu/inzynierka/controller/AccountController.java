@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -58,8 +59,7 @@ public class AccountController {
 		}
 		else{
 			userService.changePassword(form);
-			String email = principal.getName();
-			return "redirect:/account/profile/" + email;
+			return "redirect:/account/profile/";
 		}
 	}
 	
@@ -69,8 +69,8 @@ public class AccountController {
 			return "editAccount";
 		}else{
 			userService.updateUserDetails(form);
-			String email = principal.getName();
-			return "redirect:/account/profile/" + email;
+			String redirect = "redirect:/account/profile/";
+			return redirect;
 		}
 	}
 
@@ -103,5 +103,12 @@ public class AccountController {
 		model.addAttribute("user", user);
 		model.addAttribute("self", true);
 		return "profile";
+	}
+
+	@PreAuthorize(value = "hasRole(ROLE_USER)")
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String removeAccount(){
+		userService.removeAccount();
+		return "redirect:/j_spring_security_logout";
 	}
 }

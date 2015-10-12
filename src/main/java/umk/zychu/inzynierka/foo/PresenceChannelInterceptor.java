@@ -70,8 +70,9 @@ public class PresenceChannelInterceptor extends ChannelInterceptorAdapter {
 		List<EventToApprove> eventsToApprove = eventToApproveService
 				.findAll()
 				.stream()
-				.filter(eta -> eta.getEvent().getGraphic() != null && eta.getEvent().getGraphic().getOrlik()
-						.getOrlikManagers().contains(manager)
+				.filter(eta -> eta.getEvent().getGraphic() != null
+						&& eta.getEvent().getGraphic().getOrlik().getAnimator() != null
+						&& eta.getEvent().getGraphic().getOrlik().getAnimator().equals(manager)
 						&& !eta.isChecked())
 				.collect(Collectors.toList());
 		long counter = eventsToApprove.size();

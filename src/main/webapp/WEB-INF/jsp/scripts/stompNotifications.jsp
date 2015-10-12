@@ -71,5 +71,5 @@
         headers[headerName] = csrf;
         stompClient.connect(headers, connectCallbackNotifications, errorCallbackNotifications);
     }
-    connect1();
+    /*connect1();*/
 </script>

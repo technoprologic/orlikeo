@@ -19,6 +19,7 @@
                 <bean class="umk.zychu.inzynierka.foo.NotificationsChannelInterceptor"/>
                 <bean class="umk.zychu.inzynierka.foo.UserEventsTableChannelInterceptor" />
 				<bean class="umk.zychu.inzynierka.foo.WindowsBlocksChannelInterceptor" />
+				<bean class="umk.zychu.inzynierka.foo.UserNotificationsChannelInterceptor" />
 			</websocket:interceptors>
 		</websocket:client-inbound-channel>
 	</websocket:message-broker>
