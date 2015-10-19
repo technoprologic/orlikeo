@@ -40,7 +40,7 @@ public class JavaplannerController {
 		if(orlikOpt.isPresent()){
 			model.addAttribute("orlik", orlikOpt.get().getId());
 		}
-		return "javaplanner";
+		return "javaplanner2";
 	}
 
 

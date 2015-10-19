@@ -181,7 +181,7 @@ public class User extends BaseEntity
 		this.position = position;
 	}
 	
-	public int getWeight() {
+	public Integer getWeight() {
 		return weight;
 	}
 	

@@ -26,7 +26,7 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title"><c:if test="${ user.name }" >${user.name}</c:if> <c:if test="${ user.surname }" >${user.surname} </c:if></h3>
+              <h3 class="panel-title"> oko<c:if test="${ not empty user.name }" >${user.name}</c:if> <c:if test="${ not empty user.surname }" >${user.surname} </c:if></h3>
             </div>
             <div class="panel-body">
               <div class="row">
@@ -53,11 +53,11 @@
                       </tr>
                       <tr>
 						<td>Wzrost:</td>
-                        <td><c:if test="${ not empty user.height }" >${user.height} </c:if></td>
+                        <td><c:if test="${ not empty user.height }" >${user.height}</c:if></td>
                       </tr>
                       <tr>
 						<td>Noga:</td>
-                        <td><c:if test="${ not empty user.foot }" >${user.foot} </c:if></td>
+                        <td><c:if test="${ not empty user.foot }" >${user.foot}</c:if></td>
                       </tr>
                     </tbody>
                   </table>

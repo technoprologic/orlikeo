@@ -22,7 +22,7 @@
 			<li><i class="glyphicon glyphicon-info-sign"></i> Bieżąca woda: <c:out value="${orlikInfo.getWater() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Prysznic: <c:out value="${orlikInfo.getShower() == true ? 'TAK': 'NIE'}"/></li>
 			<li><i class="glyphicon glyphicon-info-sign"></i> Obowiązujące obuwie: <c:out value="${orlikInfo.getShoes()}"/></li>
-			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: <c:if test="${animator}" ><c:out value="${animator}" /></c:if></li>
+			<li><i class="glyphicon glyphicon-user"></i> Animatorzy: <c:if test="${not empty animator}" ><c:out value="${animator.email}" /></c:if></li>
 		</ul>
 	</div>
 </div>

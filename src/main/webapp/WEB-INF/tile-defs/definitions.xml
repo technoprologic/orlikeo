@@ -29,6 +29,7 @@
         <put-list-attribute name="scripts">
             <add-attribute value="/WEB-INF/jsp/scripts/allPagesRequired.jsp" />
             <add-attribute  value="/WEB-INF/jsp/scripts/stompNotifications.jsp" />
+			<add-attribute  value="/WEB-INF/jsp/scripts/stompUserNotifications.jsp" />
         </put-list-attribute>
         <put-list-attribute name="extensibleStyles">
         </put-list-attribute>
@@ -166,6 +167,21 @@
 	<!-- PLANNER -->
 	<definition name="javaplanner"  template="/WEB-INF/jsp/planner/javaplanner.jsp" >
 	</definition>
+    <definition name="javaplanner2"  template="/WEB-INF/jsp/planner/javaplanner2.jsp" >
+        <put-attribute name="navbar" value="/WEB-INF/jsp/template/navbar.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/template/footer.jsp" />
+        <put-list-attribute name="styles">
+            <add-attribute value="/WEB-INF/jsp/styles/bootstrapCSS.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="scripts">
+            <add-attribute value="/WEB-INF/jsp/scripts/allPagesRequired.jsp" />
+            <add-attribute  value="/WEB-INF/jsp/scripts/stompNotifications.jsp" />
+        </put-list-attribute>
+        <put-list-attribute name="extensibleStyles">
+        </put-list-attribute>
+        <put-list-attribute name="extensibleScripts">
+        </put-list-attribute>
+    </definition>
 	<definition name="animatorPane" extends="defaultTemplate">
         <put-attribute name="title" value=" - Panel zatwierdzania"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/planner/animatorPane.jsp" />

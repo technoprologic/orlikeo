@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(PresenceChannelInterceptor.class);
+            .getLogger(AnimatorChannelInterceptor.class);
 
     @Autowired
     private SimpMessagingTemplate template;

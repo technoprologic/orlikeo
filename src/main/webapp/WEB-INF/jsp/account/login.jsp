@@ -3,7 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
@@ -19,7 +18,7 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
          <c:if test="${not empty error}">
-			<div class="error text-center" style="color:red">${error}</div>
+			<div class="error text-center" class="text-danger">${error}</div>
 		</c:if>
 		<c:if test="${not empty msg}">
 			<div class="msg text-center" style="color:green">${msg}</div>
@@ -28,7 +27,7 @@
                 <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
                     alt="">
                 <form name='loginForm'
-		  action="<c:url value='j_spring_security_check' />" method='POST'>           
+		  action="<c:url value='/j_spring_security_check' />" method='POST'>
                 <div class="form-group">
 					<div class="input-group" data-validate="email">
 						<input type="text" class="form-control" name="email" id="email"  placeholder="E-mail" required autofocus>

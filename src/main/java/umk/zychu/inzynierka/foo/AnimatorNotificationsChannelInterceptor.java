@@ -22,10 +22,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 @Service
-public class NotificationsChannelInterceptor extends ChannelInterceptorAdapter {
+public class AnimatorNotificationsChannelInterceptor extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(PresenceChannelInterceptor.class);
+            .getLogger(AnimatorChannelInterceptor.class);
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -37,7 +37,7 @@ public class NotificationsChannelInterceptor extends ChannelInterceptorAdapter {
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
     @SuppressWarnings("rawtypes")
-    public NotificationsChannelInterceptor () {
+    public AnimatorNotificationsChannelInterceptor() {
         // TODO Auto-generated constructor stub
         notificationsSessions = new Hashtable<String, ScheduledFuture>();
     }

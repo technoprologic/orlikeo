@@ -1,44 +1,61 @@
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:context="http://www.springframework.org/schema/context"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-4.0.xsd
+	http://www.springframework.org/schema/security/spring-security.xsd
 	http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd" >
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
 
-	<beans:import resource="appServlet/websocket-context.xml" />
-
-   <context:annotation-config />
-   <context:component-scan base-package="umk.zychu.inzynierka.controller" />
+	<beans:import resource="websocket-context.xml" />
+<!--   	<context:component-scan base-package="umk.zychu.inzynierka.controller" />-->
 
 
-	<http pattern="/resources/**" security="none" />
-	<http disable-url-rewriting="false">
-		<headers disabled="false"/>
-		<csrf disabled="false"/>
-		<access-denied-handler error-page="/denied" />
-		<intercept-url pattern="/login" access="permitAll"/>
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/planner**" access="hasRole('ROLE_ANIMATOR')" />
-		<intercept-url pattern="/pane**" access="hasRole('ROLE_ANIMATOR')" />
-		<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ANIMATOR')"/>
-		<form-login
-				login-page="/login"
+	<sec:http pattern="/resources/**" security="none" />
+	<sec:http disable-url-rewriting="false">
+		<sec:headers disabled="false"/>
+		<sec:csrf disabled="false"/>
+		<sec:access-denied-handler error-page="/denied" />
+		<sec:intercept-url pattern="/signing" access="permitAll"/>
+        <sec:intercept-url pattern="/register" access="permitAll"/>
+        <sec:intercept-url pattern="/register/**" access="permitAll"/>
+		<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<sec:intercept-url pattern="/planner**" access="hasRole('ROLE_ANIMATOR')" />
+		<sec:intercept-url pattern="/pane**" access="hasRole('ROLE_ANIMATOR')" />
+		<sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ANIMATOR')"/>
+		<sec:form-login
+				login-page="/signing"
 				default-target-url="/"
 				always-use-default-target="true"
-				authentication-failure-url="/login?error"
+				authentication-failure-url="/signing?error"
 				username-parameter="email"
 				password-parameter="password"
 				login-processing-url="/j_spring_security_check"
 				/>
-	 	<logout logout-url="/j_spring_security_logout" />
-	</http>
+	 	<sec:logout logout-url="/j_spring_security_logout" logout-success-url="/signing"/>
+	</sec:http>
+
+	<!-- Password Hashing Bean -->
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" >
+		<beans:constructor-arg name="strength" value="12" />
+	</beans:bean>
+	<beans:bean id="myUserDetailsService" class="umk.zychu.inzynierka.security.myUserDetailsServiceImp"/>
+
+	<sec:authentication-manager>
+     <sec:authentication-provider user-service-ref="myUserDetailsService" >
+         <sec:password-encoder ref="passwordEncoder" />
+     </sec:authentication-provider>
+     <sec:authentication-provider>
+		  <sec:user-service>
+			<sec:user name="mkyong@o2.pl" password="123456" authorities="ROLE_USER" />
+		  </sec:user-service>
+		</sec:authentication-provider>
+</sec:authentication-manager>
 
 
-<!--   <http pattern="/resources/**" security="none"/>
+	<!--   <http pattern="/resources/**" security="none"/>
   	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/login**" access="permitAll" />
 		<intercept-url pattern="/register/**"  access="permitAll" />
@@ -52,11 +69,11 @@
 		<intercept-url pattern="/planner" access="hasRole('ROLE_ANIMATOR')" />&ndash;&gt;
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
     	<intercept-url pattern="/error"  access="permitAll" />
-		<form-login 
-		    login-page="/login" 
+		<form-login
+		    login-page="/login"
 		    default-target-url="/"
 		    always-use-default-target="true"
-			authentication-failure-url="/login?error" 
+			authentication-failure-url="/login?error"
 			username-parameter="email"
 			password-parameter="password" />
 		<access-denied-handler error-page="/denied"/>
@@ -64,22 +81,4 @@
 		&lt;!&ndash; enable csrf protection disabled &ndash;&gt;
 		<csrf/>
 	</http>-->
-
-	<!-- Password Hashing Bean -->
-	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" >
-		<beans:constructor-arg name="strength" value="12" />
-	</beans:bean>
-	<beans:bean id="myUserDetailsService" class="umk.zychu.inzynierka.security.myUserDetailsServiceImp"/>
-
-	<authentication-manager>
-     <authentication-provider user-service-ref="myUserDetailsService" >
-         <password-encoder ref="passwordEncoder" />
-     </authentication-provider>
-     <authentication-provider>
-		  <user-service>
-			<user name="mkyong@o2.pl" password="123456" authorities="ROLE_USER" />
-		  </user-service>
-		</authentication-provider>
-</authentication-manager>
-
 </beans:beans>
