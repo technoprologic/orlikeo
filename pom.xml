@@ -20,7 +20,12 @@
 		 <repository>
     		<id>spring-milestones</id>
     		<url>http://repo.spring.io/libs-milestone/</url>
-  		</repository>	
+  		</repository>
+        <repository>
+            <id>in-project</id>
+            <name>In Project Repo</name>
+            <url>file://${project.basedir}/library</url>
+        </repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -262,11 +267,16 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>com.javaplanner</groupId>
 			<artifactId>javaplanner</artifactId>
 			<version>1.5</version>
-		</dependency>
+		</dependency>-->
+        <dependency>
+            <groupId>com.javaplanner</groupId>
+            <artifactId>javaplanner</artifactId>
+            <version>1.5</version>
+        </dependency>
 		<!-- Jackson JSON Mapper -->
         <dependency><!-- jackson -->
             <groupId>org.codehaus.jackson</groupId>
