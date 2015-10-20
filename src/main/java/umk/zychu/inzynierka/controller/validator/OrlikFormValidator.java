@@ -44,8 +44,12 @@ public class OrlikFormValidator implements Validator {
             errors.rejectValue("animatorEmail", USER_DOESNT_EXISTS);
             return;
         }
+        Orlik  requestedOrlik = null;
+        if(form.getId() != null) {
+            requestedOrlik = orlikService.getOrlikById(form.getId());
+        }
         Optional<Orlik> orlikOpt = orlikService.getAnimatorOrlik(user);
-        if (orlikOpt.isPresent()) {
+        if (orlikOpt.isPresent() && !orlikOpt.get().equals(requestedOrlik)) {
                 Orlik orlik = orlikOpt.get();
                 errors.rejectValue("animatorEmail", USER_IS_ALREADY_AN_ANIMATOR);
         }

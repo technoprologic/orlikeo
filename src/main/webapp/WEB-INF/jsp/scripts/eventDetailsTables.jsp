@@ -8,28 +8,28 @@
     $(document).ready( function () {
         $('#goingToComeTable').dataTable( {
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+                "url": "https://cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
             }
         } );
     } );
     $(document).ready( function () {
         $('#withoutDecisionTable').dataTable( {
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+                "url": "https://cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
             }
         } );
     } );
     $(document).ready( function () {
         $('#rejectedTable').dataTable( {
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+                "url": "https://cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
             }
         } );
     } );
     $(document).ready( function () {
         $('#canInviteTable').dataTable( {
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
+                "url": "https://cdn.datatables.net/plug-ins/1.10.9/i18n/Polish.json"
             }
         } );
     } );

@@ -40,11 +40,11 @@
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.web.socket">

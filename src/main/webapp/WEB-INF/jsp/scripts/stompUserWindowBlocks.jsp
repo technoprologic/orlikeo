@@ -170,5 +170,5 @@
         }
         stompBlocksClient.connect(headers, connectBlocksCallback, errorBlocksCallback);
     }
-    /*stompBlocksConnect();*/
+    stompBlocksConnect();
 </script>

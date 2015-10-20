@@ -21,7 +21,7 @@
    	<link  href="<c:url value="/resources/mytheme/css/style.css" />" rel="stylesheet">
 
 
-   	<script src="<c:url value="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" /> "></script>
+   	<script src="<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" /> "></script>
    	<script type="text/javascript" src="<c:url value="/resources/mytheme/js/register.js" />"></script>
   	<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />" ></script>
 	<script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap.js" />" ></script>

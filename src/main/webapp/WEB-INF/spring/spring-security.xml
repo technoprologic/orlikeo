@@ -18,13 +18,16 @@
 		<sec:headers disabled="false"/>
 		<sec:csrf disabled="false"/>
 		<sec:access-denied-handler error-page="/denied" />
-		<sec:intercept-url pattern="/signing" access="permitAll"/>
+		<sec:intercept-url pattern="/signing" access="permitAll" requires-channel="https"/>
         <sec:intercept-url pattern="/register" access="permitAll"/>
         <sec:intercept-url pattern="/register/**" access="permitAll"/>
 		<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		<sec:intercept-url pattern="/planner**" access="hasRole('ROLE_ANIMATOR')" />
 		<sec:intercept-url pattern="/pane**" access="hasRole('ROLE_ANIMATOR')" />
-		<sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ANIMATOR')"/>
+		<sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER', 'ROLE_ANIMATOR')" requires-channel="https"/>
+        <sec:port-mappings>
+            <sec:port-mapping http="8080" https="8443"/>
+        </sec:port-mappings>
 		<sec:form-login
 				login-page="/signing"
 				default-target-url="/"
