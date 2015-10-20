@@ -94,7 +94,7 @@
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:4.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.javaplanner:javaplanner:1.5" level="project" />
+    <orderEntry type="library" name="Maven: dhtmlx:javaplanner:1.5" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-websocket:4.1.6.RELEASE" level="project" />
