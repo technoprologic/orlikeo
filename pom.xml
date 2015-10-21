@@ -22,9 +22,9 @@
     		<url>https://repo.spring.io/libs-milestone/</url>
   		</repository>
         <repository>
-            <id>in-project</id>
-            <name>In Project Repo</name>
-            <url>file://${project.basedir}/library/</url>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
         </repository>
 	</repositories>
 	<pluginRepositories>
@@ -268,8 +268,8 @@
 			<version>${spring.version}</version>
 		</dependency>
         <dependency>
-            <groupId>dhtmlx</groupId>
-            <artifactId>javaplanner</artifactId>
+            <artifactId>com.example</artifactId>
+            <groupId>javaplanner</groupId>
             <version>1.5</version>
         </dependency>
 		<!-- Jackson JSON Mapper -->
@@ -388,6 +388,11 @@
 			<build>
 				<finalName>jbossews</finalName>
         <plugins>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>0.5.3</version>
+            </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
