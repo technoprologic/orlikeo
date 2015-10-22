@@ -7,11 +7,6 @@
 	<version>1.0</version>
 	<name>jbossews</name>
 	<repositories>
-        <repository>
-            <id>project.local</id>
-            <name>project</name>
-            <url>file:${project.basedir}/repo</url>
-        </repository>
 		<repository>
 			<id>eap</id>
 			<url>https://maven.repository.redhat.com/techpreview/all</url>
@@ -27,7 +22,12 @@
     		<url>https://repo.spring.io/libs-milestone/</url>
   		</repository>
 	</repositories>
-	<pluginRepositories>
+<!--	<pluginRepositories>
+        <pluginRepository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </pluginRepository>
 		<pluginRepository>
 			<id>eap</id>
 			<url>https://maven.repository.redhat.com/techpreview/all</url>
@@ -48,7 +48,7 @@
         <enabled>true</enabled>
       </snapshots>
     </pluginRepository>
-	</pluginRepositories>
+	</pluginRepositories>-->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java-version>1.8</java-version>
@@ -271,6 +271,8 @@
             <artifactId>javaplanner</artifactId>
             <groupId>com.example</groupId>
             <version>1.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/repo/com/example/javaplanner/1.5/javaplanner-1.5.jar</systemPath>
         </dependency>
 		<!-- Jackson JSON Mapper -->
         <dependency><!-- jackson -->

@@ -73,7 +73,6 @@
           <element id="library" level="project" name="Maven: javax.mail:mail:1.4.7" />
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.1.6.RELEASE" />
-          <element id="library" level="project" name="Maven: com.example:javaplanner:1.5" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.4.2" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.4.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-websocket:4.1.6.RELEASE" />
