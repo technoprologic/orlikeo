@@ -7,7 +7,7 @@
 	<version>1.0</version>
 	<name>jbossews</name>
 	<repositories>
-		<repository>
+<!--		<repository>
 			<id>eap</id>
 			<url>https://maven.repository.redhat.com/techpreview/all</url>
 			<releases>
@@ -16,7 +16,7 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>
+		</repository>-->
 		 <repository>
     		<id>spring-milestones</id>
     		<url>https://repo.spring.io/libs-milestone/</url>
