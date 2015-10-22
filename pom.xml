@@ -7,6 +7,11 @@
 	<version>1.0</version>
 	<name>jbossews</name>
 	<repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
 <!--		<repository>
 			<id>eap</id>
 			<url>https://maven.repository.redhat.com/techpreview/all</url>
@@ -268,11 +273,9 @@
 			<version>${spring.version}</version>
 		</dependency>
         <dependency>
-            <artifactId>javaplanner</artifactId>
             <groupId>com.example</groupId>
+            <artifactId>javaplanner</artifactId>
             <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/repo/com/example/javaplanner/1.5/javaplanner-1.5.jar</systemPath>
         </dependency>
 		<!-- Jackson JSON Mapper -->
         <dependency><!-- jackson -->
@@ -377,8 +380,8 @@
         </dependency>
     	</dependencies>
     </dependencyManagement>
-	<profiles>
-		<profile>
+<!--	<profiles>
+		<profile>-->
 			<!-- When built in OpenShift the 'openshift' profile will be used when 
 				invoking mvn. -->
 			<!-- Use this profile for any OpenShift specific customization your app 
@@ -386,7 +389,7 @@
 			<!-- By default that is to put the resulting archive into the 'webapps' 
 				folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-			<id>openshift</id>
+	<!--		<id>openshift</id>
 			<build>
 				<finalName>jbossews</finalName>
         <plugins>
@@ -411,21 +414,21 @@
 							<warName>ROOT</warName>
 						</configuration>
 					</plugin> 
-          <!-- To define the plugin version in your parent POM -->
+          &lt;!&ndash; To define the plugin version in your parent POM &ndash;&gt;
           <plugin>
             <groupId>org.apache.tomcat.maven</groupId>
             <artifactId>tomcat7-maven-plugin</artifactId>
             <version>2.0</version>
             <configuration>
-              <!-- Tomcat 7 has a different manager path - text - than other versions -->
+              &lt;!&ndash; Tomcat 7 has a different manager path - text - than other versions &ndash;&gt;
               <url>http://localhost:8080/manager/text</url>
               <server>localhost</server>
-              <!-- Refer to the server settings in your ~/.m2/settings.xml -->
+              &lt;!&ndash; Refer to the server settings in your ~/.m2/settings.xml &ndash;&gt;
               <path>/${project.build.finalName}</path>
             </configuration>
           </plugin>
 				</plugins>
 			</build>
 		</profile>
-	</profiles>
+	</profiles>-->
 </project>
