@@ -8,7 +8,8 @@
 
 <script type="text/javascript">
     // Create stomp client over sockJS protocol
-    var userNotificationsSocket = new SockJS("/jbossews/hello");
+    var wsUrl = ':8443/hello';
+    var userNotificationsSocket = new SockJS(wsUrl);
     var stompClientUserNotifications;
     var obj = 0;
 

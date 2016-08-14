@@ -21,20 +21,20 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDaoRepository userDAO;
-	@Autowired 
-	FriendshipDaoRepository friendshipDAO;
 	@Autowired
-	UserEventService userEventService;
+    FriendshipDaoRepository friendshipDAO;
+	@Autowired
+    UserEventService userEventService;
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
 	@Autowired
-	EventService eventService;
+    EventService eventService;
 	@Autowired
-	UserNotificationsService userNotificationsService;
+    UserNotificationsService userNotificationsService;
 	@Autowired
-	EventToApproveService eventToApproveService;
+    EventToApproveService eventToApproveService;
 	@Autowired
-	FriendshipService friendshipService;
+    FriendshipService friendshipService;
 
 	@Override
 	public User getUser(String email) {

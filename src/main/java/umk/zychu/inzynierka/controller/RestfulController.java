@@ -1,20 +1,16 @@
 package umk.zychu.inzynierka.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import umk.zychu.inzynierka.controller.DTObeans.JsonTestObject;
 import umk.zychu.inzynierka.controller.util.AllServices;
 import umk.zychu.inzynierka.controller.util.EventsManager;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Controller
@@ -22,16 +18,18 @@ import umk.zychu.inzynierka.controller.util.EventsManager;
 public class RestfulController {
 
 	@Autowired
-	AllServices services;
+    AllServices services;
 
 	@RequestMapping(value = "/json", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JsonTestObject postJSON(
+	public @ResponseBody
+    JsonTestObject postJSON(
 			@RequestBody final JsonTestObject object) {
 		return object;
 	}
 
 	@RequestMapping(value = "/json/{name}", method = RequestMethod.GET)
-	public @ResponseBody JsonTestObject getJSON(@PathVariable String name) {
+	public @ResponseBody
+    JsonTestObject getJSON(@PathVariable String name) {
 		JsonTestObject object = new JsonTestObject();
 		object.setName(name);
 		object.setSurname("nazwisko");
@@ -48,7 +46,8 @@ public class RestfulController {
 	}
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-	public @ResponseBody JsonTestObject greetig2(
+	public @ResponseBody
+    JsonTestObject greetig2(
 			@RequestBody MultiValueMap<String, String> object) {
 		JsonTestObject json = new JsonTestObject(object.getFirst("name"),
 				object.getFirst("surname"));

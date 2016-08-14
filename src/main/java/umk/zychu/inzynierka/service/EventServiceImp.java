@@ -23,25 +23,25 @@ public class EventServiceImp implements EventService {
 	private static final org.slf4j.Logger logger = LoggerFactory
 			.getLogger(EventServiceImp.class);
 	@Autowired
-	EventDaoRepository eventDAO;
+    EventDaoRepository eventDAO;
 	@Autowired
-	UserEventService userEventService;
+    UserEventService userEventService;
 	@Autowired
-	GraphicService graphicService;
+    GraphicService graphicService;
 	@Autowired
-	UserService userService;
+    UserService userService;
 	@Autowired
-	UserEventDecisionService userEventDecisionService;
+    UserEventDecisionService userEventDecisionService;
 	@Autowired
-	UserEventRoleService userEventRoleService;
+    UserEventRoleService userEventRoleService;
 	@Autowired
-	EventStateService eventStateService;
+    EventStateService eventStateService;
 	@Autowired
-	FriendshipService friendshipService;
+    FriendshipService friendshipService;
 	@Autowired
-	EventToApproveService eventToApproveService;
+    EventToApproveService eventToApproveService;
 	@Autowired
-	UserNotificationsService userNotificationsService;
+    UserNotificationsService userNotificationsService;
 	
 	//next 48hrs
 	private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
@@ -376,7 +376,7 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-	public UserGameDetails getGameDetails(Event event) {	
+	public UserGameDetails getGameDetails(Event event) {
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		UserEvent userEvent = user.getUserEvents().stream()
 			.filter(ue ->ue.getEvent().equals(event))
@@ -625,7 +625,7 @@ public class EventServiceImp implements EventService {
 										decision = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
 										permission = true;
 									}
-									UserEvent ue = new UserEvent (u, role, decision, permission, event, user);
+									UserEvent ue = new UserEvent(u, role, decision, permission, event, user);
 									userEventService.save(ue);
 								});
 		// are no longer event members
@@ -643,6 +643,6 @@ public class EventServiceImp implements EventService {
 								save(event);
 							}
 						});
-		Event ev = eventDAO.findOne(event.getId());	
+		Event ev = eventDAO.findOne(event.getId());
 	}
 }

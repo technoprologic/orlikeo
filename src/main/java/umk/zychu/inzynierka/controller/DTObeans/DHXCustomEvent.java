@@ -1,8 +1,7 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import umk.zychu.inzynierka.model.Graphic;
-
 import com.dhtmlx.planner.DHXEvent;
+import umk.zychu.inzynierka.model.Graphic;
 
 public class DHXCustomEvent extends DHXEvent{
 

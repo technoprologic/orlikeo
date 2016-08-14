@@ -125,7 +125,8 @@
 
 <script type="text/javascript">
     //Create stomp client over sockJS protocol
-    var socketBlocks = new SockJS("/jbossews/hello");
+    var wsUrl = ':8443/hello';
+    var socketBlocks = new SockJS(wsUrl);
     var stompBlocksClient;
 
     // Render user dedicated data from server into HTML, registered as callback
@@ -152,11 +153,11 @@
     var errorBlocksCallback = function(errorX) {
         console.log('STOMP: ' + errorX);
         setTimeout(stompBlocksConnect, 1000);
-        console.log('STOMP: Reconecting /show in 1 second');
+        console.log('STOMP: Reconecting /user/blocks/get in 1 second');
     };
 
     function stompBlocksConnect() {
-        console.log('STOMP: Attempting connection to /show');
+        console.log('STOMP: Attempting connection to /user/blocks/get');
         // recreate the stompClient to use a new WebSocket
         stompBlocksClient= Stomp.over(socketBlocks);
         // Connect to server via websocket

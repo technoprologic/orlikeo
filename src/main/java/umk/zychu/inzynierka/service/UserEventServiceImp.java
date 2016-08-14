@@ -29,7 +29,7 @@ public class UserEventServiceImp implements UserEventService {
 	UserNotificationsService userNotificationsService;
 	
 	@Autowired
-	EventToApproveService eventToApproveService;
+    EventToApproveService eventToApproveService;
 	
 	private final int changeStatusBarrier = 3;
 

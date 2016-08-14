@@ -36,24 +36,24 @@ public class Orlik extends BaseEntity {
 	@OneToMany(mappedBy = "orlik", orphanRemoval = true)
 	private List<Graphic> graphicCollection;
 	
-/*	@ManyToMany
+	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "orlik_manager", joinColumns = { @JoinColumn(name = "orlik_id", referencedColumnName = "id", nullable = false) }, 
 	inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) })
-	List<User> orlikManagers;*/
+	List<User> orlikManagers;
 
-	/*	public List<User> getOrlikManagers() {
+	public List<User> getOrlikManagers() {
 		return orlikManagers;
 	}
 
 	public void setOrlikManagers(List<User> orlikManagers) {
 		this.orlikManagers = orlikManagers;
-	}*/
+	}
 
 
 	@OneToOne
 	@JoinColumn(name = "animator_id", nullable = true, unique = true)
-	User animator;
+    User animator;
 
 	public Orlik(String address, String city, Boolean lights, Boolean water, Boolean shower, String shoes, User animator, List<Graphic> graphicCollection) {
 		this.address = address;

@@ -12,7 +12,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
-import umk.zychu.inzynierka.service.*;
+import umk.zychu.inzynierka.service.OrlikService;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

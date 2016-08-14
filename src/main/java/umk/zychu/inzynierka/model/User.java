@@ -70,8 +70,8 @@ public class User extends BaseEntity
 	@OneToMany(mappedBy = "actionUser", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Friendship> actionUsersList;
 	
-	/*@ManyToMany(mappedBy = "orlikManagers")
-    private List<Orlik> isOrliksManager;*/
+	@ManyToMany(mappedBy = "orlikManagers")
+    private List<Orlik> isOrliksManager;
 
 
 

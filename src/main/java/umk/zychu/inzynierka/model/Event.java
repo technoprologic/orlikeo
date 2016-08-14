@@ -24,7 +24,7 @@ public class Event extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "graphic_id", referencedColumnName = "id", nullable = true)
-	Graphic graphic;
+    Graphic graphic;
 	
 	@ManyToOne
 	@JoinColumn(name = "state_id", referencedColumnName = "id")
@@ -32,7 +32,7 @@ public class Event extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="user_organizer", referencedColumnName="id")
-	User userOrganizer;
+    User userOrganizer;
 
 	public Integer getPlayersLimit() {
 		return playersLimit;

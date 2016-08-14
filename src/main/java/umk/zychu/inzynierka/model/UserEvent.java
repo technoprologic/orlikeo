@@ -13,7 +13,7 @@ public class UserEvent extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public UserEvent (User userTarget, UserEventRole eventRole, 
+	public UserEvent (User userTarget, UserEventRole eventRole,
 			UserDecision userDecision, Boolean permission, Event event, User userInviter){
 		this.user = userTarget;
 		this.role = eventRole;
@@ -28,24 +28,24 @@ public class UserEvent extends BaseEntity implements Serializable {
 	
 	@ManyToOne()
 	@JoinColumn(name = "inviter_id", referencedColumnName = "id")
-	User inviter;
+    User inviter;
 	
 	
 	@ManyToOne
 	@JoinColumn(name = "user_role", referencedColumnName = "id")
-	UserEventRole role;
+    UserEventRole role;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_decision", referencedColumnName = "id")
-	UserDecision decision;
+    UserDecision decision;
 	
 	@ManyToOne
 	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = true, updatable = true)
-	Event event;
+    Event event;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	User user;
+    User user;
 	
 	public User getInviter() {
 		return inviter;

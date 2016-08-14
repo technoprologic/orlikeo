@@ -15,7 +15,8 @@ import umk.zychu.inzynierka.model.EventState;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.*;
+import umk.zychu.inzynierka.service.EventStateService;
+import umk.zychu.inzynierka.service.OrlikService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

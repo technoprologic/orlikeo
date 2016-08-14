@@ -1,12 +1,12 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.List;
-
 import umk.zychu.inzynierka.model.Friendship;
 import umk.zychu.inzynierka.model.User;
 
+import java.util.List;
+
 public interface FriendshipService {
-	Boolean checkIfTheyHadContacted(User userRequest1, User userRequest2);	
+	Boolean checkIfTheyHadContacted(User userRequest1, User userRequest2);
 	void inviteUserToFriends(User user, User invitedUser);
 	void acceptUserInvitation(String email);
 	Friendship getUsersFriendship(User user, User userRequest);

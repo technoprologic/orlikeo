@@ -235,7 +235,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
         user.getUserNotifications().stream()
                 .filter(un -> un.getLink().contains(friend.getEmail()))
-                .forEach( un -> un.setChecked(true));
+                .forEach( un -> {
+                    un.setChecked(true);
+                    userNotificationsDAO.save(un);
+                });
     }
 
     @Override

@@ -5,8 +5,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
+<%--<h1>Spring MVC internationalization example</h1>
 
+Language : <a href="?language=en">English</a>|<a href="?language=zh_CN">Chinese</a>
 
+<h2>
+    welcome.springmvc : <spring:message code="welcome.springmvc" text="default text" />
+</h2>
+
+Current Locale : ${pageContext.response.locale}--%>
 <!-- <div class="row">
 	<div class="col-lg-4">
 		<div class="panel panel-default">

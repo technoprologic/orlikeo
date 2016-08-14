@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
 import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
 
 @Component

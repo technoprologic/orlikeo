@@ -4,5 +4,5 @@ import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.model.UserEvent;
 
 @Transactional
-public interface UserEventDaoRepository extends BaseRepository<UserEvent, Integer>{	
+public interface UserEventDaoRepository extends BaseRepository<UserEvent, Integer> {
 }

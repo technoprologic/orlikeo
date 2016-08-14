@@ -18,7 +18,7 @@ public class EventsManager extends DHXEventsManager {
 
 	private AllServices services;
 	private Boolean allowReservation = false;	
-	Orlik  orlik;
+	Orlik orlik;
 
 	public EventsManager(HttpServletRequest request, AllServices allServices) {
 		super(request);

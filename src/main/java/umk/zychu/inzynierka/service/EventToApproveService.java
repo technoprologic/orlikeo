@@ -1,10 +1,10 @@
 package umk.zychu.inzynierka.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.EventToApprove;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface EventToApproveService {
 	EventToApprove save(EventToApprove eventToApprove);

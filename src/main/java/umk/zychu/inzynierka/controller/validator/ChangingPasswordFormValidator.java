@@ -12,7 +12,7 @@ import umk.zychu.inzynierka.service.UserService;
 public class ChangingPasswordFormValidator implements Validator{
 
 	@Autowired
-	UserService userService;
+    UserService userService;
 	
 	private static final String EMPTY_OR_WHITESPACE_OLD_PASSWORD = "web.register.validation.password.required";
 	private static final String EMPTY_OR_WHITESPACE_NEW_PASSWORD = "web.register.validation.password.required";

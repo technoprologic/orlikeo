@@ -1,18 +1,12 @@
 package umk.zychu.inzynierka.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name="events_to_approve")
-public class EventToApprove extends BaseEntity{
+public class EventToApprove extends BaseEntity {
 	
 	@OneToOne
 	@JoinColumn(name="event_id", unique = true)

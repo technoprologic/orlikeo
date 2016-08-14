@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Service
-public class GraphicServiceImp implements GraphicService{
+public class GraphicServiceImp implements GraphicService {
 
 	@Autowired
 	private GraphicDaoRepository graphicDAO;

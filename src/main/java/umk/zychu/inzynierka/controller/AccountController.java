@@ -10,7 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.validator.ChangingPasswordFormValidator;
@@ -94,7 +97,7 @@ public class AccountController {
 	public String userPassword(Locale locale, Map<String, Object> model) {
 		ChangePasswordForm form = new ChangePasswordForm();
 		model.put("changePasswordForm", form);
-		return "password";
+        return "password";
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)

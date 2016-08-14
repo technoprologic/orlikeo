@@ -11,8 +11,8 @@ import umk.zychu.inzynierka.service.UserService;
 @Component
 public class EditAccountFormValidator implements Validator{
 
-	@Autowired 
-	UserService userService;
+	@Autowired
+    UserService userService;
 	
 	private static final String EMPTY_OR_WHITESPACES_AGE_WEIGHT_OR_HEIGHT = "web.account.edit.empty";
 	private static final String NOT_AN_INTEGER_VALUE = "web.account.validation.birthdate.integerOnly";

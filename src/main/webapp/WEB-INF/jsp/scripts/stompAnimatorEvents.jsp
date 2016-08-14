@@ -45,7 +45,8 @@
 
 <script type="text/javascript">
     //Create stomp client over sockJS protocol
-    var socket2 = new SockJS("/jbossews/hello");
+    var wsUrl = ':8443/hello';
+    var socket2 = new SockJS(wsUrl);
     var stompClient2;
 
     // Render user dedicated data from server into HTML, registered as callback
@@ -141,6 +142,7 @@
     function stompConnect() {
         console.log('STOMP: Attempting connection');
         // recreate the stompClient to use a new WebSocket
+
         stompClient2 = Stomp.over(socket2);
         // Connect to server via websocket
         var token = '${ _csrf.token}';

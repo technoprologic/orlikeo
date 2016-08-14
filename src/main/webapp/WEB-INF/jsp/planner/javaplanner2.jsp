@@ -40,6 +40,7 @@
             type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
         var tables = document.getElementsByTagName("meta");
+        console.log("ORLIK_ID: " + orlik + "'");
         var orlik = ${ orlik };
     </script>
 </head>

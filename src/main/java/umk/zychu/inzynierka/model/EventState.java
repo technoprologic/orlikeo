@@ -1,17 +1,16 @@
 package umk.zychu.inzynierka.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name="event_state")
-public class EventState extends BaseEntity{
+public class EventState extends BaseEntity {
 	
 	@Column(name="state")
 	String state;

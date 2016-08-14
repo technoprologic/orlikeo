@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.model.EventState;
 import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.model.UserEventRole;
 import umk.zychu.inzynierka.service.*;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.util.Date;
 
 @Component
@@ -33,19 +33,19 @@ public class TaskExecutorExample {
 
 
 	@Autowired
-	GraphicService graphicService;
+    GraphicService graphicService;
 	@Autowired
-	EventStateService eventStateService;
+    EventStateService eventStateService;
 	@Autowired
-	EventService eventService;
+    EventService eventService;
 	@Autowired
-	UserEventRoleService userEventRoleService;
+    UserEventRoleService userEventRoleService;
 	@Autowired
-	UserEventDecisionService userEventDecisionService;
+    UserEventDecisionService userEventDecisionService;
 	@Autowired
-	UserEventService userEventService;
+    UserEventService userEventService;
 	@Autowired
-	EventToApproveService eventToApproveService;
+    EventToApproveService eventToApproveService;
 
 
 	public TaskExecutorExample() {
@@ -57,6 +57,8 @@ public class TaskExecutorExample {
 		super();
 		this.taskExecutor = taskExecutor;
 	}
+
+
 
 	@PostConstruct
 	private void post(){
@@ -117,7 +119,7 @@ public class TaskExecutorExample {
 	}
 	@Transactional
 	private void removeAllInBuildState(){
-        System.out.println("WORK TO DO");
+        /*System.out.println("WORK TO DO");*/
 		//reduce invitations
 		graphicService.findAll().stream()
 				.filter(g -> g.getStartTime().getTime() - fromNow < halfAnHour)

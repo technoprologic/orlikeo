@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 public class FriendshipServiceImp implements FriendshipService{
 
 	@Autowired
-	FriendshipDaoRepository friendshipDAO;
+    FriendshipDaoRepository friendshipDAO;
 	@Autowired
-	UserService userService;
+    UserService userService;
 	@Autowired
 	UserEventService userEventService;
 	@Autowired
@@ -214,7 +214,7 @@ public class FriendshipServiceImp implements FriendshipService{
 	}
 
 	@Override
-	public List<User> getBlockedUsers() {		
+	public List<User> getBlockedUsers() {
 		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		List<User> blockedUsers = user.getFriendships().stream()
 									.filter(f -> f.getActionUser().equals(user) && f.getState() == Friendship.BLOCKED)

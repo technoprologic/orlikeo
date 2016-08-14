@@ -23,15 +23,15 @@ import java.util.List;
 public class FriendsController {
 
 	@Autowired
-	FriendshipService friendshipService;
+    FriendshipService friendshipService;
 	@Autowired
-	UserService userService;
+    UserService userService;
 	@Autowired
-	UserNotificationsService userNotificationsService;
+    UserNotificationsService userNotificationsService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getFriends(ModelMap model) {
-		List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED); 
+		List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED);
 		model.addAttribute("friends", friends);	
 		List<User> friendsPendedRequests = friendshipService.getPendedFriendshipRequests();
 		model.addAttribute("friendsPendedRequests", friendsPendedRequests);

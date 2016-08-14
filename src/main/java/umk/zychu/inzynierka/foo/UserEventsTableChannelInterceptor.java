@@ -15,7 +15,8 @@ import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.UserEventRole;
-import umk.zychu.inzynierka.service.*;
+import umk.zychu.inzynierka.service.EventService;
+import umk.zychu.inzynierka.service.UserEventRoleService;
 
 import java.util.HashMap;
 import java.util.Hashtable;

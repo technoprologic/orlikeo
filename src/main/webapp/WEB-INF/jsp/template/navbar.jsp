@@ -58,7 +58,7 @@
                 </li>
                 </sec:authorize>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <sec:authentication property="principal.username"/> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <%--<sec:authentication property="principal.username"/>--%> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="${profileUrl}" ><i class="glyphicon glyphicon-cog"></i> Profil</a>
@@ -153,7 +153,9 @@
 
 <script type="text/javascript">
     // Create stomp client over sockJS protocol
-    var userNotificationsSocket = new SockJS("/jbossews/hello");
+    var wsUrl = ':8443/hello';
+    console.log(wsUrl);
+    var userNotificationsSocket = new SockJS(wsUrl);
     var stompClientUserNotifications;
     window.basePath = '${pageContext.request.contextPath}';
 

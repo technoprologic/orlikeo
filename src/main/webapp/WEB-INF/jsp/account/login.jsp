@@ -24,7 +24,7 @@
 			<div class="msg text-center" style="color:green">${msg}</div>
 		</c:if>
             <div class="account-wall" style="padding:10px">
-                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                <img class="profile-img" src="http://www.line-stickers.com/wp-content/uploads/2015/04/sticker4153.main_-120x120.png"
                     alt="">
                 <form name='loginForm'
 		  action="<c:url value='/j_spring_security_check' />" method='POST'>

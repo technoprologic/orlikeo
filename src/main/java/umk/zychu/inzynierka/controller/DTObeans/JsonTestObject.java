@@ -1,8 +1,8 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import java.io.Serializable;
-
 import org.codehaus.jackson.annotate.JsonAutoDetect;
+
+import java.io.Serializable;
 
 
 @SuppressWarnings("serial")

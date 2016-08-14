@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.service.UserService;
 
@@ -13,7 +12,7 @@ import umk.zychu.inzynierka.service.UserService;
 public class RegisterUserBeanValidator implements Validator {
 	
 	@Autowired
-	UserService userService;
+    UserService userService;
 
 	private static final String EMPTY_OR_WHITESPACE_EMAIL = "web.register.validation.email.required";
 	private static final String EMAIL_IN_USE = "web.register.validation.email.in_use";

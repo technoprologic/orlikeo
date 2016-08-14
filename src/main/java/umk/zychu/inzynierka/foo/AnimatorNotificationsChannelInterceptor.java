@@ -13,7 +13,8 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 import umk.zychu.inzynierka.model.EventToApprove;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.*;
+import umk.zychu.inzynierka.service.EventToApproveService;
+import umk.zychu.inzynierka.service.UserService;
 
 import java.util.Hashtable;
 import java.util.List;

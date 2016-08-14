@@ -26,12 +26,12 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title"> oko<c:if test="${ not empty user.name }" >${user.name}</c:if> <c:if test="${ not empty user.surname }" >${user.surname} </c:if></h3>
+              <h3 class="panel-title"> <c:if test="${ not empty user.name }" >${user.name}</c:if> <c:if test="${ not empty user.surname }" >${user.surname} </c:if></h3>
             </div>
             <div class="panel-body">
               <div class="row">
                 <div class="col-md-3 col-lg-3 " align="center"> 
-                <img alt="User Pic" src="http://afcchiropracticphoenix.com/wp-content/plugins/google-places-reviews-pro/assets/images/mystery-man.png" class="img-circle"></div>
+                <img alt="User Pic" src="http://www.line-stickers.com/wp-content/uploads/2015/04/sticker4153.main_-120x120.png" class="img-circle"></div>
                 <div class=" col-md-9 col-lg-9 "> 
                   <table class="table table-user-information">
                     <tbody>

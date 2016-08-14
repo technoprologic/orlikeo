@@ -384,7 +384,9 @@
 
 <script type="text/javascript">
     //Create stomp client over sockJS protocol
-    var socketShow = new SockJS("/jbossews/hello");
+    var wsUrl = ':8443/hello';
+    console.log("WEB SOCKET IS : " + wsUrl);
+    var socketShow = new SockJS(wsUrl);
     var stompShowClient;
 
     // Render user dedicated data from server into HTML, registered as callback
@@ -396,7 +398,7 @@
         var blocks = {};
         var eventsDetailsTableRows = {};
         $.each(map, function(key, value) {
-            console.log(key+ ':**********:' + value);
+            console.log(key + ':**********:' + value);
             if(key == "blocks")
                 blocks = value;
             if(key == "detailsTable")

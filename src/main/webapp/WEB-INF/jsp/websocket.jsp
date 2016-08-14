@@ -15,7 +15,7 @@
 
     <script type="text/javascript">
         // Create stomp client over sockJS protocol
-        var socket = new SockJS("/jbossews/hello");
+        var socket = new SockJS("/hello");
         var stompClient;
         var obj = 0;
 

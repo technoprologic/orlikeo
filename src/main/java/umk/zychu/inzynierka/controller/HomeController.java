@@ -21,6 +21,7 @@ import umk.zychu.inzynierka.service.UserService;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping(value = { "/", "", "/home" })
@@ -29,19 +30,19 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
 		
 	@Autowired
-	EventService eventService;
-
-
+    EventService eventService;
 
 	@Autowired
-	UserEventService objectService;
+    UserEventService userEventService;
+
 	@Autowired
-	UserService userService;
+    UserService userService;
+
 	@Autowired
-	EventToApproveService eventToApproveService;
+    EventToApproveService eventToApproveService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String home(Principal principal, ModelMap model, RedirectAttributes redirectAttr) {
+	public String home(Principal principal, ModelMap model, RedirectAttributes redirectAttr, Locale locale) {
 		User user = userService.getUser(principal.getName());
 		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		if(authorities.stream()
@@ -53,6 +54,7 @@ public class HomeController {
 		model.addAttribute("eventWindowsList", eventWindowBlockList );
 		model.addAttribute("page", "all");
 		//debug(eventWindowBlockList);
+        logger.debug("LOCALE IS: " + locale.toString());
 		return "home";
 	}
 		
