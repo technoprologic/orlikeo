@@ -4,4 +4,7 @@ target
 !.settings/.jsdtscope .idea/
 .project
 .classpath
-.idea/
+.idea/*
+jbossews.iml
+.openshift/*
+
