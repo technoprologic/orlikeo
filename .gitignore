@@ -1,6 +1,13 @@
 /target/
 target
 .settings/*
-!.settings/.jsdtscope .idea/
+.jsdtscope
+.idea/*
 .project
 .classpath
+jbossews.iml
+.tern-project/*
+.springBeans
+.openshift/*
+.idea/workspace.xml
+.idea/

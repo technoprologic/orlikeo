@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="jbossews:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="jbossews-1.0.war">
-      <element id="artifact" artifact-name="jbossews:war exploded" />
-    </root>
-  </artifact>
-</component>

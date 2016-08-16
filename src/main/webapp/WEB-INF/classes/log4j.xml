@@ -18,25 +18,25 @@
 
 
 	<logger name="org.hibernate.type.descriptor" additivity="true">
-		<level value="error"/>
+		<level value="all"/>
 		<appender-ref ref="console"/>
 	</logger>
 
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.social">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.beans">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.context">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.web">
@@ -48,19 +48,19 @@
 	</logger>
 
 	<logger name="org.springframework.web.socket">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.hibernate">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="org.springframework.data">
-		<level value="error"/>
+		<level value="all"/>
 	</logger>
 
 	<logger name="umk.zychu.inzynierka" additivity="false">
-		<level value="error"/>
+		<level value="all"/>
 		<appender-ref ref="console"/>
 		<!--<appender-ref ref="file"/>-->
 	</logger>
