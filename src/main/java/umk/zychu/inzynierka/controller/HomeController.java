@@ -44,11 +44,11 @@ public class HomeController {
 	public String home(Principal principal, ModelMap model, RedirectAttributes redirectAttr) {
 		User user = userService.getUser(principal.getName());
 		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		if(authorities.stream()
-				.filter(a -> a.getAuthority().contains("ROLE_ANIMATOR"))
-				.count() > 0) {
+
+		if(authorities.stream().filter(a -> a.getAuthority().contains("ROLE_ANIMATOR")).count() > 0) {
 			return "redirect:/pane";
 		}
+
 		List<EventWindowBlock> eventWindowBlockList = eventService.getEventWindowBlocks(null);
 		model.addAttribute("eventWindowsList", eventWindowBlockList );
 		model.addAttribute("page", "all");
