@@ -31,12 +31,12 @@ public class HomeController {
 	@Autowired
 	EventService eventService;
 
-
-
 	@Autowired
 	UserEventService objectService;
+
 	@Autowired
 	UserService userService;
+
 	@Autowired
 	EventToApproveService eventToApproveService;
 

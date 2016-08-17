@@ -24,6 +24,8 @@ public class FriendshipServiceImp implements FriendshipService{
 	@Autowired
 	UserEventService userEventService;
 	@Autowired
+	OrlikService orlikService;
+	@Autowired
 	UserNotificationsService userNotificationsService;
 
 	@Override
@@ -32,13 +34,13 @@ public class FriendshipServiceImp implements FriendshipService{
 		List<User> friends = new LinkedList<User>();
 		user.getFriendships().stream()
 			.filter(f -> f.getState().equals(state))
-			.forEach(f -> { 
+			.forEach(f -> {
 					if(f.getFriendAccepter().equals(user))
 						friends.add(f.getFriendRequester());
 					else
 						friends.add(f.getFriendAccepter());	
 					});
-		return friends;
+		return friends.stream().filter(u -> true != orlikService.isOrlikManager(u)).collect(Collectors.toList());
 	}
 	
 	@Override
