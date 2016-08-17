@@ -5,6 +5,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import umk.zychu.inzynierka.model.EventState;
+import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.model.UserEventRole;
 import umk.zychu.inzynierka.service.*;
@@ -12,9 +13,11 @@ import umk.zychu.inzynierka.service.*;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
-public class TaskExecutorExample {
+public class GraphicsTaskExecutor {
 
 	private TaskExecutor taskExecutor;
 	private Date now = null;
@@ -48,12 +51,12 @@ public class TaskExecutorExample {
 	EventToApproveService eventToApproveService;
 
 
-	public TaskExecutorExample() {
+	public GraphicsTaskExecutor() {
     	super();
 
     }
 
-	TaskExecutorExample(TaskExecutor taskExecutor){
+	GraphicsTaskExecutor(TaskExecutor taskExecutor){
 		super();
 		this.taskExecutor = taskExecutor;
 	}
@@ -81,25 +84,41 @@ public class TaskExecutorExample {
 				removeAllThreatenedAndToApprove();
 				setGraphicAvailableForAllIfNotReserved();
 				removeAllEventsOutOfTerm();
-				clearGraphics();
+				clear45minutesPastGraphics();
 			}
 		});
 	}
+
+	/**
+	 *  Renove all from graphics where it's 45minutes past.
+	 */
 	@Transactional
-	private void clearGraphics() {
+	private void clear45minutesPastGraphics() {
+		//clear all
 		graphicService.findAll().stream()
 				.filter(g -> fromNow - g.getEndTime().getTime() > halfAnHour + quarterOfAnHour)
 				.forEach(g -> graphicService.delete(g));
 	}
 
+	/**
+	 * Sets graphics to unavailable for reserve
+	 * if it's less than 15 minutes to event.
+	 * Takes all UserEvents
+	 */
 	@Transactional
 	private void setGraphicAvailableForAllIfNotReserved() {
-		if(graphicService.findAll().stream()
+		// All past graphics
+		List<Graphic> pastGraphics = graphicService.findAll().stream()
 				.filter(g -> g.getAvailable() && g.getStartTime().getTime() - fromNow < quarterOfAnHour)
+				.collect(Collectors.toList());
+
+		Long count = pastGraphics.stream()
 				.flatMap(g -> g.getEvents().stream())
-				.filter(e -> e.getState().equals(approvedState)).count() == 0){
-			graphicService.findAll().stream()
-					.filter(g -> g.getAvailable() && g.getStartTime().getTime() - fromNow < quarterOfAnHour)
+				.filter(e -> e.getState().equals(approvedState)).count();
+
+		// If there is now APPROVED event set unavailable for reservation.
+		if (count == 0) {
+			pastGraphics.stream()
 					.forEach(g -> {
 						g.setAvailable(false);
 						g.setTitle("Dostępny dla wszystkich (brak rezerwacji)");
@@ -108,6 +127,10 @@ public class TaskExecutorExample {
 		}
 
 	}
+
+	/**
+	 * At the end remove all events from graphics which are past.
+	 */
 	@Transactional
 	private void removeAllEventsOutOfTerm() {
 		graphicService.findAll().stream()
@@ -115,13 +138,20 @@ public class TaskExecutorExample {
 				.flatMap(g -> g.getEvents().stream())
 				.forEach(e -> eventService.delete(e));
 	}
+
+	/**
+	 *	1. Take all graphics (IN_BUILD) that's left 30 minutes to event.
+	 *  2. Set invited people decisions to INVITED (basic).
+	 *  3. Set events states to IN_BASKET, remove their graphics.
+	 */
 	@Transactional
 	private void removeAllInBuildState(){
-        System.out.println("WORK TO DO");
-		//reduce invitations
-		graphicService.findAll().stream()
-				.filter(g -> g.getStartTime().getTime() - fromNow < halfAnHour)
-				.flatMap(g -> g.getEvents().stream())
+		List<Graphic> pastGraphics = graphicService.findAll().stream()
+				.filter(g -> g.getStartTime().getTime() - fromNow < halfAnHour).collect(Collectors.toList());
+
+		// Take all who was invited and set their decisions to (basic) invited.
+		pastGraphics.stream()
+		.flatMap(g -> g.getEvents().stream())
 				.filter(e -> e.getState().equals(inBuild))
 				.flatMap(e -> e.getUsersEvent().stream())
 				.filter(ue -> ue.getRole().equals(guestRole)
@@ -130,9 +160,9 @@ public class TaskExecutorExample {
 					ue.setDecision(invited);
 					userEventService.save(ue);
 				});
-		//change events states
-		graphicService.findAll().stream()
-				.filter(g -> g.getStartTime().getTime() - fromNow < halfAnHour)
+
+		//change events in build states to basket
+		pastGraphics.stream()
 				.flatMap(g -> g.getEvents().stream())
 				.filter(e -> e.getState().equals(inBuild))
 				.forEach(e -> {
@@ -140,12 +170,20 @@ public class TaskExecutorExample {
 					e.setGraphic(null);
 					eventService.save(e);
 				});
-		//disable reservations
-		graphicService.findAll().stream()
-				.filter(g -> g.getStartTime().getTime() - fromNow < halfAnHour)
+
+		// Disable reservation for all graphics where time is les than 30 minutes.
+		pastGraphics.stream()
 				.forEach(g -> g.setAvailable(false));
 
 	}
+
+	/**
+	 *	1. Take all graphics where time to start is less than 15 minutes.
+	 *	2. Filter their events by state THREATENED or TO_APPROVE.
+	 *	3. Set all users events who has been invited to INVITED.
+	 *	4. For all events with state TO_APPROVE remove from waiting.
+	 * 	5. Set events states to IN_BASKET.
+	 */
 	@Transactional
 	private void removeAllThreatenedAndToApprove() {
 		graphicService.findAll().stream()
@@ -159,6 +197,7 @@ public class TaskExecutorExample {
 					ue.setDecision(invited);
 					userEventService.save(ue);
 				});
+
 		graphicService.findAll().stream()
 				.filter(g -> g.getStartTime().getTime() - fromNow < quarterOfAnHour)
 				.flatMap(g ->g.getEvents().stream())
