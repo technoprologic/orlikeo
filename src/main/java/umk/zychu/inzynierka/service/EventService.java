@@ -13,24 +13,39 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
-	void acceptEvent(Integer id);
-	void delete(Integer id);
+    void acceptEvent(Integer id);
 
-	void changeConcurrentEvents(Event event);
+    void delete(Integer id);
 
-	List<Event> findAll();
-	RegisterEventForm generateRegisterEventForm(Event event);
-	List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents);
-	Optional<Event> getEventById(Integer id);
-	User getEventOrganizerUser(Event event);
-	List<EventWindowBlock> getEventWindowBlocks(UserEventRole role);
+    void changeConcurrentEvents(Event event);
+
+    List<Event> findAll();
+
+    RegisterEventForm generateRegisterEventForm(Event event);
+
+    List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents);
+
+    Optional<Event> getEventById(Integer id);
+
+    User getEventOrganizerUser(Event event);
+
+    List<EventWindowBlock> getEventWindowBlocks(UserEventRole role);
+
     List<EventWindowBlock> getEventWindowBlocks(String username, UserEventRole role);
-	UserGameDetails getGameDetails(Event event);
-	List<UserGameDetails> getGamesDetails(String username, EventType type, Integer stateId);
-	Boolean isEventMember(Event event);
-	Event registerEventForm(RegisterEventForm form);
-	Event save(Event event);
-	void updateEvent(RegisterEventForm form);
-	void delete(Event e);
-	Event findOne(Integer id);
+
+    UserGameDetails getGameDetails(Event event);
+
+    List<UserGameDetails> getGamesDetails(String username, EventType type, Integer stateId);
+
+    Boolean isEventMember(Event event);
+
+    Event registerEventForm(RegisterEventForm form);
+
+    Event save(Event event);
+
+    void updateEvent(RegisterEventForm form);
+
+    void delete(Event e);
+
+    Event findOne(Integer id);
 }

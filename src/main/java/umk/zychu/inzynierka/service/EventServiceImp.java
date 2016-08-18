@@ -221,7 +221,7 @@ public class EventServiceImp implements EventService {
 	}
 
     private EventWindowBlock generateBlock(User user, EventState state, UserEventRole role, Boolean incoming){
-        List<UserEvent> userEvents = new ArrayList<UserEvent>();
+        List<UserEvent> userEvents = new ArrayList<>();
         userEvents.addAll(user.getUserEvents());
         if (state != null)
             userEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
@@ -232,7 +232,7 @@ public class EventServiceImp implements EventService {
             Date endDate = incomingEventsDateInterval;
             Date todayAndTomorrow = new Date(endDate.getYear(),
                     endDate.getMonth(), endDate.getDate());
-            userEvents.removeIf(ue -> ue.getEvent().getGraphic()
+            userEvents.removeIf(ue -> null == ue.getEvent().getGraphic() || ue.getEvent().getGraphic()
                     .getStartTime().after(todayAndTomorrow));
         }
         Collections.sort(userEvents, new Comparator<UserEvent>() {
@@ -338,7 +338,7 @@ public class EventServiceImp implements EventService {
 
 	@Override
 	public List<EventWindowBlock> getEventWindowBlocks(UserEventRole role) {
-		List<EventWindowBlock> windowBlocks = new ArrayList<EventWindowBlock>();
+		List<EventWindowBlock> windowBlocks = new ArrayList<>();
 		List<EventState> states = eventStateService.findAll();
 		for (EventState state : states) {
 			windowBlocks.add(getBlock(state, role, false));

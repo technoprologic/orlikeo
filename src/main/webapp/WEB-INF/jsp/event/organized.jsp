@@ -185,9 +185,5 @@
     		<td><i style="color: silver" class="glyphicon glyphicon-random"></i></td>
     		<td>Otrzymałeś tylko prawa zapraszania swoich znajomych</td>
     	</tr>
-    	<tr>
-    		<td><i class=" glyphicon glyphicon-question-sign"></i></td>
-    		<td>Nie powinieneś tego znaku nigdy zobaczyć</td>
-    	</tr>
     </tbody>
 </table>

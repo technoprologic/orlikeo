@@ -32,7 +32,7 @@ public class HomeController {
 	EventService eventService;
 
 	@Autowired
-	UserEventService objectService;
+	UserEventService userEventService;
 
 	@Autowired
 	UserService userService;
@@ -41,8 +41,7 @@ public class HomeController {
 	EventToApproveService eventToApproveService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String home(Principal principal, ModelMap model, RedirectAttributes redirectAttr) {
-		User user = userService.getUser(principal.getName());
+	public String home(ModelMap model) {
 		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
 		if(authorities.stream().filter(a -> a.getAuthority().contains("ROLE_ANIMATOR")).count() > 0) {
