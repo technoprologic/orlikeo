@@ -51,7 +51,7 @@
 		<property name="queueCapacity" value="25" />
 	</bean>
 
-	<bean id="taskExecutorExample" class="umk.zychu.inzynierka.foo.GraphicsTaskExecutor">
+	<bean id="taskExecutorExample" class="umk.zychu.inzynierka.executors.GraphicsTaskExecutor">
 		<constructor-arg ref="graphicTaskExecutor" />
 	</bean>
 

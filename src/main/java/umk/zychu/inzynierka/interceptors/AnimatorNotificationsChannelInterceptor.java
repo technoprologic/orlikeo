@@ -1,4 +1,4 @@
-package umk.zychu.inzynierka.foo;
+package umk.zychu.inzynierka.interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,46 +11,49 @@ import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
-import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
+import umk.zychu.inzynierka.model.EventToApprove;
+import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.service.*;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Collectors;
 
-
-/**
- * Created by emagdnim on 2015-09-06.
- */
 @Service
-public class AnimatorEventsChannelInterceptor extends ChannelInterceptorAdapter {
+public class AnimatorNotificationsChannelInterceptor extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(AnimatorChannelInterceptor.class);
 
     @Autowired
     private SimpMessagingTemplate template;
-
     @Autowired
-    private OrlikService orlikService;
-
-    private List<UserGameDetails> orlikGamesList = new ArrayList<UserGameDetails>();
-
-    private Map<String, ScheduledFuture> eventsSessions;
-
+    private EventToApproveService eventToApproveService;
+    @Autowired
+    private UserService userService;
+    private Map<String, ScheduledFuture> notificationsSessions;
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
     @SuppressWarnings("rawtypes")
-    public AnimatorEventsChannelInterceptor() {
+    public AnimatorNotificationsChannelInterceptor() {
         // TODO Auto-generated constructor stub
-        eventsSessions = new Hashtable<String, ScheduledFuture>();
+        notificationsSessions = new Hashtable<String, ScheduledFuture>();
     }
 
-    private void sendEventsToManager(String username) {
-        orlikGamesList = orlikService.getAllByManager(username);
-        template.convertAndSendToUser(username, "/events/read", orlikGamesList);
+    private void sendNotificationToManager(String username){
+        User manager = userService.getUser(username);
+        List<EventToApprove> eventsToApprove = eventToApproveService
+                .findAll()
+                .stream()
+                .filter(eta -> eta.getEvent().getGraphic() != null
+                        && eta.getEvent().getGraphic().getOrlik().getAnimator() != null
+                        && eta.getEvent().getGraphic().getOrlik().getAnimator().equals(manager)
+                        && !eta.isChecked())
+                .collect(Collectors.toList());
+        long counter = eventsToApprove.size();
+        template.convertAndSendToUser(username, "/notifications/read", counter);
     }
 
     @Override
@@ -74,12 +77,13 @@ public class AnimatorEventsChannelInterceptor extends ChannelInterceptorAdapter 
                 break;
             case SUBSCRIBE:
                 LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
-                if (sha.getDestination().equals("/user/events/read")) {
-                    eventsSessions.put(sessionId,
+                if (sha.getDestination().equals("/user/notifications/read")) {
+                    notificationsSessions.put(sessionId,
                             scheduler.scheduleWithFixedDelay(new Runnable() {
                                 @Override
                                 public void run() {
-                                    sendEventsToManager(sha.getUser().getName());
+                                    sendNotificationToManager(sha.getUser()
+                                            .getName());
                                 }
                             }, 5000));
                 }
@@ -91,7 +95,7 @@ public class AnimatorEventsChannelInterceptor extends ChannelInterceptorAdapter 
             case DISCONNECT:
                 LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
                 System.out.println("MY DISCONNECT sessionid: " + " " + sessionId);
-                eventsSessions.remove(sessionId);
+                notificationsSessions.remove(sessionId);
                 break;
             case SEND:
                 System.out.println("Send command: " + " " + sessionId);

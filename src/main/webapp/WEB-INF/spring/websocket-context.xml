@@ -18,11 +18,11 @@
 		<websocket:simple-broker prefix="/notifications, /events, /show, /topic, /blocks" />
 		<websocket:client-inbound-channel>
 			<websocket:interceptors>
-				<bean class="umk.zychu.inzynierka.foo.AnimatorEventsChannelInterceptor" />
-                <bean class="umk.zychu.inzynierka.foo.AnimatorNotificationsChannelInterceptor"/>
-                <bean class="umk.zychu.inzynierka.foo.UserEventsTableChannelInterceptor" />
-				<bean class="umk.zychu.inzynierka.foo.WindowsBlocksChannelInterceptor" />
-				<bean class="umk.zychu.inzynierka.foo.UserNotificationsChannelInterceptor" />
+				<bean class="umk.zychu.inzynierka.interceptors.AnimatorEventsChannelInterceptor" />
+                <bean class="umk.zychu.inzynierka.interceptors.AnimatorNotificationsChannelInterceptor"/>
+                <bean class="umk.zychu.inzynierka.interceptors.UserEventsTableChannelInterceptor" />
+				<bean class="umk.zychu.inzynierka.interceptors.WindowsBlocksChannelInterceptor" />
+				<bean class="umk.zychu.inzynierka.interceptors.UserNotificationsChannelInterceptor" />
 			</websocket:interceptors>
 		</websocket:client-inbound-channel>
 	</websocket:message-broker>

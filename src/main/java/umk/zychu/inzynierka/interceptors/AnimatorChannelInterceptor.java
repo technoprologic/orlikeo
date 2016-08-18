@@ -1,4 +1,4 @@
-package umk.zychu.inzynierka.foo;
+package umk.zychu.inzynierka.interceptors;
 
 
 import org.slf4j.Logger;
