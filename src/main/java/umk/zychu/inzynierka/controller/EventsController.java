@@ -95,7 +95,7 @@ public class EventsController {
 		if (page != null) {
 			switch (page) {
 				case "organized":
-					eventType = eventType.ORGANIZED;
+					eventType = EventType.ORGANIZED;
 					userEventRole = roleService.findOne(1);
 					break;
 				case "invitations":
@@ -266,7 +266,7 @@ public class EventsController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String editPost( @ModelAttribute("editEventForm") RegisterEventForm form, ModelMap model, BindingResult result, HttpServletRequest request, Principal principal, RedirectAttributes redir) {
+	public String editPost( @ModelAttribute("editEventForm") RegisterEventForm form, BindingResult result, Principal principal, RedirectAttributes redirectAttr) {
 		if(result.hasErrors()){
 			return "redirect:/events";
 		}		
@@ -280,12 +280,12 @@ public class EventsController {
 				return "redirect:/events/show";
 			}
 		}
-		redir.addFlashAttribute("saved","true");
+		redirectAttr.addFlashAttribute("saved","true");
 		return "redirect:/events/edit/" + form.getEventId();
 	}
 	
 	@RequestMapping(value = "/reserve/{eventId}/{graphicId}", method = RequestMethod.GET)
-	public String reserve(@PathVariable("eventId") Integer eventId, @PathVariable("graphicId") Integer graphicId,  Model model, RedirectAttributes redir) {
+	public String reserve(@PathVariable("eventId") Integer eventId, @PathVariable("graphicId") Integer graphicId, RedirectAttributes redir) {
 		try {
 			Optional<Event> ev = eventService.getEventById(eventId);
 			if(ev.isPresent()){
@@ -317,7 +317,7 @@ public class EventsController {
 	}
 
 	@RequestMapping(value = "/reserve/{graphicId}", method = RequestMethod.GET)
-	public String reserve(@PathVariable("graphicId") Integer graphicId, Model model, Principal principal) {
+	public String reserve(@PathVariable("graphicId") Integer graphicId, Model model) {
 		try {
 			Graphic graphicEntity = graphicService.findOne(graphicId);
 			Orlik orlik = graphicEntity.getOrlik();	

@@ -2,8 +2,8 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 public class ChoosenOrlikBean {
 
-	Integer Id;
-	Integer eventId;
+	private Integer Id;
+	private Integer eventId;
 
 	public Integer getEventId() {
 		return eventId;

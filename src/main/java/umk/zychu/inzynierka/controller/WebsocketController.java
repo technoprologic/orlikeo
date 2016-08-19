@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class WebsocketController {
 
+    //TODO 4 remove ?
+
 /*	@Autowired
     AmqpTemplate amqpTemplate;*/
    /* @Autowired

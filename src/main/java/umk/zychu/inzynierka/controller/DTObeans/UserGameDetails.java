@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class UserGameDetails {
 
-
+	//TODO Builer pattern
 
 	UserGameDetails() {
 		super();
@@ -36,23 +36,23 @@ public class UserGameDetails {
 		this.shoes = shoes;
 	}
 
-	Integer eventId;
-	Integer stateId;
-	Integer orlikId;
-	String address;
-	String city;
-	String organizerEmail;
-	Date startDate;
-	Date endDate;
-	Integer decisionId;
-	Integer roleId;
-	Boolean permission;
-	long willCome;
-	Integer playersLimit;
-	long invited;
-	Boolean lights;
-	Boolean water;
-	Boolean shower;
+	private Integer eventId;
+	private Integer stateId;
+	private Integer orlikId;
+	private String address;
+	private String city;
+	private String organizerEmail;
+	private Date startDate;
+	private Date endDate;
+	private Integer decisionId;
+	private Integer roleId;
+	private Boolean permission;
+	private long willCome;
+	private Integer playersLimit;
+	private long invited;
+	private Boolean lights;
+	private Boolean water;
+	private Boolean shower;
 	
 	public Integer getOrlikId() {
 		return orlikId;

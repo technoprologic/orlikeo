@@ -73,8 +73,6 @@ public class User extends BaseEntity
 	/*@ManyToMany(mappedBy = "orlikManagers")
     private List<Orlik> isOrliksManager;*/
 
-
-
 	@OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
 	private List<UserEvent> usersEventsFriendsInvited;
 

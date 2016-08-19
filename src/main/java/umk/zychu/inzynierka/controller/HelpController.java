@@ -11,7 +11,8 @@ public class HelpController {
 
 	@RequestMapping(value = "/help", method = RequestMethod.GET)
 	public ModelAndView help(ModelMap model) {
-		model.addAttribute("message", "Spring 3 MVC Hello World");
+		//TODO create main page.
+		model.addAttribute("message", "Help page to do...");
 		return new ModelAndView("help");
 
 	}

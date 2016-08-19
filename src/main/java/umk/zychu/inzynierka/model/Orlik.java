@@ -55,6 +55,7 @@ public class Orlik extends BaseEntity {
 	@JoinColumn(name = "animator_id", nullable = true, unique = true)
 	User animator;
 
+	//TODO Builder pattern.
 	public Orlik(String address, String city, Boolean lights, Boolean water, Boolean shower, String shoes, User animator, List<Graphic> graphicCollection) {
 		this.address = address;
 		this.city = city;
@@ -73,7 +74,6 @@ public class Orlik extends BaseEntity {
 	public void setAnimator(User animator) {
 		this.animator = animator;
 	}
-	
 
 	public Orlik(){
 		super();

@@ -9,14 +9,15 @@ import java.util.Map;
  * Created by emagdnim on 2015-10-12.
  */
 public class OrlikForm {
-    Integer id;
-    String address;
-    String city;
-    Boolean lights;
-    Boolean water;
-    Boolean shower;
-    String shoes;
-    String animatorEmail;
+    //TODO Builder pattern
+    private Integer id;
+    private String address;
+    private String city;
+    private Boolean lights;
+    private Boolean water;
+    private Boolean shower;
+    private String shoes;
+    private String animatorEmail;
 
     public Map<String, String> getChooser() {
         return chooser;
@@ -28,7 +29,7 @@ public class OrlikForm {
 
     Map<String, String> chooser;
 
-    public OrlikForm(){
+    public OrlikForm() {
         super();
         makeChooser();
         id = null;
@@ -54,7 +55,7 @@ public class OrlikForm {
         animatorEmail = orlik.getAnimator() != null ? orlik.getAnimator().getEmail() : "";
     }
 
-    private void makeChooser(){
+    private void makeChooser() {
         this.chooser = new LinkedHashMap<>();
         chooser.put("false", "NIE");
         chooser.put("true", "TAK");

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class Websocket2Controller {
+	//TODO 4 remove ?
 /*
 	  @Autowired
 	  private SimpMessageSendingOperations template;

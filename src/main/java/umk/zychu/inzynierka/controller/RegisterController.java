@@ -36,14 +36,14 @@ public class RegisterController {
     }
 
 	@RequestMapping(method=RequestMethod.GET)
-	public String initForm(Locale locale, Map<String, Object> model){
+	public String initForm(Map<String, Object> model){
 		RegisterUserBean registerUserBean = new RegisterUserBean();
 		model.put("registerUserBean", registerUserBean);
 		return "register";
 	}
 
 	@RequestMapping(value="/new_user", method=RequestMethod.POST)
-	public String processRegister(@ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result, HttpServletRequest request ){		
+	public String processRegister(@ModelAttribute @Valid RegisterUserBean registerUserBean, BindingResult result){
 		if(result.hasErrors()){
 			return "register";
 		}

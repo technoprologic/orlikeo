@@ -16,9 +16,9 @@ public class UserAdminServiceImp implements UserAdminService {
 
     @Override
     public Boolean hasAdminRight(User user) {
-        if(userAdminDAO.findAll().stream()
+        if (userAdminDAO.findAll().stream()
                 .filter(a -> a.getAdmin().equals(user))
-                .count() > 0 )
+                .count() > 0)
             return true;
         return false;
     }

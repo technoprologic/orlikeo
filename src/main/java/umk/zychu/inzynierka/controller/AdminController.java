@@ -75,7 +75,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST)
-    public String removeOrlik(@RequestParam(value = "orlikRemoveId") Integer id, RedirectAttributes redirectAtt){
+    public String removeOrlik(@RequestParam(value = "orlikRemoveId") Integer id){
         Orlik orlik = orlikService.getOrlikById(id);
         if(orlik != null){
             orlikService.delete(orlik);

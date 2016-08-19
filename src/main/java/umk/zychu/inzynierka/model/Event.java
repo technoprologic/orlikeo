@@ -85,7 +85,9 @@ public class Event extends BaseEntity {
 	public Event(){
 		super();
 	}
-	
+
+
+	//TODO Builder pattern.
 	public Event(User organizer, Graphic graphic, EventState state, Integer playersLimit){
 		super();
 		this.userOrganizer = organizer;

@@ -51,6 +51,4 @@ public class BaseEntity  implements Serializable  {
 			return false;
 		return true;
 	}
-
-
 }

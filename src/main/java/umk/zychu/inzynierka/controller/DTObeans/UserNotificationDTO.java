@@ -10,11 +10,11 @@ import java.util.Date;
  */
 public class UserNotificationDTO implements Serializable, Comparable<UserNotificationDTO> {
 
-    Integer id;
-    String username;
-    String subject;
-    String description;
-    String link;
+    private Integer id;
+    private String username;
+    private String subject;
+    private String description;
+    private String link;
 
     UserNotificationDTO(){
         super();

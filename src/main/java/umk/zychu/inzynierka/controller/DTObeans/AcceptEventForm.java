@@ -2,7 +2,7 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 public class AcceptEventForm {
 
-	Integer eventId;
+	private Integer eventId;
 
 	public Integer getEventId() {
 		return eventId;

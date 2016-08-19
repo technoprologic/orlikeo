@@ -35,8 +35,7 @@ public class GraphicController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String graphic(
-			@ModelAttribute @Valid ChoosenOrlikBean chooseOrlikBean,
-			ModelMap model, BindingResult result, HttpServletRequest request) {
+			@ModelAttribute @Valid ChoosenOrlikBean chooseOrlikBean, BindingResult result) {
 		String url;
 		if (result.hasErrors() || chooseOrlikBean.getId() == 0) {
 			url = "redirect:/events/create";

@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,7 +15,6 @@ import umk.zychu.inzynierka.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/friends")
@@ -43,7 +41,7 @@ public class FriendsController {
 	}
 	
 	@RequestMapping(value="/search", method = RequestMethod.GET)
-	public String displaySearchFriendsForm(ModelMap model) {
+	public String displaySearchFriendsForm() {
 		return "searchFriends";
 	}
 	
@@ -61,7 +59,7 @@ public class FriendsController {
 	
 	@SuppressWarnings("finally")
 	@RequestMapping(value="/friendRequest", method = RequestMethod.POST)
-	public String addFriend(@RequestParam("email") String email, ModelMap model, Principal principal) {
+	public String addFriend(@RequestParam("email") String email, Principal principal) {
 		try{
 			User user = userService.getUser(principal.getName());
 			User invitedUser = userService.getUser(email);
@@ -146,7 +144,7 @@ public class FriendsController {
 			friendshipService.cancelFriendInvitation(email);
 			
 		}catch(Exception e){
-			System.out.println("Błąd...exception" + e);
+			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
 		} 		
@@ -158,7 +156,7 @@ public class FriendsController {
 		try{
 			friendshipService.blockUser(email);
 		}catch(Exception e){
-			System.out.println("Błąd...exception" + e);
+			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
 		} 	
@@ -170,7 +168,7 @@ public class FriendsController {
 		try{
 			friendshipService.rejectUserFriendRequest(email);
 		}catch(Exception e){
-			System.out.println("Błąd...exception" + e);
+			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
 		} 	
@@ -182,7 +180,7 @@ public class FriendsController {
 		try{
 			friendshipService.unblockUser(email);
 		}catch(Exception e){
-			System.out.println("Błąd...exception" + e);
+			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
 		} 	
@@ -194,7 +192,7 @@ public class FriendsController {
 		try{
 			friendshipService.removeFriendship(email);
 		}catch(Exception e){
-			System.out.println("Błąd...exception" + e);
+			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
 		} 	

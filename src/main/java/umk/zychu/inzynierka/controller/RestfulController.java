@@ -24,37 +24,41 @@ public class RestfulController {
 	@Autowired
 	AllServices services;
 
+	//TODO 4 REMOVE
 	@RequestMapping(value = "/json", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody JsonTestObject postJSON(
 			@RequestBody final JsonTestObject object) {
 		return object;
 	}
 
+	//TODO 4 REMOVE
 	@RequestMapping(value = "/json/{name}", method = RequestMethod.GET)
 	public @ResponseBody JsonTestObject getJSON(@PathVariable String name) {
 		JsonTestObject object = new JsonTestObject();
 		object.setName(name);
 		object.setSurname("nazwisko");
 		return object;
-
 	}
 
-	// works correctly
+	//TODO 4 REMOVE
+	// works correct
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	@ResponseBody
-	public String greetig(
+	public String greeting(
 			@RequestParam(value = "name", defaultValue = "World") String name) {
 		return "GET : " + name;
 	}
 
+	//TODO 4 REMOVE
 	@RequestMapping(value = "/post", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded")
-	public @ResponseBody JsonTestObject greetig2(
+	public @ResponseBody JsonTestObject greeting2(
 			@RequestBody MultiValueMap<String, String> object) {
 		JsonTestObject json = new JsonTestObject(object.getFirst("name"),
 				object.getFirst("surname"));
 		return json;
 	}
 
+	//TODO Check unused request params are needed
 	// works correctly : http://localhost:8080/jbossews/events?editing=false
 	@RequestMapping(value = "/events", method = RequestMethod.GET)
 	@ResponseBody
@@ -62,7 +66,6 @@ public class RestfulController {
 			@RequestParam(value = "editing", required = false) Boolean ed,
 			HttpServletRequest request) {
 		EventsManager evs = new EventsManager(request, services);
-		System.out.println("/events: " + ed);
 		return evs.run();
 	}
 

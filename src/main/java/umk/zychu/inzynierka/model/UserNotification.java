@@ -33,6 +33,8 @@ public class UserNotification extends BaseEntity implements Comparable<UserNotif
         super();
     }
 
+
+    //TODO Builder pattern.
     public UserNotification(String title, String description, UserEvent ue) {
         super();
         this.user = ue.getUser();

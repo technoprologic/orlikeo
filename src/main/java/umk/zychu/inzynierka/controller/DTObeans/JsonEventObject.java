@@ -2,7 +2,9 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 import umk.zychu.inzynierka.model.Graphic;
 
-public class JsonEventObject {
+import java.io.Serializable;
+
+public class JsonEventObject implements Serializable{
 	
 	public JsonEventObject(Graphic graphic) {
 		id = graphic.getId();

@@ -58,24 +58,7 @@ public class HomeController {
 	private void debug(List<EventWindowBlock> eventWindowBlockList ){
 		for(int i=0; i<eventWindowBlockList.size(); i++){
 			if(eventWindowBlockList.get(i) != null){
-				String city = eventWindowBlockList.get(i).getCity();
-				String address = eventWindowBlockList.get(i).getAddress();
-				Long willCome = eventWindowBlockList.get(i).getGoingToCome();
-				Integer limit = eventWindowBlockList.get(i).getLimit();
-				Integer state = eventWindowBlockList.get(i).getStateId();
-				Long haveTheSameState = eventWindowBlockList.get(i).getCountedInSameState();
-				Integer displayOrder = eventWindowBlockList.get(i).getDisplayOrder();
-				String label = eventWindowBlockList.get(i).getLabel();			
-				logger.debug("i: " + i 
-							+ " City:" + city
-							+ " Address:" + address 
-							+ " WillCome:" + willCome
-							+ " Limit:" + limit
-							+ " State:" + state
-							+ " InTheSameStateCounter:" + haveTheSameState
-							+ " displayOrder:" + displayOrder
-							+ " label:" +  label
-							);
+				eventWindowBlockList.get(i).toString();
 			}else{
 				logger.debug("Event id: brak");
 			}

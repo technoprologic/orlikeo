@@ -9,11 +9,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserEventService {
-	UserEvent save(UserEvent event);
-	Optional<UserEvent> findOne(Event event, User user);
-	List<User> findUsersByEventAndPermission(Event event, Boolean canInvite);
-	List<User> findUsersByEventAndDecision(Event event, UserDecision decision);
-	void setUserEventDecision(Event event, UserDecision decision);
-	void delete(UserEvent userEvent);
-	void changeEventStateIfRequired(Event event);
+    UserEvent save(UserEvent event);
+
+    Optional<UserEvent> findOne(Event event, User user);
+
+    List<User> findUsersByEventAndPermission(Event event, Boolean canInvite);
+
+    List<User> findUsersByEventAndDecision(Event event, UserDecision decision);
+
+    void setUserEventDecision(Event event, UserDecision decision);
+
+    void delete(UserEvent userEvent);
+
+    void changeEventStateIfRequired(Event event);
 }

@@ -31,6 +31,9 @@ public class WebsocketGreetingsController {
     }
 
 
+    //TODO 4 remove ?
+
+
 /*    @MessageMapping("/hello")
     @SendToUser("/topic/greetings")
     public Greeting greeting(HelloMessage message, Message message2) throws Exception {

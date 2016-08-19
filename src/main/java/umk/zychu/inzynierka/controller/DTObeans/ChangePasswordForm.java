@@ -1,32 +1,32 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
 public class ChangePasswordForm {
-	
-	public String getOldPassword() {
-		return oldPassword;
-	}
 
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
+    public String getOldPassword() {
+        return oldPassword;
+    }
 
-	public String getNewPassword() {
-		return newPassword;
-	}
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
 
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	}
+    public String getNewPassword() {
+        return newPassword;
+    }
 
-	public String getNewPasswordConfirm() {
-		return newPasswordConfirm;
-	}
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
-	public void setNewPasswordConfirm(String newPasswordConfirm) {
-		this.newPasswordConfirm = newPasswordConfirm;
-	}
+    public String getNewPasswordConfirm() {
+        return newPasswordConfirm;
+    }
 
-	String oldPassword;
-	String newPassword;	
-	String newPasswordConfirm;	
+    public void setNewPasswordConfirm(String newPasswordConfirm) {
+        this.newPasswordConfirm = newPasswordConfirm;
+    }
+
+    private String oldPassword;
+    private String newPassword;
+    private String newPasswordConfirm;
 }

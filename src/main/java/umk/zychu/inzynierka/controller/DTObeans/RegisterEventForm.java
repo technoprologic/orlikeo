@@ -4,10 +4,10 @@ import java.util.List;
 
 public class RegisterEventForm {
 	
-	Integer eventId;
-	Integer graphicId;
-	Integer usersLimit;
-	List<RegisterEventUser> eventFormMembers;
+	private Integer eventId;
+	private Integer graphicId;
+	private Integer usersLimit;
+	private List<RegisterEventUser> eventFormMembers;
 	
 	public RegisterEventForm(){}
 	

@@ -9,25 +9,40 @@ import java.util.List;
  */
 public interface UserNotificationsService {
     void delete(UserNotification userNotification);
-    void deleteAllOnEvent(Event event);
-    void eventCreated(Event event);
-    void eventGraphicChangedByOrganizer(Event event);
-    void eventIsRemovedByOrganizer(Event event);
-    void eventStateChanged(Event event);
-    void eventWonRaceForGraphic(Event event);
-    void eventsLostRaceForGraphic(List<Event> events);
-    List<UserNotification> findAll();
-    UserNotification findOne(Integer id);
-    void graphicChangedByAnimator(Graphic graphic);
-    void save(UserNotification userNotification);
-    void setCheckedForEvent(Event event);
 
+    void deleteAllOnEvent(Event event);
+
+    void eventCreated(Event event);
+
+    void eventGraphicChangedByOrganizer(Event event);
+
+    void eventIsRemovedByOrganizer(Event event);
+
+    void eventStateChanged(Event event);
+
+    void eventWonRaceForGraphic(Event event);
+
+    void eventsLostRaceForGraphic(List<Event> events);
+
+    List<UserNotification> findAll();
+
+    UserNotification findOne(Integer id);
+
+    void graphicChangedByAnimator(Graphic graphic);
+
+    void save(UserNotification userNotification);
+
+    void setCheckedForEvent(Event event);
 
     //FriendshipNotifications
     void invitation(Friendship friendship);
+
     void acceptation(Friendship friendship);
+
     void denial(Friendship friendship);
+
     void blocking(Friendship friendship);
+
     void unblocking(Friendship friendship);
 
     void cancelInvitation(User user, User userTarget);

@@ -113,7 +113,6 @@ public class UserEventServiceImp implements UserEventService {
 	@Modifying
 	public void delete(UserEvent userEvent) {
 		UserEvent tmp = userEventDAO.findOne(userEvent.getId());
-		System.out.println("equals? : " + tmp.equals(userEvent) + tmp.hashCode() + " : " + userEvent.hashCode());
 		userEventDAO.delete(userEvent);
 	}	
 }

@@ -23,5 +23,4 @@ public class UserAdmin extends BaseEntity {
     public void setAdmin(User admin) {
         this.admin = admin;
     }
-
 }

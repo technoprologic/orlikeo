@@ -1,6 +1,7 @@
 package umk.zychu.inzynierka.controller.util;
 
 public enum EventType {
+	//TODO Entities as Enums
 	ORGANIZED(1),
 	INVITATIONS(2);
 	
