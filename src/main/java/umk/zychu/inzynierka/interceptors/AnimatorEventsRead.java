@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledFuture;
  * Created by emagdnim on 2015-09-06.
  */
 @Service
-public class AnimatorEventsChannelInterceptor extends ChannelInterceptorAdapter {
+public class AnimatorEventsRead extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(AnimatorChannelInterceptor.class);
@@ -43,7 +43,7 @@ public class AnimatorEventsChannelInterceptor extends ChannelInterceptorAdapter 
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
     @SuppressWarnings("rawtypes")
-    public AnimatorEventsChannelInterceptor() {
+    public AnimatorEventsRead() {
         // TODO Auto-generated constructor stub
         eventsSessions = new Hashtable<String, ScheduledFuture>();
     }

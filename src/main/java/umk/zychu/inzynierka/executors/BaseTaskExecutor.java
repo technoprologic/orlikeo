@@ -1,7 +1,6 @@
 package umk.zychu.inzynierka.executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.service.*;
 
@@ -13,12 +12,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/**
- * Created by emag on 18.08.16.
- */
-public class BaseExecutor {
+public class BaseTaskExecutor {
 
-    protected TaskExecutor taskExecutor;
     protected Date currentDate = null;
     protected static long NOW = 0;
     protected static final long MINUTE = 1000 * 60;
@@ -43,7 +38,6 @@ public class BaseExecutor {
     @Autowired
     EventToApproveService eventToApproveService;
 
-
     @PostConstruct
     private void post() {
         this.inBuild = eventStateService.findOne(EventState.IN_PROGRESS);
@@ -54,7 +48,6 @@ public class BaseExecutor {
         this.threatenedState = eventStateService.findOne(EventState.THREATENED);
         this.toApproveState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
     }
-
 
     /**
      * Removes all broken events without graphic, and eventState other than IN_BASKET.
@@ -67,7 +60,7 @@ public class BaseExecutor {
 
     /**
      * Manages graphics and their events.
-     *
+     *@Component
      * @param graphics Where is 30-15-0 minutes to start the event.
      * @param predicate Predicate says which states should be processed.
      */
@@ -90,6 +83,7 @@ public class BaseExecutor {
                     userEventService.save(ue);
                 });
 
+        // Remove graphics from events
         eventsReadyToPrepare.forEach(e -> {
             e.setGraphic(null);
             if(e.getState().equals(toApproveState)){

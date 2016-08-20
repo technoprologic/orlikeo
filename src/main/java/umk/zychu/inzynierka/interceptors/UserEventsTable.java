@@ -24,10 +24,10 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
-public class UserEventsTableChannelInterceptor extends ChannelInterceptorAdapter {
+public class UserEventsTable extends ChannelInterceptorAdapter {
 
 	private static final Logger LOGGER = LoggerFactory
-			.getLogger(UserEventsTableChannelInterceptor.class);
+			.getLogger(UserEventsTable.class);
 
     @Autowired
 	private SimpMessagingTemplate template;
@@ -44,7 +44,7 @@ public class UserEventsTableChannelInterceptor extends ChannelInterceptorAdapter
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
 	@SuppressWarnings("rawtypes")
-	public UserEventsTableChannelInterceptor() {
+	public UserEventsTable() {
 		// TODO Auto-generated constructor stub
         showSessions = new Hashtable<String, ScheduledFuture>();
         showSessionsPageHeader = new Hashtable<String, String>();

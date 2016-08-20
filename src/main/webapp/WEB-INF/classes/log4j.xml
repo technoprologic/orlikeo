@@ -18,55 +18,55 @@
 
 
 	<logger name="org.hibernate.type.descriptor" additivity="true">
-		<level value="all"/>
+		<level value="error"/>
 		<appender-ref ref="console"/>
 	</logger>
 
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.social">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.beans">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.context">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.web.socket">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.hibernate">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="org.springframework.data">
-		<level value="all"/>
+		<level value="error"/>
 	</logger>
 
 	<logger name="umk.zychu.inzynierka" additivity="false">
-		<level value="all"/>
+		<level value="error"/>
 		<appender-ref ref="console"/>
 		<!--<appender-ref ref="file"/>-->
 	</logger>
 
 	<root>
-		<priority value="warn"/>
+		<priority value="error"/>
 		<appender-ref ref="console"/>
 	</root>
 

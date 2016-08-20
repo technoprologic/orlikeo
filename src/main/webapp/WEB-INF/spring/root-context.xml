@@ -14,7 +14,7 @@
 			   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<mvc:annotation-driven />
-	<context:component-scan base-package="umk.zychu.inzynierka" >
+	<context:component-scan base-package="umk.zychu.inzynierka.*" >
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
@@ -31,10 +31,7 @@
 	<!--	<import resource="rabbit-context.xml" />-->
 	<!--<import resource="appServlet/aop-context.xml" />-->
 
-
-
 <!--	<bean id="executorSC" class="org.springframework.messaging.support.ExecutorSubscribableChannel"/>
-
 
 	<bean id="template" class="org.springframework.messaging.simp.SimpMessagingTemplate">
 		<constructor-arg index="0" ref="executorSC"/>
@@ -45,14 +42,14 @@
 	<task:scheduler id="myScheduler"  pool-size="10" />
 
 
-	<bean id="graphicTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="5" />
 		<property name="maxPoolSize" value="10" />
 		<property name="queueCapacity" value="25" />
 	</bean>
 
-	<bean id="taskExecutorExample" class="umk.zychu.inzynierka.executors.GraphicsTaskExecutor">
-		<constructor-arg ref="graphicTaskExecutor" />
+	<bean id="orliksTaskExecutor" class="umk.zychu.inzynierka.executors.OrliksTaskExecutor">
+		<constructor-arg ref="taskExecutor" />
 	</bean>
 
 	<!-- <context:component-scan base-package="umk.zychu.inzynierka.util" /> -->
