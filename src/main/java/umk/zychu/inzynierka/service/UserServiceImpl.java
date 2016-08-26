@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
 	public void removeAccount() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = getUser(username);
-		user.getOrganizedEventsList()
+		user.getOrganizedEvents()
 						.stream()
 						.flatMap(e -> {
 							return userNotificationsService.findAll().stream()
@@ -116,7 +116,10 @@ public class UserServiceImpl implements UserService {
 						})
 						.forEach(un -> userNotificationsService.delete(un));
 		user.getUserFriends().forEach(u -> {
-			UserNotification un = new UserNotification(username + " usunął konto", "Wszystkie wydarzenia użytkownika zostały unieważnione", u);
+			UserNotification un = new UserNotification.Builder(u,
+					username + " usunął konto",
+					"Wszystkie wydarzenia użytkownika zostały unieważnione")
+					.build();
 			userNotificationsService.save(un);
 		});
 		delete(user);

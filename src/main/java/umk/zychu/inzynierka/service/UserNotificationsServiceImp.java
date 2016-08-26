@@ -19,22 +19,28 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserNotificationsServiceImp implements UserNotificationsService {
 
+    private static final String FRIEND_USER_DETAIL = "/friends/userDetail/";
+
     @Autowired
     private UserNotificationsDaoRepository userNotificationsDAO;
     @Autowired
     private UserService userService;
     @Autowired
-    UserEventDecisionService userEventDecisionService;
-    SimpleDateFormat ftStart = new SimpleDateFormat("dd.mm.yyyy, hh:mm");
-    SimpleDateFormat ftEnd = new SimpleDateFormat("hh:mm");
-    UserDecision rejected;
-    UserDecision notInvited;
+    private UserEventDecisionService userEventDecisionService;
 
-    UserNotificationsServiceImp(){
+    private SimpleDateFormat ftStart = new SimpleDateFormat("dd.mm.yyyy, hh:mm");
+
+    private SimpleDateFormat ftEnd = new SimpleDateFormat("hh:mm");
+
+    private UserDecision rejected;
+
+    private UserDecision notInvited;
+
+    UserNotificationsServiceImp() {
         super();
     }
 
-    UserNotificationsServiceImp(UserEventDecisionService userEventDecisionService){
+    UserNotificationsServiceImp(UserEventDecisionService userEventDecisionService) {
         super();
         this.userEventDecisionService = userEventDecisionService;
         ftStart = new SimpleDateFormat("dd.mm.yyyy, hh:mm");
@@ -63,27 +69,30 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
                 .filter(ue -> !ue.getDecision().equals(notInvited))
                 .forEach(ue -> {
                     String description = "Termin niedostępny!";
-                    if(graphic.getAvailable()){
+                    if (graphic.getAvailable()) {
                         description = "Zmienione godziny wydarzenia: " + address + ", <br>" + date;
                     }
-                    UserNotification notify = new UserNotification("Animator dokonał zmian w grafiku",
-                            description,
-                            ue);
+                    UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                            "Animator dokonał zmian w grafiku",
+                            description)
+                            .build();
                     save(notify);
                 });
     }
 
     @Override
     public void eventIsRemovedByOrganizer(Event event) {
-        if(event.getGraphic() != null) {
+        if (event.getGraphic() != null) {
             Graphic graphic = event.getGraphic();
             String address = graphic.getOrlik().getAddress();
             String date = ftStart.format(event.getGraphic().getStartTime()) + " - " + ftEnd.format(event.getGraphic().getEndTime());
             event.getUsersEvent().stream()
                     .filter(ue -> ue.getInviter() != null && !ue.getDecision().equals(rejected))
                     .forEach(ue -> {
-                        UserNotification notify = new UserNotification("Usunięto wydarzenie (" + event.getUserOrganizer().getEmail() + ")",
-                                address + ", <br>" + date, ue.getUser());
+                        UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                                "Usunięto wydarzenie (" + event.getUserOrganizer().getEmail() + ")",
+                                address + ", <br>" + date)
+                                .build();
                         save(notify);
                     });
         }
@@ -93,27 +102,33 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void eventStateChanged(Event event) {
         String stateName = "";
-        switch (event.getState().getState()){
-            case "in_basket" : stateName = "W koszu";
+        switch (event.getState().getState()) {
+            case "in_basket":
+                stateName = "W koszu";
                 break;
-            case "in_progress" : stateName = "W budowie";
+            case "in_progress":
+                stateName = "W budowie";
                 break;
-            case "ready_to_accept" : stateName = "Do akceptacji";
+            case "ready_to_accept":
+                stateName = "Do akceptacji";
                 break;
-            case "threatened" : stateName = "Zagrożony";
+            case "threatened":
+                stateName = "Zagrożony";
                 break;
-            case "approved": stateName = "Przyjęty";
+            case "approved":
+                stateName = "Przyjęty";
                 break;
-            default: break;
+            default:
+                break;
         }
         String subject = "Zmiana statusu wydarzenia  (" + stateName + ")";
         String description = "";
-        if(event.getGraphic() != null){
+        if (event.getGraphic() != null) {
             Graphic graphic = event.getGraphic();
             String address = graphic.getOrlik().getAddress();
             String date = ftStart.format(event.getGraphic().getStartTime()) + " - " + ftEnd.format(event.getGraphic().getEndTime());
             description = address + ", <br>" + date;
-        }else{
+        } else {
             description = "Wydarzenie utraciło termin";
         }
         String efFinalDescription = description;
@@ -121,7 +136,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
                 .filter(ue -> !ue.getDecision().equals(rejected)
                         && !ue.getDecision().equals(notInvited))
                 .forEach(ue -> {
-                    UserNotification notify = new UserNotification(subject, efFinalDescription, ue);
+                    UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                            subject,
+                            efFinalDescription)
+                            .build();
                     save(notify);
                 });
 
@@ -134,8 +152,8 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     }
 
     @Override
-    public void eventsLostRaceForGraphic(List<Event> events){
-        if(!events.isEmpty()) {
+    public void eventsLostRaceForGraphic(List<Event> events) {
+        if (!events.isEmpty()) {
             Graphic graphic = events.get(0).getGraphic();
             String address = graphic.getOrlik().getAddress();
             String date = ftStart.format(graphic.getStartTime()) + " - " + ftEnd.format(graphic.getEndTime());
@@ -146,14 +164,16 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
                     .filter(ue -> !ue.getDecision().equals(rejected)
                             && !ue.getDecision().equals(notInvited))
                     .forEach(ue -> {
-                        UserNotification notify = new UserNotification(subject, description, ue);
+                        UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                                subject, description)
+                                .build();
                         save(notify);
                     });
         }
     }
 
     @Override
-    public void save(UserNotification userNotification){
+    public void save(UserNotification userNotification) {
         userNotificationsDAO.save(userNotification);
     }
 
@@ -165,7 +185,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
                 .filter(un -> un.getLink().contains("event")
                         && un.getLink().contains(event.getId().toString()))
                 .forEach(un -> {
-                    un.setChecked(true);
+                    un.setChecked();
                     save(un);
                 });
     }
@@ -175,8 +195,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String title = "Zaproszenie do znajomych!";
         String description = "Od użytkownika " + friendship.getActionUser().getEmail();
         User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
-        UserNotification notify = new UserNotification(title, description, href, targetUser);
+        String href = FRIEND_USER_DETAIL + friendship.getActionUser().getEmail();
+        UserNotification notify = new UserNotification.Builder(targetUser, title, description)
+                .link(href)
+                .build();
         save(notify);
     }
 
@@ -186,7 +208,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String description = "Użytkownika " + friendship.getActionUser().getEmail() + " zaaceptował Twoje zaproszenie.";
         User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
         String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
-        UserNotification notify = new UserNotification(title, description, href, targetUser);
+        UserNotification notify = new UserNotification.Builder(targetUser,
+                title, description)
+                .link(href)
+                .build();
         save(notify);
     }
 
@@ -196,7 +221,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String description = "Użytkownik " + friendship.getActionUser().getEmail() + " odrzucił zaproszenie.";
         User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
         String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
-        UserNotification notify = new UserNotification(title, description, href, targetUser);
+        UserNotification notify = new UserNotification.Builder(targetUser,
+                title, description)
+                .link(href)
+                .build();
         save(notify);
     }
 
@@ -206,7 +234,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String description = "Użytkownik " + friendship.getActionUser().getEmail() + " zablokował Cię.";
         User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
         String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
-        UserNotification notify = new UserNotification(title, description, href, targetUser);
+        UserNotification notify = new UserNotification.Builder(targetUser,
+                title, description)
+                .link(href)
+                .build();
         save(notify);
     }
 
@@ -216,17 +247,24 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String description = "Użytkownik " + friendship.getActionUser().getEmail() + " odblokował Cię.";
         User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
         String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
-        UserNotification notify = new UserNotification(title, description, href, targetUser);
+        UserNotification notify = new UserNotification.Builder(targetUser,
+                title,
+                description)
+                .link(href)
+                .build();
         save(notify);
     }
 
 
     @Override
-    public void cancelInvitation(User user, User userTarget){
+    public void cancelInvitation(User user, User userTarget) {
         String title = "Cofnięto zaproszenie!";
         String description = "Użytkownik " + user.getEmail() + " wycofał zaproszenie.";
         User targetUsr = userTarget;
-        UserNotification notify = new UserNotification(title, description, null, targetUsr);
+        UserNotification notify = new UserNotification.Builder(targetUsr,
+                title,
+                description)
+                .build();
         save(notify);
     }
 
@@ -235,7 +273,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
         user.getUserNotifications().stream()
                 .filter(un -> un.getLink().contains(friend.getEmail()))
-                .forEach( un -> un.setChecked(true));
+                .forEach(un -> un.setChecked());
     }
 
     @Override
@@ -243,7 +281,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String title = "Usunięta znajomość!";
         String description = "Użytkownik " + actionUser.getEmail() + " usunął Ciebie ze znajomych.";
         User targetUsr = targetUser;
-        UserNotification notify = new UserNotification(title, description, null, targetUsr);
+        UserNotification notify = new UserNotification.Builder(targetUsr,
+                title,
+                description)
+                .build();
         save(notify);
     }
 
@@ -275,7 +316,10 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         event.getUsersEvent().stream()
                 .filter(ue -> ue.getInviter() != null)
                 .forEach(ue -> {
-                    UserNotification notify = new UserNotification(subject, description, ue);
+                    UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                            subject,
+                            description)
+                            .build();
                     save(notify);
                 });
     }
@@ -290,13 +334,15 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         event.getUsersEvent().stream()
                 .filter(ue -> ue.getInviter() != null)
                 .forEach(ue -> {
-                    UserNotification notify = new UserNotification(subject, description, ue);
+                    UserNotification notify = new UserNotification.Builder(ue.getUser(),
+                            subject, description)
+                            .build();
                     save(notify);
                 });
     }
 
     @Override
-    public void delete(UserNotification userNotification){
+    public void delete(UserNotification userNotification) {
         userNotificationsDAO.delete(userNotification);
     }
 }

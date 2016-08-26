@@ -31,9 +31,9 @@ public class UserNotificationsController {
         User user = userService.getUser(principal.getName());
         List<UserNotification> notifications = user.getUserNotifications();
         notifications.stream()
-                .filter(n -> !n.getChecked())
+                .filter(n -> !n.isChecked())
                 .forEach(n -> {
-                            n.setChecked(true);
+                            n.setChecked();
                             userNotificationsService.save(n);
                         }
         );

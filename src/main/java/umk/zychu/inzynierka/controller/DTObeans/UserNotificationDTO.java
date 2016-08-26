@@ -15,6 +15,7 @@ public class UserNotificationDTO implements Serializable, Comparable<UserNotific
     private String subject;
     private String description;
     private String link;
+    private Date date;
 
     UserNotificationDTO(){
         super();
@@ -65,23 +66,21 @@ public class UserNotificationDTO implements Serializable, Comparable<UserNotific
         return link;
     }
 
+
     public void setLink(String link) {
         this.link = link;
     }
 
-
     public Date getDate() {
         return date;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }
-    Date date;
 
     @Override
     public int compareTo(UserNotificationDTO o) {
-        if(this.date.before(o.getDate()))
+        if(null == this.date || this.date.before(o.getDate()))
             return 1;
         if(this.date.after(o.getDate()))
             return -1;

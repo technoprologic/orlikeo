@@ -77,7 +77,7 @@ public class User extends BaseEntity
 	private List<UserEvent> usersEventsFriendsInvited;
 
 	@OneToMany(mappedBy="userOrganizer", fetch = FetchType.EAGER, orphanRemoval = true)
-	private List<Event> organizedEventsList;
+	private List<Event> organizedEvents;
 
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
@@ -115,11 +115,11 @@ public class User extends BaseEntity
 				}).collect(Collectors.toList());
 	}
 	
-	public List<Event> getOrganizedEventsList() {
-		return organizedEventsList;
+	public List<Event> getOrganizedEvents() {
+		return organizedEvents;
 	}
-	public void setOrganizedEventsList(List<Event> organizedEventsList) {
-		this.organizedEventsList = organizedEventsList;
+	public void setOrganizedEvents(List<Event> organizedEvents) {
+		this.organizedEvents = organizedEvents;
 	}
 
 /*	public List<Orlik> getIsOrliksManager() {

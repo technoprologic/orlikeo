@@ -72,7 +72,7 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
 
             //TODO Find better solution for windows block problems than this function:
             // Removes events if status is other than IN_BASKET and graphic is NULL.
-            removeAllBrokenEvents();
+            //removeAllBrokenEvents();
         }
     }
 

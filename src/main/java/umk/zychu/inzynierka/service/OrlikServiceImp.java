@@ -125,11 +125,10 @@ public class OrlikServiceImp implements OrlikService {
 		orlikDAO.delete(orlik);
 		usersForNotify.stream()
 				.forEach(u -> {
-					UserNotification un = new UserNotification("Usunięto orlik "
-							+ city + " " + address
-							+  " z systemu",
-							"Wszystkie wydarzenia związane z tym obiektem zostały usunięte",
-							u);
+					UserNotification un = new UserNotification.Builder(u,
+							"Usunięto orlik " + city + " " + address + " z systemu",
+							"Wszystkie wydarzenia związane z tym obiektem zostały usunięte")
+							.build();
 					userNotificationsService.save(un);
 				});
 	}

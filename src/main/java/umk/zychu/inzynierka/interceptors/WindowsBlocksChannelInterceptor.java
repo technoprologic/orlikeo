@@ -18,7 +18,7 @@ public class WindowsBlocksChannelInterceptor extends BaseChannelInterceptor {
 
 	@SuppressWarnings("rawtypes")
 	public WindowsBlocksChannelInterceptor() {
-        super("/user/blocks/get");
+        super(USER_PREFIX + DESTINATION);
         showSessionsPageHeader = new Hashtable<>();
 	}
 

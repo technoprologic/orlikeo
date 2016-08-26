@@ -19,12 +19,14 @@ import java.util.concurrent.ScheduledFuture;
 
 public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
 
-    protected static final Logger LOGGER = LoggerFactory
+    protected final Logger LOGGER = LoggerFactory
             .getLogger(BaseChannelInterceptor.class);
 
     protected static long DELAY = 2000;
 
-    protected static String SUBSCRIBE_DESTINATION;
+    protected static final String USER_PREFIX = "/user";
+
+    protected String subscribeDestination;
 
     @Autowired
     protected SimpMessagingTemplate template;
@@ -46,7 +48,7 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
     }
 
     BaseChannelInterceptor(String destination) {
-        SUBSCRIBE_DESTINATION = destination;
+        subscribeDestination = destination;
     }
 
     protected Map<String, Object> sessionObject = new HashMap<>();
@@ -84,27 +86,14 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
         }
     }
 
-    private void default_method() {
-        System.out.println("MY CANT TAKE AN ACTION");
+    protected void connect(StompHeaderAccessor sha) {
+        LOGGER.debug("CONNECT [sessionId: " + sha.getSessionId() + "]");
     }
 
-    protected void send(StompHeaderAccessor sha) {
-        LOGGER.debug("SEND [sessionId: " + sha.getSessionId() + "]");
-    }
-
-    protected void disconnect(StompHeaderAccessor sha) {
-        LOGGER.debug("DISCONNECT [sessionId: " + sha.getSessionId() + "]");
-        sessions.remove(sha.getSessionId());
-    }
-
-    protected void connected(StompHeaderAccessor sha) {
-        LOGGER.debug("CONNECTED [sessionId: " + sha.getSessionId() + "]");
-    }
-
-    protected void subscribe(StompHeaderAccessor sha) {
+    private void subscribe(StompHeaderAccessor sha) {
         String sessionId = sha.getSessionId();
         LOGGER.debug("SUBSCRIBE [sessionId: " + sessionId + "]");
-        if (sha.getDestination().equals(SUBSCRIBE_DESTINATION)) {
+        if (sha.getDestination().equals(subscribeDestination)) {
             sessions.put(sessionId,
                     scheduler.scheduleWithFixedDelay(new Runnable() {
                         @Override
@@ -116,13 +105,28 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
         }
     }
 
-    protected void connect(StompHeaderAccessor sha) {
-        LOGGER.debug("CONNECT [sessionId: " + sha.getSessionId() + "]");
+    private void connected(StompHeaderAccessor sha) {
+        LOGGER.debug("CONNECTED [sessionId: " + sha.getSessionId() + "]");
     }
 
-    protected void nullCommand() {
+    protected void disconnect(StompHeaderAccessor sha) {
+        LOGGER.debug("DISCONNECT [sessionId: " + sha.getSessionId() + "]");
+        sessions.remove(sha.getSessionId());
+    }
+
+    private void send(StompHeaderAccessor sha) {
+        LOGGER.debug("SEND [sessionId: " + sha.getSessionId() + "]");
+    }
+
+    private void nullCommand() {
         System.out.println("NULL_COMMAND - ignored non-STOMP messages like heartbeat messages");
     }
 
+    private void default_method() {
+        System.out.println("MY CANT TAKE AN ACTION");
+    }
+
+    // TODO Resolve redundant sessionId paramter
+    // TODO (Required only for overriding in WindowsBlockChannelInterceptor.class)
     protected abstract void sendToTheUser(String name, String sessionId);
 }

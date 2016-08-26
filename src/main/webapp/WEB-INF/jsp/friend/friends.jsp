@@ -9,7 +9,7 @@
 <c:url value="/friends/userDetail" var="detailsUrl" />
 <c:url value="/friends/acceptUser" var="acceptUserUrl" />
 
-<!-- INVITE USER-->
+<!-- INVITE USER_PREFIX-->
 <c:url value="/friends/friendRequest" var="inviteUserUrl" />
 <!-- ACCEPT INVITATION-->
 <c:url value="/friends/acceptUser" var="acceptInvitationUrl" />
@@ -19,9 +19,9 @@
 <c:url value="/friends/remove" var="removeFriendshipUrl" />
 <!-- CANCEL INVITATION-->
 <c:url value="/friends/cancel" var="cancelInvitationUrl" />
-<!-- BLOCK USER-->
+<!-- BLOCK USER_PREFIX-->
 <c:url value="/friends/block" var="blockUserUrl" />
-<!-- UNBLOCK USER-->
+<!-- UNBLOCK USER_PREFIX-->
 <c:url value="/friends/unblock" var="unblockUserUrl" />
 
 

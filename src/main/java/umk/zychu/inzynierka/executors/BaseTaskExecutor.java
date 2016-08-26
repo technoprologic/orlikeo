@@ -55,6 +55,7 @@ public class BaseTaskExecutor {
     protected void removeAllBrokenEvents() {
         eventService.findAll().stream()
                 .filter(e -> null == e.getGraphic() && !e.getState().equals(inBasket))
+
                 .forEach(e -> eventService.delete(e));
     }
 

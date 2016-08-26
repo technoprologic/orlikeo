@@ -11,20 +11,16 @@ import java.io.Serializable;
 public class Friendship extends BaseEntity implements Serializable{
 
 	@ManyToOne 
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name="requester_id", referencedColumnName = "id")
 	@JsonIgnore
     private User friendRequester;
 	
 	@ManyToOne 
-    @JoinColumn(name="friend_id", referencedColumnName = "id")
+    @JoinColumn(name="target_id", referencedColumnName = "id")
 	@JsonIgnore
     private User friendAccepter;
-	
-	
-	@ManyToOne 
-    @JoinColumn(name="action_user_id", referencedColumnName = "id")
-	@JsonIgnore
-    private User actionUser;
+
+
 	
 	@Column(name = "state")
     Integer state;
@@ -33,17 +29,18 @@ public class Friendship extends BaseEntity implements Serializable{
 		super();
 	}
 		
-	public Friendship(User friendRequester, User friendAccepter) {
+	public Friendship(User friendRequester, User friendAccepter, Integer stateId) {
 		super();
-		this.actionUser = friendRequester;
+/*		this.actionUser = friendRequester;
 		if(friendRequester.getId() < friendAccepter.getId()){
 			User tmpUser = friendRequester;
 			friendRequester = friendAccepter;
 			friendAccepter = tmpUser;
-		}
+		}*/
+		this.actionUser = friendRequester;
 		this.friendRequester = friendRequester;
 		this.friendAccepter = friendAccepter;
-		this.state = 1;
+		this.state = stateId;
 	}
 	
 	public User getFriendRequester() {
@@ -77,9 +74,36 @@ public class Friendship extends BaseEntity implements Serializable{
 	public void setState(Integer state) {
 		this.state = state;
 	}
-		
+
+
+	//TODO Should be entities.
 	public static final int INVITED=1, 
 							ACCEPTED=2, 
 							DECLINED=3, 
 							BLOCKED = 4;
+
+	public static class Builder {
+		private User friendRequester;
+		private User friendAccepter;
+		//todo always friendRequester ?
+		private Integer state;
+
+
+		public Builder Builder(User requester, User targetUser, Integer stateId) {
+			this.friendRequester = requester;
+			this.friendAccepter = targetUser;
+			this.state = stateId;
+			return this;
+		}
+
+		public Builder setState(Integer stateId){
+			this.state = stateId;
+			return this;
+		}
+
+		public Friendship build(){
+
+		}
+
+	}
 }

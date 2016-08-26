@@ -49,7 +49,7 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
         User user = userService.getUser(username);
         if(user != null) {
             List<UserNotificationDTO> userNotifications = user.getUserNotifications().stream()
-                    .filter(un -> !un.getChecked())
+                    .filter(un -> !un.isChecked())
                     .map(un -> (new UserNotificationDTO(un)))
                     .collect(Collectors.toList());
             Collections.sort(userNotifications);
@@ -118,7 +118,7 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
         user.getUserNotifications().stream()
                 .filter(un -> !un.isChecked())
                 .forEach(un -> {
-            un.setChecked(true);
+            un.setChecked();
             userNotificationsService.save(un);
         });
     }
@@ -129,7 +129,7 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
                 .filter(un -> un.getId().equals(notifyId))
                 .findFirst()
                 .ifPresent(un -> {
-                    un.setChecked(true);
+                    un.setChecked();
                     userNotificationsService.save(un);
                 });
     }
