@@ -89,7 +89,6 @@ public class EventServiceImp implements EventService {
         }
     }
 
-
     @Override
     public void changeConcurrentEvents(Event event) {
         Graphic graphic = event.getGraphic();
@@ -231,12 +230,7 @@ public class EventServiceImp implements EventService {
             windowBlocks.add(getBlock(username, state, role, false));
         }
         windowBlocks.add(getBlock(username, eventStateService.findOne(EventState.APPROVED), role, true));
-        Collections.sort(windowBlocks, new Comparator<EventWindowBlock>() {
-            @Override
-            public int compare(EventWindowBlock lhs, EventWindowBlock rhs) {
-                return rhs.getDisplayOrder() - lhs.getDisplayOrder();
-            }
-        });
+        Collections.sort(windowBlocks, (lhs, rhs) -> rhs.getDisplayOrder() - lhs.getDisplayOrder());
         return windowBlocks;
     }
 
@@ -323,7 +317,7 @@ public class EventServiceImp implements EventService {
                     return 0;
             }
         });
-        return new ArrayList<UserGameDetails>(userGameDetails);
+        return new ArrayList<>(userGameDetails);
     }
 
     @Override
@@ -348,11 +342,12 @@ public class EventServiceImp implements EventService {
             Graphic graphic = graphicService.findOne(form.getGraphicId());
             EventState state = eventStateService.findOne(EventState.IN_PROGRESS);
             Integer playersLimit = form.getUsersLimit();
-            Event event = new Event(userOrganizer, graphic, state, playersLimit);
+            Event event = new Event.Builder(userOrganizer, graphic, playersLimit, state)
+                    .build();
             UserEventRole organizerRole = userEventRoleService.findOne(UserEventRole.ORGANIZER);
             UserDecision organizerDecision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
             UserEvent organizerUserEvent = new UserEvent(userOrganizer, organizerRole, organizerDecision, true, event, null);
-            List<UserEvent> usersEvents = new LinkedList<UserEvent>();
+            List<UserEvent> usersEvents = new LinkedList<>();
             usersEvents.add(organizerUserEvent);
             ArrayList<RegisterEventUser> regUsersList = form.getEventFormMembers() != null ? (ArrayList<RegisterEventUser>) form.getEventFormMembers() : new ArrayList<>();
             for (RegisterEventUser regEventUser : regUsersList) {
@@ -365,7 +360,6 @@ public class EventServiceImp implements EventService {
                     Boolean permission = regEventUser.getAllowed();
                     UserEvent ue = new UserEvent(userTarget, role, decision, permission, event, userOrganizer);
                     usersEvents.add(ue);
-
                 }
             }
             event.setUsersEvent(usersEvents);

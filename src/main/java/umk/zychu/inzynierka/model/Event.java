@@ -13,26 +13,26 @@ import java.util.List;
 public class Event extends BaseEntity {
 
 	@Column(name = "players_limit")
-	Integer playersLimit;
+	private Integer playersLimit;
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-	List<UserEvent> usersEvent;
+	private List<UserEvent> usersEvent;
 	
 	@Column(name="creation_date")
-	Date creationDate;
+	private Date creationDate;
 
 	@ManyToOne
 	@JoinColumn(name = "graphic_id", referencedColumnName = "id", nullable = true)
-	Graphic graphic;
+	private Graphic graphic;
 	
 	@ManyToOne
 	@JoinColumn(name = "state_id", referencedColumnName = "id")
-	EventState state;
+	private EventState state;
 	
 	@ManyToOne
 	@JoinColumn(name="user_organizer", referencedColumnName="id")
-	User userOrganizer;
+	private User userOrganizer;
 
 	public Integer getPlayersLimit() {
 		return playersLimit;
@@ -48,10 +48,6 @@ public class Event extends BaseEntity {
 	
 	public List<UserEvent> getUsersEvent(){
 		return this.usersEvent;
-	}
-	
-	public void setCreationDate(Date date){
-		creationDate = date;
 	}
 	
 	public Date getCreationDate(){
@@ -82,18 +78,35 @@ public class Event extends BaseEntity {
 		this.userOrganizer = userOrganizer;
 	}
 	
-	public Event(){
+	private Event(){
 		super();
 	}
 
-
-	//TODO Builder pattern.
-	public Event(User organizer, Graphic graphic, EventState state, Integer playersLimit){
+	private Event(Builder builder){
 		super();
-		this.userOrganizer = organizer;
-		this.graphic = graphic;
-		this.state = state;
-		this.playersLimit = playersLimit;
-		if(this.isNew()) this.creationDate = new Date();
-	}	
+		this.userOrganizer = builder.userOrganizer;
+		this.graphic = builder.graphic;
+		this.state = builder.state;
+		this.playersLimit = builder.playersLimit;
+		this.creationDate = new Date();
+	}
+
+	public static class Builder{
+		private User userOrganizer;
+		private Graphic graphic;
+		private Integer playersLimit;
+		private EventState state;
+
+		public Builder(final User organizer, final Graphic graphic, final Integer playersLimit, EventState state){
+			this.userOrganizer = organizer;
+			this.graphic = graphic;
+			this.playersLimit = playersLimit;
+			this.state = state;
+		}
+
+		public Event build(){
+			Event event = new Event(this);
+			return event;
+		}
+	}
 }
