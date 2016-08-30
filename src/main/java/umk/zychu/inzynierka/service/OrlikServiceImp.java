@@ -145,22 +145,27 @@ public class OrlikServiceImp implements OrlikService {
 	@Override
 	@Transactional
 	public OrlikForm saveOrUpdateOrlik(final OrlikForm form) {
-		Orlik orlik;
-		if(form.getId() != null) {
-			orlik = getOrlikById(form.getId());
-		}else {
-			orlik = new Orlik();
-		}
-		orlik.setAddress(form.getAddress());
-		orlik.setCity(form.getCity());
-		orlik.setLights(form.getLights());
-		orlik.setWater(form.getWater());
-		orlik.setShower(form.getShower());
-		orlik.setShoes(form.getShoes());
 		User animator = null;
 		if(form.getAnimatorEmail() != null)
 			animator = userService.getUser(form.getAnimatorEmail());
-		orlik.setAnimator(animator);
+		Orlik orlik;
+		if(form.getId() != null) {
+			orlik = getOrlikById(form.getId());
+			orlik.setAddress(form.getAddress());
+			orlik.setCity(form.getCity());
+			orlik.setLights(form.getLights());
+			orlik.setWater(form.getWater());
+			orlik.setShower(form.getShower());
+			orlik.setShoes(form.getShoes());
+			orlik.setAnimator(animator);
+		}else {
+			orlik = new Orlik.Builder(form.getAddress(), form.getCity(), animator)
+			.setLights(form.getLights())
+			.setWater(form.getWater())
+			.setShower(form.getShower())
+			.setShoes(form.getShoes())
+					.build();
+		}
 		orlik = saveOrlik(orlik);
 		form.setId(orlik.getId());
 		return form;

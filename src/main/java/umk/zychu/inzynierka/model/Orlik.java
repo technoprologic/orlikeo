@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -14,57 +15,44 @@ public class Orlik extends BaseEntity {
 	
 	@NotBlank
 	@Column(name = "address")
-	String address;
+	private String address;
 	
 	@NotBlank
 	@Column(name = "city")
-	String city;
+	private String city;
 	
 	@Column(name = "lights")
-	Boolean lights;
+	private Boolean lights;
 	
 	@Column(name = "water")	
-	Boolean water;
+	private Boolean water;
 	
 	@Column(name = "shower")	
-	Boolean shower;
+	private Boolean shower;
 	
 	@Column(name = "required_shoes")	
-	String shoes = "turf";
+	private String shoes = "turf";
 	
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "orlik", orphanRemoval = true)
 	private List<Graphic> graphicCollection;
-	
-/*	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(name = "orlik_manager", joinColumns = { @JoinColumn(name = "orlik_id", referencedColumnName = "id", nullable = false) }, 
-	inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false) })
-	List<User> orlikManagers;*/
-
-	/*	public List<User> getOrlikManagers() {
-		return orlikManagers;
-	}
-
-	public void setOrlikManagers(List<User> orlikManagers) {
-		this.orlikManagers = orlikManagers;
-	}*/
-
 
 	@OneToOne
-	@JoinColumn(name = "animator_id", nullable = true, unique = true)
-	User animator;
+	@JoinColumn(name = "animator_id", unique = true)
+	private User animator;
 
-	//TODO Builder pattern.
-	public Orlik(String address, String city, Boolean lights, Boolean water, Boolean shower, String shoes, User animator, List<Graphic> graphicCollection) {
-		this.address = address;
-		this.city = city;
-		this.lights = lights;
-		this.water = water;
-		this.shower = shower;
-		this.shoes = shoes;
-		this.animator = animator;
-		this.graphicCollection = graphicCollection;
+	private Orlik(){}
+
+	private Orlik(Builder builder) {
+		super();
+		this.address = builder.address;
+		this.city = builder.city;
+		this.lights = builder.lights;
+		this.water = builder.water;
+		this.shower = builder.shower;
+		this.shoes = builder.shoes;
+		this.animator = builder.animator;
+		this.graphicCollection = new ArrayList<>();
 	}
 
 	public User getAnimator() {
@@ -73,10 +61,6 @@ public class Orlik extends BaseEntity {
 
 	public void setAnimator(User animator) {
 		this.animator = animator;
-	}
-
-	public Orlik(){
-		super();
 	}
 	
 	public void setAddress(String address){
@@ -127,18 +111,53 @@ public class Orlik extends BaseEntity {
 		return shoes;		
 	}
 
-	/**
-	 * @return the graphicCollection
-	 */
 	public List<Graphic> getGraphicCollection() {
 		return graphicCollection;
 	}
 
-	/**
-	 * @param graphicCollection the graphicCollection to set
-	 */
-	public void setGraphicCollection(List<Graphic> graphicCollection) {
-		this.graphicCollection = graphicCollection;
+	public static class Builder {
+		private String address;
+		private String city;
+		private User animator;
+		private Boolean lights;
+		private Boolean water;
+		private Boolean shower;
+		private String shoes;
+
+		public Builder(final String address, final String city, final User animator) {
+			this.address = address;
+			this.city = city;
+			this.animator = animator;
+			this.shower = Boolean.FALSE;
+			this.lights = Boolean.FALSE;
+			this.water = Boolean.FALSE;
+			this.shoes = "turf";
+		}
+
+		public Builder setShower(final Boolean hasShower){
+			this.shower = hasShower;
+			return this;
+		}
+
+		public Builder setLights(final Boolean hasLight){
+			this.lights = hasLight;
+			return this;
+		}
+
+		public Builder setWater(final Boolean hasWater){
+			this.water = hasWater;
+			return this;
+		}
+
+		public Builder setShoes(final String shoes){
+			this.shoes = shoes;
+			return this;
+		}
+
+		public Orlik build(){
+			Orlik orlik = new Orlik(this);
+			return orlik;
+		}
 	}
 
 }

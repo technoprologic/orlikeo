@@ -12,7 +12,7 @@ public enum FriendshipType{
 
     private String meaning;
 
-    private FriendshipType(int id, String meaning){
+    FriendshipType(int id, String meaning){
         this.id = id;
         this.meaning = meaning;
     }
