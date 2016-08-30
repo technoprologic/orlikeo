@@ -72,9 +72,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void createNewUser(RegisterUserBean registerUserBean) {
-		User newUser = new User();
-		newUser.setEmail(registerUserBean.getEmail());
-		newUser.setPassword(passEncoder.encode(registerUserBean.getPassword()));
+		User newUser = new User.Builder(registerUserBean.getEmail(), passEncoder.encode(registerUserBean.getPassword()))
+				.build();
 		saveUser(newUser);
 	}
 	

@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("serial")
 @Entity
@@ -70,6 +69,27 @@ public class User extends BaseEntity
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<UserNotification> userNotifications;
+
+	private User(){}
+
+	private User(Builder builder) {
+		super();
+		this.email = builder.email;
+		this.password = builder.password;
+		this.name = builder.name;
+		this.surname = builder.surname;
+		this.dateOfBirth = builder.dateOfBirth;
+		this.position = builder.position;
+		this.weight = builder.weight;
+		this.height = builder.weight;
+		this.foot = builder.foot;
+		this.friendRequesterList = new ArrayList<>();
+		this.friendAccepterList = new ArrayList<>();
+		this.usersEventsFriendsInvited = new ArrayList<>();
+		this.organizedEvents = new ArrayList<>();
+		this.userEvents = new ArrayList<>();
+		this.userNotifications = new ArrayList<>();
+	}
 
 	public List<UserNotification> getUserNotifications() {
 		return userNotifications;
@@ -152,10 +172,6 @@ public class User extends BaseEntity
 		this.foot = foot;
 	}
 	
-	public void setUserEvents(List<UserEvent> userEvents){
-		this.userEvents = userEvents;
-	}
-	
 	public List<UserEvent> getUserEvents(){
 		return this.userEvents;
 	}
@@ -163,6 +179,7 @@ public class User extends BaseEntity
 	public List<UserEvent> getUsersEventsFriendsInvited() {
 		return usersEventsFriendsInvited;
 	}
+
 	public void setUsersEventsFriendsInvited(
 			List<UserEvent> usersEventsFriendsInvited) {
 		this.usersEventsFriendsInvited = usersEventsFriendsInvited;
@@ -186,5 +203,70 @@ public class User extends BaseEntity
 	public String toString() {
 		return "User [email=" + email + ", userEvents=" + userEvents
 				+ "]";
+	}
+
+	public static class Builder{
+		private String email;
+
+		private String password;
+
+		private String name;
+
+		private String surname;
+
+		private Date dateOfBirth;
+
+		private String position;
+
+		private Integer weight;
+
+		private Integer height;
+
+		private String foot;
+
+		public Builder(final String email, final String password){
+			this.email = email;
+			this.password = password;
+			this.name = "Imie";
+			this.surname = "Nazwisko";
+			this.dateOfBirth = new Date();
+			this.position = "Nie ustawiono";
+			this.weight = 0;
+			this.height = 0;
+			this.foot = "nie ustawiono";
+		}
+
+		public void setName(final String name){
+			this.name = name;
+		}
+
+		public void setSurname(final String surname){
+			this.surname = surname;
+		}
+
+		public void setDateOfBirth(final Date dateOfBirth){
+			this.dateOfBirth = dateOfBirth;
+		}
+
+		public void setPosition(final String position){
+			this.position = position;
+		}
+
+		public void setWeight(final Integer weight){
+			this.weight = weight;
+		}
+
+		public void setHeight(final Integer height){
+			this.height = height;
+		}
+
+		public void setFoot(final String foot){
+			this.foot = foot;
+		}
+
+		public User build(){
+			User user = new User(this);
+			return user;
+		}
 	}
 }

@@ -58,9 +58,9 @@ public class GraphicController {
 			Graphic graphic = i;
 			EventState approved = eventStateService.findOne(EventState.APPROVED);
             EventState treatened = eventStateService.findOne(EventState.THREATENED);
-			if(graphic.getEvents().size() == 1 && (graphic.getEvents().get(0).getState().equals(approved) || graphic.getEvents().get(0).getState().equals(treatened))){
+			if(graphic.getEvents().size() == 1 && (graphic.getEvents().iterator().next().getState().equals(approved) || graphic.getEvents().iterator().next().getState().equals(treatened))){
 				graphic.setAvailable(false);
-				graphic.setTitle("Rezerwacja: " + graphic.getEvents().get(0).getUserOrganizer().getEmail());
+				graphic.setTitle("Rezerwacja: " + graphic.getEvents().iterator().next().getUserOrganizer().getEmail());
 			}
 			JsonEventObject jObj = new JsonEventObject(graphic);
 			graphicEntityList.add(jObj);
