@@ -49,7 +49,6 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
     }
 
-
     @Override
     public List<UserNotification> findAll() {
         return userNotificationsDAO.findAll();
@@ -152,9 +151,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     }
 
     @Override
-    public void eventsLostRaceForGraphic(List<Event> events) {
+    public void eventsLostRaceForGraphic(Set<Event> events) {
         if (!events.isEmpty()) {
-            Graphic graphic = events.get(0).getGraphic();
+            Graphic graphic = events.stream().findFirst().get().getGraphic();
             String address = graphic.getOrlik().getAddress();
             String date = ftStart.format(graphic.getStartTime()) + " - " + ftEnd.format(graphic.getEndTime());
             String subject = "Wydarzenie przegrało wyścig o termin";
@@ -193,9 +192,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void invitation(Friendship friendship) {
         String title = "Zaproszenie do znajomych!";
-        String description = "Od użytkownika " + friendship.getActionUser().getEmail();
-        User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = FRIEND_USER_DETAIL + friendship.getActionUser().getEmail();
+        String description = "Od użytkownika " + friendship.getRequester().getEmail();
+        User targetUser = friendship.getTarget();
+        String href = FRIEND_USER_DETAIL + friendship.getRequester().getEmail();
         UserNotification notify = new UserNotification.Builder(targetUser, title, description)
                 .link(href)
                 .build();
@@ -205,9 +204,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void acceptation(Friendship friendship) {
         String title = "Masz nowego znajomego!";
-        String description = "Użytkownika " + friendship.getActionUser().getEmail() + " zaaceptował Twoje zaproszenie.";
-        User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
+        String description = "Użytkownika " + friendship.getRequester().getEmail() + " zaaceptował Twoje zaproszenie.";
+        User targetUser = friendship.getRequester().equals(friendship.getTarget()) ? friendship.getRequester() : friendship.getTarget();
+        String href = "/friends/userDetail/" + friendship.getRequester().getEmail();
         UserNotification notify = new UserNotification.Builder(targetUser,
                 title, description)
                 .link(href)
@@ -218,9 +217,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void denial(Friendship friendship) {
         String title = "Twoje zaproszenie zostało odrzucone!";
-        String description = "Użytkownik " + friendship.getActionUser().getEmail() + " odrzucił zaproszenie.";
-        User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
+        String description = "Użytkownik " + friendship.getRequester().getEmail() + " odrzucił zaproszenie.";
+        User targetUser = friendship.getRequester().equals(friendship.getTarget()) ? friendship.getRequester() : friendship.getTarget();
+        String href = "/friends/userDetail/" + friendship.getRequester().getEmail();
         UserNotification notify = new UserNotification.Builder(targetUser,
                 title, description)
                 .link(href)
@@ -231,9 +230,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void blocking(Friendship friendship) {
         String title = "Zostałeś zablokowany!";
-        String description = "Użytkownik " + friendship.getActionUser().getEmail() + " zablokował Cię.";
-        User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
+        String description = "Użytkownik " + friendship.getRequester().getEmail() + " zablokował Cię.";
+        User targetUser = friendship.getRequester().equals(friendship.getTarget()) ? friendship.getRequester() : friendship.getTarget();
+        String href = "/friends/userDetail/" + friendship.getRequester().getEmail();
         UserNotification notify = new UserNotification.Builder(targetUser,
                 title, description)
                 .link(href)
@@ -244,9 +243,9 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void unblocking(Friendship friendship) {
         String title = "Zostałeś odblokowany!";
-        String description = "Użytkownik " + friendship.getActionUser().getEmail() + " odblokował Cię.";
-        User targetUser = friendship.getActionUser().equals(friendship.getFriendAccepter()) ? friendship.getFriendRequester() : friendship.getFriendAccepter();
-        String href = "/friends/userDetail/" + friendship.getActionUser().getEmail();
+        String description = "Użytkownik " + friendship.getRequester().getEmail() + " odblokował Cię.";
+        User targetUser = friendship.getRequester().equals(friendship.getTarget()) ? friendship.getRequester() : friendship.getTarget();
+        String href = "/friends/userDetail/" + friendship.getRequester().getEmail();
         UserNotification notify = new UserNotification.Builder(targetUser,
                 title,
                 description)
@@ -345,4 +344,6 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     public void delete(UserNotification userNotification) {
         userNotificationsDAO.delete(userNotification);
     }
+
+    //todo user notification page exception when user doesn't have notifications
 }

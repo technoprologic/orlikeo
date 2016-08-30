@@ -8,12 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
+import umk.zychu.inzynierka.model.FriendshipType;
 import umk.zychu.inzynierka.model.User;
+import umk.zychu.inzynierka.model.UserEvent;
 import umk.zychu.inzynierka.model.UserNotification;
 import umk.zychu.inzynierka.repository.FriendshipDaoRepository;
 import umk.zychu.inzynierka.repository.UserDaoRepository;
 
+import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -107,23 +113,22 @@ public class UserServiceImpl implements UserService {
 	public void removeAccount() {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = getUser(username);
-		user.getOrganizedEvents()
-						.stream()
-						.flatMap(e -> {
-							return userNotificationsService.findAll().stream()
-									.filter(n -> n.getLink().contains("event")
-											&& n.getLink().contains(e.getId().toString()));
-						})
-						.forEach(un -> userNotificationsService.delete(un));
-		user.getUserFriends().forEach(u -> {
-			UserNotification un = new UserNotification.Builder(u,
-					username + " usunął konto",
-					"Wszystkie wydarzenia użytkownika zostały unieważnione")
-					.build();
-			userNotificationsService.save(un);
-		});
-		delete(user);
 
+		Set<User> forNotify = user.getOrganizedEvents().stream()
+				.filter(e -> null != e.getGraphic() && e.getGraphic().getStartTime().after(new Date()))
+				.flatMap(e -> e.getUsersEvent().stream()).collect(Collectors.toList())
+				.stream()
+				.map(UserEvent::getUser)
+				.collect(Collectors.toSet());
+		forNotify.stream()
+				.forEach(u -> {
+					UserNotification un = new UserNotification.Builder(u,
+							username + " usunął konto",
+							"Wszystkie wydarzenia użytkownika zostały unieważnione")
+							.build();
+					userNotificationsService.save(un);
+				});
+		delete(user);
 	}
 
 	@Override

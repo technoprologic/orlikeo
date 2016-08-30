@@ -5,9 +5,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"  %>
 
-
-
-
 <c:url value="/admin/edit" var="editOrlikUrl" />
 <script type="text/javascript">
 	window.saved = '${saved}';
@@ -54,7 +51,7 @@
 						<form:label path="water">Woda</form:label>
 						<br/>
 						<form:errors path="water" cssClass="error" />
-							<%--<spring:message code="web.account.edit.position.placeholder" var="positionPlaceholder"/>--%>
+							<%--<spring:message code="web.account.edit.friendshipRequestType.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="water">
 							<form:options items="${orlikForm.chooser}"/>
 						</form:select>
@@ -65,7 +62,7 @@
 						<form:label path="shower">Prysznic</form:label>
 						<br/>
 						<form:errors path="shower" cssClass="error" />
-							<%--<spring:message code="web.account.edit.position.placeholder" var="positionPlaceholder"/>--%>
+							<%--<spring:message code="web.account.edit.friendshipRequestType.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="shower">
 							<form:options items="${orlikForm.chooser}"/>
 						</form:select>

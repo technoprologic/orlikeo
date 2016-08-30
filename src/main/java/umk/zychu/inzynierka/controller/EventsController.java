@@ -16,13 +16,13 @@ import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.service.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 
 @Controller
 @RequestMapping("/events")
@@ -62,7 +62,7 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String editForm(@RequestParam(value="event", required=false) Integer id, Map<String, Object> model) {
+	public String editForm(final @RequestParam(value="event", required=false) Integer id, final Map<String, Object> model) {
 		ChoosenOrlikBean choosenOrlikBean = new ChoosenOrlikBean();
 		model.put("choosenOrlikBean", choosenOrlikBean);
 		model.put("orliks", orlikService.getOrliksIdsAndNames());
@@ -73,8 +73,8 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register( @ModelAttribute("registerEventForm") RegisterEventForm form, 
-			ModelMap model, BindingResult result, HttpServletRequest request) {		
+	public String register( final @ModelAttribute("registerEventForm") RegisterEventForm form,
+			ModelMap model, final BindingResult result) {
 		if(result.hasErrors()) 
 			return "error";
 		Event event = eventService.registerEventForm(form);
@@ -88,8 +88,9 @@ public class EventsController {
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public String show(
 			@RequestParam(value = "page", required = false) String page,
-			@RequestParam(value = "state", required = false) Integer stateId,
-			Model model, Principal principal) {
+			final @RequestParam(value = "state", required = false) Integer stateId,
+			final Model model,
+			final Principal principal) {
 		EventType eventType = null;
 		UserEventRole userEventRole = null;
 		if (page != null) {
@@ -119,10 +120,10 @@ public class EventsController {
 	
 	@RequestMapping(value = "/decision/{eventId}", method = RequestMethod.GET)
 	public String userEventDecision(
-			@PathVariable("eventId") Integer eventId,
-			@RequestParam(value = "decision", required = true) Boolean decision,
-			@RequestParam(value = "page", required = false) String page,
-			@RequestParam(value = "state", required = false) Integer stateId) {
+			final @PathVariable("eventId") Integer eventId,
+			final @RequestParam(value = "decision") Boolean decision,
+			final @RequestParam(value = "page", required = false) String page,
+			final @RequestParam(value = "state", required = false) Integer stateId) {
 		Optional<Event> eventOpt = eventService.getEventById(eventId);
 		if (!eventOpt.isPresent()) {
 			return "redirect:/";
@@ -158,7 +159,7 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value = "/details/{event}", method = RequestMethod.GET)
-	public String details(@PathVariable("event") Integer id, ModelMap model, Principal principal) {
+	public String details(final @PathVariable("event") Integer id, final ModelMap model, final Principal principal) {
 		User user = userService.getUser(principal.getName());	
 		try{
 			Optional<Event> ev = eventService.getEventById(id);
@@ -208,9 +209,9 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value= "/remove", method = RequestMethod.POST)
-	public String removeEvent(@RequestParam("eventToRemoveId") Integer id,
-			@RequestParam(value = "state", required = false) Integer stateId,
-			@RequestParam(value="page", required=false) String page) {
+	public String removeEvent(final @RequestParam("eventToRemoveId") Integer id,
+			final @RequestParam(value = "state", required = false) Integer stateId,
+			final @RequestParam(value="page", required=false) String page) {
 		try{
 			eventService.delete(id);
 		}
@@ -233,7 +234,9 @@ public class EventsController {
 	}
 
 	@RequestMapping(value = "/edit/{eventId}", method = RequestMethod.GET)
-	public String editGet(@PathVariable("eventId") Integer id, ModelMap model, Principal principal) {
+	public String editGet(final @PathVariable("eventId") Integer id,
+						  final ModelMap model,
+						  final Principal principal) {
 		User loggedUser = userService.getUser(principal.getName());
 		Optional<Event> eventOpt = eventService.getEventById(id);
 		if(eventOpt.isPresent()){
@@ -266,7 +269,10 @@ public class EventsController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String editPost( @ModelAttribute("editEventForm") RegisterEventForm form, BindingResult result, Principal principal, RedirectAttributes redirectAttr) {
+	public String editPost(final @ModelAttribute("editEventForm") RegisterEventForm form,
+						   final BindingResult result,
+						   final Principal principal,
+						   final RedirectAttributes redirectAttr) {
 		if(result.hasErrors()){
 			return "redirect:/events";
 		}		
@@ -285,7 +291,9 @@ public class EventsController {
 	}
 	
 	@RequestMapping(value = "/reserve/{eventId}/{graphicId}", method = RequestMethod.GET)
-	public String reserve(@PathVariable("eventId") Integer eventId, @PathVariable("graphicId") Integer graphicId, RedirectAttributes redir) {
+	public String reserve(final @PathVariable("eventId") Integer eventId,
+						  final @PathVariable("graphicId") Integer graphicId,
+						  final RedirectAttributes redirectAttrs) {
 		try {
 			Optional<Event> ev = eventService.getEventById(eventId);
 			if(ev.isPresent()){
@@ -312,17 +320,18 @@ public class EventsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		redir.addFlashAttribute("saved","true");
+		redirectAttrs.addFlashAttribute("saved","true");
 		return "redirect:/events/edit/" + eventId;
 	}
 
 	@RequestMapping(value = "/reserve/{graphicId}", method = RequestMethod.GET)
-	public String reserve(@PathVariable("graphicId") Integer graphicId, Model model) {
+	public String reserve(final @PathVariable("graphicId") Integer graphicId,
+						  final Model model) {
 		try {
 			Graphic graphicEntity = graphicService.findOne(graphicId);
 			Orlik orlik = graphicEntity.getOrlik();	
-			List<User> userFriends = friendshipService.getFriendsByState(Friendship.ACCEPTED);
-			List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
+			List<User> userFriends = friendshipService.getFriends(null, ACCEPT);
+			List<RegisterEventUser> users = new ArrayList<>();
 	
 			for(User u : userFriends){
 				RegisterEventUser e = new RegisterEventUser(u.getId(), false, false, u.getEmail(), u.getDateOfBirth(), u.getPosition(), null);

@@ -7,17 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @SuppressWarnings("serial")
 @Entity
 @Table(name="event_state")
 public class EventState extends BaseEntity{
 	
 	@Column(name="state")
-	String state;
+	private String state;
 	
 	@OneToMany(mappedBy = "state")
-	List<Event> events;
+	private List<Event> events;
 	
 	public void setState(String state){
 		this.state = state;

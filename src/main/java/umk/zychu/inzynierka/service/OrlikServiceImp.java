@@ -47,15 +47,8 @@ public class OrlikServiceImp implements OrlikService {
 		return map;
 	}
 
-/*
 	@Override
-	public List<User> getOrlikManagersByOrlik(Orlik orlik) {
-		return orlik.getOrlikManagers();
-	}
-*/
-
-	@Override
-	public List<UserGameDetails> getAllByManager(String username) {
+	public List<UserGameDetails> getAllByManager(final String username) {
 		User manager = userService.getUser(username);
 		Optional<Orlik> optOrlik = orlikDAO.findAll().stream()
 				.filter(o -> o.getAnimator() != null && o.getAnimator().equals(manager))
@@ -66,7 +59,7 @@ public class OrlikServiceImp implements OrlikService {
 					.findAll()
 					.stream()
 					.filter(e -> e.getGraphic() != null && e.getGraphic().getOrlik().equals(orlik))
-					//.peek(e -> System.out.println(e.getId()))
+					//.peek(e -> System.out.println(e.getValue()))
 					.flatMap(e -> e.getUsersEvent().stream())
 					.filter(ue -> ue.getUser().equals(
 							ue.getEvent().getUserOrganizer()))
@@ -92,7 +85,7 @@ public class OrlikServiceImp implements OrlikService {
 						else
 							return 0;
 					})
-					//.peek(ue -> System.out.println(ue.getId()))
+					//.peek(ue -> System.out.println(ue.getValue()))
 					.collect(Collectors.toList());
 			return eventService
 					.generateUserGameDetailsList(organizersUserEvents);
@@ -134,14 +127,14 @@ public class OrlikServiceImp implements OrlikService {
 	}
 
 	@Override
-	public Optional<Orlik> getAnimatorOrlik(User user) {
+	public Optional<Orlik> getAnimatorOrlik(final User user) {
 		return orlikDAO.findAll().stream()
 				.filter(o -> o.getAnimator() != null && o.getAnimator().equals(user))
 				.findFirst();
 	}
 
 	@Override
-	public Boolean isOrlikManager(User user) {
+	public Boolean isOrlikManager(final User user) {
 		if(orlikDAO.findAll().stream()
 				.filter(o -> o.getAnimator() != null && o.getAnimator().equals(user))
 				.count() > 0)
@@ -151,7 +144,7 @@ public class OrlikServiceImp implements OrlikService {
 
 	@Override
 	@Transactional
-	public OrlikForm saveOrUpdateOrlik(OrlikForm form) {
+	public OrlikForm saveOrUpdateOrlik(final OrlikForm form) {
 		Orlik orlik;
 		if(form.getId() != null) {
 			orlik = getOrlikById(form.getId());

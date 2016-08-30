@@ -6,104 +6,71 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-@Entity 
+@Entity
 @Table(name = "friendship")
-public class Friendship extends BaseEntity implements Serializable{
+public class Friendship extends BaseEntity implements Serializable {
 
-	@ManyToOne 
-    @JoinColumn(name="requester_id", referencedColumnName = "id")
-	@JsonIgnore
-    private User friendRequester;
-	
-	@ManyToOne 
-    @JoinColumn(name="target_id", referencedColumnName = "id")
-	@JsonIgnore
-    private User friendAccepter;
+    @ManyToOne
+    @JoinColumn(name = "requester_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User requester;
 
+    @ManyToOne
+    @JoinColumn(name = "target_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User target;
 
-	
-	@Column(name = "state")
-    Integer state;
-    
-	public Friendship() {
-		super();
-	}
-		
-	public Friendship(User friendRequester, User friendAccepter, Integer stateId) {
-		super();
-/*		this.actionUser = friendRequester;
-		if(friendRequester.getId() < friendAccepter.getId()){
-			User tmpUser = friendRequester;
-			friendRequester = friendAccepter;
-			friendAccepter = tmpUser;
-		}*/
-		this.actionUser = friendRequester;
-		this.friendRequester = friendRequester;
-		this.friendAccepter = friendAccepter;
-		this.state = stateId;
-	}
-	
-	public User getFriendRequester() {
-		return friendRequester;
-	}
+    @Column(name = "state")
+    private Integer state;
 
-	public void setFriendRequester(User friendRequester) {
-		this.friendRequester = friendRequester;
-	}
+    private Friendship(){ super(); }
 
-	public User getFriendAccepter() {
-		return friendAccepter;
-	}
+    private Friendship(Builder builder) {
+        super();
+        this.requester = builder.requester;
+        this.target = builder.target;
+        this.state = builder.state;
+    }
 
-	public void setFriendAccepter(User friendAccepter) {
-		this.friendAccepter = friendAccepter;
-	}
+    public Friendship changeState(User userRequester, User target, FriendshipType state) {
+        this.requester = userRequester;
+        this.target = target;
+        this.state = state.getValue();
+        return this;
+    }
 
-	public User getActionUser() {
-		return actionUser;
-	}
+    public User getRequester() {
+        return requester;
+    }
 
-	public void setActionUser(User actionUser) {
-		this.actionUser = actionUser;
-	}
+    public User getTarget() {
+        return target;
+    }
 
-	public Integer getState() {
-		return state;
-	}
+    public FriendshipType getState() {
+        return FriendshipType.fromId(state);
+    }
 
-	public void setState(Integer state) {
-		this.state = state;
-	}
+    public static class Builder {
+        User requester;
+        User target;
+        Integer state;
 
+        public Builder(User requester, User targetUser, FriendshipType state) {
+            this.requester = requester;
+            this.target = targetUser;
+            this.state = state.getValue();
+        }
 
-	//TODO Should be entities.
-	public static final int INVITED=1, 
-							ACCEPTED=2, 
-							DECLINED=3, 
-							BLOCKED = 4;
+        public Builder setState(Integer state) {
+            this.state = state;
+            return this;
+        }
 
-	public static class Builder {
-		private User friendRequester;
-		private User friendAccepter;
-		//todo always friendRequester ?
-		private Integer state;
+        public Friendship build() {
+            Friendship f = new Friendship(this);
+            return f;
+        }
+    }
 
-
-		public Builder Builder(User requester, User targetUser, Integer stateId) {
-			this.friendRequester = requester;
-			this.friendAccepter = targetUser;
-			this.state = stateId;
-			return this;
-		}
-
-		public Builder setState(Integer stateId){
-			this.state = stateId;
-			return this;
-		}
-
-		public Friendship build(){
-
-		}
-
-	}
 }

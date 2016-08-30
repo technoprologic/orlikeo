@@ -7,6 +7,7 @@ import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.repository.GraphicDaoRepository;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -49,31 +50,14 @@ public class GraphicServiceImp implements GraphicService{
 		graphicDAO.delete(entity);
 	}
 	
-	private void reduceConnectedEvents(Graphic graphic) {
+	private void reduceConnectedEvents(final Graphic graphic) {
 		UserDecision invited = userEventDecisionService.findOne(UserDecision.INVITED);
 		UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
 		UserDecision rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
 		UserEventRole guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
 		EventState inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
 		EventState toAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
-		List<Event> events = graphic.getEvents();
-		if (!events.isEmpty()) {
-			for (Event e : events) {
-				e.getUsersEvent()
-						.stream()
-						.filter(ue -> (ue.getDecision().equals(accepted) || ue.getDecision().equals(rejected)) 
-								&& ue.getRole().equals(guestRole))
-						.forEach((o) -> {
-							o.setDecision(invited);
-							userEventService.save(o);
-						});
-				e.setGraphic(null);
-				if(e.getState().equals(toAcceptState)){
-					eventToApproveService.removeEventFromWaitingForCheckByManager(e);
-				}
-				e.setState(inBasket);
-				eventService.save(e);
-			}
-		}
+		Set<Event> events = graphic.getEvents();
+		eventService.downgradeEventToBasket(events);
 	}
 }

@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserEventServiceImp implements UserEventService {
 
+	private final int changeStatusBarrier = 3;
+
 	@Autowired
 	UserEventDaoRepository userEventDAO;
 	@Autowired
@@ -25,13 +27,12 @@ public class UserEventServiceImp implements UserEventService {
 	UserService userService;
 	@Autowired
 	UserEventDecisionService userEventDecisionService;
+
 	@Autowired
 	UserNotificationsService userNotificationsService;
-	
+
 	@Autowired
 	EventToApproveService eventToApproveService;
-	
-	private final int changeStatusBarrier = 3;
 
 	@Override
 	public UserEvent save(UserEvent event) {
@@ -87,7 +88,7 @@ public class UserEventServiceImp implements UserEventService {
 	public List<User> findUsersByEventAndDecision(Event event, UserDecision decision) {
 		List<User> members = event.getUsersEvent().stream()
 				.filter((x) -> x.getDecision().equals(decision))
-				.map(ue -> ue.getUser())
+				.map(UserEvent::getUser)
 				.collect(Collectors.toList());
 		return members;
 	}
@@ -104,7 +105,7 @@ public class UserEventServiceImp implements UserEventService {
 			Boolean canInvite) {
 		List<User> users = event.getUsersEvent().stream()
 				.filter(ue -> ue.getUserPermission() == canInvite)
-				.map(ue ->ue.getUser())
+				.map(UserEvent::getUser)
 				.collect(Collectors.toList());
 		return users;
 	}

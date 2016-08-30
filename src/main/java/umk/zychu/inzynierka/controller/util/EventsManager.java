@@ -108,7 +108,7 @@ public class EventsManager extends DHXEventsManager {
 				UserDecision.INVITED);
 		graphic.getEvents()
 				.stream()
-				.map(e -> e.getUsersEvent())
+				.map(Event::getUsersEvent)
 				.flatMap(ue -> ue.stream())
 				.filter(ue -> ue.getRole().equals(guestRole)
 						&& !ue.getDecision().equals(notInvited))

@@ -3,6 +3,7 @@ package umk.zychu.inzynierka.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,25 +29,25 @@ public class Graphic implements Serializable{
     private Integer id;
 	
 	@Column(name="title")
-	String title;
+	private String title;
 	
 	@Column(name="start_time")
-	Date startTime;
+	private Date startTime;
 	
 	@Column(name="end_time")
-	Date endTime;
+	private Date endTime;
 	
 	@Column(name="available")
-	Boolean available;
+	private Boolean available;
 	
 	@ManyToOne
 	@JoinColumn(name="orlik_id", referencedColumnName="id")
-	Orlik orlik;
+	private Orlik orlik;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="graphic")
-	List<Event> events;
+	private Set<Event> events;
 	
-	public Graphic(){
+	private Graphic(){
 	}
 	
 	public Graphic(DHXEv event, Orlik orlik) {
@@ -98,11 +99,11 @@ public class Graphic implements Serializable{
 		return orlik;
 	}
 	
-	public void setEvent(List<Event> events){
+	public void setEvent(Set<Event> events){
 		this.events = events;
 	}
 	
-	public List<Event> getEvents(){
+	public Set<Event> getEvents(){
 		return this.events;
 	}
 	

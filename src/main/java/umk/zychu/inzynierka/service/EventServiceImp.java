@@ -13,8 +13,11 @@ import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.repository.EventDaoRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 
 @Service
 @Transactional
@@ -22,6 +25,19 @@ public class EventServiceImp implements EventService {
 
     private static final org.slf4j.Logger logger = LoggerFactory
             .getLogger(EventServiceImp.class);
+
+    private UserDecision invited;
+
+    private UserDecision accepted;
+
+    private UserDecision rejected;
+
+    private UserEventRole guestRole;
+
+    private EventState inBasket;
+
+    private EventState readyToAcceptState;
+
     @Autowired
     EventDaoRepository eventDAO;
     @Autowired
@@ -46,6 +62,16 @@ public class EventServiceImp implements EventService {
     //next 48hrs
     private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
+    @PostConstruct
+    private void setDecisions() {
+        invited = userEventDecisionService.findOne(UserDecision.INVITED);
+        accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
+        rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
+        guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
+        inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
+        readyToAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
+    }
+
     @Override
     public void acceptEvent(Integer id) {
         Event event = eventDAO.findOne(id);
@@ -66,17 +92,21 @@ public class EventServiceImp implements EventService {
 
     @Override
     public void changeConcurrentEvents(Event event) {
-        UserDecision invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        UserDecision rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
-        UserEventRole guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
-        EventState inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
-        EventState readyToAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
         Graphic graphic = event.getGraphic();
-        List<Event> events = graphic.getEvents().stream()
+        Set<Event> events = graphic.getEvents().stream()
                 .filter(e -> !e.equals(event))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         userNotificationsService.eventsLostRaceForGraphic(events);
+        downgradeEventToBasket(events);
+    }
+
+    @Override
+    public void delete(Event e) {
+        delete(e.getId());
+    }
+
+    @Override
+    public void downgradeEventToBasket(Set<Event> events) {
         if (!events.isEmpty()) {
             for (Event e : events) {
                 e.getUsersEvent()
@@ -103,9 +133,15 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
+    public Optional<Event> getEventById(Integer id) {
+        eventDAO.findOne(id);
+        return Optional.ofNullable(eventDAO.findOne(id));
+    }
+
+    @Override
     public RegisterEventForm generateRegisterEventForm(Event event) {
         List<UserEvent> usersEvents = event.getUsersEvent();
-        List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED);
+        List<User> friends = friendshipService.getFriends(null, ACCEPT);
         List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
 
         for (UserEvent userEvent : usersEvents) {
@@ -143,64 +179,6 @@ public class EventServiceImp implements EventService {
         return new RegisterEventForm(event.getId(), users);
     }
 
-    private UserGameDetails generateUserGameDetails(UserEvent userEvent) {
-        UserDecision accept = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        UserDecision not_invited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
-        Event event = userEvent.getEvent();
-        Integer orlikId = 0;
-        String address = "";
-        String city = "";
-        Date startDate = null;
-        Date endDate = null;
-        Boolean lights = false, water = false, shower = false;
-        String shoes = "-";
-        if (event.getGraphic() != null) {
-            Graphic graphic = event.getGraphic();
-            startDate = graphic.getStartTime();
-            endDate = graphic.getEndTime();
-            Orlik orlik = graphic.getOrlik();
-            orlikId = orlik.getId();
-            address = orlik.getAddress();
-            city = orlik.getCity();
-            lights = orlik.getLights();
-            water = orlik.getWater();
-            shower = orlik.getShower();
-            shoes = orlik.getShoes();
-        }
-        Integer eventId = event.getId();
-        Integer stateId = event.getState().getId();
-        String organizerEmail = event.getUserOrganizer().getEmail();
-        Integer decisionId = userEvent.getDecision().getId();
-        Integer roleId = userEvent.getRole().getId();
-        Boolean permission = userEvent.getUserPermission();
-        long willCome = event.getUsersEvent().stream()
-                .filter(ue -> ue.getDecision().equals(accept))
-                .count();
-        int playersLimit = event.getPlayersLimit();
-        long invited = event.getUsersEvent().stream()
-                .filter(ue -> !ue.getDecision().equals(not_invited))
-                .count();
-        return new UserGameDetails(
-                eventId,
-                stateId,
-                orlikId,
-                address,
-                city,
-                organizerEmail,
-                startDate,
-                endDate,
-                decisionId,
-                roleId,
-                permission,
-                playersLimit,
-                willCome,
-                invited,
-                lights,
-                water,
-                shower,
-                shoes);
-    }
-
     @Override
     public List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents) {
         List<UserGameDetails> userGamesDetailsList = new LinkedList<UserGameDetails>();
@@ -211,113 +189,6 @@ public class EventServiceImp implements EventService {
             userGamesDetailsList.add(userGameDetails);
         }
         return userGamesDetailsList;
-    }
-
-    private EventWindowBlock getBlock(EventState state, UserEventRole role,
-                                      Boolean incoming) {
-        User user = userService.getUser(SecurityContextHolder.getContext()
-                .getAuthentication().getName());
-        return generateBlock(user, state, role, incoming);
-    }
-
-    private EventWindowBlock generateBlock(User user, EventState state, UserEventRole role, Boolean incoming) {
-        List<UserEvent> userEvents = new ArrayList<>();
-        userEvents.addAll(user.getUserEvents());
-        if (state != null)
-            userEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
-        if (role != null)
-            userEvents.removeIf(ue -> !ue.getRole().equals(role));
-        if (incoming) {
-            Date now = new Date();
-            Date endDate = incomingEventsDateInterval;
-            Date todayAndTomorrow = new Date(endDate.getYear(),
-                    endDate.getMonth(), endDate.getDate());
-            userEvents.removeIf(ue -> null == ue.getEvent().getGraphic() || ue.getEvent().getGraphic()
-                    .getStartTime().after(todayAndTomorrow));
-        }
-        Collections.sort(userEvents, new Comparator<UserEvent>() {
-            @Override
-            public int compare(UserEvent lhs, UserEvent rhs) {
-                // return 1 if rhs should be before lhs
-                // return -1 if lhs should be before rhs
-                // return 0 otherwise
-                Graphic lgraphic = lhs.getEvent().getGraphic();
-                Graphic rgraphic = rhs.getEvent().getGraphic();
-                if (lgraphic == null || rgraphic == null) {
-                    if (lgraphic == null && rgraphic == null)
-                        return 0;
-                    else if (lgraphic == null)
-                        return -1;
-                    else
-                        return 1;
-                }
-                if (rgraphic.getStartTime()
-                        .before(lgraphic.getStartTime()))
-                    return 1;
-                else if (lgraphic.getStartTime()
-                        .before(rgraphic.getStartTime()))
-                    return -1;
-                else
-                    return 0;
-            }
-        });
-        Event event = !userEvents.isEmpty() ? userEvents.get(0).getEvent() : null;
-        Graphic graphic = event != null ? event.getGraphic() : null;
-        Orlik orlik = graphic != null ? graphic.getOrlik() : null;
-        UserDecision decision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        long goingToCome = event != null ? event.getUsersEvent().stream()
-                .filter(ue -> ue.getDecision().equals(decision)).count() : 0;
-        String address = orlik != null ? orlik.getAddress() : "";
-        String city = orlik != null ? orlik.getCity() : "";
-        Date startTime = graphic != null ? graphic.getStartTime() : null;
-        Date endTime = graphic != null ? graphic.getEndTime() : null;
-        Integer playersLimit = event != null ? event.getPlayersLimit() : 0;
-        Integer size = userEvents.size();
-        String label;
-        Integer displayOrder;
-        switch (state.getId()) {
-            case 1:
-                label = "Kosz";
-                displayOrder = 0;
-                address = "brak orlika";
-                break;
-            case 2:
-                label = "W budowie";
-                displayOrder = 1;
-                break;
-            case 3:
-                label = "Do akceptacji";
-                displayOrder = 2;
-                break;
-            case 4:
-                label = "Zagrożony";
-                displayOrder = 3;
-                break;
-            case 5:
-                if (!incoming) {
-                    label = "Przyjęty";
-                    displayOrder = 4;
-                } else {
-                    label = "Nadchodzący";
-                    displayOrder = 5;
-                }
-                break;
-            default:
-                label = "";
-                displayOrder = -1;
-                break;
-        }
-
-        EventWindowBlock block = new EventWindowBlock(label, displayOrder,
-                state.getId(), address, city, startTime, endTime, playersLimit,
-                goingToCome, size, incoming);
-        return block;
-    }
-
-    @Override
-    public Optional<Event> getEventById(Integer id) {
-        eventDAO.findOne(id);
-        return Optional.ofNullable(eventDAO.findOne(id));
     }
 
     @Override
@@ -367,11 +238,6 @@ public class EventServiceImp implements EventService {
             }
         });
         return windowBlocks;
-    }
-
-    private EventWindowBlock getBlock(String username, EventState state, UserEventRole role, boolean incoming) {
-        User user = userService.getUser(username);
-        return generateBlock(user, state, role, incoming);
     }
 
     @Override
@@ -544,11 +410,6 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public void delete(Event e) {
-        delete(e.getId());
-    }
-
-    @Override
     public Event findOne(Integer id) {
         return eventDAO.findOne(id);
     }
@@ -644,5 +505,168 @@ public class EventServiceImp implements EventService {
                             }
                         });
         Event ev = eventDAO.findOne(event.getId());
+    }
+
+    private EventWindowBlock getBlock(EventState state, UserEventRole role, Boolean incoming) {
+        User user = userService.getUser(SecurityContextHolder.getContext()
+                .getAuthentication().getName());
+        return generateBlock(user, state, role, incoming);
+    }
+
+    private EventWindowBlock getBlock(String username, EventState state, UserEventRole role, boolean incoming) {
+        User user = userService.getUser(username);
+        return generateBlock(user, state, role, incoming);
+    }
+
+    private EventWindowBlock generateBlock(User user, EventState state, UserEventRole role, Boolean incoming) {
+        List<UserEvent> userEvents = new ArrayList<>();
+        userEvents.addAll(user.getUserEvents());
+        if (state != null)
+            userEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
+        if (role != null)
+            userEvents.removeIf(ue -> !ue.getRole().equals(role));
+        if (incoming) {
+            Date now = new Date();
+            Date endDate = incomingEventsDateInterval;
+            Date todayAndTomorrow = new Date(endDate.getYear(),
+                    endDate.getMonth(), endDate.getDate());
+            userEvents.removeIf(ue -> null == ue.getEvent().getGraphic() || ue.getEvent().getGraphic()
+                    .getStartTime().after(todayAndTomorrow));
+        }
+        Collections.sort(userEvents, new Comparator<UserEvent>() {
+            @Override
+            public int compare(UserEvent lhs, UserEvent rhs) {
+                // return 1 if rhs should be before lhs
+                // return -1 if lhs should be before rhs
+                // return 0 otherwise
+                Graphic lgraphic = lhs.getEvent().getGraphic();
+                Graphic rgraphic = rhs.getEvent().getGraphic();
+                if (lgraphic == null || rgraphic == null) {
+                    if (lgraphic == null && rgraphic == null)
+                        return 0;
+                    else if (lgraphic == null)
+                        return -1;
+                    else
+                        return 1;
+                }
+                if (rgraphic.getStartTime()
+                        .before(lgraphic.getStartTime()))
+                    return 1;
+                else if (lgraphic.getStartTime()
+                        .before(rgraphic.getStartTime()))
+                    return -1;
+                else
+                    return 0;
+            }
+        });
+        Event event = !userEvents.isEmpty() ? userEvents.get(0).getEvent() : null;
+        Graphic graphic = event != null ? event.getGraphic() : null;
+        Orlik orlik = graphic != null ? graphic.getOrlik() : null;
+        UserDecision decision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
+        long goingToCome = event != null ? event.getUsersEvent().stream()
+                .filter(ue -> ue.getDecision().equals(decision)).count() : 0;
+        String address = orlik != null ? orlik.getAddress() : "";
+        String city = orlik != null ? orlik.getCity() : "";
+        Date startTime = graphic != null ? graphic.getStartTime() : null;
+        Date endTime = graphic != null ? graphic.getEndTime() : null;
+        Integer playersLimit = event != null ? event.getPlayersLimit() : 0;
+        Integer size = userEvents.size();
+        String label;
+        Integer displayOrder;
+        switch (state.getId()) {
+            case 1:
+                label = "Kosz";
+                displayOrder = 0;
+                address = "brak orlika";
+                break;
+            case 2:
+                label = "W budowie";
+                displayOrder = 1;
+                break;
+            case 3:
+                label = "Do akceptacji";
+                displayOrder = 2;
+                break;
+            case 4:
+                label = "Zagrożony";
+                displayOrder = 3;
+                break;
+            case 5:
+                if (!incoming) {
+                    label = "Przyjęty";
+                    displayOrder = 4;
+                } else {
+                    label = "Nadchodzący";
+                    displayOrder = 5;
+                }
+                break;
+            default:
+                label = "";
+                displayOrder = -1;
+                break;
+        }
+
+        EventWindowBlock block = new EventWindowBlock(label, displayOrder,
+                state.getId(), address, city, startTime, endTime, playersLimit,
+                goingToCome, size, incoming);
+        return block;
+    }
+
+    private UserGameDetails generateUserGameDetails(UserEvent userEvent) {
+        UserDecision accept = userEventDecisionService.findOne(UserDecision.ACCEPTED);
+        UserDecision not_invited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+        Event event = userEvent.getEvent();
+        Integer orlikId = 0;
+        String address = "";
+        String city = "";
+        Date startDate = null;
+        Date endDate = null;
+        Boolean lights = false, water = false, shower = false;
+        String shoes = "-";
+        if (event.getGraphic() != null) {
+            Graphic graphic = event.getGraphic();
+            startDate = graphic.getStartTime();
+            endDate = graphic.getEndTime();
+            Orlik orlik = graphic.getOrlik();
+            orlikId = orlik.getId();
+            address = orlik.getAddress();
+            city = orlik.getCity();
+            lights = orlik.getLights();
+            water = orlik.getWater();
+            shower = orlik.getShower();
+            shoes = orlik.getShoes();
+        }
+        Integer eventId = event.getId();
+        Integer stateId = event.getState().getId();
+        String organizerEmail = event.getUserOrganizer().getEmail();
+        Integer decisionId = userEvent.getDecision().getId();
+        Integer roleId = userEvent.getRole().getId();
+        Boolean permission = userEvent.getUserPermission();
+        long willCome = event.getUsersEvent().stream()
+                .filter(ue -> ue.getDecision().equals(accept))
+                .count();
+        int playersLimit = event.getPlayersLimit();
+        long invited = event.getUsersEvent().stream()
+                .filter(ue -> !ue.getDecision().equals(not_invited))
+                .count();
+        return new UserGameDetails(
+                eventId,
+                stateId,
+                orlikId,
+                address,
+                city,
+                organizerEmail,
+                startDate,
+                endDate,
+                decisionId,
+                roleId,
+                permission,
+                playersLimit,
+                willCome,
+                invited,
+                lights,
+                water,
+                shower,
+                shoes);
     }
 }

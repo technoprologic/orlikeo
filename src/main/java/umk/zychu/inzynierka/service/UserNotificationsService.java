@@ -3,6 +3,7 @@ package umk.zychu.inzynierka.service;
 import umk.zychu.inzynierka.model.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by emagdnim on 2015-09-12.
@@ -22,7 +23,7 @@ public interface UserNotificationsService {
 
     void eventWonRaceForGraphic(Event event);
 
-    void eventsLostRaceForGraphic(List<Event> events);
+    void eventsLostRaceForGraphic(Set<Event> events);
 
     List<UserNotification> findAll();
 

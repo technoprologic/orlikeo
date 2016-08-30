@@ -14,7 +14,6 @@
         http://www.springframework.org/schema/data/jpa
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-
 	<jpa:repositories base-package="umk.zychu.inzynierka.repository"
 					  entity-manager-factory-ref="entityManagerFactory"
 					  transaction-manager-ref="transactionManager"/>
@@ -51,7 +50,4 @@
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-
-
-
 </beans>  

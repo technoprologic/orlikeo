@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import umk.zychu.inzynierka.model.Friendship;
+import umk.zychu.inzynierka.model.FriendshipType;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.service.FriendshipService;
 import umk.zychu.inzynierka.service.UserNotificationsService;
@@ -15,27 +16,32 @@ import umk.zychu.inzynierka.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
+
+import static umk.zychu.inzynierka.model.FriendshipType.*;
 
 @Controller
 @RequestMapping("/friends")
 public class FriendsController {
 
 	@Autowired
-	FriendshipService friendshipService;
+	private FriendshipService friendshipService;
+
 	@Autowired
-	UserService userService;
+	private UserService userService;
+
 	@Autowired
-	UserNotificationsService userNotificationsService;
+	private UserNotificationsService userNotificationsService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String getFriends(ModelMap model) {
-		List<User> friends = friendshipService.getFriendsByState(Friendship.ACCEPTED); 
+	public String getFriends(final ModelMap model) {
+		List<User> friends = friendshipService.getFriends(null, ACCEPT);
 		model.addAttribute("friends", friends);	
-		List<User> friendsPendedRequests = friendshipService.getPendedFriendshipRequests();
-		model.addAttribute("friendsPendedRequests", friendsPendedRequests);
-		List<User> friendsReceivedRequests = friendshipService.getReceivedFriendshipRequests();
-		model.addAttribute("friendsReceivedRequests", friendsReceivedRequests);
-		List<User> blockedUsers = friendshipService.getBlockedUsers();
+		List<User> sentInvitations = friendshipService.getFriends(Boolean.TRUE, INVITE);
+		model.addAttribute("friendsPendedRequests", sentInvitations);
+		List<User> receiveInvitations = friendshipService.getFriends(Boolean.FALSE, INVITE);
+		model.addAttribute("friendsReceivedRequests", receiveInvitations);
+		List<User> blockedUsers = friendshipService.getFriends(Boolean.TRUE, BLOCK);
 		model.addAttribute("blockedUsers", blockedUsers);
 		return "friends";
 	}
@@ -46,11 +52,9 @@ public class FriendsController {
 	}
 	
 	@RequestMapping(value="/search", method = RequestMethod.POST)
-	public String searchFriendsPost(@RequestParam("email") String email, ModelMap model) {
+	public String searchFriend(final @RequestParam("email") String email, final ModelMap model) {
 		if(userService.checkIfUserExists(email)){
-			User friendTarget = userService.getUser(email);
-			model.addAttribute("userEmail", friendTarget.getEmail());
-			System.out.println("user dodany do widoku");			
+			model.addAttribute("userEmail", email);
 		}else{
 			model.addAttribute("notFound", true);
 		}
@@ -59,76 +63,58 @@ public class FriendsController {
 	
 	@SuppressWarnings("finally")
 	@RequestMapping(value="/friendRequest", method = RequestMethod.POST)
-	public String addFriend(@RequestParam("email") String email, Principal principal) {
-		try{
-			User user = userService.getUser(principal.getName());
-			User invitedUser = userService.getUser(email);
-			System.out.println("userId: " + user.getId() + " and friendId: " + invitedUser.getId());
-			friendshipService.inviteUserToFriends(user, invitedUser);
-		}catch(Exception e){
-			System.out.println("Exception: " + e);
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		}
+	public String addFriend(final @RequestParam("email") String email) {
+		return consumeRequest(email, INVITE);
 	}
 
 	
 	@SuppressWarnings("finally")
 	@RequestMapping(value="/acceptUser", method = RequestMethod.POST)
-	public String acceptFriendRequest(@RequestParam("email") String email){
-		try{	
-			friendshipService.acceptUserInvitation(email);
-		}catch(Exception e){
-			System.out.println("Exception: " + e);
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		}
+	public String acceptFriendRequest(final @RequestParam("email") String email){
+		return consumeRequest(email, ACCEPT);
 	}
 	
 	@RequestMapping(value="/userDetail/{email:.+}", method = RequestMethod.GET)
-	public String otherUserProfile(@PathVariable("email") String email, ModelMap model, Principal principal){	
+	public String otherUserProfile(final @PathVariable("email") String email, final ModelMap model, final Principal principal){
 		User user = userService.getUser(principal.getName());
 		User userRequest = userService.getUser(email);
+		//if self
 		if(user.getEmail().equals(userRequest.getEmail())){
 			return "redirect:/account/profile/" + email;
 		}
+
+		Optional<Friendship> friendshipOptional = friendshipService.getFriendship(userRequest);
+		Friendship friendship = friendshipOptional.get();
 		boolean allowToSeeProfile = true;
-		if(!friendshipService.checkIfTheyHadContacted(user, userRequest)){
+
+		if(!friendshipOptional.isPresent()){
 			model.addAttribute("contact", "without");
+			allowToSeeProfile = true;
 		}else{
-			Friendship friendship = friendshipService.getUsersFriendship(user, userRequest);
-			if(friendship != null){
-				System.out.println("user1: " + friendship.getFriendRequester().getEmail() 
-								+ " user1: " + friendship.getFriendAccepter().getEmail()
-								+ " actionUser: " + friendship.getActionUser().getEmail()
-								+ " state: " + friendship.getState());
-				int friendshipState = friendship.getState();
-				long actionUserId = friendship.getActionUser().getId();
-				switch(friendshipState){
-					case 1:	if(user.getId() == actionUserId){
-								model.addAttribute("contact", "pendingRequester");
-							}else{
-								model.addAttribute("contact", "pendingReceiver");
-							}
-							break;
-					case 2: model.addAttribute("contact", "friends");
-							break;
-					case 3:	if(user.getId() == actionUserId){
-								model.addAttribute("contact", "decliner");
-							}else{
-								model.addAttribute("contact", "declined");
-							}
-							break;
-					case 4:	if(user.getId() == actionUserId){
-								model.addAttribute("contact", "blocker");
-								model.addAttribute("unblockEmail", userRequest.getEmail());
-							}else{
-								model.addAttribute("contact", "blocked");
-							}
-							allowToSeeProfile = false;
-							break;
+				boolean isRequester = friendship.getRequester().equals(user);
+				switch(friendship.getState()) {
+					case INVITE:
+						model.addAttribute("contact", isRequester ? "pendingRequester" : "pendingReceiver");
+						break;
+					case ACCEPT:
+						model.addAttribute("contact", "friends");
+						break;
+					case DECLINE:
+						model.addAttribute("contact", isRequester ? "decliner" : "declined");
+						break;
+					case BLOCK:
+						if (isRequester) {
+							model.addAttribute("contact", "blocker");
+							model.addAttribute("unblockEmail", userRequest.getEmail());
+						} else {
+							model.addAttribute("contact", "blocked");
+						}
+						allowToSeeProfile = false;
+						break;
+					default:
+						model.addAttribute("contact", "without");
+						break;
 				}
-			}
 		}
 		if(allowToSeeProfile){
 			model.addAttribute("user", userRequest);
@@ -139,62 +125,38 @@ public class FriendsController {
 
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
-	public String cancelInvitation(@RequestParam("email") String email){
-		try{
-			friendshipService.cancelFriendInvitation(email);
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		} 		
+	public String cancelInvitation(final @RequestParam("email") String email){
+		return consumeRequest(email, CANCEL);
 	}
 	
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/block", method = RequestMethod.POST)
-	public String blockUser(@RequestParam("email") String email){
-		try{
-			friendshipService.blockUser(email);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		} 	
+	public String blockUser(final @RequestParam("email") String email){
+		return  consumeRequest(email, BLOCK);
 	}
-	
-	@SuppressWarnings("finally")
+
 	@RequestMapping(value = "/reject", method = RequestMethod.POST)
-	public String rejectFriendRequest(@RequestParam("email") String email){
-		try{
-			friendshipService.rejectUserFriendRequest(email);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		} 	
-	}
-	
-	@SuppressWarnings("finally")
+	public String rejectFriendRequest(final @RequestParam("email") String email){
+		return consumeRequest(email, DECLINE);
+		}
+
 	@RequestMapping(value = "/unblock", method = RequestMethod.POST)
-	public String unblockUser(@RequestParam("email") String email){
-		try{
-			friendshipService.unblockUser(email);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			return "redirect:/friends/userDetail/" + email;
-		} 	
+	public String unblockUser(final @RequestParam("email") String email){
+		return consumeRequest(email, REMOVE);
 	}
-	
-	@SuppressWarnings("finally")
+
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	public String removeFriendship(@RequestParam("email") String email){
+	public String removeFriendship(final @RequestParam("email") String email){
+		return consumeRequest(email, REMOVE);
+	}
+
+	private String consumeRequest(final String email, final FriendshipType type){
 		try{
-			friendshipService.removeFriendship(email);
+			friendshipService.changeFriendshipStatus(email, type);
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
 			return "redirect:/friends/userDetail/" + email;
-		} 	
+		}
 	}
 }

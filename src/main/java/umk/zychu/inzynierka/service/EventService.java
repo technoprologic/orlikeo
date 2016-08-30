@@ -11,6 +11,7 @@ import umk.zychu.inzynierka.model.UserEventRole;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface EventService {
     void acceptEvent(Integer id);
@@ -18,6 +19,8 @@ public interface EventService {
     void delete(Integer id);
 
     void changeConcurrentEvents(Event event);
+
+    void downgradeEventToBasket(Set<Event> events);
 
     List<Event> findAll();
 

@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.model;
 
-
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
@@ -23,55 +22,41 @@ public class User extends BaseEntity
 	@NotBlank
 	@Size(min = 6)
 	@Column(name = "email")
-	String email;
+	private String email;
 	
     @NotBlank
     @Size(min = 6)
     @Column(name = "password")
-    String password;
+    private String password;
 	
 	@Column(name = "name")
-	String name;
+	private String name;
 	
 	@Column(name = "surname")
-	String surname;
+	private String surname;
 	
 	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_birth")
-	Date dateOfBirth;
+	private Date dateOfBirth;
 	
 	@Column(name = "position")
-	String position;
+	private String position;
 	
 	@Column(name = "weight")
-	Integer weight;
+	private Integer weight;
 	
 	@Column(name = "height")
-	Integer  height;
+	private Integer  height;
 	
 	@Column(name = "foot")
-	String foot;
+	private String foot;
 
-	public void setFriendRequesterList(List<Friendship> friendRequesterList) {
-		this.friendRequesterList = friendRequesterList;
-	}
-
-	public void setFriendAccepterList(List<Friendship> friendAccepterList) {
-		this.friendAccepterList = friendAccepterList;
-	}
-
-	@OneToMany(mappedBy="friendRequester", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="requester", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Friendship> friendRequesterList;
 
-	@OneToMany(mappedBy="friendAccepter", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="target", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Friendship> friendAccepterList;
-
-	@OneToMany(mappedBy = "actionUser", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
-	private List<Friendship> actionUsersList;
-	
-	/*@ManyToMany(mappedBy = "orlikManagers")
-    private List<Orlik> isOrliksManager;*/
 
 	@OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
 	private List<UserEvent> usersEventsFriendsInvited;
@@ -83,52 +68,16 @@ public class User extends BaseEntity
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
 	private List<UserEvent> userEvents;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
+	private List<UserNotification> userNotifications;
+
 	public List<UserNotification> getUserNotifications() {
 		return userNotifications;
 	}
 
-	public void setUserNotifications(List<UserNotification> userNotifications) {
-		this.userNotifications = userNotifications;
-	}
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
-	private List<UserNotification> userNotifications;
-
-	
-	public List<Friendship> getFriendships(){
-		List<Friendship> friendships = new ArrayList<Friendship>();
-		friendships.addAll(getFriendAccepterList());
-		friendships.addAll(getFriendRequesterList());
-		return friendships;
-	}
-
-	public List<User> getUserFriends(){
-		User user = this;
-		return getFriendships().stream()
-				.map(f -> {
-					if(f.getFriendAccepter().equals(user)) {
-						return f.getFriendRequester();
-					}
-					else {
-						return f.getFriendAccepter();
-					}
-				}).collect(Collectors.toList());
-	}
-	
 	public List<Event> getOrganizedEvents() {
 		return organizedEvents;
 	}
-	public void setOrganizedEvents(List<Event> organizedEvents) {
-		this.organizedEvents = organizedEvents;
-	}
-
-/*	public List<Orlik> getIsOrliksManager() {
-		return isOrliksManager;
-	}
-
-	public void setIsOrliksManager(List<Orlik> isOrliksManager) {
-		this.isOrliksManager = isOrliksManager;
-	}*/
 
 	//getter and setter methods
 	public String getEmail() {
@@ -210,13 +159,7 @@ public class User extends BaseEntity
 	public List<UserEvent> getUserEvents(){
 		return this.userEvents;
 	}
-	
-	public List<Friendship> getActionUsersList() {
-		return actionUsersList;
-	}
-	public void setActionUsersList(List<Friendship> actionUsersList) {
-		this.actionUsersList = actionUsersList;
-	}
+
 	public List<UserEvent> getUsersEventsFriendsInvited() {
 		return usersEventsFriendsInvited;
 	}
@@ -227,9 +170,11 @@ public class User extends BaseEntity
 	public List<Friendship> getFriendRequesterList() {
 		return friendRequesterList;
 	}
+
 	public List<Friendship> getFriendAccepterList() {
 		return friendAccepterList;
 	}
+
 	public void setWeight(Integer weight) {
 		this.weight = weight;
 	}
