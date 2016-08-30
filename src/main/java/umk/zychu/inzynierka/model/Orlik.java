@@ -43,7 +43,7 @@ public class Orlik extends BaseEntity {
 
 	private Orlik(){}
 
-	private Orlik(Builder builder) {
+	private Orlik(final Builder builder) {
 		super();
 		this.address = builder.address;
 		this.city = builder.city;

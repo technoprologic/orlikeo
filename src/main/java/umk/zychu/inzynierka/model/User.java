@@ -72,7 +72,7 @@ public class User extends BaseEntity
 
 	private User(){}
 
-	private User(Builder builder) {
+	private User(final Builder builder) {
 		super();
 		this.email = builder.email;
 		this.password = builder.password;
@@ -196,34 +196,17 @@ public class User extends BaseEntity
 		this.weight = weight;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "User [email=" + email + ", userEvents=" + userEvents
-				+ "]";
-	}
-
 	public static class Builder{
+
 		private String email;
-
 		private String password;
-
 		private String name;
-
 		private String surname;
-
 		private Date dateOfBirth;
-
 		private String position;
-
 		private Integer weight;
-
 		private Integer height;
-
 		private String foot;
-
 		public Builder(final String email, final String password){
 			this.email = email;
 			this.password = password;
@@ -268,5 +251,14 @@ public class User extends BaseEntity
 			User user = new User(this);
 			return user;
 		}
+	}
+
+	/* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+	@Override
+	public String toString() {
+		return "User [email=" + email + ", userEvents=" + userEvents
+				+ "]";
 	}
 }

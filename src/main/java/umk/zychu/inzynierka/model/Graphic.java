@@ -50,7 +50,7 @@ public class Graphic implements Serializable{
 	private Graphic(){
 	}
 	
-	public Graphic(DHXEv event, Orlik orlik) {
+	public Graphic(final DHXEv event, final Orlik orlik) {
 		super();
 		this.title = event.getText();
 		this.startTime = event.getStart_date();

@@ -14,13 +14,13 @@ public class UserAdmin extends BaseEntity {
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OneToOne(orphanRemoval = true)
-    User admin;
+    private User admin;
 
     public User getAdmin() {
         return admin;
     }
 
-    public void setAdmin(User admin) {
+    public void setAdmin(final User admin) {
         this.admin = admin;
     }
 }

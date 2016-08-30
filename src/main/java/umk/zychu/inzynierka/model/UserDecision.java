@@ -22,7 +22,7 @@ public class UserDecision extends BaseEntity {
 		super();
 	}
 	
-	public UserDecision(String userDecision) {
+	public UserDecision(final String userDecision) {
 		super();
 		this.userDecision = userDecision;
 	}

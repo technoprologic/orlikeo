@@ -293,29 +293,26 @@ public class EventServiceImp implements EventService {
                 gd.setStateId(6);
             }
         });
-        Collections.sort(userGameDetails, new Comparator<UserGameDetails>() {
-            @Override
-            public int compare(UserGameDetails o1, UserGameDetails o2) {
-                // return 1 if rhs should be before lhs
-                // return -1 if lhs should be before rhs
-                // return 0 otherwise
-                Date ldate = o1.getStartDate();
-                Date rdate = o2.getStartDate();
-                if (ldate == null || rdate == null) {
-                    if (ldate == null && rdate == null)
-                        return 0;
-                    else if (ldate == null)
-                        return 1;
-                    else
-                        return -1;
-                }
-                if (rdate.before(ldate))
-                    return 1;
-                else if (ldate.before(rdate))
-                    return -1;
-                else
+        Collections.sort(userGameDetails, (o1, o2) -> {
+            // return 1 if rhs should be before lhs
+            // return -1 if lhs should be before rhs
+            // return 0 otherwise
+            Date ldate = o1.getStartDate();
+            Date rdate = o2.getStartDate();
+            if (ldate == null || rdate == null) {
+                if (ldate == null && rdate == null)
                     return 0;
+                else if (ldate == null)
+                    return 1;
+                else
+                    return -1;
             }
+            if (rdate.before(ldate))
+                return 1;
+            else if (ldate.before(rdate))
+                return -1;
+            else
+                return 0;
         });
         return new ArrayList<>(userGameDetails);
     }
@@ -346,7 +343,9 @@ public class EventServiceImp implements EventService {
                     .build();
             UserEventRole organizerRole = userEventRoleService.findOne(UserEventRole.ORGANIZER);
             UserDecision organizerDecision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-            UserEvent organizerUserEvent = new UserEvent(userOrganizer, organizerRole, organizerDecision, true, event, null);
+            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null,  event, organizerRole, organizerDecision)
+                    .setPermission(Boolean.TRUE)
+                    .build();
             List<UserEvent> usersEvents = new LinkedList<>();
             usersEvents.add(organizerUserEvent);
             ArrayList<RegisterEventUser> regUsersList = form.getEventFormMembers() != null ? (ArrayList<RegisterEventUser>) form.getEventFormMembers() : new ArrayList<>();
@@ -358,7 +357,9 @@ public class EventServiceImp implements EventService {
                             : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
                     UserEventRole role = userEventRoleService.findOne(UserEventRole.GUEST);
                     Boolean permission = regEventUser.getAllowed();
-                    UserEvent ue = new UserEvent(userTarget, role, decision, permission, event, userOrganizer);
+                    UserEvent ue = new UserEvent.Builder(userTarget, userOrganizer, event, role, decision)
+                            .setPermission(permission)
+                            .build();
                     usersEvents.add(ue);
                 }
             }
@@ -480,7 +481,9 @@ public class EventServiceImp implements EventService {
                         decision = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
                         permission = true;
                     }
-                    UserEvent ue = new UserEvent(u, role, decision, permission, event, user);
+                    UserEvent ue = new UserEvent.Builder(u, user, event, role, decision)
+                            .setPermission(permission)
+                            .build();
                     userEventService.save(ue);
                 });
         // are no longer event members

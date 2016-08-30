@@ -25,14 +25,14 @@ public class Friendship extends BaseEntity implements Serializable {
 
     private Friendship(){ super(); }
 
-    private Friendship(Builder builder) {
+    private Friendship(final Builder builder) {
         super();
         this.requester = builder.requester;
         this.target = builder.target;
         this.state = builder.state;
     }
 
-    public Friendship changeState(User userRequester, User target, FriendshipType state) {
+    public Friendship changeState(final User userRequester, final User target, final FriendshipType state) {
         this.requester = userRequester;
         this.target = target;
         this.state = state.getValue();
@@ -56,13 +56,13 @@ public class Friendship extends BaseEntity implements Serializable {
         User target;
         Integer state;
 
-        public Builder(User requester, User targetUser, FriendshipType state) {
+        public Builder(final User requester, final User targetUser, final FriendshipType state) {
             this.requester = requester;
             this.target = targetUser;
             this.state = state.getValue();
         }
 
-        public Builder setState(Integer state) {
+        public Builder setState(final Integer state) {
             this.state = state;
             return this;
         }
