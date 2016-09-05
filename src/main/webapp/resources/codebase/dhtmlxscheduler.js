@@ -1904,7 +1904,8 @@ dhtmlxError.catchError("LoadXML", function(a, b, c){
 
 	switch (scheduler.config.ajax_error){
 		case "alert":
-			window.alert(message);
+			/*window.alert(message);*/
+            window.console.log(message);
 			break;
 		case "console":
 			window.console.log(message);

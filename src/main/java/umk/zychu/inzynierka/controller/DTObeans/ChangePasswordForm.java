@@ -2,6 +2,10 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 public class ChangePasswordForm {
 
+    private String oldPassword;
+    private String newPassword;
+    private String newPasswordConfirm;
+
     public String getOldPassword() {
         return oldPassword;
     }
@@ -25,8 +29,4 @@ public class ChangePasswordForm {
     public void setNewPasswordConfirm(String newPasswordConfirm) {
         this.newPasswordConfirm = newPasswordConfirm;
     }
-
-    private String oldPassword;
-    private String newPassword;
-    private String newPasswordConfirm;
 }
