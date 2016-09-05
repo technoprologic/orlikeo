@@ -24,11 +24,13 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.interceptors.BaseChannelInterceptor.CHANNEL_DEBUG;
+
 @Service
 public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(AnimatorChannelInterceptor.class);
+            .getLogger(UserNotificationsChannelInterceptor.class);
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -39,22 +41,8 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
     private Map<String, ScheduledFuture> userNotificationsSessions;
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
-
     public UserNotificationsChannelInterceptor() {
-        // TODO Auto-generated constructor stub
-        userNotificationsSessions = new Hashtable<String, ScheduledFuture>();
-    }
-
-    private void sendNotificationToUser(String username){
-        User user = userService.getUser(username);
-        if(user != null) {
-            List<UserNotificationDTO> userNotifications = user.getUserNotifications().stream()
-                    .filter(un -> !un.isChecked())
-                    .map(un -> (new UserNotificationDTO(un)))
-                    .collect(Collectors.toList());
-            Collections.sort(userNotifications);
-            template.convertAndSendToUser(username, "/notifications/dedicated", userNotifications);
-        }
+        userNotificationsSessions = new Hashtable<>();
     }
 
     @Override
@@ -63,17 +51,15 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(message);
         // ignore non-STOMP messages like heartbeat messages
         if (sha.getCommand() == null) {
-            System.out
-                    .println("ignored non-STOMP messages like heartbeat messages");
             return;
         }
         String sessionId = sha.getSessionId();
         switch (sha.getCommand()) {
             case CONNECT:
-                LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
                 break;
             case SUBSCRIBE:
-                LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
                 if (sha.getDestination().equals("/user/notifications/dedicated")) {
                     userNotificationsSessions.put(sessionId,
                             scheduler.scheduleWithFixedDelay(new Runnable() {
@@ -87,16 +73,14 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
                 }
                 break;
             case CONNECTED:
-                LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
-                System.out.println("MY CONNECTED sessionid: " + " " + sessionId);
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
                 break;
             case DISCONNECT:
-                LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
-                System.out.println("MY DISCONNECT sessionid: " + " " + sessionId);
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
                 userNotificationsSessions.remove(sessionId);
                 break;
             case SEND:
-                System.out.println("Send command: " + " " + sessionId);
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP SEND [sessionId: " + sessionId + "]");
                 if(sha.getDestination().equals("/user/notifications/dedicated")
                         && sha.toNativeHeaderMap().containsKey("checked")){
                         Integer checked = Integer.decode(sha.getNativeHeader("checked").get(0));
@@ -108,8 +92,20 @@ public class UserNotificationsChannelInterceptor extends ChannelInterceptorAdapt
                 }
                 break;
             default:
-                System.out.println("MY CANT TAKE AN ACTION");
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP default [sessionId: " + sessionId + "]");
                 break;
+        }
+    }
+
+    private void sendNotificationToUser(String username){
+        User user = userService.getUser(username);
+        if(user != null) {
+            List<UserNotificationDTO> userNotifications = user.getUserNotifications().stream()
+                    .filter(un -> !un.isChecked())
+                    .map(un -> (new UserNotificationDTO(un)))
+                    .collect(Collectors.toList());
+            Collections.sort(userNotifications);
+            template.convertAndSendToUser(username, "/notifications/dedicated", userNotifications);
         }
     }
 

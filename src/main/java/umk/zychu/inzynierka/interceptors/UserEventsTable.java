@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
+import static umk.zychu.inzynierka.interceptors.BaseChannelInterceptor.CHANNEL_DEBUG;
+
 @Service
 public class UserEventsTable extends ChannelInterceptorAdapter {
 
@@ -46,9 +48,9 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
 	@SuppressWarnings("rawtypes")
 	public UserEventsTable() {
 		// TODO Auto-generated constructor stub
-        showSessions = new Hashtable<String, ScheduledFuture>();
-        showSessionsPageHeader = new Hashtable<String, String>();
-        showSessionsStateHeader = new Hashtable<String, String>();
+        showSessions = new Hashtable<>();
+        showSessionsPageHeader = new Hashtable<>();
+        showSessionsStateHeader = new Hashtable<>();
 	}
 
     private void sendUserBlockWindowsAndDetailsTable(String username, String sessionId){
@@ -100,14 +102,14 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
 		String sessionId = sha.getSessionId();
         switch (sha.getCommand()) {
 		case CONNECT:
-			LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
+            if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
                 if (sha.toNativeHeaderMap().containsKey("page"))
                     showSessionsPageHeader.put(sha.getSessionId(), sha.getFirstNativeHeader("page"));
                 if (sha.toNativeHeaderMap().containsKey("state"))
                     showSessionsStateHeader.put(sha.getSessionId(), sha.getFirstNativeHeader("state"));
             break;
 		case SUBSCRIBE:
-			LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
+            if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
             if (sha.getDestination().equals("/user/show/details")) {
                 showSessions.put(sessionId,
                         scheduler.scheduleWithFixedDelay(new Runnable() {
@@ -121,10 +123,10 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
             }
 			break;
 		case CONNECTED:
-			LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
+            if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
 			break;
 		case DISCONNECT:
-			LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
+            if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
             showSessions.remove(sessionId);
             showSessionsPageHeader.remove(sha.getSessionId());
             showSessionsStateHeader.remove(sha.getSessionId());
@@ -132,10 +134,10 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
 		case SEND:
 			break;
 		default:
-			System.out.println("MY CANT TAKE AN ACTION");
+            if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP default [sessionId: " + sessionId + "]");
 			break;
 		}
-        //debug(sha);
+        if(!CHANNEL_DEBUG) debug(sha);
         System.out.println();
     }
 

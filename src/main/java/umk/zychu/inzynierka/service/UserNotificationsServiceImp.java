@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserNotificationsServiceImp implements UserNotificationsService {
 
+    //todo When user got permission for inviting and invites his friends
+    //todo they do not get noticication
+
     private static final String FRIEND_USER_DETAIL = "/friends/userDetail/";
 
     @Autowired

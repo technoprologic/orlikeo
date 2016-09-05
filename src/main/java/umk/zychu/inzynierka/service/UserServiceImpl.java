@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
-import umk.zychu.inzynierka.model.FriendshipType;
-import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.model.UserEvent;
-import umk.zychu.inzynierka.model.UserNotification;
+import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.repository.FriendshipDaoRepository;
 import umk.zychu.inzynierka.repository.UserDaoRepository;
 
@@ -113,17 +110,21 @@ public class UserServiceImpl implements UserService {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = getUser(username);
 
-		Set<User> forNotify = user.getOrganizedEvents().stream()
-				.filter(e -> null != e.getGraphic() && e.getGraphic().getStartTime().after(new Date()))
-				.flatMap(e -> e.getUsersEvent().stream()).collect(Collectors.toList())
-				.stream()
+		//Notify invited for created event
+		Set<User> usersForNotify = user.getUsersEventsFriendsInvited().stream()
 				.map(UserEvent::getUser)
 				.collect(Collectors.toSet());
-		forNotify.stream()
-				.forEach(u -> {
+
+		//Notify all who invited
+		usersForNotify.addAll(user.getUserEvents().stream()
+				.map(UserEvent::getInviter)
+				.filter(u -> !u.equals(user))
+				.collect(Collectors.toSet()));
+
+		usersForNotify.forEach(u -> {
 					UserNotification un = new UserNotification.Builder(u,
 							username + " usunął konto",
-							"Wszystkie wydarzenia użytkownika zostały unieważnione")
+							"Wszystkie wydarzenia użytkownika zostały unieważnione oraz automatycznie opuścił on wydarzenia w których brał udział.")
 							.build();
 					userNotificationsService.save(un);
 				});

@@ -20,7 +20,6 @@
 		<div class="account-wall">
                 <form:form modelAttribute="orlikForm" method="POST" class="form-signin" action="${editOrlikUrl}">
 					<form:hidden path="id" ></form:hidden>
-				<!-- city -->
                 <div class="form-group">
 					<form:label path="city">Miasto</form:label>
 					<br/>	
@@ -28,16 +27,12 @@
 					<%--<spring:message code="web.account.edit.name.placeholder" var="namePlaceholder"/>--%>
 					<form:input  path="city" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,100}" required="required" type="text" class="form-control"  />
 				</div>
-
-				<!-- address -->
                 <div class="form-group">
 					<form:label path="address">Adres</form:label>
 					<br/>	
 					<%--<spring:message code="web.account.edit.surname.placeholder" var="surnamePlaceholder"/>--%>
 					<form:input  path="address" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ 0-9]{2,100}" required="required" type="text" class="form-control" />
 				</div>
-        		
-        		<!-- lights -->
                 <div class="form-group">
 					<form:label path="lights">Światło</form:label>
 					<br/>
@@ -45,13 +40,11 @@
 						<form:options items="${orlikForm.chooser}"/>
 					</form:select>
 				</div>
-
-					<!-- water-->
 					<div class="form-group">
 						<form:label path="water">Woda</form:label>
 						<br/>
 						<form:errors path="water" cssClass="error" />
-							<%--<spring:message code="web.account.edit.friendshipRequestType.placeholder" var="positionPlaceholder"/>--%>
+							<%--<spring:message code="web.account.edit.shower.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="water">
 							<form:options items="${orlikForm.chooser}"/>
 						</form:select>
@@ -62,7 +55,7 @@
 						<form:label path="shower">Prysznic</form:label>
 						<br/>
 						<form:errors path="shower" cssClass="error" />
-							<%--<spring:message code="web.account.edit.friendshipRequestType.placeholder" var="positionPlaceholder"/>--%>
+							<%--<spring:message code="web.account.edit.shower.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="shower">
 							<form:options items="${orlikForm.chooser}"/>
 						</form:select>

@@ -14,13 +14,13 @@ public class AnimatorEventsRead extends BaseChannelInterceptor {
 
     private static final String DESTINATION = "/events/read";
 
+    public AnimatorEventsRead() {
+        super(USER_PREFIX + DESTINATION);
+    }
+
     @Override
     protected void sendToTheUser(String name, String sessionId) {
         orlikGamesList = orlikService.getAllByManager(name);
-       template.convertAndSendToUser(name, DESTINATION, orlikGamesList);
-    }
-
-    public AnimatorEventsRead() {
-        super(USER_PREFIX + DESTINATION);
+        template.convertAndSendToUser(name, DESTINATION, orlikGamesList);
     }
 }

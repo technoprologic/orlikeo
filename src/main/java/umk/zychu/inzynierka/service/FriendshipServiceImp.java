@@ -41,9 +41,10 @@ public class FriendshipServiceImp implements FriendshipService {
         User target = userService.getUser(email);
         boolean statusChanged = false;
         Friendship friendship;
+        Optional<Friendship> friendshipOptional = getFriendship(target);
         try {
-            friendship = getFriendship(target).get();
-            if (getFriendship(target).isPresent()) {
+            friendship = friendshipOptional.isPresent() ? friendshipOptional.get() : null;
+            if (friendshipOptional.isPresent()) {
                 if(fullFillsPolicies(user, friendship, type)){
                     friendship = friendship.changeState(user, target, type);
                     statusChanged=true;

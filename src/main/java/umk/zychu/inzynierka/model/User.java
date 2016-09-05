@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
@@ -57,11 +58,11 @@ public class User extends BaseEntity
 	@OneToMany(mappedBy="target", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Friendship> friendAccepterList;
 
-	@OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
-	private List<UserEvent> usersEventsFriendsInvited;
-
 	@OneToMany(mappedBy="userOrganizer", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Event> organizedEvents;
+
+	@OneToMany(mappedBy = "inviter", fetch = FetchType.EAGER)
+	private List<UserEvent> usersEventsFriendsInvited;
 
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "user", orphanRemoval = true)

@@ -19,6 +19,11 @@ import java.util.concurrent.ScheduledFuture;
 
 public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
 
+    /**
+     * Default to true enables debugging concrete methods.
+     */
+    public static final boolean CHANNEL_DEBUG = true;
+
     protected final Logger LOGGER = LoggerFactory
             .getLogger(BaseChannelInterceptor.class);
 
@@ -87,30 +92,24 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
     }
 
     protected void connect(StompHeaderAccessor sha) {
-        LOGGER.debug("CONNECT [sessionId: " + sha.getSessionId() + "]");
+        if(!CHANNEL_DEBUG) LOGGER.debug("CONNECT [sessionId: " + sha.getSessionId() + "]");
     }
 
     private void subscribe(StompHeaderAccessor sha) {
         String sessionId = sha.getSessionId();
-        LOGGER.debug("SUBSCRIBE [sessionId: " + sessionId + "]");
+        if(!CHANNEL_DEBUG) LOGGER.debug("SUBSCRIBE [sessionId: " + sessionId + "]");
         if (sha.getDestination().equals(subscribeDestination)) {
             sessions.put(sessionId,
-                    scheduler.scheduleWithFixedDelay(new Runnable() {
-                        @Override
-                        public void run() {
-                            sendToTheUser(sha.getUser()
-                                    .getName(), sha.getSessionId());
-                        }
-                    }, DELAY));
+                    scheduler.scheduleWithFixedDelay(() -> sendToTheUser(sha.getUser().getName(), sha.getSessionId()), DELAY));
         }
     }
 
     private void connected(StompHeaderAccessor sha) {
-        LOGGER.debug("CONNECTED [sessionId: " + sha.getSessionId() + "]");
+        if(!CHANNEL_DEBUG) LOGGER.debug("CONNECTED [sessionId: " + sha.getSessionId() + "]");
     }
 
     protected void disconnect(StompHeaderAccessor sha) {
-        LOGGER.debug("DISCONNECT [sessionId: " + sha.getSessionId() + "]");
+        if(!CHANNEL_DEBUG) LOGGER.debug("DISCONNECT [sessionId: " + sha.getSessionId() + "]");
         sessions.remove(sha.getSessionId());
     }
 
@@ -119,11 +118,11 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
     }
 
     private void nullCommand() {
-        System.out.println("NULL_COMMAND - ignored non-STOMP messages like heartbeat messages");
+        if(!CHANNEL_DEBUG) System.out.println("NULL_COMMAND - ignored non-STOMP messages like heartbeat messages");
     }
 
     private void default_method() {
-        System.out.println("MY CANT TAKE AN ACTION");
+        if(!CHANNEL_DEBUG) System.out.println("MY CANT TAKE AN ACTION");
     }
 
     // TODO Resolve redundant sessionId paramter

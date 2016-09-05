@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = "friendship")
 public class Friendship extends BaseEntity implements Serializable {
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "requester_id", referencedColumnName = "id")
     @JsonIgnore
     private User requester;

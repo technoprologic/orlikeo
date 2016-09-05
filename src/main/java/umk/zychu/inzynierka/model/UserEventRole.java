@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @SuppressWarnings("serial")
 @Entity
 @Table(name="user_event_role")

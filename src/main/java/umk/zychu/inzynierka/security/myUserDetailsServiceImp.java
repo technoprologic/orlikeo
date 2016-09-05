@@ -23,9 +23,9 @@ public class myUserDetailsServiceImp implements UserDetailsService {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	UserAdminService userAdminService;
+	private UserAdminService userAdminService;
 	@Autowired
-	OrlikService orlikService;
+	private OrlikService orlikService;
 
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email)
@@ -39,7 +39,6 @@ public class myUserDetailsServiceImp implements UserDetailsService {
 		Boolean isOrlikManager = orlikService.isOrlikManager(user);
 		if(userAdminService.hasAdminRight(user)) {
 			roles.add(new SimpleGrantedAuthority(Roles.ROLE_ADMIN.toString()));
-/*			roles.add(new SimpleGrantedAuthority(Roles.ROLE_ANIMATOR.toString()));*/
 			roles.add(new SimpleGrantedAuthority(Roles.ROLE_USER.toString()));
 		}
 		else if(isOrlikManager){

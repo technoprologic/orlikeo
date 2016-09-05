@@ -30,10 +30,11 @@ import java.util.Map;
 @RequestMapping("/account")
 public class AccountController {
 
-    @SuppressWarnings("unused")
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private ChangingPasswordFormValidator changingPasswordValidator;
 
@@ -41,12 +42,12 @@ public class AccountController {
     private EditAccountFormValidator editAccountFormValidator;
 
     @InitBinder("changePasswordForm")
-    private void initBinder(WebDataBinder binder) {
+    private void initBinde4PasswordForm(WebDataBinder binder) {
         binder.setValidator(changingPasswordValidator);
     }
 
     @InitBinder("editAccountForm")
-    private void initBinder2(WebDataBinder binder) {
+    private void initBinder4AccountForm(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
         binder.setValidator(editAccountFormValidator);

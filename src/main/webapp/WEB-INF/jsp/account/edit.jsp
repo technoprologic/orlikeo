@@ -42,13 +42,13 @@
 					<form:input  path="dateOfBirth"  pattern="((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))[.]((0[1-9])|(1[0-2]))[.](\d{4})" required="required" type="text" class="form-control"  placeholder="${ birthdatePlaceholder }"/>
 				</div>
         		
-        		<!-- friendshipRequestType -->
+        		<!-- position -->
                 <div class="form-group">
-					<form:label path="friendshipRequestType"><spring:message code="web.account.edit.friendshipRequestType.label"/></form:label>
+					<form:label path="position"><spring:message code="web.account.edit.position.label"/></form:label>
 					<br/>	
-					<form:errors path="friendshipRequestType" cssClass="error" />
-					<spring:message code="web.account.edit.friendshipRequestType.placeholder" var="positionPlaceholder"/>
-					<form:input  path="friendshipRequestType" pattern="[a-zęóąśłżźń A-ZĘÓŚŁĆŹŻ0-9]{2,30}" type="text" class="form-control"  placeholder="${ positionPlaceholder }"/>
+					<form:errors path="position" cssClass="error" />
+					<spring:message code="web.account.edit.position.placeholder" var="positionPlaceholder"/>
+					<form:input  path="position" pattern="[a-zęóąśłżźń A-ZĘÓŚŁĆŹŻ0-9]{2,30}" type="text" class="form-control"  placeholder="${ positionPlaceholder }"/>
 				</div>
         		
         		<!-- weight -->

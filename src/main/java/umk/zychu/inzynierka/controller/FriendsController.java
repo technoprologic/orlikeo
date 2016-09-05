@@ -84,7 +84,7 @@ public class FriendsController {
 		}
 
 		Optional<Friendship> friendshipOptional = friendshipService.getFriendship(userRequest);
-		Friendship friendship = friendshipOptional.get();
+		Friendship friendship = friendshipOptional.isPresent()? friendshipOptional.get() : null;
 		boolean allowToSeeProfile = true;
 
 		if(!friendshipOptional.isPresent()){

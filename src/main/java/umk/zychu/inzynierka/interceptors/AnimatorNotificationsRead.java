@@ -21,11 +21,13 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.interceptors.BaseChannelInterceptor.CHANNEL_DEBUG;
+
 @Service
 public class AnimatorNotificationsRead extends ChannelInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(AnimatorChannelInterceptor.class);
+            .getLogger(AnimatorNotificationsRead.class);
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -36,10 +38,45 @@ public class AnimatorNotificationsRead extends ChannelInterceptorAdapter {
     private Map<String, ScheduledFuture> notificationsSessions;
     private TaskScheduler scheduler = new ConcurrentTaskScheduler();
 
-    @SuppressWarnings("rawtypes")
     public AnimatorNotificationsRead() {
-        // TODO Auto-generated constructor stub
-        notificationsSessions = new Hashtable<String, ScheduledFuture>();
+        notificationsSessions = new Hashtable<>();
+    }
+
+    @Override
+    public void postSend(Message<?> message, MessageChannel channel,
+                         boolean sent) {
+        StompHeaderAccessor sha = StompHeaderAccessor.wrap(message);
+        if (sha.getCommand() == null) {
+            if(!CHANNEL_DEBUG) LOGGER.debug("ignored non-STOMP messages like heartbeat messages ");
+            return;
+        }
+        String sessionId = sha.getSessionId();
+        switch (sha.getCommand()) {
+            case CONNECT:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
+                break;
+            case SUBSCRIBE:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
+                if (sha.getDestination().equals("/user/notifications/read")) {
+                    notificationsSessions.put(sessionId,
+                            scheduler.scheduleWithFixedDelay(() -> sendNotificationToManager(sha.getUser()
+                                    .getName()), 5000));
+                }
+                break;
+            case CONNECTED:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
+                break;
+            case DISCONNECT:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
+                notificationsSessions.remove(sessionId);
+                break;
+            case SEND:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP SEND [sessionId: " + sessionId + "]");
+                break;
+            default:
+                if(!CHANNEL_DEBUG) LOGGER.debug("MY STOMP default [sessionId: " + sessionId + "]");
+                break;
+        }
     }
 
     private void sendNotificationToManager(String username){
@@ -54,55 +91,5 @@ public class AnimatorNotificationsRead extends ChannelInterceptorAdapter {
                 .collect(Collectors.toList());
         long counter = eventsToApprove.size();
         template.convertAndSendToUser(username, "/notifications/read", counter);
-    }
-
-    @Override
-    public void postSend(Message<?> message, MessageChannel channel,
-                         boolean sent) {
-        StompHeaderAccessor sha = StompHeaderAccessor.wrap(message);
-        // ignore non-STOMP messages like heartbeat messages
-        if (sha.getCommand() == null) {
-            System.out
-                    .println("ignored non-STOMP messages like heartbeat messages");
-            return;
-        }
-        String sessionId = sha.getSessionId();
-        System.out.println("session " + " " + sha.getSessionId()
-                + " and COMMAND IS " + sha.getCommand());
-        System.out.println("user " + " " + sha.getUser().getName());
-        System.out.println("SHA " + " " + sha.toString());
-        switch (sha.getCommand()) {
-            case CONNECT:
-                LOGGER.debug("MY STOMP Connect [sessionId: " + sessionId + "]");
-                break;
-            case SUBSCRIBE:
-                LOGGER.debug("MY STOMP SUBSCRIBE [sessionId: " + sessionId + "]");
-                if (sha.getDestination().equals("/user/notifications/read")) {
-                    notificationsSessions.put(sessionId,
-                            scheduler.scheduleWithFixedDelay(new Runnable() {
-                                @Override
-                                public void run() {
-                                    sendNotificationToManager(sha.getUser()
-                                            .getName());
-                                }
-                            }, 5000));
-                }
-                break;
-            case CONNECTED:
-                LOGGER.debug("MY STOMP Connected [sessionId: " + sessionId + "]");
-                System.out.println("MY CONNECTED sessionid: " + " " + sessionId);
-                break;
-            case DISCONNECT:
-                LOGGER.debug("MY STOMP Disconnect [sessionId: " + sessionId + "]");
-                System.out.println("MY DISCONNECT sessionid: " + " " + sessionId);
-                notificationsSessions.remove(sessionId);
-                break;
-            case SEND:
-                System.out.println("Send command: " + " " + sessionId);
-                break;
-            default:
-                System.out.println("MY CANT TAKE AN ACTION");
-                break;
-        }
     }
 }
