@@ -13,12 +13,12 @@
 	<meta name="author" content="">
 	<link rel="icon" href="../../favicon.ico">
 
-	<title>Orlikeo - Not Found</title>
+	<title>Orlikeo - 404</title>
 </head>
 
 <body>
 
-<div><h1>Przykro nam, ale nie istnieje taka strona...</h1></div>
+<div><h1>404 - Przykro nam, ale nie istnieje taka strona...</h1></div>
 
 
 </body>

@@ -11,8 +11,6 @@
 	</definition>
 	<definition name="stock"  template="/WEB-INF/jsp/stock.jsp">
 	</definition>
-	
-
 
 	<!-- TEMPLATES -->
 	<definition name="defaultTemplate" template="/WEB-INF/jsp/template/template.jsp">
@@ -39,8 +37,7 @@
 	<definition name="clearTemplate" template="/WEB-INF/jsp/template/clearTemplate.jsp">
 		<put-attribute name="content" value="" />
 	</definition>
-	
-	
+
 	<!-- ACCOUNT -->
 	<definition name="editAccount" extends="defaultTemplate">
         <put-attribute name="title" value=" - Edycja konta"/>
@@ -70,8 +67,7 @@
 			<add-attribute  value="/WEB-INF/jsp/scripts/removeAccountConfirmModal.jsp" />
 		</put-list-attribute>
 	</definition>
-	
-	
+
 	<!-- EVENT -->
 	<definition name="create" extends="defaultTemplate">
         <put-attribute name="title" value=" - Utwórz wydarzenie"/>
@@ -99,6 +95,7 @@
 			<add-attribute  value="/WEB-INF/jsp/scripts/removeEventConfirmModal.jsp" />
 		</put-list-attribute>
 	</definition>
+
 	<!-- organized -->
 	<definition name="eventsInState" extends="defaultTemplate">
         <put-attribute name="title" value=" - Wydarzenia"/>
@@ -162,8 +159,7 @@
 		<put-attribute name="title" value=" - Powiadomienia"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/userNotifications/notifications.jsp" />
 	</definition>
-	
-	
+
 	<!-- PLANNER -->
 	<definition name="javaplanner"  template="/WEB-INF/jsp/planner/javaplanner.jsp" >
 	</definition>
@@ -194,9 +190,6 @@
 	</definition>
 
 
-
-
-
 	<!-- HOME&HELP -->
 	<definition name="home" extends="defaultTemplate">
         <put-attribute name="title" value=" - Strona główna"/>
@@ -210,7 +203,6 @@
         <put-attribute name="title" value=" - Pomoc"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/help.jsp" />
 	</definition>
-	
 
 	<!-- ERRORS -->
 	<definition name="error" template="/WEB-INF/jsp/errors/error404.jsp">
@@ -234,5 +226,3 @@
 		</put-list-attribute>
 	</definition>
 </tiles-definitions>
-
-
