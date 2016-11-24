@@ -21,6 +21,7 @@
 		<sec:intercept-url pattern="/signing" access="permitAll" requires-channel="https"/>
         <sec:intercept-url pattern="/register" access="permitAll"/>
         <sec:intercept-url pattern="/register/**" access="permitAll"/>
+		<sec:intercept-url pattern="/terms" access="permitAll"/>
 		<sec:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 		<sec:intercept-url pattern="/planner**" access="hasRole('ROLE_ANIMATOR')" />
 		<sec:intercept-url pattern="/pane**" access="hasRole('ROLE_ANIMATOR')" />

@@ -9,7 +9,7 @@
 <c:url value="/help" var="helpUrl" />
 <c:url value="/register" var="createAccountUrl" />
 <c:url value="/register/new_user" var="registerUrl" />
-<c:url value="/regulation" var="regulation" />
+<c:url value="/terms" var="regulation" />
 
 
 <div class="container">

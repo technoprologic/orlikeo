@@ -59,6 +59,9 @@
 	<definition name="register" extends="clearTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/account/register.jsp" />
 	</definition>
+	<definition name="terms" extends="clearTemplate">
+		<put-attribute name="content" value="/WEB-INF/jsp/terms.jsp" />
+	</definition>
 	<definition name="profile" extends="defaultTemplate">
         <put-attribute name="title" value=" - Profil"/>
 		<put-attribute name="content" value="/WEB-INF/jsp/account/profile.jsp" />

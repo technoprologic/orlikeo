@@ -11,9 +11,12 @@ public class HelpController {
 
 	@RequestMapping(value = "/help", method = RequestMethod.GET)
 	public ModelAndView help(ModelMap model) {
-		//TODO create main page.
 		model.addAttribute("message", "Help page to do...");
 		return new ModelAndView("help");
+	}
 
+	@RequestMapping(value = "/terms", method = RequestMethod.GET)
+	public ModelAndView terms(ModelMap model) {
+		return new ModelAndView("terms");
 	}
 }
