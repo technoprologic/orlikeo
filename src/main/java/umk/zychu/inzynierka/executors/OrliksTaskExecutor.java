@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import umk.zychu.inzynierka.model.Graphic;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
          * Task to run by executor.
          */
         @Override
+        @Transactional
         public void run() {
             currentDate = new Date();
             NOW = currentDate.getTime();

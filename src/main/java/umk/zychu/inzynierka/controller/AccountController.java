@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.validator.ChangingPasswordFormValidator;
@@ -64,12 +66,13 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editAccount(@ModelAttribute @Valid EditAccountForm form, BindingResult result) {
+    public String editAccount(final @ModelAttribute @Valid EditAccountForm form, final BindingResult result, final RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "editAccount";
         } else {
             userService.updateUserDetails(form);
             String redirect = "redirect:/account/profile/";
+            redirectAttributes.addFlashAttribute("updated", "dsds");
             return redirect;
         }
     }

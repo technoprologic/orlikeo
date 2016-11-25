@@ -11,7 +11,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h1 class="page-header">
-			Profil zawodnika <small><i class="glyphicon glyphicon-info-sign"></i> Informacje</small>
+			Profil zawodnika <small><i class="glyphicon glyphicon-info-sign"></i> Informacje </small>
 		</h1>
 	</div>
 </div>
@@ -103,13 +103,31 @@
           </div>
         </div>
 </div>
-<!-- TODO: usuwanie konta wraz z wywalaniem zewsząd + potwierdzenie -->
-<%--
-<button type="button" title="Zaproś" class="btn btn-success" data-toggle="modal" data-target="#inviteUserModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-plus-sign"></i></button>
-<button type="button" title="Akceptuj" class="btn btn-success" data-toggle="modal" data-target="#acceptInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-ok-sign"></i></button>
-<button type="button" title="Odrzuć" class="btn btn-warning" data-toggle="modal" data-target="#declineInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-remove-sign"></i></button>
-<button type="button" title="Cofnij" class="btn btn-warning" data-toggle="modal" data-target="#cancelInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-stop"></i></button>
-<button type="button" title="Zablokuj" class="btn btn-danger" data-toggle="modal" data-target="#blockInvitationModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-ban-circle"></i></button>
-<button type="button" title="Odblokuj" class="btn btn-success" data-toggle="modal" data-target="#unblockUser" data-whatever="${ user.email }"><i class="glyphicon glyphicon-refresh"></i></button>
-<button type="button" title="Usuń" class="btn btn-danger" data-toggle="modal" data-target="#removeFriendshipModal" data-whatever="${ user.email }"><i class="glyphicon glyphicon-minus-sign"></i></button>
---%>
+
+
+<!-- Modal -->
+<div class="modal fade" id="profileUpdatedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Edycja profilu</h4>
+            </div>
+            <div class="modal-body">
+                Pomyślnie zapisano wprowadzone zmiany.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Zamknij</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var value = "<c:out value='${updated}' />";
+    $(document).ready(function () {
+        if(value){
+            $('#profileUpdatedModal').modal('show');
+        }
+    });
+</script>

@@ -7,15 +7,11 @@
 
 <c:url value="/account/edit" var="editAccountUrl" />
 
-<!-- TODO: potwierdzenie dokonanych zmian -->
 <div class="container">
 <div class="row" style="padding: 50px 0px">
 	<div class="col-sm-6 col-md-4 col-md-offset-4 vcenter"><h1 class="text-center login-title">Aktualizacja profilu</h1>
 		<div class="account-wall">
-                <!-- <img class="profile-img" src="http://cdn.content.easports.com/fifa/fltOnlineAssets/2013/fut/items/images/players/web/158023.png"
-                    alt=""> -->
-                <form:form modelAttribute="editAccountForm" method="POST" class="form-signin" action="${editAccountUrl}">    
-	
+                <form:form modelAttribute="editAccountForm" method="POST" class="form-signin" action="${editAccountUrl}">
 				<!-- name -->
                 <div class="form-group">
 					<form:label path="name"><spring:message code="web.account.edit.name.label"/></form:label>
