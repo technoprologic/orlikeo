@@ -29,7 +29,7 @@
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script>
     //Create stomp client over sockJS protocol
-    var socket = new SockJS("/jbossews/hello");
+    var socket = new SockJS("/orlikeo/hello");
     var stompClient = Stomp.over(socket);
 
     // Render price data from server into HTML, registered as callback

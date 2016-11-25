@@ -153,7 +153,7 @@
 
 <script type="text/javascript">
     // Create stomp client over sockJS protocol
-    var userNotificationsSocket = new SockJS("/jbossews/hello");
+    var userNotificationsSocket = new SockJS("/orlikeo/hello");
     var stompClientUserNotifications;
     window.basePath = '${pageContext.request.contextPath}';
 

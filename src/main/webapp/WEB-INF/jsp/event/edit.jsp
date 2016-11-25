@@ -90,7 +90,7 @@
 <form:form modelAttribute="editEventForm" class="form" action="${editEventUrl}" method="POST">
 	<fieldset>
 		<!-- Form Name -->
-		<legend>Lista zaproszonych</legend>
+		<legend>Lista chętnych do wzięcia udziału</legend>
 		<table id="example"   style="background-color: white; " >
 
 			<thead>

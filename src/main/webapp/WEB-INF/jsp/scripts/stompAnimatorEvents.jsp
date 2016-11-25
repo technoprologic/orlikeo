@@ -45,7 +45,7 @@
 
 <script type="text/javascript">
     //Create stomp client over sockJS protocol
-    var socket2 = new SockJS("/jbossews/hello");
+    var socket2 = new SockJS("/orlikeo/hello");
     var stompClient2;
 
     // Render user dedicated data from server into HTML, registered as callback
