@@ -40,7 +40,7 @@
     <div id="wrapper">
 		<tiles:insertAttribute name="navbar" />
 		<div id="page-wrapper" >
-			 <div class="container-fluid"  >
+			 <div class="container-fluid"  style="width:100%">
 			 	<tiles:insertAttribute name="eventsMainWindow" />
 				<tiles:insertAttribute name="content" />
 				<tiles:insertAttribute name="modal" />

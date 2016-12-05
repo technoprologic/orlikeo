@@ -115,7 +115,7 @@
                     <li class="active">
                         <a href="javascript:;" data-toggle="collapse" data-target="#animator"><i class="glyphicon glyphicon-home"></i> ANIMATOR </a>
                         <ul id="animator" class="collapse" >
-                            <li>
+                            <li class="active">
                                 <a href="${plannerUrl}"><i class="glyphicon glyphicon-calendar"></i> Grafik </a>
                             </li>
                             <li>
