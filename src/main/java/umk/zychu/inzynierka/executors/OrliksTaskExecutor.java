@@ -20,17 +20,17 @@ import static java.util.stream.Collectors.partitioningBy;
 public class OrliksTaskExecutor extends BaseTaskExecutor{
 
     private TaskExecutor taskExecutor;
-    private static final long FIXED_RATE = 1000;
+    private static final long FIXED_DELAY = 1000;
 
     public OrliksTaskExecutor(TaskExecutor taskExecutor) {
         this.taskExecutor = taskExecutor;
     }
 
-    @Scheduled(fixedRate = FIXED_RATE)
+    @Scheduled(fixedDelay = FIXED_DELAY)
     public void printMessages() {
-        Task messagePrinterTask = new Task();
+        Task task = new Task();
         try{
-            taskExecutor.execute(messagePrinterTask);
+            taskExecutor.execute(task);
         }catch (Exception e){
             e.printStackTrace();
         }
