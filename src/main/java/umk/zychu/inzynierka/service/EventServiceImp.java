@@ -473,18 +473,9 @@ public class EventServiceImp implements EventService {
                 .forEach(reu -> {
                     User u = userService.getUser(reu.getEmail());
                     UserEventRole role = userEventRoleService.findOne(UserEventRole.GUEST);
-                    UserDecision decision = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
-                    Boolean permission = false;
-                    if (reu.getAllowed() && reu.getInvited()) {
-                        decision = userEventDecisionService.findOne(UserDecision.INVITED);
-                        permission = true;
-                    } else if (!reu.getAllowed() && reu.getInvited()) {
-                        decision = userEventDecisionService.findOne(UserDecision.INVITED);
-                        permission = false;
-                    } else if (reu.getAllowed() && !reu.getInvited()) {
-                        decision = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
-                        permission = true;
-                    }
+                    UserDecision decision = reu.getInvited() ? userEventDecisionService.findOne(UserDecision.INVITED)
+                            : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+                    Boolean permission = reu.getAllowed();
                     UserEvent ue = new UserEvent.Builder(u, user, event, role, decision)
                             .setPermission(permission)
                             .build();
@@ -505,7 +496,7 @@ public class EventServiceImp implements EventService {
                                 save(event);
                             }
                         });
-        Event ev = eventDAO.findOne(event.getId());
+        eventDAO.findOne(event.getId());
     }
 
     private EventWindowBlock getBlock(EventState state, UserEventRole role, Boolean incoming) {
@@ -520,8 +511,7 @@ public class EventServiceImp implements EventService {
     }
 
     private EventWindowBlock generateBlock(User user, EventState state, UserEventRole role, Boolean incoming) {
-        List<UserEvent> userEvents = new ArrayList<>();
-        userEvents.addAll(user.getUserEvents());
+        List<UserEvent> userEvents = user.getUserEvents();
         if (state != null)
             userEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
         if (role != null)

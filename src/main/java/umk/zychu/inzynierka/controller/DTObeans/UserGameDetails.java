@@ -186,13 +186,13 @@ public class UserGameDetails {
             return this;
         }
 
-        public Builder address(final String orlikId) {
-            this.address = "Without";
+        public Builder address(final String address) {
+            this.address = address;
             return this;
         }
 
-        public Builder city(final String orlikId) {
-            this.city = "Without";
+        public Builder city(final String city) {
+            this.city = city;
             return this;
         }
 
