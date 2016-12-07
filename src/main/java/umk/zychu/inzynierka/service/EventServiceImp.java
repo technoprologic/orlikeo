@@ -266,6 +266,7 @@ public class EventServiceImp implements EventService {
                 || stateId == 6 ? eventStateService
                 .findOne(EventState.APPROVED) : eventStateService
                 .findOne(stateId);
+
         List<UserEvent> userEvents = user.getUserEvents();
         Date endDate = incomingEventsDateInterval;
         Date todayAndTomorrow = new Date(endDate.getYear(),
@@ -289,7 +290,8 @@ public class EventServiceImp implements EventService {
         }
         List<UserGameDetails> userGameDetails = generateUserGameDetailsList(userEvents);
         userGameDetails.stream().forEach(gd -> {
-            if (gd.getStateId() == 5 && gd.getStartDate().before(endDate)) {
+            if (gd.getStateId() == 5 && null != gd.getStartDate() && gd.getStartDate().before(endDate)) {
+                // TODO Remove unnecessary setter for only those purpose and causes neccesserity of creating special id (db incopalibity)
                 gd.setStateId(6);
             }
         });
@@ -339,11 +341,13 @@ public class EventServiceImp implements EventService {
             Graphic graphic = graphicService.findOne(form.getGraphicId());
             EventState state = eventStateService.findOne(EventState.IN_PROGRESS);
             Integer playersLimit = form.getUsersLimit();
-            Event event = new Event.Builder(userOrganizer, graphic, playersLimit, state)
+            Event event = new Event.Builder(userOrganizer, state)
+                    .graphic(graphic)
+                    .playersLimit(playersLimit)
                     .build();
             UserEventRole organizerRole = userEventRoleService.findOne(UserEventRole.ORGANIZER);
             UserDecision organizerDecision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null,  event, organizerRole, organizerDecision)
+            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, organizerRole, organizerDecision)
                     .setPermission(Boolean.TRUE)
                     .build();
             List<UserEvent> usersEvents = new LinkedList<>();
@@ -613,57 +617,36 @@ public class EventServiceImp implements EventService {
         UserDecision accept = userEventDecisionService.findOne(UserDecision.ACCEPTED);
         UserDecision not_invited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         Event event = userEvent.getEvent();
-        Integer orlikId = 0;
-        String address = "";
-        String city = "";
-        Date startDate = null;
-        Date endDate = null;
-        Boolean lights = false, water = false, shower = false;
-        String shoes = "-";
+        UserGameDetails.Builder ugdBuilder = new UserGameDetails.Builder(event.getId());
+
+        ugdBuilder.stateId(event.getState())
+                .organizerEmail(event.getUserOrganizer().getEmail())
+                .decision(userEvent.getDecision().getId())
+                .role(userEvent.getRole().getId())
+                .permission(userEvent.getUserPermission())
+                .willCome(event.getUsersEvent().stream()
+                        .filter(ue -> ue.getDecision().equals(accept))
+                        .count())
+                .playersLimit(event.getPlayersLimit())
+                .invited(event.getUsersEvent().stream()
+                        .filter(ue -> !ue.getDecision().equals(not_invited))
+                        .count());
+
         if (event.getGraphic() != null) {
             Graphic graphic = event.getGraphic();
-            startDate = graphic.getStartTime();
-            endDate = graphic.getEndTime();
             Orlik orlik = graphic.getOrlik();
-            orlikId = orlik.getId();
-            address = orlik.getAddress();
-            city = orlik.getCity();
-            lights = orlik.getLights();
-            water = orlik.getWater();
-            shower = orlik.getShower();
-            shoes = orlik.getShoes();
+            //fill up builder
+            ugdBuilder.startDate(graphic.getStartTime())
+                    .endDate(graphic.getEndTime())
+                    .orlikId(orlik.getId())
+                    .address(orlik.getAddress())
+                    .city(orlik.getCity())
+                    .lights(orlik.getLights())
+                    .water(orlik.getWater())
+                    .shower(orlik.getShower())
+                    .shoes(orlik.getShoes());
         }
-        Integer eventId = event.getId();
-        Integer stateId = event.getState().getId();
-        String organizerEmail = event.getUserOrganizer().getEmail();
-        Integer decisionId = userEvent.getDecision().getId();
-        Integer roleId = userEvent.getRole().getId();
-        Boolean permission = userEvent.getUserPermission();
-        long willCome = event.getUsersEvent().stream()
-                .filter(ue -> ue.getDecision().equals(accept))
-                .count();
-        int playersLimit = event.getPlayersLimit();
-        long invited = event.getUsersEvent().stream()
-                .filter(ue -> !ue.getDecision().equals(not_invited))
-                .count();
-        return new UserGameDetails(
-                eventId,
-                stateId,
-                orlikId,
-                address,
-                city,
-                organizerEmail,
-                startDate,
-                endDate,
-                decisionId,
-                roleId,
-                permission,
-                playersLimit,
-                willCome,
-                invited,
-                lights,
-                water,
-                shower,
-                shoes);
+
+        return ugdBuilder.build();
     }
 }

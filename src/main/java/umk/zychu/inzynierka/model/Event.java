@@ -23,7 +23,7 @@ public class Event extends BaseEntity {
 	private Date creationDate;
 
 	@ManyToOne
-	@JoinColumn(name = "graphic_id", referencedColumnName = "id", nullable = true)
+	@JoinColumn(name = "graphic_id", referencedColumnName = "id")
 	private Graphic graphic;
 	
 	@ManyToOne
@@ -97,11 +97,26 @@ public class Event extends BaseEntity {
 		private Integer playersLimit;
 		private EventState state;
 
-		public Builder(final User organizer, final Graphic graphic, final Integer playersLimit, EventState state){
+		public Builder(final User organizer, final EventState eventState){
 			this.userOrganizer = organizer;
+			this.state = eventState;
+			this.graphic = null;
+			this.playersLimit = 12;
+		}
+
+		public Builder graphic(final Graphic graphic){
 			this.graphic = graphic;
+			return this;
+		}
+
+		public Builder playersLimit(final Integer playersLimit){
 			this.playersLimit = playersLimit;
+			return this;
+		}
+
+		public Builder eventState(final EventState state){
 			this.state = state;
+			return this;
 		}
 
 		public Event build(){

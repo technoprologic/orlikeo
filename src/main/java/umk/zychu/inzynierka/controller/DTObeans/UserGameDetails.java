@@ -1,212 +1,270 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import umk.zychu.inzynierka.model.*;
+
 import java.util.Date;
 
 public class UserGameDetails {
 
-	//TODO Builer pattern
+    private Integer eventId;
+    private Integer stateId;
+    private Integer orlikId;
+    private String address;
+    private String city;
+    private String organizerEmail;
+    private Date startDate;
+    private Date endDate;
+    private Integer decisionId;
+    private Integer roleId;
+    private Boolean permission;
+    private long willCome;
+    private Integer playersLimit;
+    private long invited;
+    private Boolean lights;
+    private Boolean water;
+    private Boolean shower;
+    private String shoes;
 
-	UserGameDetails() {
-		super();
-	}
+    private UserGameDetails(Builder builder) {
+        this.eventId = builder.eventId;
+        this.stateId = builder.stateId;
+        this.orlikId = builder.orlikId;
+        this.address = builder.address;
+        this.city = builder.city;
+        this.organizerEmail = builder.organizerEmail;
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.decisionId = builder.decisionId;
+        this.roleId = builder.roleId;
+        this.permission = builder.permission;
+        this.willCome = builder.willCome;
+        this.playersLimit = builder.playersLimit;
+        this.invited = builder.invited;
+        this.lights = builder.lights;
+        this.water = builder.water;
+        this.shoes = builder.shoes;
+        this.shower = builder.shower;
+    }
 
-	public UserGameDetails(Integer eventId, Integer stateId, Integer orlikId, String address,
-			String city, String organizerEmail, Date startDate, Date endDate,
-			Integer decisionId, Integer roleId, Boolean permission,
-			int playersLimit, long willCome, long invited, Boolean lights,
-			Boolean water, Boolean shower, String shoes) {
-		super();
-		this.eventId = eventId;
-		this.stateId = stateId;
-		this.orlikId = orlikId;
-		this.address = address;
-		this.city = city;
-		this.organizerEmail = organizerEmail;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.decisionId = decisionId;
-		this.roleId = roleId;
-		this.permission = permission;
-		this.willCome = willCome;
-		this.playersLimit = playersLimit;
-		this.invited = invited;
-		this.lights = lights;
-		this.water = water;
-		this.shower = shower;
-		this.shoes = shoes;
-	}
+    UserGameDetails() {
+        super();
+    }
 
-	private Integer eventId;
-	private Integer stateId;
-	private Integer orlikId;
-	private String address;
-	private String city;
-	private String organizerEmail;
-	private Date startDate;
-	private Date endDate;
-	private Integer decisionId;
-	private Integer roleId;
-	private Boolean permission;
-	private long willCome;
-	private Integer playersLimit;
-	private long invited;
-	private Boolean lights;
-	private Boolean water;
-	private Boolean shower;
-	
-	public Integer getOrlikId() {
-		return orlikId;
-	}
+    public Integer getEventId() {
+        return eventId;
+    }
 
-	public void setOrlikId(Integer orlikId) {
-		this.orlikId = orlikId;
-	}
+    public Integer getStateId() {
+        return stateId;
+    }
 
-	public Boolean getLights() {
-		return lights;
-	}
+    public Integer getOrlikId() {
+        return orlikId;
+    }
 
-	public void setLights(Boolean lights) {
-		this.lights = lights;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public Boolean getWater() {
-		return water;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setWater(Boolean water) {
-		this.water = water;
-	}
+    public String getOrganizerEmail() {
+        return organizerEmail;
+    }
 
-	public Boolean getShower() {
-		return shower;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setShower(Boolean shower) {
-		this.shower = shower;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public String getShoes() {
-		return shoes;
-	}
+    public Integer getDecisionId() {
+        return decisionId;
+    }
 
-	public void setShoes(String shoes) {
-		this.shoes = shoes;
-	}
+    public Integer getRoleId() {
+        return roleId;
+    }
 
-	String shoes;
+    public Boolean getPermission() {
+        return permission;
+    }
 
-	public long getInvited() {
-		return invited;
-	}
+    public long getWillCome() {
+        return willCome;
+    }
 
-	public void setInvited(long invited) {
-		this.invited = invited;
-	}
+    public Integer getPlayersLimit() {
+        return playersLimit;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public long getInvited() {
+        return invited;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Boolean getLights() {
+        return lights;
+    }
 
-	public Boolean getPermission() {
-		return permission;
-	}
+    public Boolean getWater() {
+        return water;
+    }
 
-	public void setPermission(Boolean permission) {
-		this.permission = permission;
-	}
+    public Boolean getShower() {
+        return shower;
+    }
 
-	public Integer getEventId() {
-		return eventId;
-	}
+    public String getShoes() {
+        return shoes;
+    }
 
-	public void setEventId(Integer eventId) {
-		this.eventId = eventId;
-	}
+    @Override
+    public String toString() {
+        return "UserGameDetails [eventId=" + eventId + ", stateId=" + stateId
+                + ", orlikId=" + orlikId + ", address=" + address + ", city="
+                + city + ", organizerEmail=" + organizerEmail + ", startDate="
+                + startDate + ", endDate=" + endDate + ", willCome=" + willCome
+                + ", playersLimit=" + playersLimit + ", water=" + water
+                + ", shower=" + shower + ", shoes=" + shoes + "]";
+    }
 
-	public Integer getStateId() {
-		return stateId;
-	}
+    public void setStateId(Integer stateId) {
+        this.stateId = stateId;
+    }
 
-	public void setStateId(Integer stateId) {
-		this.stateId = stateId;
-	}
+    public static class Builder {
+        private Integer eventId;
+        private Integer stateId;
+        private Integer orlikId;
+        private String address;
+        private String city;
+        private String organizerEmail;
+        private Date startDate;
+        private Date endDate;
+        private Integer decisionId;
+        private Integer roleId;
+        private Boolean permission;
+        private long willCome;
+        private Integer playersLimit;
+        private long invited;
+        private Boolean lights;
+        private Boolean water;
+        private String shoes;
+        private Boolean shower;
 
-	public String getAddress() {
-		return address;
-	}
+        public Builder(final Integer eventId) {
+            this.eventId = eventId;
+            this.stateId = null;
+            this.orlikId = null;
+            this.address = "Without";
+            this.city = "Without";
+            this.organizerEmail = "empty@email";
+            this.startDate = null;
+            this.endDate = null;
+            this.decisionId = null;
+            this.roleId = null;
+            this.permission = null;
+            this.willCome = 0;
+            this.playersLimit = 12;
+            this.invited = 0;
+            this.lights = Boolean.FALSE;
+            this.water = Boolean.FALSE;
+            this.shower = Boolean.FALSE;
+        }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+        public Builder stateId(final EventState eventState) {
+            this.eventId = eventState.getId();
+            return this;
+        }
 
-	public String getOrganizerEmail() {
-		return organizerEmail;
-	}
+        public Builder orlikId(final Integer orlikId) {
+            this.orlikId = orlikId;
+            return this;
+        }
 
-	public void setOrganizerEmail(String organizerEmail) {
-		this.organizerEmail = organizerEmail;
-	}
+        public Builder address(final String orlikId) {
+            this.address = "Without";
+            return this;
+        }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+        public Builder city(final String orlikId) {
+            this.city = "Without";
+            return this;
+        }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+        public Builder organizerEmail(final String organizerEmail) {
+            this.organizerEmail = organizerEmail;
+            return this;
+        }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+        public Builder startDate(final Date startDate) {
+            this.startDate = startDate;
+            return this;
+        }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+        public Builder endDate(final Date endDate) {
+            this.endDate = endDate;
+            return this;
+        }
 
-	public Integer getDecisionId() {
-		return decisionId;
-	}
+        public Builder decision(final Integer orlikId) {
+            this.decisionId = null;
+            return this;
+        }
 
-	public void setDecisionId(Integer decisionId) {
-		this.decisionId = decisionId;
-	}
+        public Builder role(final Integer roleId) {
+            this.roleId = roleId;
+            return this;
+        }
 
-	public Integer getRoleId() {
-		return roleId;
-	}
+        public Builder permission(final Boolean permission) {
+            this.permission = permission;
+            return this;
+        }
 
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
+        public Builder willCome(final long willCome) {
+            this.willCome = willCome;
+            return this;
+        }
 
-	public long getWillCome() {
-		return willCome;
-	}
+        public Builder playersLimit(final Integer playersLimit) {
+            this.playersLimit = playersLimit;
+            return this;
+        }
 
-	public void setWillCome(long willCome) {
-		this.willCome = willCome;
-	}
+        public Builder invited(final long invited) {
+            this.invited = invited;
+            return this;
+        }
 
-	public Integer getPlayersLimit() {
-		return playersLimit;
-	}
+        public Builder lights(final Boolean lights) {
+            this.lights = lights;
+            return this;
+        }
 
-	public void setPlayersLimit(Integer playersLimit) {
-		this.playersLimit = playersLimit;
-	}
-	
-	@Override
-	public String toString() {
-		return "UserGameDetails [eventId=" + eventId + ", stateId=" + stateId
-				+ ", orlikId=" + orlikId + ", address=" + address + ", city="
-				+ city + ", organizerEmail=" + organizerEmail + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", willCome=" + willCome
-				+ ", playersLimit=" + playersLimit + ", water=" + water
-				+ ", shower=" + shower + ", shoes=" + shoes + "]";
-	}
+        public Builder water(final Boolean water) {
+            this.water = water;
+            return this;
+        }
+
+        public Builder shoes(final String shoes) {
+            this.shoes = shoes;
+            return this;
+        }
+
+        public Builder shower(final Boolean shower) {
+            this.shower = shower;
+            return this;
+        }
+
+        public UserGameDetails build() {
+            final UserGameDetails ugd = new UserGameDetails(this);
+            return ugd;
+        }
+
+    }
 }
