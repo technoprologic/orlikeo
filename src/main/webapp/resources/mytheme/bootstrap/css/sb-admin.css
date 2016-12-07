@@ -9,6 +9,7 @@
 body {
     margin-top: 100px;
     background-color: #222;
+    height: 100%;
 }
 
 @media(min-width:768px) {
@@ -19,8 +20,8 @@ body {
 
 #wrapper {
     padding-left: 0;
-    min-height: 100%; /* Mindesthöhe für moderne Browser */
-    height:100%; /* Mindesthöhe für den IE */ 
+    min-height: 100%; /* Mindesthï¿½he fï¿½r moderne Browser */
+    height:100%; /* Mindesthï¿½he fï¿½r den IE */ 
     width:100%;
 
 	
@@ -32,7 +33,7 @@ padding: 0px;
 background-color: #CCC;
 min-width: 75%;
 min-height: 100%;
-position: absolute;
+/*position: absolute;*/
 background-color: #CCC;
 }
 

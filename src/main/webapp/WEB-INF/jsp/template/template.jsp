@@ -5,7 +5,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +40,7 @@
     <div id="wrapper">
 		<tiles:insertAttribute name="navbar" />
 		<div id="page-wrapper" >
-			 <div class="container-fluid"  style="width:100%">
+			 <div class="container-fluid">
 			 	<tiles:insertAttribute name="eventsMainWindow" />
 				<tiles:insertAttribute name="content" />
 				<tiles:insertAttribute name="modal" />

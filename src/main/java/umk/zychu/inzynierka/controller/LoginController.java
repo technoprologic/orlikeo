@@ -15,7 +15,7 @@ public class LoginController {
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error ) {
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
-			model.addObject("error", "Invalid username or password!");
+			model.addObject("error", "Niepoprawny login lub hasło!");
 		}
 		model.setViewName("login");
 		return model;
@@ -31,7 +31,7 @@ public class LoginController {
 	public ModelAndView logout() {
 		SecurityContextHolder.clearContext();
 		ModelAndView model = new ModelAndView();
-		model.addObject("msg", "You've been logged out successfully.");
+		model.addObject("msg", "Poprawnie wylogowano z serwisu.");
 		model.setViewName("login");
 		return model;
 	}	

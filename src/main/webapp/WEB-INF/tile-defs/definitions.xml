@@ -45,6 +45,9 @@
         <put-list-attribute name="extensibleStyles">
             <add-attribute value="/WEB-INF/jsp/styles/accountEditAndRegisterCSS.jsp" />
         </put-list-attribute>
+		<put-list-attribute name="extensibleScripts">
+			<add-attribute value="/WEB-INF/jsp/scripts/formFieldsValidator.jsp" />
+		</put-list-attribute>
 	</definition>
 	<definition name="login" extends="clearTemplate">
 		<put-attribute name="content" value="/WEB-INF/jsp/account/login.jsp" />

@@ -20,7 +20,15 @@
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title"> <c:if test="${ not empty user.name }" >${user.name}</c:if> <c:if test="${ not empty user.surname }" >${user.surname} </c:if></h3>
+              <h3 class="panel-title"> Imię:
+                  <c:choose>
+                  <c:when test="${ not empty user.name }" >${user.name}</c:when>
+                  <c:otherwise> - </c:otherwise>
+                </c:choose><br>
+                  Nazwisko: <c:choose>
+                <c:when test="${ not empty user.surname }" >${user.surname}</c:when>
+                <c:otherwise> - </c:otherwise>
+    </c:choose>
             </div>
             <div class="panel-body">
               <div class="row">

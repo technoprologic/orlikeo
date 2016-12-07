@@ -18,7 +18,7 @@
 					<br/>	
 					<form:errors path="name" cssClass="error" />
 					<spring:message code="web.account.edit.name.placeholder" var="namePlaceholder"/>
-					<form:input  path="name" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,45}" type="text" class="form-control"  placeholder="${ namePlaceholder }"  />
+					<form:input  name="name" path="name" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,45}" type="text" class="form-control"  placeholder="${ namePlaceholder }"  />
 				</div>
 
 				<!-- surname -->
@@ -26,7 +26,7 @@
 					<form:label path="surname"><spring:message code="web.account.edit.surname.label"/></form:label>
 					<br/>	
 					<spring:message code="web.account.edit.surname.placeholder" var="surnamePlaceholder"/>
-					<form:input  path="surname" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,45}" type="text" class="form-control"  placeholder="${ surnamePlaceholder }" />
+					<form:input name="surname" path="surname" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ]{2,45}" type="text" class="form-control"  placeholder="${ surnamePlaceholder }" />
 				</div>
         		
         		<!-- dateOfBirth -->
@@ -35,7 +35,7 @@
 					<br/>	
 					<form:errors path="dateOfBirth" cssClass="error" />
 					<spring:message code="web.account.edit.birthdate.placeholder" var="birthdatePlaceholder"/>
-					<form:input  path="dateOfBirth"  pattern="((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))[.]((0[1-9])|(1[0-2]))[.](\d{4})" required="required" type="text" class="form-control"  placeholder="${ birthdatePlaceholder }"/>
+					<form:input name="dateOfBirth" path="dateOfBirth"  pattern="((0[1-9])|(1[0-9])|(2[0-9])|(3[0-1]))[.]((0[1-9])|(1[0-2]))[.](\d{4})" required="required" type="text" class="form-control"  placeholder="${ birthdatePlaceholder }"/>
 				</div>
         		
         		<!-- position -->
@@ -53,17 +53,16 @@
 					<br/>	
 					<form:errors path="weight" cssClass="error" />
 					<spring:message code="web.account.edit.weight.placeholder" var="weightPlaceholder"/>
-					<form:input  path="weight" pattern="[0-9]{1,3}" type="text" class="form-control"  placeholder="${ weightPlaceholder }"/>
+					<form:input  name="weight" path="weight" pattern="[0-9]{1,3}" type="text" class="form-control"  placeholder="${ weightPlaceholder }"/>
 				</div>
-				
-				
+
 				<!-- height -->
                 <div class="form-group">
 					<form:label path="height"><spring:message code="web.account.edit.height.label"/></form:label>
 					<br/>	
 					<form:errors path="height" cssClass="error" />
 					<spring:message code="web.account.edit.height.placeholder" var="heightPlaceholder"/>
-					<form:input  path="height" pattern="[0-9]{1,3}" type="text" class="form-control"  placeholder="${ heightPlaceholder }"/>
+					<form:input  name="height" path="height" pattern="[0-9]{1,3}" type="text" class="form-control"  placeholder="${ heightPlaceholder }"/>
 				</div>
 				
         		<!--  foot -->
@@ -81,5 +80,3 @@
         </div>
     </div>
 </div>
-
-

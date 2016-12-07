@@ -13,7 +13,7 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Zaloguj i korzystaj z możliwości jakie daje Orlikeo!</h1>
          <c:if test="${not empty error}">
-			<div class="error text-center" class="text-danger">${error}</div>
+			<div class="text-center" style="color: red;">${error}</div>
 		</c:if>
 		<c:if test="${not empty msg}">
 			<div class="msg text-center" style="color:green">${msg}</div>
