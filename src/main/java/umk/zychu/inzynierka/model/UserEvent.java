@@ -2,11 +2,12 @@ package umk.zychu.inzynierka.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "user_event")
-public class UserEvent extends BaseEntity implements Serializable {
+public class UserEvent extends BaseEntity implements Serializable, Comparable<UserEvent> {
 	
 	@Column(name = "user_permission")
 	private boolean userPermission;
@@ -92,6 +93,32 @@ public class UserEvent extends BaseEntity implements Serializable {
 	public UserDecision getDecision(){
 		return this.decision;
 	}
+
+	@Override
+	public int compareTo(UserEvent o) {
+		// return 1 if o should be before this
+		// return -1 if this should be before o
+		// return 0 otherwise
+		Graphic thisGraphic = this.getEvent().getGraphic();
+		Graphic oGraphic = o.getEvent().getGraphic();
+		if (thisGraphic == null || oGraphic == null) {
+			if (thisGraphic == null && oGraphic == null)
+				return 0;
+			else if (thisGraphic == null)
+				return -1;
+			else
+				return 1;
+		}
+		if (oGraphic.getStartTime()
+				.before(thisGraphic.getStartTime()))
+			return 1;
+		else if (thisGraphic.getStartTime()
+				.before(oGraphic.getStartTime()))
+			return -1;
+		else
+			return 0;
+	}
+
 
 	public static class Builder{
 		private User user;

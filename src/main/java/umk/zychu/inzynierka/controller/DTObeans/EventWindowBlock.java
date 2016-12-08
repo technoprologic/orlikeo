@@ -1,152 +1,257 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import java.util.Date;
+import umk.zychu.inzynierka.model.*;
+
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 public class EventWindowBlock {
-	//TODO Builder pattern
-	public EventWindowBlock(String label, Integer displayOrder, Integer stateId, String address, String city,
-			Date startTime, Date endTime, Integer limit, long goingToCome, long countedInSameState, Boolean incoming) {
-		super();
-		this.stateId = stateId;
-		this.address = address;
-		this.city = city;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.playersLimit = limit;
-		this.goingToCome = goingToCome;
-		this.countedInSameState = countedInSameState;
-		this.label = label;
-		this.displayOrder = displayOrder;
-		this.incoming = incoming;
-	}
 
-	public Boolean getIncoming() {
-		return incoming;
-	}
+    private Integer stateId;
+    private String address;
+    private String city;
+    private Date startTime;
+    private Date endTime;
+    private long goingToCome;
+    private Integer playersLimit;
+    private long countedInSameState;
+    private String label;
+    private Integer displayOrder;
+    private Boolean incoming;
 
-	public void setIncoming(Boolean incoming) {
-		this.incoming = incoming;
-	}
+    private EventWindowBlock(Builder builder) {
+        super();
+        this.stateId = builder.stateId;
+        this.address = builder.address;
+        this.city = builder.city;
+        this.startTime = builder.startTime;
+        this.endTime = builder.endTime;
+        this.playersLimit = builder.playersLimit;
+        this.goingToCome = builder.goingToCome;
+        this.countedInSameState = builder.countedInSameState;
+        this.label = builder.label;
+        this.displayOrder = builder.displayOrder;
+        this.incoming = builder.incoming;
+    }
 
-	public Integer getDisplayOrder() {
-		return displayOrder;
-	}
+    private EventWindowBlock() {
+        super();
+    }
 
-	public void setDisplayOrder(Integer displayOrder) {
-		this.displayOrder = displayOrder;
-	}
+    @Override
+    public String toString() {
+        return new StringBuffer("i: " + "id"
+                + " City:" + city
+                + " Address:" + address
+                + " WillCome:" + incoming
+                + " Limit:" + playersLimit
+                + " State:" + stateId
+                + " InTheSameStateCounter:" + "haveTheSameState"
+                + " displayOrder:" + displayOrder
+                + " label:" + label
+        ).toString();
+    }
 
-	public String getLabel() {
-		return label;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public Integer getStateId() {
+        return stateId;
+    }
 
-	public Integer getStateId() {
-		return stateId;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setStateId(Integer stateId) {
-		this.stateId = stateId;
-	}
+    public Date getStartTime() {
+        return startTime;
+    }
 
-	public Integer getPlayersLimit() {
-		return playersLimit;
-	}
+    public Date getEndTime() {
+        return endTime;
+    }
 
-	public void setPlayersLimit(Integer playersLimit) {
-		this.playersLimit = playersLimit;
-	}
+    public long getGoingToCome() {
+        return goingToCome;
+    }
 
-	public EventWindowBlock() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public Integer getPlayersLimit() {
+        return playersLimit;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public long getCountedInSameState() {
+        return countedInSameState;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public Boolean getIncoming() {
+        return incoming;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
 
-	public Date getStartTime() {
-		return startTime;
-	}
+    public static class Builder {
 
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
+        private Integer stateId;
+        private String address;
+        private String city;
+        private Date startTime;
+        private Date endTime;
+        private long goingToCome;
+        private Integer playersLimit;
+        private long countedInSameState;
+        private String label;
+        private Integer displayOrder;
+        private Boolean incoming;
 
-	public Date getEndTime() {
-		return endTime;
-	}
+        //next 48hrs
+        private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
+        public Builder(List<UserEvent> userEvents, @NotNull EventState state, UserEventRole role, Boolean incoming, UserDecision decision) {
+            this();
+            List<UserEvent> filteredUserEvents = new ArrayList<>(userEvents);
 
-	public long getGoingToCome() {
-		return goingToCome;
-	}
+            filteredUserEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
+            this.stateId = state.getId();
 
-	public void setGoingToCome(long l) {
-		this.goingToCome = l;
-	}
+            if (role != null) {
+                filteredUserEvents.removeIf(ue -> !ue.getRole().equals(role));
+            }
 
-	public Integer getLimit() {
-		return playersLimit;
-	}
+            if (incoming) {
+                Date now = new Date();
+                Date endDate = incomingEventsDateInterval;
+                Date todayAndTomorrow = new Date(endDate.getYear(),
+                        endDate.getMonth(), endDate.getDate());
+                filteredUserEvents.removeIf(ue -> null == ue.getEvent().getGraphic() || ue.getEvent().getGraphic()
+                        .getStartTime().after(todayAndTomorrow));
+            }
 
-	public void setLimit(Integer limit) {
-		this.playersLimit = limit;
-	}
+            Collections.sort(filteredUserEvents);
 
-	public long getCountedInSameState() {
-		return countedInSameState;
-	}
+            Event event = !filteredUserEvents.isEmpty() ? filteredUserEvents.get(0).getEvent() : null;
+            Graphic graphic = event != null ? event.getGraphic() : null;
+            Orlik orlik = graphic != null ? graphic.getOrlik() : null;
 
-	public void setCountedInSameState(long counter) {
-		this.countedInSameState = counter;
-	}
+            this.goingToCome = event != null ? event.getUsersEvent().stream()
+                    .filter(ue -> ue.getDecision().equals(decision)).count() : 0;
+            this.address = orlik != null ? orlik.getAddress() : this.address;
+            this.city = orlik != null ? orlik.getCity() : this.city;
+            this.startTime = graphic != null ? graphic.getStartTime() : null;
+            this.endTime = graphic != null ? graphic.getEndTime() : null;
+            this.playersLimit = event != null ? event.getPlayersLimit() : 0;
+            this.countedInSameState = filteredUserEvents.size();
 
-	//TODO  Builder pattern
-	private Integer stateId;
-	private String address;
-	private String city;
-	private Date startTime;
-	private Date endTime;
-	private long goingToCome;
-	private Integer playersLimit;
-	private long countedInSameState;
-	private String label;
-	private Integer displayOrder;
-	private Boolean incoming;
+            switch (state.getId()) {
+                case 1:
+                    this.label = "Kosz";
+                    this.displayOrder = 0;
+                    break;
+                case 2:
+                    this.label = "W budowie";
+                    this.displayOrder = 1;
+                    break;
+                case 3:
+                    this.label = "Do akceptacji";
+                    this.displayOrder = 2;
+                    break;
+                case 4:
+                    this.label = "Zagrożony";
+                    this.displayOrder = 3;
+                    break;
+                case 5:
+                    if (!incoming) {
+                        this.label = "Przyjęty";
+                        this.displayOrder = 4;
+                    } else {
+                        this.label = "Nadchodzący";
+                        this.displayOrder = 5;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
+        private Builder() {
+            this.stateId = 0;
+            this.address = "brak orlika";
+            this.city = " - ";
+            this.startTime = null;
+            this.endTime = null;
+            this.goingToCome = 0;
+            this.playersLimit = 14;
+            this.countedInSameState = 0;
+            this.label = " - ";
+            this.displayOrder = -1;
+            this.incoming = Boolean.FALSE;
+        }
 
-	@Override
-	public String  toString(){
-		return new StringBuffer("i: " + "id"
-				+ " City:" + city
-				+ " Address:" + address
-				+ " WillCome:" + incoming
-				+ " Limit:" + playersLimit
-				+ " State:" + stateId
-				+ " InTheSameStateCounter:" + "haveTheSameState"
-				+ " displayOrder:" + displayOrder
-				+ " label:" +  label
-		).toString();
+        public Builder state(Integer stateId) {
+            this.stateId = stateId;
+            return this;
+        }
 
-	}
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder city(String city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder startTime(Date startTime) {
+            this.startTime = startTime;
+            return this;
+        }
+
+        public Builder endTime(Date endTime) {
+            this.endTime = endTime;
+            return this;
+        }
+
+        public Builder goingToCome(long goingToCome) {
+            this.goingToCome = goingToCome;
+            return this;
+        }
+
+        public Builder playersLimit(Integer playersLimit) {
+            this.playersLimit = playersLimit;
+            return this;
+        }
+
+        public Builder countedInSameState(long inSameState) {
+            this.countedInSameState = inSameState;
+            return this;
+        }
+
+        public Builder label(String label) {
+            this.label = label;
+            return this;
+        }
+
+        public Builder displayOrder(Integer displayOrder) {
+            this.displayOrder = displayOrder;
+            return this;
+        }
+
+        public Builder incoming(Boolean incoming) {
+            this.incoming = incoming;
+            return this;
+        }
+
+        public EventWindowBlock build() {
+            EventWindowBlock block = new EventWindowBlock(this);
+            return block;
+        }
+    }
+
 }
