@@ -177,7 +177,7 @@ public class UserGameDetails {
         }
 
         public Builder stateId(final EventState eventState) {
-            this.eventId = eventState.getId();
+            this.stateId = eventState.getId();
             return this;
         }
 
