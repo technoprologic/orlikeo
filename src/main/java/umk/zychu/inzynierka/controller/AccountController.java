@@ -72,7 +72,7 @@ public class AccountController {
         } else {
             userService.updateUserDetails(form);
             String redirect = "redirect:/account/profile/";
-            redirectAttributes.addFlashAttribute("updated", "dsds");
+            redirectAttributes.addFlashAttribute("updated", "updated");
             return redirect;
         }
     }

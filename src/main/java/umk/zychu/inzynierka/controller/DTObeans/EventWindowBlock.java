@@ -181,14 +181,14 @@ public class EventWindowBlock {
 
         private Builder() {
             this.stateId = 0;
-            this.address = "brak orlika";
-            this.city = " - ";
+            this.address = "";
+            this.city = "";
             this.startTime = null;
             this.endTime = null;
             this.goingToCome = 0;
             this.playersLimit = 14;
             this.countedInSameState = 0;
-            this.label = " - ";
+            this.label = "Brak";
             this.displayOrder = -1;
             this.incoming = Boolean.FALSE;
         }

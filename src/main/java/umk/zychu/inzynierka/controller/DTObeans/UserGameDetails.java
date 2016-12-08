@@ -211,8 +211,8 @@ public class UserGameDetails {
             return this;
         }
 
-        public Builder decision(final Integer orlikId) {
-            this.decisionId = null;
+        public Builder decision(final Integer decisionId) {
+            this.decisionId = decisionId;
             return this;
         }
 
