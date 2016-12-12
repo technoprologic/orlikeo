@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserEventServiceImp implements UserEventService {
 
-	private final int changeStatusBarrier = 3;
+	private final int changeStatusBarrier = 5;
 
 	@Autowired
 	UserEventDaoRepository userEventDAO;

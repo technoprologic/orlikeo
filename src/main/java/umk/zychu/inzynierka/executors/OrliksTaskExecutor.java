@@ -57,13 +57,15 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
             List<Graphic> halfHourToStartGraphics = graphicService.findAll().stream()
                     .filter(g -> g.getStartTime().getTime() - NOW < HALF_AN_HOUR).collect(Collectors.toList());
 
-            // DIVIDING BY TIME :
+            //block
+            blockGraphics(halfHourToStartGraphics);
+
+            // DIVIDING BY TIME TO START:
             // true means it 0-15 min left,
             // false means it's 15-30 left.
             Map<Boolean, List<Graphic>> map = halfHourToStartGraphics.stream()
                     .collect(partitioningBy(g -> g.getStartTime().getTime() - NOW < QUARTER_OF_AN_HOUR));
 
-            blockGraphics(halfHourToStartGraphics);
             manageByEventsState(map.get(Boolean.FALSE), event -> event.getState().equals(inBuild));
             manageByEventsState(map.get(Boolean.TRUE), event -> event.getState().equals(inBuild)
                     || event.getState().equals(toApproveState)

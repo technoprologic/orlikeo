@@ -60,7 +60,7 @@ public class BaseTaskExecutor {
 
     /**
      * Manages graphics and their events.
-     *@Component
+     *
      * @param graphics Where is 30-15-0 minutes to start the event.
      * @param predicate Predicate says which states should be processed.
      */
@@ -72,16 +72,7 @@ public class BaseTaskExecutor {
                 .collect(Collectors.toSet());
 
         // Change all decisions (who's been invited) to INVITED.
-        eventsReadyToPrepare.stream()
-                .flatMap(e -> e.getUsersEvent().stream())
-                .filter(ue -> ue.getRole().equals(guestRole)
-                        && !ue.getDecision().equals(notInvited))
-                .forEach(ue -> {
-                    if(!ue.getUserPermission()) {
-                        ue.setDecision(invited);
-                    }
-                    userEventService.save(ue);
-                });
+        changeUsersDecisions(eventsReadyToPrepare);
 
         // Remove graphics from events
         eventsReadyToPrepare.forEach(e -> {
@@ -99,9 +90,13 @@ public class BaseTaskExecutor {
      */
     @Transactional
     protected void clear45minutesPastGraphics() {
-        graphicService.findAll().stream()
-                .filter(g -> NOW - g.getEndTime().getTime() > HALF_AN_HOUR + QUARTER_OF_AN_HOUR)
-                .forEach(g -> graphicService.delete(g));
+        Set<Graphic> forClear = graphicService.findAll().stream()
+                .filter(g -> NOW - g.getEndTime().getTime() > HALF_AN_HOUR + QUARTER_OF_AN_HOUR).collect(Collectors.toSet());
+
+        forClear.stream().map(g -> g.getEvents())
+                .forEach(events -> changeUsersDecisions(events));
+
+        forClear.forEach(g -> graphicService.delete(g));
     }
 
     /**
@@ -109,10 +104,13 @@ public class BaseTaskExecutor {
      */
     @Transactional
     protected void clearEventsGraphicsEnded30MinutesAgo() {
-        graphicService.findAll().stream()
+        Set<Event> ended30minAgo = graphicService.findAll().stream()
                 .filter(g -> NOW - g.getEndTime().getTime() > HALF_AN_HOUR)
-                .flatMap(g -> g.getEvents().stream())
-                .forEach(e -> {
+                .flatMap(g -> g.getEvents().stream()).collect(Collectors.toSet());
+
+        changeUsersDecisions(ended30minAgo);
+
+        ended30minAgo.forEach(e -> {
                     e.setGraphic(null);
                     eventService.save(e);
                 });
@@ -128,5 +126,21 @@ public class BaseTaskExecutor {
             g.setAvailable(false);
             graphicService.save(g);
         });
+    }
+
+    /**
+     * Changes user decisions to fefault
+     *
+     * @param eventsReadyToPrepare
+     */
+    private void changeUsersDecisions(Set<Event> eventsReadyToPrepare) {
+        eventsReadyToPrepare.stream()
+                .flatMap(e -> e.getUsersEvent().stream())
+                .filter(ue -> ue.getRole().equals(guestRole)
+                        && !ue.getDecision().equals(notInvited))
+                .forEach(ue -> {
+                    ue.setDecision(invited);
+                    userEventService.save(ue);
+                });
     }
 }

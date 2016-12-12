@@ -130,7 +130,7 @@ public class EventsController {
 		}
 		Event event = eventOpt.get();
 		if (eventService.isEventMember(event)) {
-			Integer decisionId = -1;
+			Integer decisionId;
 			if (Boolean.valueOf(decision)) {
 				decisionId = UserDecision.ACCEPTED;
 			} else {

@@ -41,7 +41,8 @@ public class OrlikServiceImp implements OrlikService {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		map.put("0", "Wybierz orlik...");
 		List<Orlik> orliks = orlikDAO.findAll().stream()
-				.filter(o -> o.getAnimator() != null)
+				.filter(o -> o.getAnimator() != null
+							&& !o.getGraphicCollection().isEmpty())
 				.collect(Collectors.toList());
 		orliks.forEach(o -> map.put(o.getId().toString(), o.getAddress()));
 		return map;

@@ -160,9 +160,9 @@ public class UserGameDetails {
             this.eventId = eventId;
             this.stateId = null;
             this.orlikId = null;
-            this.address = "Without";
-            this.city = "Without";
-            this.organizerEmail = "empty@email";
+            this.address = " - ";
+            this.city = " - ";
+            this.organizerEmail = " - ";
             this.startDate = null;
             this.endDate = null;
             this.decisionId = null;
