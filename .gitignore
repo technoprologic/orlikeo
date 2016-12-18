@@ -5,6 +5,10 @@ target/*
 .jsdtscope
 .idea
 .idea/*
-.openshift
+.openshift/
 .openshift/*
 jbossews.iml
+.gradle/
+build/
+gradle/
+out/
