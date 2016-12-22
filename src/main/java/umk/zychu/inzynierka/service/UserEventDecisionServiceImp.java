@@ -9,7 +9,7 @@ import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
 
 @Service
 @Transactional
-public class UserEventDecisionImp implements UserEventDecisionService{
+public class UserEventDecisionServiceImp implements UserEventDecisionService{
 
 	@Autowired
 	UserEventDecisionDAOrepository decisionDAO;
