@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_PROGRESS;
 import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 
 @Controller
@@ -40,8 +41,7 @@ public class EventsController {
 	private GraphicService graphicService;
 	@Autowired
 	private UserEventService userEventService;
-	@Autowired
-	private EventStateService eventStateService;
+
 	@Autowired
 	private UserEventDecisionService decisionService;
 	@Autowired
@@ -299,8 +299,7 @@ public class EventsController {
 			if(ev.isPresent()){
 				Event event = ev.get();
 				event.setGraphic(graphicService.findOne(graphicId));
-				EventState eventState = eventStateService.findOne(EventState.IN_PROGRESS);
-				event.setState(eventState);
+				event.setEnumeratedEventState(IN_PROGRESS);
 				UserDecision rejected = decisionService.findOne(UserDecision.REJECTED);
 				UserDecision accepted = decisionService.findOne(UserDecision.ACCEPTED);
 				UserDecision invited = decisionService.findOne(UserDecision.INVITED);

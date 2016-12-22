@@ -21,8 +21,7 @@ public class GraphicServiceImp implements GraphicService{
 	private UserEventService userEventService;
 	@Autowired 
 	private UserEventDecisionService userEventDecisionService;
-	@Autowired
-	private EventStateService eventStateService;
+
 	@Autowired
 	private UserEventRoleService userEventRoleService;
 	@Autowired
@@ -51,12 +50,6 @@ public class GraphicServiceImp implements GraphicService{
 	}
 	
 	private void reduceConnectedEvents(final Graphic graphic) {
-		UserDecision invited = userEventDecisionService.findOne(UserDecision.INVITED);
-		UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-		UserDecision rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
-		UserEventRole guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
-		EventState inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
-		EventState toAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
 		Set<Event> events = graphic.getEvents();
 		eventService.downgradeEventToBasket(events);
 	}

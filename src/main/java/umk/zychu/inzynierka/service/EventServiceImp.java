@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.converter.EventStateConverter.convertToEnum;
+import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
 import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 
 @Service
@@ -34,10 +36,6 @@ public class EventServiceImp implements EventService {
 
     private UserEventRole guestRole;
 
-    private EventState inBasket;
-
-    private EventState readyToAcceptState;
-
     @Autowired
     EventDaoRepository eventDAO;
     @Autowired
@@ -50,12 +48,13 @@ public class EventServiceImp implements EventService {
     UserEventDecisionService userEventDecisionService;
     @Autowired
     UserEventRoleService userEventRoleService;
-    @Autowired
-    EventStateService eventStateService;
+
     @Autowired
     FriendshipService friendshipService;
+
     @Autowired
     EventToApproveService eventToApproveService;
+
     @Autowired
     UserNotificationsService userNotificationsService;
 
@@ -68,8 +67,6 @@ public class EventServiceImp implements EventService {
         accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
         rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
         guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
-        inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
-        readyToAcceptState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
     }
 
     @Override
@@ -78,12 +75,10 @@ public class EventServiceImp implements EventService {
         Graphic graphic = event.getGraphic();
         Orlik orlik = graphic.getOrlik();
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        EventState readyToAccept = eventStateService.findOne(EventState.READY_TO_ACCEPT);
-        if (orlik.getAnimator() != null && orlik.getAnimator().equals(user) && event.getState().equals(readyToAccept)) {
+        if (orlik.getAnimator() != null && orlik.getAnimator().equals(user) && event.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
             changeConcurrentEvents(event);
             eventToApproveService.removeEventFromWaitingForCheckByManager(event);
-            EventState approved = eventStateService.findOne(EventState.APPROVED);
-            event.setState(approved);
+            event.setEnumeratedEventState(APPROVED);
             save(event);
             userNotificationsService.eventWonRaceForGraphic(event);
         }
@@ -117,10 +112,10 @@ public class EventServiceImp implements EventService {
                             userEventService.save(o);
                         });
                 e.setGraphic(null);
-                if (e.getState().equals(readyToAcceptState)) {
+                if (e.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
                     eventToApproveService.removeEventFromWaitingForCheckByManager(e);
                 }
-                e.setState(inBasket);
+                e.setEnumeratedEventState(IN_A_BASKET);
                 save(e);
             }
         }
@@ -208,28 +203,21 @@ public class EventServiceImp implements EventService {
     @Override
     public List<EventWindowBlock> getEventWindowBlocks(UserEventRole role) {
         List<EventWindowBlock> windowBlocks = new ArrayList<>();
-        List<EventState> states = eventStateService.findAll();
-        for (EventState state : states) {
+        for (EnumeratedEventState state : EnumeratedEventState.values()) {
             windowBlocks.add(getBlock(state, role, false));
         }
-        windowBlocks.add(getBlock(eventStateService.findOne(EventState.APPROVED), role, true));
-        Collections.sort(windowBlocks, new Comparator<EventWindowBlock>() {
-            @Override
-            public int compare(EventWindowBlock lhs, EventWindowBlock rhs) {
-                return rhs.getDisplayOrder() - lhs.getDisplayOrder();
-            }
-        });
+        windowBlocks.add(getBlock(APPROVED, role, true));
+        Collections.sort(windowBlocks, (lhs, rhs) -> rhs.getDisplayOrder() - lhs.getDisplayOrder());
         return windowBlocks;
     }
 
     @Override
     public List<EventWindowBlock> getEventWindowBlocks(String username, UserEventRole role) {
-        List<EventWindowBlock> windowBlocks = new ArrayList<EventWindowBlock>();
-        List<EventState> states = eventStateService.findAll();
-        for (EventState state : states) {
+        List<EventWindowBlock> windowBlocks = new ArrayList<>();
+        for (EnumeratedEventState state : EnumeratedEventState.values()) {
             windowBlocks.add(getBlock(username, state, role, false));
         }
-        windowBlocks.add(getBlock(username, eventStateService.findOne(EventState.APPROVED), role, true));
+        windowBlocks.add(getBlock(username, APPROVED, role, true));
         Collections.sort(windowBlocks, (lhs, rhs) -> rhs.getDisplayOrder() - lhs.getDisplayOrder());
         return windowBlocks;
     }
@@ -262,10 +250,8 @@ public class EventServiceImp implements EventService {
                     break;
             }
         }
-        EventState state = stateId == null ? null : stateId == 5
-                || stateId == 6 ? eventStateService
-                .findOne(EventState.APPROVED) : eventStateService
-                .findOne(stateId);
+        EnumeratedEventState state = stateId == null ? null : stateId == 5
+                || stateId == 6 ? APPROVED: convertToEnum(stateId);
 
         List<UserEvent> userEvents = user.getUserEvents();
         Date endDate = incomingEventsDateInterval;
@@ -281,11 +267,10 @@ public class EventServiceImp implements EventService {
                     .collect(Collectors.toList());
         }
         if (state != null) {
-            EventState efectiveFinalState = state;
             userEvents = userEvents
                     .stream()
-                    .filter(ue -> ue.getEvent().getState()
-                            .equals(efectiveFinalState))
+                    .filter(ue -> ue.getEvent().getEnumeratedEventState()
+                            .equals(state))
                     .collect(Collectors.toList());
         }
         List<UserGameDetails> userGameDetails = generateUserGameDetailsList(userEvents);
@@ -339,9 +324,9 @@ public class EventServiceImp implements EventService {
         try {
             User userOrganizer = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
             Graphic graphic = graphicService.findOne(form.getGraphicId());
-            EventState state = eventStateService.findOne(EventState.IN_PROGRESS);
             Integer playersLimit = form.getUsersLimit();
-            Event event = new Event.Builder(userOrganizer, state)
+            Event event = new Event.Builder(userOrganizer)
+                    .enumeratedEventState(IN_PROGRESS)
                     .graphic(graphic)
                     .playersLimit(playersLimit)
                     .build();
@@ -417,8 +402,7 @@ public class EventServiceImp implements EventService {
     public void delete(Integer id) throws IllegalArgumentException {
         if (eventDAO.exists(id)) {
             Event event = eventDAO.findOne(id);
-            EventState readyToAccept = eventStateService.findOne(EventState.READY_TO_ACCEPT);
-            if (event.getState().equals(readyToAccept)) {
+            if (event.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
                 eventToApproveService.removeEventFromWaitingForCheckByManager(event);
             }
             userNotificationsService.deleteAllOnEvent(event);
@@ -499,18 +483,18 @@ public class EventServiceImp implements EventService {
         eventDAO.findOne(event.getId());
     }
 
-    private EventWindowBlock getBlock(EventState state, UserEventRole role, Boolean incoming) {
+    private EventWindowBlock getBlock(EnumeratedEventState state, UserEventRole role, Boolean incoming) {
         User user = userService.getUser(SecurityContextHolder.getContext()
                 .getAuthentication().getName());
         return generateBlock(user, state, role, incoming);
     }
 
-    private EventWindowBlock getBlock(String username, EventState state, UserEventRole role, boolean incoming) {
+    private EventWindowBlock getBlock(String username, EnumeratedEventState state, UserEventRole role, boolean incoming) {
         User user = userService.getUser(username);
         return generateBlock(user, state, role, incoming);
     }
 
-    private EventWindowBlock generateBlock(User user, EventState state, UserEventRole role, Boolean incoming) {
+    private EventWindowBlock generateBlock(User user, EnumeratedEventState state, UserEventRole role, Boolean incoming) {
         List<UserEvent> userEvents = user.getUserEvents();
         EventWindowBlock.Builder ewbBuilder = new EventWindowBlock.Builder(userEvents, state, role, incoming, accepted);
         return ewbBuilder.build();
@@ -522,7 +506,7 @@ public class EventServiceImp implements EventService {
         Event event = userEvent.getEvent();
         UserGameDetails.Builder ugdBuilder = new UserGameDetails.Builder(event.getId());
 
-        ugdBuilder.stateId(event.getState())
+        ugdBuilder.stateId(event.getEnumeratedEventState().getValue())
                 .organizerEmail(event.getUserOrganizer().getEmail())
                 .decision(userEvent.getDecision().getId())
                 .role(userEvent.getRole().getId())

@@ -37,8 +37,7 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
     protected SimpMessagingTemplate template;
     @Autowired
     protected EventService eventService;
-    @Autowired
-    protected EventStateService eventStateService;
+
     @Autowired
     protected OrlikService orlikService;
     @Autowired

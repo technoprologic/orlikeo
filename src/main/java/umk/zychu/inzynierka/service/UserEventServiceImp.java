@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
+
 @Service
 public class UserEventServiceImp implements UserEventService {
 
@@ -21,8 +23,7 @@ public class UserEventServiceImp implements UserEventService {
 	UserEventDaoRepository userEventDAO;
 	@Autowired
 	EventService eventService;
-	@Autowired
-	EventStateService eventStateService;
+
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -53,32 +54,28 @@ public class UserEventServiceImp implements UserEventService {
 	
 	@Override
 	public void changeEventStateIfRequired(Event event) {
-		EventState inProgress = eventStateService.findOne(EventState.IN_PROGRESS);
-		EventState readyToAccept = eventStateService.findOne(EventState.READY_TO_ACCEPT);
-		EventState approved = eventStateService.findOne(EventState.APPROVED);
-		EventState threatened = eventStateService.findOne(EventState.THREATENED);
 		UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-		EventState beforeState = event.getState();
+		EnumeratedEventState beforeState = event.getEnumeratedEventState();
 		long counter = event.getUsersEvent().stream()
 				.filter(ue -> ue.getDecision().equals(accepted))
 				.count();
-		if(event.getState().equals(inProgress) && counter >= changeStatusBarrier) {
-			event.setState(readyToAccept);
+		if(event.getEnumeratedEventState().equals(EnumeratedEventState.IN_PROGRESS) && counter >= changeStatusBarrier) {
+			event.setEnumeratedEventState(READY_TO_ACCEPT);
 			eventToApproveService.addEventToCheckByManager(event);
-		}else if(event.getState().equals(readyToAccept) && counter < changeStatusBarrier){
-			event.setState(inProgress);
+		}else if(event.getEnumeratedEventState().equals(READY_TO_ACCEPT) && counter < changeStatusBarrier){
+			event.setEnumeratedEventState(IN_PROGRESS);
 			Optional<EventToApprove> optEventToApprove = eventToApproveService.findByEvent(event);
 			if(optEventToApprove.isPresent()){
 				EventToApprove evenToAprrove = optEventToApprove.get();
 				eventToApproveService.delete(evenToAprrove);
 			}
-		}else if(event.getState().equals(approved) && counter < changeStatusBarrier){
-			event.setState(threatened);
+		}else if(event.getEnumeratedEventState().equals(APPROVED) && counter < changeStatusBarrier){
+			event.setEnumeratedEventState(THREATENED);
 			//TODO set time to find player, if not change state to IN_PROGRESS
-		}else if (event.getState().equals(threatened) && counter >= changeStatusBarrier){
-			event.setState(approved);
+		}else if (event.getEnumeratedEventState().equals(THREATENED) && counter >= changeStatusBarrier){
+			event.setEnumeratedEventState(APPROVED);
 		}
-		if(!beforeState.equals(event.getState())){
+		if(!beforeState.equals(event.getEnumeratedEventState())){
 			userNotificationsService.eventStateChanged(event);
 		}
 		eventService.save(event);

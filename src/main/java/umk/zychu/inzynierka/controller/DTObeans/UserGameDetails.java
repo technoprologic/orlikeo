@@ -1,7 +1,5 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
-import umk.zychu.inzynierka.model.*;
-
 import java.util.Date;
 
 public class UserGameDetails {
@@ -176,8 +174,8 @@ public class UserGameDetails {
             this.shower = Boolean.FALSE;
         }
 
-        public Builder stateId(final EventState eventState) {
-            this.stateId = eventState.getId();
+        public Builder stateId(final int stateId) {
+            this.stateId = stateId;
             return this;
         }
 

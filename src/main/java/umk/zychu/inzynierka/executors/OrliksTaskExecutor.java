@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
+import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
 
 @Component
 public class OrliksTaskExecutor extends BaseTaskExecutor{
@@ -66,10 +67,10 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
             Map<Boolean, List<Graphic>> map = halfHourToStartGraphics.stream()
                     .collect(partitioningBy(g -> g.getStartTime().getTime() - NOW < QUARTER_OF_AN_HOUR));
 
-            manageByEventsState(map.get(Boolean.FALSE), event -> event.getState().equals(inBuild));
-            manageByEventsState(map.get(Boolean.TRUE), event -> event.getState().equals(inBuild)
-                    || event.getState().equals(toApproveState)
-                    || event.getState().equals(threatenedState));
+            manageByEventsState(map.get(Boolean.FALSE), event -> event.getEnumeratedEventState().equals(IN_PROGRESS));
+            manageByEventsState(map.get(Boolean.TRUE), event -> event.getEnumeratedEventState().equals(IN_PROGRESS)
+                    || event.getEnumeratedEventState().equals(READY_TO_ACCEPT)
+                    || event.getEnumeratedEventState().equals(THREATENED));
 
             clearEventsGraphicsEnded30MinutesAgo();
             clear45minutesPastGraphics();

@@ -5,22 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
-import umk.zychu.inzynierka.model.EventState;
-import umk.zychu.inzynierka.model.Graphic;
-import umk.zychu.inzynierka.model.Orlik;
-import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.*;
+import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.service.OrlikService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import static umk.zychu.inzynierka.model.EnumeratedEventState.THREATENED;
 
 @Controller
 @RequestMapping("/graphic")
@@ -30,8 +27,6 @@ public class GraphicController {
 	
 	@Autowired
 	private OrlikService orlikService;
-	@Autowired
-	private EventStateService eventStateService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String graphic(
@@ -56,9 +51,7 @@ public class GraphicController {
 		List<JsonEventObject> graphicEntityList = new ArrayList<JsonEventObject>();
 		for (Graphic i : graphics) {
 			Graphic graphic = i;
-			EventState approved = eventStateService.findOne(EventState.APPROVED);
-            EventState treatened = eventStateService.findOne(EventState.THREATENED);
-			if(graphic.getEvents().size() == 1 && (graphic.getEvents().iterator().next().getState().equals(approved) || graphic.getEvents().iterator().next().getState().equals(treatened))){
+			if(graphic.getEvents().size() == 1 && (graphic.getEvents().iterator().next().getEnumeratedEventState().equals(EnumeratedEventState.READY_TO_ACCEPT) || graphic.getEvents().iterator().next().getEnumeratedEventState().equals(THREATENED))){
 				graphic.setAvailable(false);
 				graphic.setTitle("Rezerwacja: " + graphic.getEvents().iterator().next().getUserOrganizer().getEmail());
 			}

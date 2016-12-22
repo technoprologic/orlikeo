@@ -113,12 +113,12 @@ public class EventWindowBlock {
         //next 48hrs
         private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
-        public Builder(List<UserEvent> userEvents, @NotNull EventState state, UserEventRole role, Boolean incoming, UserDecision decision) {
+        public Builder(List<UserEvent> userEvents, @NotNull EnumeratedEventState state, UserEventRole role, Boolean incoming, UserDecision decision) {
             this();
             List<UserEvent> filteredUserEvents = new ArrayList<>(userEvents);
 
-            filteredUserEvents.removeIf(ue -> !ue.getEvent().getState().equals(state));
-            this.stateId = state.getId();
+            filteredUserEvents.removeIf(ue -> !ue.getEvent().getEnumeratedEventState().equals(state));
+            this.stateId = state.getValue();
 
             if (role != null) {
                 filteredUserEvents.removeIf(ue -> !ue.getRole().equals(role));
@@ -148,24 +148,24 @@ public class EventWindowBlock {
             this.playersLimit = event != null ? event.getPlayersLimit() : 0;
             this.countedInSameState = filteredUserEvents.size();
 
-            switch (state.getId()) {
-                case 1:
+            switch (state) {
+                case IN_A_BASKET:
                     this.label = "Kosz";
                     this.displayOrder = 0;
                     break;
-                case 2:
+                case IN_PROGRESS:
                     this.label = "W budowie";
                     this.displayOrder = 1;
                     break;
-                case 3:
+                case READY_TO_ACCEPT:
                     this.label = "Do akceptacji";
                     this.displayOrder = 2;
                     break;
-                case 4:
+                case THREATENED:
                     this.label = "Zagrożony";
                     this.displayOrder = 3;
                     break;
-                case 5:
+                case APPROVED:
                     if (!incoming) {
                         this.label = "Przyjęty";
                         this.displayOrder = 4;

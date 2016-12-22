@@ -12,6 +12,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_A_BASKET;
+import static umk.zychu.inzynierka.model.EnumeratedEventState.READY_TO_ACCEPT;
+
 public class BaseTaskExecutor {
 
     protected Date currentDate = null;
@@ -21,12 +24,10 @@ public class BaseTaskExecutor {
     protected static final long QUARTER_OF_AN_HOUR = MINUTE * 15;
     protected UserEventRole guestRole;
     protected UserDecision notInvited, invited;
-    protected EventState inBasket, inBuild, threatenedState, toApproveState;
 
     @Autowired
     GraphicService graphicService;
-    @Autowired
-    EventStateService eventStateService;
+
     @Autowired
     EventService eventService;
     @Autowired
@@ -40,13 +41,9 @@ public class BaseTaskExecutor {
 
     @PostConstruct
     private void post() {
-        this.inBuild = eventStateService.findOne(EventState.IN_PROGRESS);
         this.guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
         this.notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         this.invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        this.inBasket = eventStateService.findOne(EventState.IN_A_BASKET);
-        this.threatenedState = eventStateService.findOne(EventState.THREATENED);
-        this.toApproveState = eventStateService.findOne(EventState.READY_TO_ACCEPT);
     }
 
     /**
@@ -54,7 +51,7 @@ public class BaseTaskExecutor {
      */
     protected void removeAllBrokenEvents() {
         eventService.findAll().stream()
-                .filter(e -> null == e.getGraphic() && !e.getState().equals(inBasket))
+                .filter(e -> null == e.getGraphic() && !e.getEnumeratedEventState().equals(IN_A_BASKET))
                 .forEach(e -> eventService.delete(e));
     }
 
@@ -77,10 +74,10 @@ public class BaseTaskExecutor {
         // Remove graphics from events
         eventsReadyToPrepare.forEach(e -> {
             e.setGraphic(null);
-            if(e.getState().equals(toApproveState)){
+            if(e.getEnumeratedEventState().equals(READY_TO_ACCEPT)){
                 eventToApproveService.removeEventFromWaitingForCheckByManager(e);
             }
-            e.setState(inBasket);
+            e.setEnumeratedEventState(IN_A_BASKET);
             eventService.save(e);
         });
     }

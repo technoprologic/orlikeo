@@ -13,6 +13,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_A_BASKET;
+import static umk.zychu.inzynierka.model.EnumeratedEventState.READY_TO_ACCEPT;
+
 
 public class EventsManager extends DHXEventsManager {
 
@@ -40,8 +43,6 @@ public class EventsManager extends DHXEventsManager {
 	public Iterable<DHXEv> getEvents() {
 		ArrayList<DHXEv> dhxEvents = new ArrayList<DHXEv>();
 		try {
-            EventState approved = services.getEventStateService().findOne(EventState.APPROVED);
-            EventState treatened = services.getEventStateService().findOne(EventState.THREATENED);
 			Collection<Graphic> orlikGraphics = orlik.getGraphicCollection();
 			Iterator<Graphic> i = orlikGraphics.iterator();
 			while (i.hasNext()) {
@@ -96,10 +97,7 @@ public class EventsManager extends DHXEventsManager {
 		graphic = services.getGraphicService().save(graphic);
 		//notify users
 		services.getUserNotificationsService().graphicChangedByAnimator(graphic);
-		EventState inBasketState = services.getStateDAO().findOne(
-				EventState.IN_A_BASKET);
-		EventState readyToAcceptState = services.getStateDAO().findOne(
-				EventState.READY_TO_ACCEPT);
+
 		UserEventRole guestRole = services.getUserEventRoleService().findOne(
 				UserEventRole.GUEST);
 		UserDecision notInvited = services.getUserEventDecisionDAO().findOne(
@@ -127,12 +125,12 @@ public class EventsManager extends DHXEventsManager {
 					.stream()
 					.forEach(
 							e -> {
-								if (e.getState().equals(readyToAcceptState)) {
+								if (e.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
 									services.getEventToApproveService()
 											.removeEventFromWaitingForCheckByManager(
 													e);
 								}
-								e.setState(inBasketState);
+								e.setEnumeratedEventState(IN_A_BASKET);
 								e.setGraphic(null);
 								services.getEventService().save(e);
 							});

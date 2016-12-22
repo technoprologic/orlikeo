@@ -104,20 +104,20 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void eventStateChanged(Event event) {
         String stateName = "";
-        switch (event.getState().getState()) {
-            case "in_basket":
+        switch (event.getEnumeratedEventState()) {
+            case IN_A_BASKET:
                 stateName = "W koszu";
                 break;
-            case "in_progress":
+            case IN_PROGRESS:
                 stateName = "W budowie";
                 break;
-            case "ready_to_accept":
+            case READY_TO_ACCEPT:
                 stateName = "Do akceptacji";
                 break;
-            case "threatened":
+            case THREATENED:
                 stateName = "Zagrożony";
                 break;
-            case "approved":
+            case APPROVED:
                 stateName = "Przyjęty";
                 break;
             default:

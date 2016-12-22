@@ -2,7 +2,6 @@ package umk.zychu.inzynierka.controller.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import umk.zychu.inzynierka.repository.EventStateDaoRepository;
 import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
 import umk.zychu.inzynierka.service.*;
 
@@ -20,14 +19,12 @@ public class AllServices{
 	private OrlikService orlikService;
 	@Autowired
 	private UserEventDecisionDAOrepository userEventDecisionDAO;
-	@Autowired
-	private EventStateDaoRepository stateDAO;
+
 	@Autowired
 	private UserEventRoleService userEventRoleService;
 	@Autowired
 	private EventToApproveService eventToApproveService;
-    @Autowired
-    private EventStateService eventStateService;
+
 
 	public UserNotificationsService getUserNotificationsService() {
 		return userNotificationsService;
@@ -40,13 +37,6 @@ public class AllServices{
 	@Autowired
 	private UserNotificationsService userNotificationsService;
 
-    public EventStateService getEventStateService(){
-        return eventStateService;
-    }
-
-    public void setEventStateService(EventStateService eventStateService){
-        this.eventStateService = eventStateService;
-    }
 
     public EventToApproveService getEventToApproveService() {
 		return eventToApproveService;
@@ -107,13 +97,6 @@ public class AllServices{
 	 */
 	public void setOrlikService(OrlikService orlikService) {
 		this.orlikService = orlikService;
-	}
-
-	/**
-	 * @return the stateDAO
-	 */
-	public EventStateDaoRepository getStateDAO() {
-		return stateDAO;
 	}
 	
 }
