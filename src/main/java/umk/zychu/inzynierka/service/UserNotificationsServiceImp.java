@@ -39,7 +39,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
 
     private UserDecision notInvited;
 
-    UserNotificationsServiceImp() {
+    public UserNotificationsServiceImp() {
         super();
     }
 
