@@ -6,13 +6,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
 import umk.zychu.inzynierka.repository.UserEventDaoRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
 
 @Service
 public class UserEventServiceImp implements UserEventService {

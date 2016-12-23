@@ -14,6 +14,7 @@ import umk.zychu.inzynierka.controller.DTObeans.*;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.service.*;
 
 import java.security.Principal;
@@ -22,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_PROGRESS;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_PROGRESS;
 import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 
 @Controller
@@ -46,8 +49,7 @@ public class EventsController {
 	private UserEventDecisionService decisionService;
 	@Autowired
 	private FriendshipService friendshipService;
-	@Autowired
-	private UserEventRoleService roleService;
+
 	@Autowired
 	private EventToApproveService eventToApproveService;
 	@Autowired
@@ -92,16 +94,16 @@ public class EventsController {
 			final Model model,
 			final Principal principal) {
 		EventType eventType = null;
-		UserEventRole userEventRole = null;
+		EnumeratedEventRole role = null;
 		if (page != null) {
 			switch (page) {
 				case "organized":
 					eventType = EventType.ORGANIZED;
-					userEventRole = roleService.findOne(1);
+					role = ORGANIZER;
 					break;
 				case "invitations":
 					eventType = EventType.INVITATIONS;
-					userEventRole = roleService.findOne(2);
+					role = GUEST;
 					break;
 			}
 		}else{
@@ -113,7 +115,7 @@ public class EventsController {
 		model.addAttribute("userGamesDetailsList", userGamesDetails);
 		model.addAttribute("stateId", stateId);
 		List<EventWindowBlock> eventsWindowsBlocks = eventService
-				.getEventWindowBlocks(userEventRole);
+				.getEventWindowBlocks(role);
 		model.addAttribute("eventWindowsList", eventsWindowsBlocks);
         return "eventsInState";
 	}

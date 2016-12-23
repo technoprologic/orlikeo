@@ -1,7 +1,9 @@
 package umk.zychu.inzynierka.executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.Graphic;
+import umk.zychu.inzynierka.model.UserDecision;
 import umk.zychu.inzynierka.service.*;
 
 import javax.annotation.PostConstruct;
@@ -12,8 +14,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_A_BASKET;
-import static umk.zychu.inzynierka.model.EnumeratedEventState.READY_TO_ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_A_BASKET;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.READY_TO_ACCEPT;
 
 public class BaseTaskExecutor {
 
@@ -22,7 +25,6 @@ public class BaseTaskExecutor {
     protected static final long MINUTE = 1000 * 60;
     protected static final long HALF_AN_HOUR = MINUTE * 30;
     protected static final long QUARTER_OF_AN_HOUR = MINUTE * 15;
-    protected UserEventRole guestRole;
     protected UserDecision notInvited, invited;
 
     @Autowired
@@ -30,8 +32,7 @@ public class BaseTaskExecutor {
 
     @Autowired
     EventService eventService;
-    @Autowired
-    UserEventRoleService userEventRoleService;
+
     @Autowired
     UserEventDecisionService userEventDecisionService;
     @Autowired
@@ -41,7 +42,6 @@ public class BaseTaskExecutor {
 
     @PostConstruct
     private void post() {
-        this.guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
         this.notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         this.invited = userEventDecisionService.findOne(UserDecision.INVITED);
     }
@@ -133,7 +133,7 @@ public class BaseTaskExecutor {
     private void changeUsersDecisions(Set<Event> eventsReadyToPrepare) {
         eventsReadyToPrepare.stream()
                 .flatMap(e -> e.getUsersEvent().stream())
-                .filter(ue -> ue.getRole().equals(guestRole)
+                .filter(ue -> ue.getRole().equals(GUEST)
                         && !ue.getDecision().equals(notInvited))
                 .forEach(ue -> {
                     ue.setDecision(invited);

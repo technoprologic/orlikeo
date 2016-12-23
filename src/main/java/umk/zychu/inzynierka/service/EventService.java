@@ -7,7 +7,7 @@ import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.model.UserEvent;
-import umk.zychu.inzynierka.model.UserEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +32,9 @@ public interface EventService {
 
     User getEventOrganizerUser(Event event);
 
-    List<EventWindowBlock> getEventWindowBlocks(UserEventRole role);
+    List<EventWindowBlock> getEventWindowBlocks(EnumeratedEventRole role);
 
-    List<EventWindowBlock> getEventWindowBlocks(String username, UserEventRole role);
+    List<EventWindowBlock> getEventWindowBlocks(String username, EnumeratedEventRole role);
 
     UserGameDetails getGameDetails(Event event);
 

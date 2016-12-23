@@ -21,8 +21,6 @@ public class AllServices{
 	private UserEventDecisionDAOrepository userEventDecisionDAO;
 
 	@Autowired
-	private UserEventRoleService userEventRoleService;
-	@Autowired
 	private EventToApproveService eventToApproveService;
 
 
@@ -44,14 +42,6 @@ public class AllServices{
 
 	public void setEventToApproveService(EventToApproveService eventToApproveService) {
 		this.eventToApproveService = eventToApproveService;
-	}
-
-	public UserEventRoleService getUserEventRoleService() {
-		return userEventRoleService;
-	}
-
-	public void setUserEventRoleService(UserEventRoleService userEventRoleService) {
-		this.userEventRoleService = userEventRoleService;
 	}
 
 	public UserEventService getUserEventService() {

@@ -23,8 +23,6 @@ public class GraphicServiceImp implements GraphicService{
 	private UserEventDecisionService userEventDecisionService;
 
 	@Autowired
-	private UserEventRoleService userEventRoleService;
-	@Autowired
 	private EventToApproveService eventToApproveService;
 	
 	@Override

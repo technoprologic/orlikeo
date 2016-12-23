@@ -11,13 +11,14 @@ import org.springframework.web.servlet.ModelAndView;
 import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
 import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
 import umk.zychu.inzynierka.service.OrlikService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.THREATENED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.THREATENED;
 
 @Controller
 @RequestMapping("/graphic")

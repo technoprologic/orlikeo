@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
-import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
 
 @Component
 public class OrliksTaskExecutor extends BaseTaskExecutor{

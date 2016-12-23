@@ -1,8 +1,5 @@
-package umk.zychu.inzynierka.model;
+package umk.zychu.inzynierka.model.enums;
 
-/**
- * Created by emag on 21.12.16.
- */
 public enum EnumeratedEventState {
 
     IN_A_BASKET(1),

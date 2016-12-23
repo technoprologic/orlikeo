@@ -1,15 +1,12 @@
 package umk.zychu.inzynierka.converter;
 
-import umk.zychu.inzynierka.model.EnumeratedEventState;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
 
-/**
- * Created by emag on 21.12.16.
- */
 @Converter(autoApply=true)
 public class EventStateConverter implements AttributeConverter<EnumeratedEventState, Integer> {
 

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.util.EventType;
-import umk.zychu.inzynierka.model.UserEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.service.*;
 
 import java.util.HashMap;
@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
 import static umk.zychu.inzynierka.interceptors.BaseChannelInterceptor.CHANNEL_DEBUG;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 
 @Service
 public class UserEventsTable extends ChannelInterceptorAdapter {
@@ -35,8 +37,6 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
 	private SimpMessagingTemplate template;
 	@Autowired
 	private EventService eventService;
-    @Autowired
-    private UserEventRoleService userEventRoleService;
 
     private Map<String, Object> blockWindowsAndDetailsTableSession = new HashMap<String, Object>();
     private Map<String, ScheduledFuture> showSessions;
@@ -55,7 +55,7 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
 
     private void sendUserBlockWindowsAndDetailsTable(String username, String sessionId){
         EventType eventType = null;
-        UserEventRole userEventRole = null;
+        EnumeratedEventRole role = null;
         String page = null;
         String state = null;
         if(showSessionsPageHeader.containsKey(sessionId)){
@@ -68,11 +68,11 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
             switch (page) {
                 case "organized":
                     eventType = eventType.ORGANIZED;
-                    userEventRole = userEventRoleService.findOne(1);
+                    role = ORGANIZER;
                     break;
                 case "invitations":
                     eventType = EventType.INVITATIONS;
-                    userEventRole = userEventRoleService.findOne(2);
+                    role = GUEST;
                     break;
                 default:
                     eventType = null;
@@ -80,7 +80,7 @@ public class UserEventsTable extends ChannelInterceptorAdapter {
             }
             Integer stateId = state != null ? Integer.decode(state) : null;
             List<EventWindowBlock> eventsWindowsBlocks = eventService
-                    .getEventWindowBlocks(username, userEventRole);
+                    .getEventWindowBlocks(username, role);
             List<UserGameDetails> userGamesDetails = eventService.getGamesDetails(
                     username, eventType, stateId);
             blockWindowsAndDetailsTableSession.put("blocks", eventsWindowsBlocks);
