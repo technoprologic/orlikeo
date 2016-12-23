@@ -1,7 +1,7 @@
 package umk.zychu.inzynierka.service;
 
 import umk.zychu.inzynierka.model.Friendship;
-import umk.zychu.inzynierka.model.FriendshipType;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 import umk.zychu.inzynierka.model.User;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import umk.zychu.inzynierka.model.Friendship;
-import umk.zychu.inzynierka.model.FriendshipType;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.service.FriendshipService;
 import umk.zychu.inzynierka.service.UserNotificationsService;
@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-import static umk.zychu.inzynierka.model.FriendshipType.*;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.*;
 
 @Controller
 @RequestMapping("/friends")

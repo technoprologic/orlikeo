@@ -1,6 +1,7 @@
 package umk.zychu.inzynierka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 
 import javax.persistence.*;
 import java.io.Serializable;

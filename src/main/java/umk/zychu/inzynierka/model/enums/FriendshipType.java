@@ -1,4 +1,4 @@
-package umk.zychu.inzynierka.model;
+package umk.zychu.inzynierka.model.enums;
 
 public enum FriendshipType{
     INVITE(1, "INVITE"),

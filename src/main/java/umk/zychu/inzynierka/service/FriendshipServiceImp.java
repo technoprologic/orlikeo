@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import umk.zychu.inzynierka.model.Friendship;
-import umk.zychu.inzynierka.model.FriendshipType;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 import umk.zychu.inzynierka.model.User;
 import umk.zychu.inzynierka.repository.FriendshipDaoRepository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static umk.zychu.inzynierka.model.FriendshipType.*;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.*;
 
 @Service
 public class FriendshipServiceImp implements FriendshipService {

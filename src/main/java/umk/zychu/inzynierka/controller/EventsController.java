@@ -27,7 +27,7 @@ import java.util.Optional;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_PROGRESS;
-import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
 import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.ACCEPTED;
 import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.INVITED;
 import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.REJECTED;

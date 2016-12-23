@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static umk.zychu.inzynierka.converter.EventStateConverter.convertToEnum;
-import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
