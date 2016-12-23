@@ -13,17 +13,18 @@ import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 import umk.zychu.inzynierka.repository.EventDaoRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static umk.zychu.inzynierka.converter.EventStateConverter.convertToEnum;
+import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
-import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.*;
 
 @Service
 @Transactional
@@ -31,14 +32,6 @@ public class EventServiceImp implements EventService {
 
     private static final org.slf4j.Logger logger = LoggerFactory
             .getLogger(EventServiceImp.class);
-
-    private UserDecision invited;
-
-    private UserDecision accepted;
-
-    private UserDecision rejected;
-
-    private UserEventRole guestRole;
 
     @Autowired
     EventDaoRepository eventDAO;
@@ -48,8 +41,6 @@ public class EventServiceImp implements EventService {
     GraphicService graphicService;
     @Autowired
     UserService userService;
-    @Autowired
-    UserEventDecisionService userEventDecisionService;
 
     @Autowired
     FriendshipService friendshipService;
@@ -63,12 +54,6 @@ public class EventServiceImp implements EventService {
     //next 48hrs
     private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
-    @PostConstruct
-    private void setDecisions() {
-        invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
-    }
 
     @Override
     public void acceptEvent(Integer id) {
@@ -106,10 +91,10 @@ public class EventServiceImp implements EventService {
             for (Event e : events) {
                 e.getUsersEvent()
                         .stream()
-                        .filter(ue -> (ue.getDecision().equals(accepted) || ue.getDecision().equals(rejected))
-                                && ue.getRole().equals(guestRole))
+                        .filter(ue -> (ue.getDecision().equals(ACCEPTED) || ue.getDecision().equals(REJECTED))
+                                && ue.getRole().equals(GUEST))
                         .forEach((o) -> {
-                            o.setDecision(invited);
+                            o.setDecision(INVITED);
                             userEventService.save(o);
                         });
                 e.setGraphic(null);
@@ -141,7 +126,7 @@ public class EventServiceImp implements EventService {
 
         for (UserEvent userEvent : usersEvents) {
             boolean decision = false;
-            if (userEvent.getDecision().getId() != 4)
+            if (userEvent.getDecision().getValue() != 4)
                 decision = true;
             String inviterEmail = userEvent.getInviter() != null ? userEvent
                     .getInviter().getEmail() : null;
@@ -330,8 +315,8 @@ public class EventServiceImp implements EventService {
                     .graphic(graphic)
                     .playersLimit(playersLimit)
                     .build();
-            UserDecision organizerDecision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, ORGANIZER, organizerDecision)
+
+            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, ORGANIZER, ACCEPTED)
                     .setPermission(Boolean.TRUE)
                     .build();
             List<UserEvent> usersEvents = new LinkedList<>();
@@ -340,9 +325,7 @@ public class EventServiceImp implements EventService {
             for (RegisterEventUser regEventUser : regUsersList) {
                 if (regEventUser.getAllowed() || regEventUser.getInvited()) {
                     User userTarget = userService.getUser(regEventUser.getEmail());
-                    UserDecision decision = (regEventUser.getInvited()) ? userEventDecisionService
-                            .findOne(UserDecision.INVITED)
-                            : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+                    EnumeratedUserEventDecision decision = (regEventUser.getInvited()) ? INVITED : NOT_INVITED;
                     Boolean permission = regEventUser.getAllowed();
                     UserEvent ue = new UserEvent.Builder(userTarget, userOrganizer, event, GUEST, decision)
                             .setPermission(permission)
@@ -413,8 +396,6 @@ public class EventServiceImp implements EventService {
 
     private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        UserDecision invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        UserDecision notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         // are still event members
         eventFormMembers
                 .stream()
@@ -429,20 +410,20 @@ public class EventServiceImp implements EventService {
                                 ue.setInviter(user);
                                 if (reu.getAllowed() && reu.getInvited()) {
                                     ue.setUserPermission(true);
-                                    if (ue.getDecision().equals(notInvited)) {
-                                        ue.setDecision(invited);
+                                    if (ue.getDecision().equals(NOT_INVITED)) {
+                                        ue.setDecision(INVITED);
                                     }
                                 } else if (!reu.getAllowed()
                                         && reu.getInvited()) {
                                     ue.setUserPermission(false);
-                                    if (ue.getDecision().equals(notInvited)) {
-                                        ue.setDecision(invited);
+                                    if (ue.getDecision().equals(NOT_INVITED)) {
+                                        ue.setDecision(INVITED);
                                     }
                                     ;
                                 } else if (reu.getAllowed()
                                         && !reu.getInvited()) {
                                     ue.setUserPermission(true);
-                                    ue.setDecision(notInvited);
+                                    ue.setDecision(NOT_INVITED);
                                 }
                                 userEventService.save(ue);
                             }
@@ -454,8 +435,7 @@ public class EventServiceImp implements EventService {
                         .isPresent())
                 .forEach(reu -> {
                     User u = userService.getUser(reu.getEmail());
-                    UserDecision decision = reu.getInvited() ? userEventDecisionService.findOne(UserDecision.INVITED)
-                            : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+                    EnumeratedUserEventDecision decision = reu.getInvited() ? INVITED : NOT_INVITED;
                     Boolean permission = reu.getAllowed();
                     UserEvent ue = new UserEvent.Builder(u, user, event, GUEST, decision)
                             .setPermission(permission)
@@ -493,33 +473,30 @@ public class EventServiceImp implements EventService {
 
     private EventWindowBlock generateBlock(User user, EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming) {
         List<UserEvent> userEvents = user.getUserEvents();
-        EventWindowBlock.Builder ewbBuilder = new EventWindowBlock.Builder(userEvents, state, role, incoming, accepted);
+        EventWindowBlock.Builder ewbBuilder = new EventWindowBlock.Builder(userEvents, state, role, incoming, ACCEPTED);
         return ewbBuilder.build();
     }
 
     private UserGameDetails generateUserGameDetails(UserEvent userEvent) {
-        UserDecision accept = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        UserDecision not_invited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         Event event = userEvent.getEvent();
         UserGameDetails.Builder ugdBuilder = new UserGameDetails.Builder(event.getId());
 
         ugdBuilder.stateId(event.getEnumeratedEventState().getValue())
                 .organizerEmail(event.getUserOrganizer().getEmail())
-                .decision(userEvent.getDecision().getId())
+                .decision(userEvent.getDecision().getValue())
                 .role(userEvent.getRole())
                 .permission(userEvent.getUserPermission())
                 .willCome(event.getUsersEvent().stream()
-                        .filter(ue -> ue.getDecision().equals(accept))
+                        .filter(ue -> ue.getDecision().equals(ACCEPTED))
                         .count())
                 .playersLimit(event.getPlayersLimit())
                 .invited(event.getUsersEvent().stream()
-                        .filter(ue -> !ue.getDecision().equals(not_invited))
+                        .filter(ue -> !ue.getDecision().equals(NOT_INVITED))
                         .count());
 
         if (event.getGraphic() != null) {
             Graphic graphic = event.getGraphic();
             Orlik orlik = graphic.getOrlik();
-            //fill up builder
             ugdBuilder.startDate(graphic.getStartTime())
                     .endDate(graphic.getEndTime())
                     .orlikId(orlik.getId())

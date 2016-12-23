@@ -1,7 +1,9 @@
 package umk.zychu.inzynierka.model;
 
+import umk.zychu.inzynierka.converter.UserEventDecisionConverter;
 import umk.zychu.inzynierka.converter.UserEventRoleConverter;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,10 +25,9 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 	@Convert(converter = UserEventRoleConverter.class)
 	private EnumeratedEventRole role;
 
-
-	@ManyToOne
-	@JoinColumn(name = "user_decision", referencedColumnName = "id")
-	private UserDecision decision;
+	@Column(name = "user_decision")
+	@Convert(converter = UserEventDecisionConverter.class)
+	private EnumeratedUserEventDecision decision;
 
 	@ManyToOne
 	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = true, updatable = true)
@@ -89,12 +90,12 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 		return this.role;
 	}
 	
-	public void setDecision(UserDecision decision){
-		this.decision = decision;
-	}
-	
-	public UserDecision getDecision(){
+	public EnumeratedUserEventDecision getDecision(){
 		return this.decision;
+	}
+
+	public void setDecision(EnumeratedUserEventDecision decision) {
+		this.decision = decision;
 	}
 
 	@Override
@@ -129,14 +130,14 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 		private Event event;
 		private boolean userPermission;
 		private EnumeratedEventRole role;
-		private UserDecision decision;
+		private EnumeratedUserEventDecision decision;
 
 		public Builder(
 				final User user,
 				final User inviter,
 				final Event event,
 				final EnumeratedEventRole eventRole,
-				final UserDecision userDecision
+				final EnumeratedUserEventDecision userDecision
 				//Boolean permission,
 				) {
 			this.user = user;

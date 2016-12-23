@@ -2,7 +2,6 @@ package umk.zychu.inzynierka.controller.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import umk.zychu.inzynierka.repository.UserEventDecisionDAOrepository;
 import umk.zychu.inzynierka.service.*;
 
 
@@ -17,8 +16,6 @@ public class AllServices{
 	private UserEventService userEventService;
 	@Autowired
 	private OrlikService orlikService;
-	@Autowired
-	private UserEventDecisionDAOrepository userEventDecisionDAO;
 
 	@Autowired
 	private EventToApproveService eventToApproveService;
@@ -58,21 +55,6 @@ public class AllServices{
 	
 	public AllServices() {
 		super();
-	}
-
-	/**
-	 * @return the userEventDecisionDAO
-	 */
-	public UserEventDecisionDAOrepository getUserEventDecisionDAO() {
-		return userEventDecisionDAO;
-	}
-
-	/**
-	 * @param userEventDecisionDAO the userEventDecisionDAO to set
-	 */
-	public void setUserEventDecisionDAO(
-			UserEventDecisionDAOrepository userEventDecisionDAO) {
-		this.userEventDecisionDAO = userEventDecisionDAO;
 	}
 
 	/**

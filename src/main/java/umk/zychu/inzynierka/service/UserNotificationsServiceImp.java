@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.NOT_INVITED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.REJECTED;
+
 /**
  * Created by emagdnim on 2015-09-12.
  */
@@ -28,28 +31,15 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     private UserNotificationsDaoRepository userNotificationsDAO;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserEventDecisionService userEventDecisionService;
 
     private SimpleDateFormat ftStart = new SimpleDateFormat("dd.mm.yyyy, hh:mm");
 
     private SimpleDateFormat ftEnd = new SimpleDateFormat("hh:mm");
 
-    private UserDecision rejected;
-
-    private UserDecision notInvited;
-
-    public UserNotificationsServiceImp() {
+    UserNotificationsServiceImp() {
         super();
-    }
-
-    UserNotificationsServiceImp(UserEventDecisionService userEventDecisionService) {
-        super();
-        this.userEventDecisionService = userEventDecisionService;
         ftStart = new SimpleDateFormat("dd.mm.yyyy, hh:mm");
         ftEnd = new SimpleDateFormat("hh:mm");
-        rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
-        notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
     }
 
     @Override
@@ -68,7 +58,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         String date = ftStart.format(graphic.getStartTime()) + " - " + ftEnd.format(graphic.getEndTime());
         graphic.getEvents().stream()
                 .flatMap(e -> e.getUsersEvent().stream())
-                .filter(ue -> !ue.getDecision().equals(notInvited))
+                .filter(ue -> !ue.getDecision().equals(NOT_INVITED))
                 .forEach(ue -> {
                     String description = "Termin niedostępny!";
                     if (graphic.getAvailable()) {
@@ -89,7 +79,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
             String address = graphic.getOrlik().getAddress();
             String date = ftStart.format(event.getGraphic().getStartTime()) + " - " + ftEnd.format(event.getGraphic().getEndTime());
             event.getUsersEvent().stream()
-                    .filter(ue -> ue.getInviter() != null && !ue.getDecision().equals(rejected))
+                    .filter(ue -> ue.getInviter() != null && !ue.getDecision().equals(REJECTED))
                     .forEach(ue -> {
                         UserNotification notify = new UserNotification.Builder(ue.getUser(),
                                 "Usunięto wydarzenie (" + event.getUserOrganizer().getEmail() + ")",
@@ -135,8 +125,8 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
         }
         String efFinalDescription = description;
         event.getUsersEvent().stream()
-                .filter(ue -> !ue.getDecision().equals(rejected)
-                        && !ue.getDecision().equals(notInvited))
+                .filter(ue -> !ue.getDecision().equals(REJECTED)
+                        && !ue.getDecision().equals(NOT_INVITED))
                 .forEach(ue -> {
                     UserNotification notify = new UserNotification.Builder(ue.getUser(),
                             subject,
@@ -163,8 +153,8 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
             String description = address + ", <br>" + date + " został zajęty";
             events.stream()
                     .flatMap(e -> e.getUsersEvent().stream())
-                    .filter(ue -> !ue.getDecision().equals(rejected)
-                            && !ue.getDecision().equals(notInvited))
+                    .filter(ue -> !ue.getDecision().equals(REJECTED)
+                            && !ue.getDecision().equals(NOT_INVITED))
                     .forEach(ue -> {
                         UserNotification notify = new UserNotification.Builder(ue.getUser(),
                                 subject, description)

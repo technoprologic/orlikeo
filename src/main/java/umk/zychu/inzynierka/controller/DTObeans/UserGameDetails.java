@@ -90,6 +90,10 @@ public class UserGameDetails {
         return role;
     }
 
+    public Integer getRoleId(){
+        return role.getValue(role);
+    }
+
     public Boolean getPermission() {
         return permission;
     }

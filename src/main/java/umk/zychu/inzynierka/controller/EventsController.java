@@ -15,6 +15,7 @@ import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 import umk.zychu.inzynierka.service.*;
 
 import java.security.Principal;
@@ -27,6 +28,9 @@ import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_PROGRESS;
 import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.ACCEPTED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.INVITED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.REJECTED;
 
 @Controller
 @RequestMapping("/events")
@@ -45,8 +49,6 @@ public class EventsController {
 	@Autowired
 	private UserEventService userEventService;
 
-	@Autowired
-	private UserEventDecisionService decisionService;
 	@Autowired
 	private FriendshipService friendshipService;
 
@@ -132,14 +134,13 @@ public class EventsController {
 		}
 		Event event = eventOpt.get();
 		if (eventService.isEventMember(event)) {
-			Integer decisionId;
+			EnumeratedUserEventDecision dec;
 			if (Boolean.valueOf(decision)) {
-				decisionId = UserDecision.ACCEPTED;
+				dec = ACCEPTED;
 			} else {
-				decisionId = UserDecision.REJECTED;
+				dec = REJECTED;
 			}
-			UserDecision userDecision = decisionService.findOne(decisionId);
-			userEventService.setUserEventDecision(event, userDecision);
+			userEventService.setUserEventDecision(event, dec);
 		}
 		String url = "redirect:/";
 		if(page != null && page.equals("details")){
@@ -174,14 +175,13 @@ public class EventsController {
 					User animator = orlik.getAnimator();
 					model.addAttribute("animator", animator);
 				}
-				UserDecision accepted = decisionService.findOne(UserDecision.ACCEPTED);
-				List<User> usersJoinedDecision = userEventService.findUsersByEventAndDecision(event, accepted);
+				List<User> usersJoinedDecision = userEventService.findUsersByEventAndDecision(event, ACCEPTED);
 				model.addAttribute("usersJoinedDecision", usersJoinedDecision);
-				UserDecision without = decisionService.findOne(UserDecision.INVITED);
-				List<User> usersWithoutDecision = userEventService.findUsersByEventAndDecision(event, without);
+
+				List<User> usersWithoutDecision = userEventService.findUsersByEventAndDecision(event, INVITED);
 				model.addAttribute("usersWithoutDecision", usersWithoutDecision);
-				UserDecision rejected = decisionService.findOne(UserDecision.REJECTED);
-				List<User> usersRejectedDecision = userEventService.findUsersByEventAndDecision(event, rejected);
+
+				List<User> usersRejectedDecision = userEventService.findUsersByEventAndDecision(event, REJECTED);
 				model.addAttribute("usersRejectedDecision", usersRejectedDecision);
 				Boolean canInvite = true;
 				List<User> usersPermitted = userEventService.findUsersByEventAndPermission(event, canInvite);
@@ -189,7 +189,7 @@ public class EventsController {
 				Optional<UserEvent> loggedUserEvent = userEventService.findOne(event, user);
 				if(loggedUserEvent.isPresent()){
 					UserEvent ue = loggedUserEvent.get();
-					model.addAttribute("decision", ue.getDecision().getId());
+					model.addAttribute("decision", ue.getDecision().getValue());
 					model.addAttribute("allowed", ue.getUserPermission());
 				}else{
 					return "redirect:/home";
@@ -302,14 +302,12 @@ public class EventsController {
 				Event event = ev.get();
 				event.setGraphic(graphicService.findOne(graphicId));
 				event.setEnumeratedEventState(IN_PROGRESS);
-				UserDecision rejected = decisionService.findOne(UserDecision.REJECTED);
-				UserDecision accepted = decisionService.findOne(UserDecision.ACCEPTED);
-				UserDecision invited = decisionService.findOne(UserDecision.INVITED);
+
 				event.getUsersEvent().stream()
 					.filter(ue -> ue.getInviter() != null
-							&& (ue.getDecision().equals(rejected) || ue.getDecision().equals(accepted)))
+							&& (ue.getDecision().equals(REJECTED) || ue.getDecision().equals(ACCEPTED)))
 					.forEach(ue -> {
-						ue.setDecision(invited);
+						ue.setDecision(INVITED);
 					});
 
 				event = eventService.save(event);

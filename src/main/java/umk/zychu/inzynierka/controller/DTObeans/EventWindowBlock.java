@@ -3,6 +3,7 @@ package umk.zychu.inzynierka.controller.DTObeans;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -115,7 +116,7 @@ public class EventWindowBlock {
         //next 48hrs
         private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
-        public Builder(List<UserEvent> userEvents, @NotNull EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming, UserDecision decision) {
+        public Builder(List<UserEvent> userEvents, @NotNull EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming, EnumeratedUserEventDecision decision) {
             this();
             List<UserEvent> filteredUserEvents = new ArrayList<>(userEvents);
 

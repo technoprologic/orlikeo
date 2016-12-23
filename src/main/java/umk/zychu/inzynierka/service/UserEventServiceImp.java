@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 import umk.zychu.inzynierka.repository.UserEventDaoRepository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.ACCEPTED;
 
 @Service
 public class UserEventServiceImp implements UserEventService {
@@ -27,8 +29,6 @@ public class UserEventServiceImp implements UserEventService {
 
 	@Autowired
 	UserService userService;
-	@Autowired
-	UserEventDecisionService userEventDecisionService;
 
 	@Autowired
 	UserNotificationsService userNotificationsService;
@@ -43,7 +43,7 @@ public class UserEventServiceImp implements UserEventService {
 
 	@Override
 	@Transactional
-	public void setUserEventDecision(Event event, UserDecision decision) {
+	public void setUserEventDecision(Event event, EnumeratedUserEventDecision decision) {
 		User user = userService.getUser(SecurityContextHolder.getContext()
 				.getAuthentication().getName());
 		event.getUsersEvent().stream().filter(ue -> ue.getUser().equals(user))
@@ -55,10 +55,9 @@ public class UserEventServiceImp implements UserEventService {
 	
 	@Override
 	public void changeEventStateIfRequired(Event event) {
-		UserDecision accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
 		EnumeratedEventState beforeState = event.getEnumeratedEventState();
 		long counter = event.getUsersEvent().stream()
-				.filter(ue -> ue.getDecision().equals(accepted))
+				.filter(ue -> ue.getDecision().equals(ACCEPTED))
 				.count();
 		if(event.getEnumeratedEventState().equals(EnumeratedEventState.IN_PROGRESS) && counter >= changeStatusBarrier) {
 			event.setEnumeratedEventState(READY_TO_ACCEPT);
@@ -83,7 +82,7 @@ public class UserEventServiceImp implements UserEventService {
 	}
 
 	@Override
-	public List<User> findUsersByEventAndDecision(Event event, UserDecision decision) {
+	public List<User> findUsersByEventAndDecision(Event event, EnumeratedUserEventDecision decision) {
 		List<User> members = event.getUsersEvent().stream()
 				.filter((x) -> x.getDecision().equals(decision))
 				.map(UserEvent::getUser)

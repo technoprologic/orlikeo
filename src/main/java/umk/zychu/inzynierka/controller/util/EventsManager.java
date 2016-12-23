@@ -8,7 +8,6 @@ import umk.zychu.inzynierka.controller.DTObeans.DHXCustomEvent;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.Orlik;
-import umk.zychu.inzynierka.model.UserDecision;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import java.util.Iterator;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_A_BASKET;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.READY_TO_ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.INVITED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.NOT_INVITED;
 
 
 public class EventsManager extends DHXEventsManager {
@@ -102,18 +103,14 @@ public class EventsManager extends DHXEventsManager {
 		//notify users
 		services.getUserNotificationsService().graphicChangedByAnimator(graphic);
 
-		UserDecision notInvited = services.getUserEventDecisionDAO().findOne(
-				UserDecision.NOT_INVITED);
-		UserDecision invited = services.getUserEventDecisionDAO().findOne(
-				UserDecision.INVITED);
 		graphic.getEvents()
 				.stream()
 				.map(Event::getUsersEvent)
 				.flatMap(ue -> ue.stream())
 				.filter(ue -> ue.getRole().equals(GUEST)
-						&& !ue.getDecision().equals(notInvited))
+						&& !ue.getDecision().equals(NOT_INVITED))
 				.forEach(ue -> {
-					ue.setDecision(invited);
+					ue.setDecision(INVITED);
 					services.getUserEventService().save(ue);
 				});
 
