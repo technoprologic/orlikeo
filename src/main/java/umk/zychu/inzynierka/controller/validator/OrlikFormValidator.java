@@ -26,6 +26,7 @@ public class OrlikFormValidator implements Validator {
     private static final String INVALID_EMAIL = "web.register.validation.email.invalid";
     private static final String USER_DOESNT_EXISTS = "web.admin.orlik.animator.notexists";
     private static final String USER_IS_ALREADY_AN_ANIMATOR = "web.admin.orlik.animator.alreadytaken";
+    private static final String FIELD_REQUIRED = "web.admin.orlik.field.required";
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -37,8 +38,17 @@ public class OrlikFormValidator implements Validator {
         OrlikForm form = (OrlikForm) target;
         if (!form.getAnimatorEmail().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}")) {
             errors.rejectValue("animatorEmail", INVALID_EMAIL);
-            return;
         }
+
+        if(form.getAddress().isEmpty()){
+            errors.rejectValue("address", FIELD_REQUIRED);
+        }
+
+        if(form.getCity().isEmpty()){
+            errors.rejectValue("city", FIELD_REQUIRED);
+        }
+
+
         User user = userService.getUser(form.getAnimatorEmail());
         if(user == null){
             errors.rejectValue("animatorEmail", USER_DOESNT_EXISTS);

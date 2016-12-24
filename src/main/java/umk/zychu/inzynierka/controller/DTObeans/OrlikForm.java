@@ -2,11 +2,12 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 import umk.zychu.inzynierka.model.Orlik;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class OrlikForm {
+public class OrlikForm implements Serializable{
 
     private Integer id;
     private String address;
