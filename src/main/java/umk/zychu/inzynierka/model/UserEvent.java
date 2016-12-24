@@ -20,7 +20,6 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 	@JoinColumn(name = "inviter_id", referencedColumnName = "id")
 	private User inviter;
 
-
 	@Column(name = "user_role")
 	@Convert(converter = UserEventRoleConverter.class)
 	private EnumeratedEventRole role;
@@ -30,7 +29,7 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 	private EnumeratedUserEventDecision decision;
 
 	@ManyToOne
-	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "event_id", referencedColumnName = "id")
 	private Event event;
 
 	@ManyToOne
@@ -40,6 +39,7 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 	private UserEvent() {
 		super();
 	}
+
 	private UserEvent(Builder builder) {
 		super();
 		this.user = builder.user;
@@ -138,7 +138,6 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 				final Event event,
 				final EnumeratedEventRole eventRole,
 				final EnumeratedUserEventDecision userDecision
-				//Boolean permission,
 				) {
 			this.user = user;
 			this.inviter = inviter;
