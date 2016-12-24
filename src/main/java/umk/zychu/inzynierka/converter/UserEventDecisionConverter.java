@@ -35,7 +35,7 @@ public class UserEventDecisionConverter implements AttributeConverter<Enumerated
     private static EnumeratedUserEventDecision switcher(Integer value){
         switch (value){
             case 1 : return INVITED;
-            case 2 : return NOT_INVITED;
+            case 2 : return ACCEPTED;
             case 3 : return REJECTED;
             case 4 : return NOT_INVITED;
             default: throw new IllegalArgumentException("Unknown: " + value);
