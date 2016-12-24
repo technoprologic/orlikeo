@@ -27,7 +27,7 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
         this.taskExecutor = taskExecutor;
     }
 
-    @Scheduled(fixedDelay = FIXED_DELAY)
+    @Scheduled(fixedRate = 5000)
     public void printMessages() {
         Task task = new Task();
         try{

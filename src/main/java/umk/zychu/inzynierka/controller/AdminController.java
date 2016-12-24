@@ -15,9 +15,6 @@ import umk.zychu.inzynierka.service.OrlikService;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by emagdnim on 2015-10-06.
- */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -46,12 +43,12 @@ public class AdminController {
                               ModelMap model ){
         OrlikForm form;
         if(orlikId == null){
-            form = new OrlikForm();
+            form = new OrlikForm.Builder().build();
             model.addAttribute("creation", "true");
         }
         else {
             Orlik orlik = orlikService.getOrlikById(orlikId);
-            form = new OrlikForm(orlik);
+            form = new OrlikForm.Builder(orlik).build();
         }
         model.addAttribute("orlikForm", form);
         if(saved != null && saved){
@@ -64,13 +61,15 @@ public class AdminController {
     public String consumeForm(@ModelAttribute(value = "orlikForm") @Valid OrlikForm form, BindingResult result, RedirectAttributes redirectAtt){
         if(result.hasErrors()) {
             Integer id = form.getId();
-            if(id != null)
+            if(id != null) {
                 redirectAtt.addAttribute("orlikId", form.getId());
+            }
             return "orlikEdit";
+        }else {
+            form = orlikService.saveOrUpdateOrlik(form);
+            redirectAtt.addAttribute("orlikId", form.getId());
+            redirectAtt.addAttribute("confirm", true);
         }
-        form = orlikService.saveOrUpdateOrlik(form);
-        redirectAtt.addAttribute("orlikId", form.getId());
-        redirectAtt.addAttribute("confirm", true);
         return "redirect:/admin/edit";
     }
 
@@ -81,5 +80,10 @@ public class AdminController {
             orlikService.delete(orlik);
         }
         return "redirect:/admin/orliks";
+    }
+
+    @ModelAttribute(value="orlikForm")
+    public OrlikForm orlikForm(){
+        return new OrlikForm.Builder().build();
     }
 }
