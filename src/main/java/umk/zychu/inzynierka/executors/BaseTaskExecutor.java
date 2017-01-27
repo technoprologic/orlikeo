@@ -117,7 +117,7 @@ public class BaseTaskExecutor {
     }
 
     /**
-     * Changes user decisions to fefault
+     * Changes user decisions to default
      *
      * @param eventsReadyToPrepare
      */
