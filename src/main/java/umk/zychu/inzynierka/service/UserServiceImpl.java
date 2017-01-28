@@ -6,16 +6,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
-import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
+import umk.zychu.inzynierka.controller.DTObeans.AccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.repository.FriendshipDaoRepository;
 import umk.zychu.inzynierka.repository.UserDaoRepository;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserDetails(EditAccountForm form) {
+	public void updateUserDetails(AccountForm form) {
 		User user = getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		user.setName(form.getName());
 		user.setSurname(form.getSurname());

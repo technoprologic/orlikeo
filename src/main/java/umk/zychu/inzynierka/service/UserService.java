@@ -1,7 +1,7 @@
 package umk.zychu.inzynierka.service;
 
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
-import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
+import umk.zychu.inzynierka.controller.DTObeans.AccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.RegisterUserBean;
 import umk.zychu.inzynierka.model.User;
 
@@ -20,7 +20,7 @@ public interface UserService {
 
     void changePassword(ChangePasswordForm form);
 
-    void updateUserDetails(EditAccountForm form);
+    void updateUserDetails(AccountForm form);
 
     void removeAccount();
 

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
+import umk.zychu.inzynierka.controller.DTObeans.AccountForm;
 import umk.zychu.inzynierka.service.UserService;
 
 @Component
@@ -20,7 +20,7 @@ public class EditAccountFormValidator implements Validator{
 	@Override
 	public boolean supports(Class<?> clazz) {
 		// TODO Auto-generated method stub
-		return EditAccountForm.class.equals(clazz);
+		return AccountForm.class.equals(clazz);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class EditAccountFormValidator implements Validator{
 		ValidationUtils.rejectIfEmpty(errors, "dateOfBirth", EMPTY_OR_WHITESPACES_AGE_WEIGHT_OR_HEIGHT);
 		ValidationUtils.rejectIfEmpty(errors, "weight", EMPTY_OR_WHITESPACES_AGE_WEIGHT_OR_HEIGHT);
 		ValidationUtils.rejectIfEmpty(errors, "height", EMPTY_OR_WHITESPACES_AGE_WEIGHT_OR_HEIGHT);		
-		EditAccountForm form = (EditAccountForm)target;
+		AccountForm form = (AccountForm)target;
 		
 		if (form.getHeight() < 0) {
 			errors.rejectValue("height", NOT_AN_INTEGER_VALUE);
