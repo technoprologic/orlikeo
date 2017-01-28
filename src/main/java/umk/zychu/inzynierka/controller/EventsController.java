@@ -339,9 +339,9 @@ public class EventsController {
 			RegisterEventForm form = new RegisterEventForm();
 			form.setGraphicId(graphicId);
 			form.setEventFormMembers(users);
+			model.addAttribute("registerEventForm", form);
 			model.addAttribute("orlik", orlik);
 			model.addAttribute("event", graphicEntity);
-			model.addAttribute("registerEventForm", form);
 			model.addAttribute("reserve", true);
 			User animator = orlik.getAnimator();
 			model.addAttribute("animator", animator);

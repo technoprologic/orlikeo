@@ -293,11 +293,7 @@ public class EventServiceImp implements EventService {
     public Boolean isEventMember(Event event) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUser(userEmail);
-        Optional<UserEvent> userEventOpt = user.getUserEvents().stream()
-                .filter(ue -> ue.getEvent().equals(event))
-                .findFirst();
-
-        if (userEventOpt.isPresent()) {
+        if (user.getUserEvents().contains(event)) {
             return true;
         } else {
             return false;

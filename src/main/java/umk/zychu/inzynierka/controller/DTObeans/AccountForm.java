@@ -16,7 +16,6 @@ public class AccountForm {
 
     public AccountForm() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public static AccountForm generateForm(User user){
