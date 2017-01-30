@@ -100,15 +100,15 @@ public class AccountForm {
 
     public static class Builder{
 
-        private String name;
-        private String surname;
+        private final String name;
+        private final String surname;
         private Date dateOfBirth;
         private String position;
         private Integer weight;
         private Integer height;
         private String foot;
 
-        public Builder(String name, String surname) {
+        public Builder(final String name, final String surname) {
             this.name = name;
             this.surname = surname;
             this.dateOfBirth = null;
