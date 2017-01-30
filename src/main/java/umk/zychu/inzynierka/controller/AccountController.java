@@ -44,7 +44,7 @@ public class AccountController {
     private EditAccountFormValidator editAccountFormValidator;
 
     @InitBinder("changePasswordForm")
-    private void initBinde4PasswordForm(WebDataBinder binder) {
+    private void initBinder4PasswordForm(WebDataBinder binder) {
         binder.setValidator(changingPasswordValidator);
     }
 
