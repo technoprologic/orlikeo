@@ -122,7 +122,7 @@ public class EventServiceImp implements EventService {
     public RegisterEventForm generateRegisterEventForm(Event event) {
         List<UserEvent> usersEvents = event.getUsersEvent();
         List<User> friends = friendshipService.getFriends(null, ACCEPT);
-        List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
+        List<RegisterEventUser> users = new ArrayList<>();
 
         for (UserEvent userEvent : usersEvents) {
             boolean decision = false;
@@ -141,12 +141,12 @@ public class EventServiceImp implements EventService {
             boolean isInvited = false;
             String inviterEmail = null;
             for (UserEvent userEvent : usersEvents) {
-                if (friend.getId() == userEvent.getUser().getId()) {
+                if (friend.getId().equals(userEvent.getUser().getId())) {
                     isInvited = true;
                     inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
                 }
             }
-            if (isInvited == false) {
+            if (!isInvited) {
                 RegisterEventUser e1 = new RegisterEventUser(friend.getId(),
                         false,
                         false,
@@ -161,10 +161,8 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents) {
-        List<UserGameDetails> userGamesDetailsList = new LinkedList<UserGameDetails>();
-        Iterator<UserEvent> it = userEvents.iterator();
-        while (it.hasNext()) {
-            UserEvent userEvent = it.next();
+        List<UserGameDetails> userGamesDetailsList = new LinkedList<>();
+        for (UserEvent userEvent : userEvents) {
             UserGameDetails userGameDetails = generateUserGameDetails(userEvent);
             userGamesDetailsList.add(userGameDetails);
         }
@@ -176,7 +174,7 @@ public class EventServiceImp implements EventService {
         Optional<User> eventOrganizerOpt = event.getUsersEvent().stream()
                 .filter(ue -> ue.getRole().equals(ORGANIZER)
                         && ue.getEvent().equals(event))
-                .map(ue -> ue.getUser())
+                .map(UserEvent::getUser)
                 .findFirst();
         if (eventOrganizerOpt.isPresent()) {
             return eventOrganizerOpt.get();
@@ -293,11 +291,14 @@ public class EventServiceImp implements EventService {
     public Boolean isEventMember(Event event) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.getUser(userEmail);
-        if (user.getUserEvents().contains(event)) {
+        Optional<UserEvent> userEventOpt = user.getUserEvents().stream()
+                .filter(ue -> ue.getEvent().equals(event))
+                .findFirst();
+
+        if (userEventOpt.isPresent()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -415,7 +416,6 @@ public class EventServiceImp implements EventService {
                                     if (ue.getDecision().equals(NOT_INVITED)) {
                                         ue.setDecision(INVITED);
                                     }
-                                    ;
                                 } else if (reu.getAllowed()
                                         && !reu.getInvited()) {
                                     ue.setUserPermission(true);
