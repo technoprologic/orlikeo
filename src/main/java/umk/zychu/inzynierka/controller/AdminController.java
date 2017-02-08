@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import umk.zychu.inzynierka.controller.DTObeans.OrlikForm;
 import umk.zychu.inzynierka.controller.validator.OrlikFormValidator;
 import umk.zychu.inzynierka.model.Orlik;
-import umk.zychu.inzynierka.service.OrlikService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,10 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 @SessionAttributes("orlikForm")
-public class AdminController {
-
-    @Autowired
-    OrlikService orlikService;
+public class AdminController extends ServicesAwareController {
 
     @Autowired
     OrlikFormValidator orlikFormValidator;

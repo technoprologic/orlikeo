@@ -16,7 +16,6 @@ import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
-import umk.zychu.inzynierka.service.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -27,36 +26,16 @@ import java.util.Optional;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_PROGRESS;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.*;
 import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
-import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.ACCEPTED;
-import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.INVITED;
-import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.REJECTED;
 
 @Controller
 @RequestMapping("/events")
-public class EventsController {
+public class EventsController extends ServicesAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
 	
-	@Autowired
-	private OrlikService orlikService;
-	@Autowired
-	private EventService eventService;
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private GraphicService graphicService;
-	@Autowired
-	private UserEventService userEventService;
 
-	@Autowired
-	private FriendshipService friendshipService;
-
-	@Autowired
-	private EventToApproveService eventToApproveService;
-	@Autowired
-	private UserNotificationsService userNotificationsService;
-	
 	@Autowired
 	private ChoosenOrlikBeanValidator choosenOrlikBeanValidator;
 

@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.DTObeans.AccountForm;
+import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
 import umk.zychu.inzynierka.controller.validator.ChangingPasswordFormValidator;
 import umk.zychu.inzynierka.controller.validator.EditAccountFormValidator;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -30,13 +29,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends ServicesAwareController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
-
-    @Autowired
-    private UserService userService;
-
+    
     @Autowired
     private ChangingPasswordFormValidator changingPasswordValidator;
 

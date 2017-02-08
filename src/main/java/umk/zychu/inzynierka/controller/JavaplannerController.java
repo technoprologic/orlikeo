@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,26 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import umk.zychu.inzynierka.controller.DTObeans.AcceptEventForm;
 import umk.zychu.inzynierka.model.Orlik;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.EventService;
-import umk.zychu.inzynierka.service.EventToApproveService;
-import umk.zychu.inzynierka.service.OrlikService;
-import umk.zychu.inzynierka.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
 
 @Controller
-public class JavaplannerController {
-
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private EventToApproveService eventToApproveService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private OrlikService orlikService;
+public class JavaplannerController extends ServicesAwareController{
 
     @RequestMapping("/planner")
     public String planner(ModelMap model)
