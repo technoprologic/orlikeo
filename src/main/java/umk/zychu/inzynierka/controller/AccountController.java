@@ -32,7 +32,7 @@ import java.util.Map;
 public class AccountController extends ServicesAwareController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
-    
+
     @Autowired
     private ChangingPasswordFormValidator changingPasswordValidator;
 
@@ -76,7 +76,7 @@ public class AccountController extends ServicesAwareController{
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editAccount(Map<String, Object> model, Principal principal) {
         User user = userService.getUser(principal.getName());
-        AccountForm form = AccountForm.generateForm(user);
+        AccountForm form = new AccountForm.Builder(user).build();
         model.put("editAccountForm", form);
         return "editAccount";
     }

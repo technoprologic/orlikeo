@@ -14,20 +14,8 @@ public class AccountForm {
     private Integer height;
     private String foot;
 
-    public AccountForm() {
+    private AccountForm() {
         super();
-    }
-
-    public static AccountForm generateForm(User user){
-        Builder builder = new Builder(user.getName(), user.getSurname())
-                .dateOfBirth(user.getDateOfBirth())
-                .position(user.getPosition())
-                .weight(user.getWeight())
-                .height(user
-                .getHeight())
-                .foot(user.getFoot());
-        return new AccountForm(builder);
-
     }
 
     private AccountForm(Builder builder) {
@@ -97,7 +85,6 @@ public class AccountForm {
         this.foot = foot;
     }
 
-
     public static class Builder{
 
         private final String name;
@@ -108,14 +95,14 @@ public class AccountForm {
         private Integer height;
         private String foot;
 
-        public Builder(final String name, final String surname) {
-            this.name = name;
-            this.surname = surname;
-            this.dateOfBirth = null;
-            this.position = "not set";
-            this.weight = 0;
-            this.height = 0;
-            this.foot = "not set";
+        public Builder(final User user) {
+            this.name = user.getName();
+            this.surname = user.getSurname();
+            this.dateOfBirth = user.getDateOfBirth();
+            this.position = user.getPosition();
+            this.weight = user.getWeight();
+            this.height = user.getHeight();
+            this.foot = user.getFoot();
         }
 
         public Builder dateOfBirth(Date dateOfBirth){
