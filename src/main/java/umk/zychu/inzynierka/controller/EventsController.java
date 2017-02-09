@@ -312,18 +312,17 @@ public class EventsController extends ServicesAwareController {
 			List<RegisterEventUser> users = new ArrayList<>();
 	
 			for(User u : userFriends){
-				RegisterEventUser e = new RegisterEventUser(u.getId(), false, false, u.getEmail(), u.getDateOfBirth(), u.getPosition(), null);
+				RegisterEventUser e = new RegisterEventUser.Builder(u).build();
 				users.add(e);
 			}			
 			RegisterEventForm form = new RegisterEventForm();
 			form.setGraphicId(graphicId);
 			form.setEventFormMembers(users);
-			model.addAttribute("registerEventForm", form);
-			model.addAttribute("orlik", orlik);
-			model.addAttribute("event", graphicEntity);
-			model.addAttribute("reserve", true);
-			User animator = orlik.getAnimator();
-			model.addAttribute("animator", animator);
+			model.addAttribute("registerEventForm", form)
+			.addAttribute("orlik", orlik)
+			.addAttribute("event", graphicEntity)
+			.addAttribute("reserve", true)
+			.addAttribute("animator", orlik.getAnimator());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

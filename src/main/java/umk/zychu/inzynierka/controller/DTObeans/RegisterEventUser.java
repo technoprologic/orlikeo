@@ -1,10 +1,11 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import umk.zychu.inzynierka.model.User;
+
 import java.util.Date;
 
 public class RegisterEventUser {
 
-    //TODO Builder pattern
     private Integer userId;
     private Boolean allowed;
     private Boolean invited;
@@ -13,9 +14,15 @@ public class RegisterEventUser {
     private Date dateOfBirth;
     private String position;
 
-    public RegisterEventUser() {
+    private RegisterEventUser(Builder builder) {
         super();
-        // TODO Auto-generated constructor stub
+        this.userId = builder.userId;
+        this.allowed = builder.allowed;
+        this.invited = builder.invited;
+        this.email = builder.email;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.position = builder.position;
+        this.inviter = builder.inviter;
     }
 
     public String getInviter() {
@@ -66,24 +73,53 @@ public class RegisterEventUser {
         return this.dateOfBirth;
     }
 
-
     public void setPosition(String position) {
         this.position = position;
     }
-
 
     public String getPosition() {
         return this.position;
     }
 
-    public RegisterEventUser(Integer userId, Boolean hasRight, Boolean decision, String email, Date dateOfBirth, String position, String inviter) {
-        this.userId = userId;
-        this.allowed = hasRight;
-        this.invited = decision;
-        this.email = email;
-        this.dateOfBirth = dateOfBirth;
-        this.position = position;
-        this.inviter = inviter;
+    public static class Builder{
+
+        private Integer userId;
+        private String email;
+        private Date dateOfBirth;
+        private String position;
+        private String inviter;
+        private Boolean allowed;
+        private Boolean invited;
+
+        public Builder(User user){
+            this.userId = user.getId();
+            this.email = user.getEmail();
+            this.dateOfBirth = user.getDateOfBirth();
+            this.position = user.getPosition();
+            this.inviter = null;
+            this.allowed = Boolean.FALSE;
+            this.invited = Boolean.FALSE;
+        }
+
+        public Builder setInviter(String inviter){
+            this.inviter = inviter;
+            return this;
+        }
+
+        public Builder setAllowed(Boolean allowed){
+            this.allowed= allowed;
+            return this;
+        }
+
+        public Builder setInvited(Boolean invited){
+            this.invited = invited;
+            return this;
+        }
+
+        public RegisterEventUser build(){
+            RegisterEventUser registerEventUser = new RegisterEventUser(this);
+            return registerEventUser;
+        }
     }
 
 }

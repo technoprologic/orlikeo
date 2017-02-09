@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
-import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
+import umk.zychu.inzynierka.controller.DTObeans.*;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
@@ -125,16 +122,13 @@ public class EventServiceImp implements EventService {
         List<RegisterEventUser> users = new ArrayList<>();
 
         for (UserEvent userEvent : usersEvents) {
-            boolean decision = false;
-            if (userEvent.getDecision().getValue() != 4)
-                decision = true;
-            String inviterEmail = userEvent.getInviter() != null ? userEvent
-                    .getInviter().getEmail() : null;
-            RegisterEventUser e = new RegisterEventUser(userEvent.getUser()
-                    .getId(), userEvent.getUserPermission(), decision,
-                    userEvent.getUser().getEmail(), userEvent.getUser()
-                    .getDateOfBirth(), userEvent.getUser()
-                    .getPosition(), inviterEmail);
+            String inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
+            RegisterEventUser e = new RegisterEventUser.Builder(userEvent.getUser())
+                    .setAllowed(userEvent.getUserPermission())
+                    .setInviter(inviterEmail)
+                    .setInvited(!userEvent.getDecision().equals(NOT_INVITED))
+                    .build();
+
             users.add(e);
         }
         for (User friend : friends) {
@@ -147,12 +141,9 @@ public class EventServiceImp implements EventService {
                 }
             }
             if (!isInvited) {
-                RegisterEventUser e1 = new RegisterEventUser(friend.getId(),
-                        false,
-                        false,
-                        friend.getEmail(),
-                        friend.getDateOfBirth(),
-                        friend.getPosition(), inviterEmail);
+                RegisterEventUser e1 = new RegisterEventUser.Builder(friend)
+                        .setInviter(inviterEmail)
+                        .build();
                 users.add(e1);
             }
         }
@@ -176,11 +167,8 @@ public class EventServiceImp implements EventService {
                         && ue.getEvent().equals(event))
                 .map(UserEvent::getUser)
                 .findFirst();
-        if (eventOrganizerOpt.isPresent()) {
-            return eventOrganizerOpt.get();
-        } else {
-            return null;
-        }
+
+        return eventOrganizerOpt.isPresent() ? eventOrganizerOpt.get() : null;
     }
 
     @Override
