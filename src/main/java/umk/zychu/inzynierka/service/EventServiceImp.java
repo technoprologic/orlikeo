@@ -340,13 +340,14 @@ public class EventServiceImp implements EventService {
         // remove userOrganizer && editing user
         form.getEventFormMembers()
                 .removeIf(reu -> reu.getEmail().equals(event.getUserOrganizer().getEmail()) || reu.getEmail().equals(user.getEmail()));
-        // remove all who's !invited && has !rights &&  !have userEvent
+        // remove all who's !invited && !has_rights &&  !have userEvent (wasn't invited & and wasn't allowed/had_rights - status quo )
         form.getEventFormMembers()
                 .removeIf(reu -> !reu.getAllowed()
                         && !reu.getInvited()
                         && !userEventService.findOne(event, userService.getUser(reu.getEmail()))
                         .isPresent());
         if (!event.getUserOrganizer().equals(user)) {
+            //remove all who wasn't invited
             form.getEventFormMembers()
                     .removeIf(reu -> userEventService.findOne(event, userService.getUser(reu.getEmail())).isPresent()
                             && !userEventService.findOne(event, userService.getUser(reu.getEmail())).get().getInviter().equals(user));
@@ -356,7 +357,6 @@ public class EventServiceImp implements EventService {
         }
         updateUsersEvents(form.getEventFormMembers(), event);
         userEventService.changeEventStateIfRequired(event);
-        //TODO powiadomienia o dokonanych zmianach wobec zaproszonych/usuniętych itd.
     }
 
     @Override
@@ -381,10 +381,12 @@ public class EventServiceImp implements EventService {
 
     private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
+
         // are still event members
         eventFormMembers
                 .stream()
-                .filter(reu -> reu.getAllowed() || reu.getInvited())
+                .filter(reu -> (reu.getAllowed() || reu.getInvited()) && userEventService.findOne(event, userService.getUser(reu.getEmail()))
+                        .isPresent())
                 .forEach(
                         reu -> {
                             User u = userService.getUser(reu.getEmail());
@@ -393,25 +395,32 @@ public class EventServiceImp implements EventService {
                             if (ueOpt.isPresent()) {
                                 UserEvent ue = ueOpt.get();
                                 ue.setInviter(user);
-                                if (reu.getAllowed() && reu.getInvited()) {
-                                    ue.setUserPermission(true);
-                                    if (ue.getDecision().equals(NOT_INVITED)) {
-                                        ue.setDecision(INVITED);
+
+                                //permission status changed
+                                if (!reu.getAllowed().equals(ue.getUserPermission())) {
+                                    ue.setUserPermission(reu.getAllowed());
+                                    if(reu.getAllowed()) {
+                                        userNotificationsService.notifyAboutInvitingPermission(ue);
+                                    }else {
+                                        userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
                                     }
-                                } else if (!reu.getAllowed()
-                                        && reu.getInvited()) {
-                                    ue.setUserPermission(false);
-                                    if (ue.getDecision().equals(NOT_INVITED)) {
+                                }
+
+                                //invitation status changed to invited
+                                if (ue.getDecision().equals(NOT_INVITED) && reu.getInvited()) {
                                         ue.setDecision(INVITED);
-                                    }
-                                } else if (reu.getAllowed()
-                                        && !reu.getInvited()) {
-                                    ue.setUserPermission(true);
+                                        userNotificationsService.notifyAboutEventInvitation(ue);
+                                }
+
+                                //invitation status changed to NOT invited
+                                if (!ue.getDecision().equals(NOT_INVITED) && !reu.getInvited()) {
                                     ue.setDecision(NOT_INVITED);
+                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
                                 }
                                 userEventService.save(ue);
                             }
                         });
+
         //are new to the event
         eventFormMembers.stream()
                 .filter(reu -> (reu.getAllowed() || reu.getInvited())
@@ -425,6 +434,12 @@ public class EventServiceImp implements EventService {
                             .setPermission(permission)
                             .build();
                     userEventService.save(ue);
+                    if(permission){
+                        userNotificationsService.notifyAboutInvitingPermission(ue);
+                    }
+                    if(reu.getInvited()){
+                        userNotificationsService.notifyAboutEventInvitation(ue);
+                    }
                 });
         // are no longer event members
         eventFormMembers
@@ -437,6 +452,13 @@ public class EventServiceImp implements EventService {
                                     .findOne(event, u);
                             if (ueOpt.isPresent()) {
                                 UserEvent ue = ueOpt.get();
+                                //user was invited
+                                if(!ue.getDecision().equals(NOT_INVITED)){
+                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
+                                }
+                                if(ue.getUserPermission()){
+                                    userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
+                                }
                                 event.getUsersEvent().remove(ue);
                                 save(event);
                             }

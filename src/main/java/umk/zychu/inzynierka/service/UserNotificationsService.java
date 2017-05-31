@@ -52,4 +52,11 @@ public interface UserNotificationsService {
 
     void remove(User actionUser, User targetUser);
 
+    void notifyAboutInvitingPermission(UserEvent ue);
+
+    void notifyAboutInvitingPermissionRevoke(UserEvent ue);
+
+    void notifyAboutEventInvitation(UserEvent ue);
+
+    void notifyAboutEventInvitationRevoke(UserEvent ue);
 }

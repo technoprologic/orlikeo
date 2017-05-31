@@ -14,6 +14,10 @@ public class RegisterEventUser {
     private Date dateOfBirth;
     private String position;
 
+    private RegisterEventUser(){
+        super();
+    }
+
     private RegisterEventUser(Builder builder) {
         super();
         this.userId = builder.userId;

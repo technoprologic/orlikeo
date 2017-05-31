@@ -306,8 +306,8 @@ public class EventsController extends ServicesAwareController {
 	public String reserve(final @PathVariable("graphicId") Integer graphicId,
 						  final Model model) {
 		try {
-			Graphic graphicEntity = graphicService.findOne(graphicId);
-			Orlik orlik = graphicEntity.getOrlik();	
+			Graphic graphic = graphicService.findOne(graphicId);
+			Orlik orlik = graphic.getOrlik();
 			List<User> userFriends = friendshipService.getFriends(null, ACCEPT);
 			List<RegisterEventUser> users = new ArrayList<>();
 	
@@ -320,7 +320,7 @@ public class EventsController extends ServicesAwareController {
 			form.setEventFormMembers(users);
 			model.addAttribute("registerEventForm", form)
 			.addAttribute("orlik", orlik)
-			.addAttribute("event", graphicEntity)
+			.addAttribute("event", graphic)
 			.addAttribute("reserve", true)
 			.addAttribute("animator", orlik.getAnimator());
 		} catch (Exception e) {

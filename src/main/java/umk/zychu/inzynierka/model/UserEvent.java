@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class UserEvent extends BaseEntity implements Serializable, Comparable<UserEvent> {
 	
 	@Column(name = "user_permission")
-	private boolean userPermission;
+	private Boolean userPermission;
 
 	@ManyToOne()
 	@JoinColumn(name = "inviter_id", referencedColumnName = "id")
@@ -74,11 +74,11 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 		return this.user;
 	}
 	
-	public void setUserPermission(boolean permission){
+	public void setUserPermission(Boolean permission){
 		this.userPermission = permission;
 	}
 	
-	public boolean getUserPermission(){
+	public Boolean getUserPermission(){
 		return this.userPermission;
 	}
 	
