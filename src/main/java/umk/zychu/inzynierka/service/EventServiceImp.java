@@ -290,45 +290,6 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public Event registerEventForm(RegisterEventForm form) {
-        try {
-            User userOrganizer = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-            Graphic graphic = graphicService.findOne(form.getGraphicId());
-            Integer playersLimit = form.getUsersLimit();
-            Event event = new Event.Builder(userOrganizer)
-                    .enumeratedEventState(IN_PROGRESS)
-                    .graphic(graphic)
-                    .playersLimit(playersLimit)
-                    .build();
-
-            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, ORGANIZER, ACCEPTED)
-                    .setPermission(Boolean.TRUE)
-                    .build();
-            List<UserEvent> usersEvents = new LinkedList<>();
-            usersEvents.add(organizerUserEvent);
-            ArrayList<RegisterEventUser> regUsersList = form.getEventFormMembers() != null ? (ArrayList<RegisterEventUser>) form.getEventFormMembers() : new ArrayList<>();
-            for (RegisterEventUser regEventUser : regUsersList) {
-                if (regEventUser.getAllowed() || regEventUser.getInvited()) {
-                    User userTarget = userService.getUser(regEventUser.getEmail());
-                    EnumeratedUserEventDecision decision = (regEventUser.getInvited()) ? INVITED : NOT_INVITED;
-                    Boolean permission = regEventUser.getAllowed();
-                    UserEvent ue = new UserEvent.Builder(userTarget, userOrganizer, event, GUEST, decision)
-                            .setPermission(permission)
-                            .build();
-                    usersEvents.add(ue);
-                }
-            }
-            event.setUsersEvent(usersEvents);
-            event = save(event);
-            userNotificationsService.eventCreated(event);
-            return event;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
     public Event save(Event event) {
         return eventDAO.saveAndFlush(event);
     }

@@ -42,8 +42,6 @@ public interface EventService {
 
     Boolean isEventMember(Event event);
 
-    Event registerEventForm(RegisterEventForm form);
-
     Event save(Event event);
 
     void updateEvent(RegisterEventForm form);

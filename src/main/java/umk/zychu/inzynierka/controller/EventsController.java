@@ -1,8 +1,10 @@
 package umk.zychu.inzynierka.controller;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import umk.zychu.inzynierka.controller.DTObeans.*;
+import umk.zychu.inzynierka.controller.handlers.Command;
+import umk.zychu.inzynierka.controller.handlers.CommandHandler;
+import umk.zychu.inzynierka.controller.handlers.RegisterEventCommand;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
@@ -34,10 +39,12 @@ import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
 public class EventsController extends ServicesAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
-	
 
 	@Autowired
 	private ChoosenOrlikBeanValidator choosenOrlikBeanValidator;
+
+	@Autowired
+	private CommandHandler<Command, Event> registerEventCommandHandler;
 
 	@InitBinder("chooseOrlikBean")
 	private void initBinder(WebDataBinder binder) {
@@ -60,7 +67,7 @@ public class EventsController extends ServicesAwareController {
 			ModelMap model, final BindingResult result) {
 		if(result.hasErrors()) 
 			return "error";
-		Event event = eventService.registerEventForm(form);
+		Event event = registerEventCommandHandler.apply(new RegisterEventCommand(form));
 		UserGameDetails gameDetails  = eventService.getGameDetails(event);
 		model.addAttribute("eventDetails", gameDetails);
 		List<UserEvent> usersEvents = event.getUsersEvent();
@@ -305,6 +312,7 @@ public class EventsController extends ServicesAwareController {
 	@RequestMapping(value = "/reserve/{graphicId}", method = RequestMethod.GET)
 	public String reserve(final @PathVariable("graphicId") Integer graphicId,
 						  final Model model) {
+		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		try {
 			Graphic graphic = graphicService.findOne(graphicId);
 			Orlik orlik = graphic.getOrlik();

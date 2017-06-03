@@ -14,7 +14,7 @@ public class RegisterEventUser {
     private Date dateOfBirth;
     private String position;
 
-    private RegisterEventUser(){
+    public RegisterEventUser(){
         super();
     }
 
@@ -29,20 +29,12 @@ public class RegisterEventUser {
         this.inviter = builder.inviter;
     }
 
-    public String getInviter() {
-        return inviter;
-    }
-
     public void setInviter(String inviter) {
         this.inviter = inviter;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
-
-    public Integer getUserId() {
-        return userId;
     }
 
     public void setAllowed(Boolean allowed) {
@@ -57,24 +49,32 @@ public class RegisterEventUser {
         this.invited = decision;
     }
 
-    public Boolean getInvited() {
-        return this.invited;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getEmail() {
-        return this.email;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getInviter() {
+        return inviter;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public Boolean getInvited() {
+        return this.invited;
+    }
+
     public Date getDateOfBirth() {
         return this.dateOfBirth;
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     public void setPosition(String position) {
@@ -87,27 +87,27 @@ public class RegisterEventUser {
 
     public static class Builder{
 
-        private Integer userId;
-        private String email;
-        private Date dateOfBirth;
-        private String position;
-        private String inviter;
         private Boolean allowed;
+        private Date dateOfBirth;
+        private String email;
         private Boolean invited;
+        private String inviter;
+        private String position;
+        private Integer userId;
 
         public Builder(User user){
-            this.userId = user.getId();
-            this.email = user.getEmail();
-            this.dateOfBirth = user.getDateOfBirth();
-            this.position = user.getPosition();
-            this.inviter = null;
             this.allowed = Boolean.FALSE;
+            this.dateOfBirth = user.getDateOfBirth();
+            this.email = user.getEmail();
             this.invited = Boolean.FALSE;
+            this.inviter = null;
+            this.position = user.getPosition();
+            this.userId = user.getId();
         }
 
-        public Builder setInviter(String inviter){
-            this.inviter = inviter;
-            return this;
+        public RegisterEventUser build(){
+            RegisterEventUser registerEventUser = new RegisterEventUser(this);
+            return registerEventUser;
         }
 
         public Builder setAllowed(Boolean allowed){
@@ -120,9 +120,9 @@ public class RegisterEventUser {
             return this;
         }
 
-        public RegisterEventUser build(){
-            RegisterEventUser registerEventUser = new RegisterEventUser(this);
-            return registerEventUser;
+        public Builder setInviter(String inviter){
+            this.inviter = inviter;
+            return this;
         }
     }
 

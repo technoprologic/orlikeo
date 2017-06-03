@@ -27,6 +27,8 @@ public class OrlikServiceImp implements OrlikService {
 	@Autowired
 	UserNotificationsService userNotificationsService;
 
+	private static final String CHOOSE_ORLIK_TEXT = "Wybierz orlik...";
+
 	@Override
 	public Orlik getOrlikById(Integer id) {
 		return orlikDAO.findOne(id);
@@ -39,7 +41,7 @@ public class OrlikServiceImp implements OrlikService {
 
 	public Map<String, String> getOrliksIdsAndNames() {
 		Map<String, String> map = new LinkedHashMap<String, String>();
-		map.put("0", "Wybierz orlik...");
+		map.put("0", CHOOSE_ORLIK_TEXT);
 		List<Orlik> orliks = orlikDAO.findAll().stream()
 				.filter(o -> o.getAnimator() != null
 							&& !o.getGraphicCollection().isEmpty())
@@ -91,7 +93,7 @@ public class OrlikServiceImp implements OrlikService {
 			return eventService
 					.generateUserGameDetailsList(organizersUserEvents);
 		} else
-			return new ArrayList<UserGameDetails>();
+			return new ArrayList<>();
 	}
 
 	@Override

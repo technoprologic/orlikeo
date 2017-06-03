@@ -6,7 +6,6 @@ import umk.zychu.inzynierka.service.*;
 
 public class ServicesAwareController {
 
-
     @Autowired
     OrlikService orlikService;
 
@@ -30,7 +29,5 @@ public class ServicesAwareController {
 
     @Autowired
     UserNotificationsService userNotificationsService;
-
-
 
 }

@@ -20,8 +20,6 @@ import static umk.zychu.inzynierka.model.enums.FriendshipType.*;
 @RequestMapping("/friends")
 public class FriendsController extends ServicesAwareController{
 
-
-	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getFriends(final ModelMap model) {
 		List<User> friends = friendshipService.getFriends(null, ACCEPT);
@@ -67,7 +65,13 @@ public class FriendsController extends ServicesAwareController{
 	public String otherUserProfile(final @PathVariable("email") String email, final ModelMap model, final Principal principal){
 		User user = userService.getUser(principal.getName());
 		User userRequest = userService.getUser(email);
-		//if self
+
+/*
+		if(null == userRequest){
+			return null;
+		}
+*/
+
 		if(user.getEmail().equals(userRequest.getEmail())){
 			return "redirect:/account/profile/" + email;
 		}
