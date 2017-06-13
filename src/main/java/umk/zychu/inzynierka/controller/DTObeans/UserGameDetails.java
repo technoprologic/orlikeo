@@ -1,5 +1,7 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
+
 import java.util.Date;
 
 public class UserGameDetails {
@@ -13,7 +15,7 @@ public class UserGameDetails {
     private Date startDate;
     private Date endDate;
     private Integer decisionId;
-    private Integer roleId;
+    private EnumeratedEventRole role;
     private Boolean permission;
     private long willCome;
     private Integer playersLimit;
@@ -33,7 +35,7 @@ public class UserGameDetails {
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.decisionId = builder.decisionId;
-        this.roleId = builder.roleId;
+        this.role = builder.role;
         this.permission = builder.permission;
         this.willCome = builder.willCome;
         this.playersLimit = builder.playersLimit;
@@ -84,8 +86,12 @@ public class UserGameDetails {
         return decisionId;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public EnumeratedEventRole getRole() {
+        return role;
+    }
+
+    public Integer getRoleId(){
+        return role.getValue(role);
     }
 
     public Boolean getPermission() {
@@ -144,7 +150,7 @@ public class UserGameDetails {
         private Date startDate;
         private Date endDate;
         private Integer decisionId;
-        private Integer roleId;
+        private EnumeratedEventRole role;
         private Boolean permission;
         private long willCome;
         private Integer playersLimit;
@@ -164,7 +170,7 @@ public class UserGameDetails {
             this.startDate = null;
             this.endDate = null;
             this.decisionId = null;
-            this.roleId = null;
+            this.role = null;
             this.permission = null;
             this.willCome = 0;
             this.playersLimit = 12;
@@ -214,8 +220,8 @@ public class UserGameDetails {
             return this;
         }
 
-        public Builder role(final Integer roleId) {
-            this.roleId = roleId;
+        public Builder role(final EnumeratedEventRole role) {
+            this.role = role;
             return this;
         }
 

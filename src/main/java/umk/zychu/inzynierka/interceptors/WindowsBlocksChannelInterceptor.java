@@ -4,11 +4,14 @@ package umk.zychu.inzynierka.interceptors;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
-import umk.zychu.inzynierka.model.UserEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 
 @Service
 public class WindowsBlocksChannelInterceptor extends BaseChannelInterceptor {
@@ -24,7 +27,7 @@ public class WindowsBlocksChannelInterceptor extends BaseChannelInterceptor {
 
     @Override
     protected void sendToTheUser(String username, String sessionId){
-        UserEventRole userEventRole = null;
+        EnumeratedEventRole role = null;
         String page = null;
         if(showSessionsPageHeader.containsKey(sessionId)){
             page = showSessionsPageHeader.get(sessionId);
@@ -32,16 +35,16 @@ public class WindowsBlocksChannelInterceptor extends BaseChannelInterceptor {
         if (page != null) {
             switch (page) {
                 case "organized":
-                    userEventRole = userEventRoleService.findOne(1);
+                    role = ORGANIZER;
                     break;
                 case "invitations":
-                    userEventRole = userEventRoleService.findOne(2);
+                    role = GUEST;
                     break;
                 default:
                     break;
             }
             List<EventWindowBlock> eventsWindowsBlocks = eventService
-                    .getEventWindowBlocks(username, userEventRole);
+                    .getEventWindowBlocks(username, role);
             sessionObject.put("blocks", eventsWindowsBlocks);
             template.convertAndSendToUser(username, DESTINATION, sessionObject);
         }

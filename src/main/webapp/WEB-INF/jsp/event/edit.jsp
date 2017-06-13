@@ -13,7 +13,6 @@
 <c:set var="startDate" value="${eventDetails.startDate}"/>
 <c:set var="endDate" value="${eventDetails.endDate}"/>
 <c:set var="decisionId" value="${eventDetails.decisionId}"/>
-<c:set var="roleId" value="${eventDetails.roleId}"/>
 <c:set var="permission" value="${eventDetails.permission}"/>
 <c:set var="playersLimit" value="${eventDetails.playersLimit}"/>
 <c:set var="willCome" value="${eventDetails.willCome}"/>

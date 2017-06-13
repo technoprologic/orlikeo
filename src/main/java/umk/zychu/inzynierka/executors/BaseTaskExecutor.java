@@ -1,10 +1,10 @@
 package umk.zychu.inzynierka.executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.Event;
+import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.service.*;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +12,11 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_A_BASKET;
-import static umk.zychu.inzynierka.model.EnumeratedEventState.READY_TO_ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_A_BASKET;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.READY_TO_ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.INVITED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.NOT_INVITED;
 
 public class BaseTaskExecutor {
 
@@ -22,29 +25,17 @@ public class BaseTaskExecutor {
     protected static final long MINUTE = 1000 * 60;
     protected static final long HALF_AN_HOUR = MINUTE * 30;
     protected static final long QUARTER_OF_AN_HOUR = MINUTE * 15;
-    protected UserEventRole guestRole;
-    protected UserDecision notInvited, invited;
 
     @Autowired
     GraphicService graphicService;
 
     @Autowired
     EventService eventService;
-    @Autowired
-    UserEventRoleService userEventRoleService;
-    @Autowired
-    UserEventDecisionService userEventDecisionService;
+
     @Autowired
     UserEventService userEventService;
     @Autowired
     EventToApproveService eventToApproveService;
-
-    @PostConstruct
-    private void post() {
-        this.guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
-        this.notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
-        this.invited = userEventDecisionService.findOne(UserDecision.INVITED);
-    }
 
     /**
      * Removes all broken events without graphic, and eventState other than IN_BASKET.
@@ -126,17 +117,17 @@ public class BaseTaskExecutor {
     }
 
     /**
-     * Changes user decisions to fefault
+     * Changes user decisions to default
      *
      * @param eventsReadyToPrepare
      */
     private void changeUsersDecisions(Set<Event> eventsReadyToPrepare) {
         eventsReadyToPrepare.stream()
                 .flatMap(e -> e.getUsersEvent().stream())
-                .filter(ue -> ue.getRole().equals(guestRole)
-                        && !ue.getDecision().equals(notInvited))
+                .filter(ue -> ue.getRole().equals(GUEST)
+                        && !ue.getDecision().equals(NOT_INVITED))
                 .forEach(ue -> {
-                    ue.setDecision(invited);
+                    ue.setDecision(INVITED);
                     userEventService.save(ue);
                 });
     }

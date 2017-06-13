@@ -38,7 +38,7 @@ public class Orlik extends BaseEntity {
 	private List<Graphic> graphicCollection;
 
 	@OneToOne
-	@JoinColumn(name = "animator_id", unique = true)
+	@JoinColumn(name = "animator_id", unique = true, referencedColumnName = "id")
 	private User animator;
 
 	private Orlik(){}

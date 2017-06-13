@@ -9,7 +9,6 @@
 <script type="text/javascript">
 	window.saved = '${saved}';
 </script>
-<!-- TODO: potwierdzenie dokonanych zmian -->
 <div class="container">
 <div class="row" style="padding: 50px 0px">
 	<div class="col-sm-6 col-md-4 col-md-offset-4 vcenter"><h1 class="text-center login-title">
@@ -37,7 +36,7 @@
 					<form:label path="lights">Światło</form:label>
 					<br/>
 					<form:select path="lights">
-						<form:options items="${orlikForm.chooser}"/>
+						<form:options items="${orlikForm.select}"/>
 					</form:select>
 				</div>
 					<div class="form-group">
@@ -46,7 +45,7 @@
 						<form:errors path="water" cssClass="error" />
 							<%--<spring:message code="web.account.edit.shower.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="water">
-							<form:options items="${orlikForm.chooser}"/>
+							<form:options items="${orlikForm.select}"/>
 						</form:select>
 					</div>
 
@@ -57,7 +56,7 @@
 						<form:errors path="shower" cssClass="error" />
 							<%--<spring:message code="web.account.edit.shower.placeholder" var="positionPlaceholder"/>--%>
 						<form:select path="shower">
-							<form:options items="${orlikForm.chooser}"/>
+							<form:options items="${orlikForm.select}"/>
 						</form:select>
 					</div>
 					<!-- shoes -->
@@ -68,7 +67,7 @@
 						<form:input  path="shoes" pattern="[a-zęóąśłżźń A-ZŚŁĆŹŻ ,]{2,20}" type="text" class="form-control" />
 					</div>
 					<div class="form-group">
-						<form:errors path="animatorEmail" class="text-danger" />
+						<form:errors path="animatorEmail" class="text-danger" /><br/>
 						<form:label path="animatorEmail">Email animatora</form:label>
 						<br/>
 						<form:input path="animatorEmail" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" class="form-control" />

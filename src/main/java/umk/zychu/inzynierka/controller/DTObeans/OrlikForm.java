@@ -2,14 +2,13 @@ package umk.zychu.inzynierka.controller.DTObeans;
 
 import umk.zychu.inzynierka.model.Orlik;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Created by emagdnim on 2015-10-12.
- */
-public class OrlikForm {
-    //TODO Builder pattern
+public class OrlikForm implements Serializable{
+
     private Integer id;
     private String address;
     private String city;
@@ -19,46 +18,27 @@ public class OrlikForm {
     private String shoes;
     private String animatorEmail;
 
-    public Map<String, String> getChooser() {
-        return chooser;
-    }
+    Map<String, String> select;
 
-    public void setChooser(Map<String, String> chooser) {
-        this.chooser = chooser;
-    }
-
-    Map<String, String> chooser;
-
-    public OrlikForm() {
+    OrlikForm(){
         super();
-        makeChooser();
-        id = null;
-        address = "";
-        city = "";
-        lights = false;
-        water = false;
-        shower = false;
-        shoes = "turf";
-        animatorEmail = "";
     }
 
-    public OrlikForm(Orlik orlik) {
+    private OrlikForm(Builder builder) {
         super();
-        makeChooser();
-        id = orlik.getId();
-        address = orlik.getAddress();
-        city = orlik.getCity();
-        lights = orlik.getLights();
-        water = orlik.getWater();
-        shower = orlik.getShower();
-        shoes = orlik.getShoes();
-        animatorEmail = orlik.getAnimator() != null ? orlik.getAnimator().getEmail() : "";
+        id = builder.id;
+        address = builder.address;
+        city = builder.city;
+        lights = builder.lights;
+        water = builder.water;
+        shower = builder.shower;
+        shoes = builder.shoes;
+        animatorEmail = builder.animatorEmail;
+        select = builder.select;
     }
 
-    private void makeChooser() {
-        this.chooser = new LinkedHashMap<>();
-        chooser.put("false", "NIE");
-        chooser.put("true", "TAK");
+    public Map<String, String> getSelect() {
+        return select;
     }
 
     public Integer getId() {
@@ -123,5 +103,93 @@ public class OrlikForm {
 
     public void setShoes(String shoes) {
         this.shoes = shoes;
+    }
+
+    public static class Builder{
+        private Integer id;
+        private String address;
+        private String city;
+        private String animatorEmail;
+        private Boolean lights;
+        private Boolean water;
+        private Boolean shower;
+        private String shoes;
+
+        private Map<String, String> select;
+
+        public Builder(){
+            this.id = null;
+            this.city = "";
+            this.address = "";
+            this.animatorEmail = "";
+            this.lights = Boolean.FALSE;
+            this.water = Boolean.FALSE;
+            this.shower = Boolean.FALSE;
+            this.shoes = "turf";
+            this.select = makeDefaultSelect();
+        }
+
+        public Builder(Integer id,
+                String address,
+                String city,
+                String animatorEmail){
+            this();
+            this.id = id;
+            this.city = null != city ? city : this.city;
+            this.address = null != address ? address : this.city;
+            this.animatorEmail = null != animatorEmail ? animatorEmail  : this.animatorEmail;
+        }
+
+        public Builder(Orlik orlik){
+            this();
+            this.id = orlik.getId();
+            this.city = orlik.getCity();
+            this.address = orlik.getAddress();
+            this.animatorEmail = null != orlik.getAnimator()
+                        &&  null != orlik.getAnimator().getEmail() ? orlik.getAnimator().getEmail()  : this.animatorEmail;
+            this.lights = orlik.getLights();
+            this.water = orlik.getWater();
+            this.shower = orlik.getShower();
+            this.shoes = orlik.getShoes();
+        }
+
+        private static LinkedHashMap<String, String> makeDefaultSelect(){
+            LinkedHashMap<String, String> select = new LinkedHashMap<>();
+            select.put("false", "NIE");
+            select.put("true", "TAK");
+            return select;
+        }
+
+        public Builder id(Integer id){
+            this.id = id;
+            return this;
+        }
+
+        public Builder city(String city){
+            this.city = city;
+            return this;
+        }
+
+        public Builder address(String address){
+            this.address = address;
+            return this;
+        }
+
+        public Builder animatorEmail(String animatorEmail){
+            this.animatorEmail = animatorEmail;
+            return this;
+        }
+
+        public Builder select(HashMap<String, String> select){
+            this.select = select;
+            return this;
+        }
+
+        public OrlikForm build(){
+            OrlikForm form = new OrlikForm(this);
+            return form;
+        }
+
+
     }
 }

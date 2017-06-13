@@ -5,21 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
-import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
+import umk.zychu.inzynierka.controller.DTObeans.*;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.*;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 import umk.zychu.inzynierka.repository.EventDaoRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static umk.zychu.inzynierka.converter.EventStateConverter.convertToEnum;
-import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
-import static umk.zychu.inzynierka.model.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.*;
 
 @Service
 @Transactional
@@ -27,14 +29,6 @@ public class EventServiceImp implements EventService {
 
     private static final org.slf4j.Logger logger = LoggerFactory
             .getLogger(EventServiceImp.class);
-
-    private UserDecision invited;
-
-    private UserDecision accepted;
-
-    private UserDecision rejected;
-
-    private UserEventRole guestRole;
 
     @Autowired
     EventDaoRepository eventDAO;
@@ -44,10 +38,6 @@ public class EventServiceImp implements EventService {
     GraphicService graphicService;
     @Autowired
     UserService userService;
-    @Autowired
-    UserEventDecisionService userEventDecisionService;
-    @Autowired
-    UserEventRoleService userEventRoleService;
 
     @Autowired
     FriendshipService friendshipService;
@@ -61,13 +51,6 @@ public class EventServiceImp implements EventService {
     //next 48hrs
     private final Date incomingEventsDateInterval = new Date((new Date()).getTime() + 172400000);
 
-    @PostConstruct
-    private void setDecisions() {
-        invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        accepted = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        rejected = userEventDecisionService.findOne(UserDecision.REJECTED);
-        guestRole = userEventRoleService.findOne(UserEventRole.GUEST);
-    }
 
     @Override
     public void acceptEvent(Integer id) {
@@ -105,10 +88,10 @@ public class EventServiceImp implements EventService {
             for (Event e : events) {
                 e.getUsersEvent()
                         .stream()
-                        .filter(ue -> (ue.getDecision().equals(accepted) || ue.getDecision().equals(rejected))
-                                && ue.getRole().equals(guestRole))
+                        .filter(ue -> (ue.getDecision().equals(ACCEPTED) || ue.getDecision().equals(REJECTED))
+                                && ue.getRole().equals(GUEST))
                         .forEach((o) -> {
-                            o.setDecision(invited);
+                            o.setDecision(INVITED);
                             userEventService.save(o);
                         });
                 e.setGraphic(null);
@@ -136,37 +119,31 @@ public class EventServiceImp implements EventService {
     public RegisterEventForm generateRegisterEventForm(Event event) {
         List<UserEvent> usersEvents = event.getUsersEvent();
         List<User> friends = friendshipService.getFriends(null, ACCEPT);
-        List<RegisterEventUser> users = new ArrayList<RegisterEventUser>();
+        List<RegisterEventUser> users = new ArrayList<>();
 
         for (UserEvent userEvent : usersEvents) {
-            boolean decision = false;
-            if (userEvent.getDecision().getId() != 4)
-                decision = true;
-            String inviterEmail = userEvent.getInviter() != null ? userEvent
-                    .getInviter().getEmail() : null;
-            RegisterEventUser e = new RegisterEventUser(userEvent.getUser()
-                    .getId(), userEvent.getUserPermission(), decision,
-                    userEvent.getUser().getEmail(), userEvent.getUser()
-                    .getDateOfBirth(), userEvent.getUser()
-                    .getPosition(), inviterEmail);
+            String inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
+            RegisterEventUser e = new RegisterEventUser.Builder(userEvent.getUser())
+                    .setAllowed(userEvent.getUserPermission())
+                    .setInviter(inviterEmail)
+                    .setInvited(!userEvent.getDecision().equals(NOT_INVITED))
+                    .build();
+
             users.add(e);
         }
         for (User friend : friends) {
             boolean isInvited = false;
             String inviterEmail = null;
             for (UserEvent userEvent : usersEvents) {
-                if (friend.getId() == userEvent.getUser().getId()) {
+                if (friend.getId().equals(userEvent.getUser().getId())) {
                     isInvited = true;
                     inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
                 }
             }
-            if (isInvited == false) {
-                RegisterEventUser e1 = new RegisterEventUser(friend.getId(),
-                        false,
-                        false,
-                        friend.getEmail(),
-                        friend.getDateOfBirth(),
-                        friend.getPosition(), inviterEmail);
+            if (!isInvited) {
+                RegisterEventUser e1 = new RegisterEventUser.Builder(friend)
+                        .setInviter(inviterEmail)
+                        .build();
                 users.add(e1);
             }
         }
@@ -175,10 +152,8 @@ public class EventServiceImp implements EventService {
 
     @Override
     public List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents) {
-        List<UserGameDetails> userGamesDetailsList = new LinkedList<UserGameDetails>();
-        Iterator<UserEvent> it = userEvents.iterator();
-        while (it.hasNext()) {
-            UserEvent userEvent = it.next();
+        List<UserGameDetails> userGamesDetailsList = new LinkedList<>();
+        for (UserEvent userEvent : userEvents) {
             UserGameDetails userGameDetails = generateUserGameDetails(userEvent);
             userGamesDetailsList.add(userGameDetails);
         }
@@ -187,21 +162,17 @@ public class EventServiceImp implements EventService {
 
     @Override
     public User getEventOrganizerUser(Event event) {
-        UserEventRole role = userEventRoleService.findOne(UserEventRole.ORGANIZER);
         Optional<User> eventOrganizerOpt = event.getUsersEvent().stream()
-                .filter(ue -> ue.getRole().equals(role)
+                .filter(ue -> ue.getRole().equals(ORGANIZER)
                         && ue.getEvent().equals(event))
-                .map(ue -> ue.getUser())
+                .map(UserEvent::getUser)
                 .findFirst();
-        if (eventOrganizerOpt.isPresent()) {
-            return eventOrganizerOpt.get();
-        } else {
-            return null;
-        }
+
+        return eventOrganizerOpt.isPresent() ? eventOrganizerOpt.get() : null;
     }
 
     @Override
-    public List<EventWindowBlock> getEventWindowBlocks(UserEventRole role) {
+    public List<EventWindowBlock> getEventWindowBlocks(EnumeratedEventRole role) {
         List<EventWindowBlock> windowBlocks = new ArrayList<>();
         for (EnumeratedEventState state : EnumeratedEventState.values()) {
             windowBlocks.add(getBlock(state, role, false));
@@ -212,7 +183,7 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public List<EventWindowBlock> getEventWindowBlocks(String username, UserEventRole role) {
+    public List<EventWindowBlock> getEventWindowBlocks(String username, EnumeratedEventRole role) {
         List<EventWindowBlock> windowBlocks = new ArrayList<>();
         for (EnumeratedEventState state : EnumeratedEventState.values()) {
             windowBlocks.add(getBlock(username, state, role, false));
@@ -236,14 +207,14 @@ public class EventServiceImp implements EventService {
     public List<UserGameDetails> getGamesDetails(String username,
                                                  EventType type, Integer stateId) {
         User user = userService.getUser(username);
-        UserEventRole role = null;
+        EnumeratedEventRole role = null;
         if (type != null) {
             switch (type) {
                 case INVITATIONS:
-                    role = userEventRoleService.findOne(UserEventRole.GUEST);
+                    role = GUEST;
                     break;
                 case ORGANIZED:
-                    role = userEventRoleService.findOne(UserEventRole.ORGANIZER);
+                    role = ORGANIZER;
                     break;
                 default:
                     role = null;
@@ -261,7 +232,7 @@ public class EventServiceImp implements EventService {
             userEvents.removeIf(ue -> ue.getEvent().getGraphic().getStartTime().after(todayAndTomorrow));
         }
         if (role != null) {
-            UserEventRole efectiveFinalRole = role;
+            EnumeratedEventRole efectiveFinalRole = role;
             userEvents = userEvents.stream()
                     .filter(ue -> ue.getRole().equals(efectiveFinalRole))
                     .collect(Collectors.toList());
@@ -314,9 +285,8 @@ public class EventServiceImp implements EventService {
 
         if (userEventOpt.isPresent()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -330,9 +300,8 @@ public class EventServiceImp implements EventService {
                     .graphic(graphic)
                     .playersLimit(playersLimit)
                     .build();
-            UserEventRole organizerRole = userEventRoleService.findOne(UserEventRole.ORGANIZER);
-            UserDecision organizerDecision = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, organizerRole, organizerDecision)
+
+            UserEvent organizerUserEvent = new UserEvent.Builder(userOrganizer, null, event, ORGANIZER, ACCEPTED)
                     .setPermission(Boolean.TRUE)
                     .build();
             List<UserEvent> usersEvents = new LinkedList<>();
@@ -341,12 +310,9 @@ public class EventServiceImp implements EventService {
             for (RegisterEventUser regEventUser : regUsersList) {
                 if (regEventUser.getAllowed() || regEventUser.getInvited()) {
                     User userTarget = userService.getUser(regEventUser.getEmail());
-                    UserDecision decision = (regEventUser.getInvited()) ? userEventDecisionService
-                            .findOne(UserDecision.INVITED)
-                            : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
-                    UserEventRole role = userEventRoleService.findOne(UserEventRole.GUEST);
+                    EnumeratedUserEventDecision decision = (regEventUser.getInvited()) ? INVITED : NOT_INVITED;
                     Boolean permission = regEventUser.getAllowed();
-                    UserEvent ue = new UserEvent.Builder(userTarget, userOrganizer, event, role, decision)
+                    UserEvent ue = new UserEvent.Builder(userTarget, userOrganizer, event, GUEST, decision)
                             .setPermission(permission)
                             .build();
                     usersEvents.add(ue);
@@ -374,13 +340,14 @@ public class EventServiceImp implements EventService {
         // remove userOrganizer && editing user
         form.getEventFormMembers()
                 .removeIf(reu -> reu.getEmail().equals(event.getUserOrganizer().getEmail()) || reu.getEmail().equals(user.getEmail()));
-        // remove all who's !invited && has !rights &&  !have userEvent
+        // remove all who's !invited && !has_rights &&  !have userEvent (wasn't invited & and wasn't allowed/had_rights - status quo )
         form.getEventFormMembers()
                 .removeIf(reu -> !reu.getAllowed()
                         && !reu.getInvited()
                         && !userEventService.findOne(event, userService.getUser(reu.getEmail()))
                         .isPresent());
         if (!event.getUserOrganizer().equals(user)) {
+            //remove all who wasn't invited
             form.getEventFormMembers()
                     .removeIf(reu -> userEventService.findOne(event, userService.getUser(reu.getEmail())).isPresent()
                             && !userEventService.findOne(event, userService.getUser(reu.getEmail())).get().getInviter().equals(user));
@@ -390,7 +357,6 @@ public class EventServiceImp implements EventService {
         }
         updateUsersEvents(form.getEventFormMembers(), event);
         userEventService.changeEventStateIfRequired(event);
-        //TODO powiadomienia o dokonanych zmianach wobec zaproszonych/usuniętych itd.
     }
 
     @Override
@@ -415,12 +381,12 @@ public class EventServiceImp implements EventService {
 
     private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        UserDecision invited = userEventDecisionService.findOne(UserDecision.INVITED);
-        UserDecision notInvited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+
         // are still event members
         eventFormMembers
                 .stream()
-                .filter(reu -> reu.getAllowed() || reu.getInvited())
+                .filter(reu -> (reu.getAllowed() || reu.getInvited()) && userEventService.findOne(event, userService.getUser(reu.getEmail()))
+                        .isPresent())
                 .forEach(
                         reu -> {
                             User u = userService.getUser(reu.getEmail());
@@ -429,26 +395,32 @@ public class EventServiceImp implements EventService {
                             if (ueOpt.isPresent()) {
                                 UserEvent ue = ueOpt.get();
                                 ue.setInviter(user);
-                                if (reu.getAllowed() && reu.getInvited()) {
-                                    ue.setUserPermission(true);
-                                    if (ue.getDecision().equals(notInvited)) {
-                                        ue.setDecision(invited);
+
+                                //permission status changed
+                                if (!reu.getAllowed().equals(ue.getUserPermission())) {
+                                    ue.setUserPermission(reu.getAllowed());
+                                    if(reu.getAllowed()) {
+                                        userNotificationsService.notifyAboutInvitingPermission(ue);
+                                    }else {
+                                        userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
                                     }
-                                } else if (!reu.getAllowed()
-                                        && reu.getInvited()) {
-                                    ue.setUserPermission(false);
-                                    if (ue.getDecision().equals(notInvited)) {
-                                        ue.setDecision(invited);
-                                    }
-                                    ;
-                                } else if (reu.getAllowed()
-                                        && !reu.getInvited()) {
-                                    ue.setUserPermission(true);
-                                    ue.setDecision(notInvited);
+                                }
+
+                                //invitation status changed to invited
+                                if (ue.getDecision().equals(NOT_INVITED) && reu.getInvited()) {
+                                        ue.setDecision(INVITED);
+                                        userNotificationsService.notifyAboutEventInvitation(ue);
+                                }
+
+                                //invitation status changed to NOT invited
+                                if (!ue.getDecision().equals(NOT_INVITED) && !reu.getInvited()) {
+                                    ue.setDecision(NOT_INVITED);
+                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
                                 }
                                 userEventService.save(ue);
                             }
                         });
+
         //are new to the event
         eventFormMembers.stream()
                 .filter(reu -> (reu.getAllowed() || reu.getInvited())
@@ -456,14 +428,18 @@ public class EventServiceImp implements EventService {
                         .isPresent())
                 .forEach(reu -> {
                     User u = userService.getUser(reu.getEmail());
-                    UserEventRole role = userEventRoleService.findOne(UserEventRole.GUEST);
-                    UserDecision decision = reu.getInvited() ? userEventDecisionService.findOne(UserDecision.INVITED)
-                            : userEventDecisionService.findOne(UserDecision.NOT_INVITED);
+                    EnumeratedUserEventDecision decision = reu.getInvited() ? INVITED : NOT_INVITED;
                     Boolean permission = reu.getAllowed();
-                    UserEvent ue = new UserEvent.Builder(u, user, event, role, decision)
+                    UserEvent ue = new UserEvent.Builder(u, user, event, GUEST, decision)
                             .setPermission(permission)
                             .build();
                     userEventService.save(ue);
+                    if(permission){
+                        userNotificationsService.notifyAboutInvitingPermission(ue);
+                    }
+                    if(reu.getInvited()){
+                        userNotificationsService.notifyAboutEventInvitation(ue);
+                    }
                 });
         // are no longer event members
         eventFormMembers
@@ -476,6 +452,13 @@ public class EventServiceImp implements EventService {
                                     .findOne(event, u);
                             if (ueOpt.isPresent()) {
                                 UserEvent ue = ueOpt.get();
+                                //user was invited
+                                if(!ue.getDecision().equals(NOT_INVITED)){
+                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
+                                }
+                                if(ue.getUserPermission()){
+                                    userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
+                                }
                                 event.getUsersEvent().remove(ue);
                                 save(event);
                             }
@@ -483,46 +466,43 @@ public class EventServiceImp implements EventService {
         eventDAO.findOne(event.getId());
     }
 
-    private EventWindowBlock getBlock(EnumeratedEventState state, UserEventRole role, Boolean incoming) {
+    private EventWindowBlock getBlock(EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming) {
         User user = userService.getUser(SecurityContextHolder.getContext()
                 .getAuthentication().getName());
         return generateBlock(user, state, role, incoming);
     }
 
-    private EventWindowBlock getBlock(String username, EnumeratedEventState state, UserEventRole role, boolean incoming) {
+    private EventWindowBlock getBlock(String username, EnumeratedEventState state, EnumeratedEventRole role, boolean incoming) {
         User user = userService.getUser(username);
         return generateBlock(user, state, role, incoming);
     }
 
-    private EventWindowBlock generateBlock(User user, EnumeratedEventState state, UserEventRole role, Boolean incoming) {
+    private EventWindowBlock generateBlock(User user, EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming) {
         List<UserEvent> userEvents = user.getUserEvents();
-        EventWindowBlock.Builder ewbBuilder = new EventWindowBlock.Builder(userEvents, state, role, incoming, accepted);
+        EventWindowBlock.Builder ewbBuilder = new EventWindowBlock.Builder(userEvents, state, role, incoming, ACCEPTED);
         return ewbBuilder.build();
     }
 
     private UserGameDetails generateUserGameDetails(UserEvent userEvent) {
-        UserDecision accept = userEventDecisionService.findOne(UserDecision.ACCEPTED);
-        UserDecision not_invited = userEventDecisionService.findOne(UserDecision.NOT_INVITED);
         Event event = userEvent.getEvent();
         UserGameDetails.Builder ugdBuilder = new UserGameDetails.Builder(event.getId());
 
         ugdBuilder.stateId(event.getEnumeratedEventState().getValue())
                 .organizerEmail(event.getUserOrganizer().getEmail())
-                .decision(userEvent.getDecision().getId())
-                .role(userEvent.getRole().getId())
+                .decision(userEvent.getDecision().getValue())
+                .role(userEvent.getRole())
                 .permission(userEvent.getUserPermission())
                 .willCome(event.getUsersEvent().stream()
-                        .filter(ue -> ue.getDecision().equals(accept))
+                        .filter(ue -> ue.getDecision().equals(ACCEPTED))
                         .count())
                 .playersLimit(event.getPlayersLimit())
                 .invited(event.getUsersEvent().stream()
-                        .filter(ue -> !ue.getDecision().equals(not_invited))
+                        .filter(ue -> !ue.getDecision().equals(NOT_INVITED))
                         .count());
 
         if (event.getGraphic() != null) {
             Graphic graphic = event.getGraphic();
             Orlik orlik = graphic.getOrlik();
-            //fill up builder
             ugdBuilder.startDate(graphic.getStartTime())
                     .endDate(graphic.getEndTime())
                     .orlikId(orlik.getId())

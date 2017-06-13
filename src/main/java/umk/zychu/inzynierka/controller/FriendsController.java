@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,30 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import umk.zychu.inzynierka.model.Friendship;
-import umk.zychu.inzynierka.model.FriendshipType;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.FriendshipService;
-import umk.zychu.inzynierka.service.UserNotificationsService;
-import umk.zychu.inzynierka.service.UserService;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
-import static umk.zychu.inzynierka.model.FriendshipType.*;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.*;
 
 @Controller
 @RequestMapping("/friends")
-public class FriendsController {
+public class FriendsController extends ServicesAwareController{
 
-	@Autowired
-	private FriendshipService friendshipService;
 
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private UserNotificationsService userNotificationsService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getFriends(final ModelMap model) {

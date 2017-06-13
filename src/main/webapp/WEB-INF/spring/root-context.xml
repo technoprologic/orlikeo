@@ -43,9 +43,9 @@
 
 
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="5" />
-		<property name="maxPoolSize" value="10" />
-		<property name="queueCapacity" value="25" />
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="20" />
+		<property name="queueCapacity" value="300" />
 	</bean>
 
 	<bean id="orliksTaskExecutor" class="umk.zychu.inzynierka.executors.OrliksTaskExecutor">

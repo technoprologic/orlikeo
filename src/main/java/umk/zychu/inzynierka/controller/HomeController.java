@@ -3,42 +3,22 @@ package umk.zychu.inzynierka.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
-import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.EventService;
-import umk.zychu.inzynierka.service.EventToApproveService;
-import umk.zychu.inzynierka.service.UserEventService;
-import umk.zychu.inzynierka.service.UserService;
 
-import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = { "/", "", "/home" })
-public class HomeController {
+public class HomeController extends ServicesAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
-		
-	@Autowired
-	EventService eventService;
-
-	@Autowired
-	UserEventService userEventService;
-
-	@Autowired
-	UserService userService;
-
-	@Autowired
-	EventToApproveService eventToApproveService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String home(ModelMap model) {

@@ -3,30 +3,28 @@ package umk.zychu.inzynierka.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import umk.zychu.inzynierka.controller.DTObeans.ChoosenOrlikBean;
 import umk.zychu.inzynierka.controller.DTObeans.JsonEventObject;
-import umk.zychu.inzynierka.model.*;
-import umk.zychu.inzynierka.service.OrlikService;
+import umk.zychu.inzynierka.model.Graphic;
+import umk.zychu.inzynierka.model.Orlik;
+import umk.zychu.inzynierka.model.User;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.THREATENED;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.THREATENED;
 
 @Controller
 @RequestMapping("/graphic")
-public class GraphicController {
+public class GraphicController extends ServicesAwareController{
 	
 	private static final Logger logger = LoggerFactory.getLogger(GraphicController.class);
-	
-	@Autowired
-	private OrlikService orlikService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String graphic(

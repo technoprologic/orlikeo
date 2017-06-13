@@ -1,6 +1,7 @@
 package umk.zychu.inzynierka.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import umk.zychu.inzynierka.model.enums.FriendshipType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 @Table(name = "friendship")
 public class Friendship extends BaseEntity implements Serializable {
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "requester_id", referencedColumnName = "id")
     @JsonIgnore
     private User requester;

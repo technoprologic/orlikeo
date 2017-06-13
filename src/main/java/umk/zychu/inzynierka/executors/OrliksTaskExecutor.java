@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
-import static umk.zychu.inzynierka.model.EnumeratedEventState.*;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
 
 @Component
 public class OrliksTaskExecutor extends BaseTaskExecutor{
@@ -27,7 +27,7 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
         this.taskExecutor = taskExecutor;
     }
 
-    @Scheduled(fixedDelay = FIXED_DELAY)
+    @Scheduled(fixedRate = 5000)
     public void printMessages() {
         Task task = new Task();
         try{

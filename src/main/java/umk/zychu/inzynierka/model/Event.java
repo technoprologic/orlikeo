@@ -3,12 +3,13 @@ package umk.zychu.inzynierka.model;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import umk.zychu.inzynierka.converter.EventStateConverter;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import static umk.zychu.inzynierka.model.EnumeratedEventState.IN_A_BASKET;
+import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_A_BASKET;
 
 @SuppressWarnings("serial")
 @Entity

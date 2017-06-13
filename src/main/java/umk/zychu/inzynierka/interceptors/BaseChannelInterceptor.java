@@ -44,8 +44,6 @@ public abstract class BaseChannelInterceptor extends ChannelInterceptorAdapter {
     protected EventToApproveService eventToApproveService;
     @Autowired
     protected UserService userService;
-    @Autowired
-    protected UserEventRoleService userEventRoleService;
 
     BaseChannelInterceptor() {
         super();

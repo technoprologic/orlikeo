@@ -19,7 +19,6 @@
 <c:set var="stateId" value="${ details.getStateId() }" />
 <c:set var="decisionId" value="${ details.getDecisionId() }" />
 <c:set var="organizerEmail" value="${ details.getOrganizerEmail() }" />
-<c:set var="roleId" value="${ details.getRoleId() }" />
 <c:set var="userPermission" value="${ details.getPermission() }" />
 <c:set var="city" value="${details.getCity() } " />
 <c:set var="address" value="${ details.getAddress() }" />

@@ -1,8 +1,12 @@
 package umk.zychu.inzynierka.model;
 
+import umk.zychu.inzynierka.converter.UserEventDecisionConverter;
+import umk.zychu.inzynierka.converter.UserEventRoleConverter;
+import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
+import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Comparator;
 
 @SuppressWarnings("serial")
 @Entity
@@ -10,23 +14,22 @@ import java.util.Comparator;
 public class UserEvent extends BaseEntity implements Serializable, Comparable<UserEvent> {
 	
 	@Column(name = "user_permission")
-	private boolean userPermission;
+	private Boolean userPermission;
 
 	@ManyToOne()
 	@JoinColumn(name = "inviter_id", referencedColumnName = "id")
 	private User inviter;
 
-	@ManyToOne
-	@JoinColumn(name = "user_role", referencedColumnName = "id")
-	private UserEventRole role;
+	@Column(name = "user_role")
+	@Convert(converter = UserEventRoleConverter.class)
+	private EnumeratedEventRole role;
 
+	@Column(name = "user_decision")
+	@Convert(converter = UserEventDecisionConverter.class)
+	private EnumeratedUserEventDecision decision;
 
 	@ManyToOne
-	@JoinColumn(name = "user_decision", referencedColumnName = "id")
-	private UserDecision decision;
-
-	@ManyToOne
-	@JoinColumn(name = "event_id", referencedColumnName = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "event_id", referencedColumnName = "id")
 	private Event event;
 
 	@ManyToOne
@@ -36,6 +39,7 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 	private UserEvent() {
 		super();
 	}
+
 	private UserEvent(Builder builder) {
 		super();
 		this.user = builder.user;
@@ -70,28 +74,28 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 		return this.user;
 	}
 	
-	public void setUserPermission(boolean permission){
+	public void setUserPermission(Boolean permission){
 		this.userPermission = permission;
 	}
 	
-	public boolean getUserPermission(){
+	public Boolean getUserPermission(){
 		return this.userPermission;
 	}
 	
-	public void setRole(UserEventRole role){
+	public void setRole(EnumeratedEventRole role){
 		this.role = role;
 	}
 	
-	public UserEventRole getRole(){
+	public EnumeratedEventRole getRole(){
 		return this.role;
 	}
 	
-	public void setDecision(UserDecision decision){
-		this.decision = decision;
-	}
-	
-	public UserDecision getDecision(){
+	public EnumeratedUserEventDecision getDecision(){
 		return this.decision;
+	}
+
+	public void setDecision(EnumeratedUserEventDecision decision) {
+		this.decision = decision;
 	}
 
 	@Override
@@ -125,16 +129,15 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 		private User inviter;
 		private Event event;
 		private boolean userPermission;
-		private UserEventRole role;
-		private UserDecision decision;
+		private EnumeratedEventRole role;
+		private EnumeratedUserEventDecision decision;
 
 		public Builder(
 				final User user,
 				final User inviter,
 				final Event event,
-				final UserEventRole eventRole,
-				final UserDecision userDecision
-				//Boolean permission,
+				final EnumeratedEventRole eventRole,
+				final EnumeratedUserEventDecision userDecision
 				) {
 			this.user = user;
 			this.inviter = inviter;

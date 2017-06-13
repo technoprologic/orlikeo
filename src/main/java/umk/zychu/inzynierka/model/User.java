@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
@@ -71,6 +70,10 @@ public class User extends BaseEntity
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<UserNotification> userNotifications;
 
+	@OneToOne
+	@JoinColumn(referencedColumnName = "id")
+	private Orlik orlikAnimator;
+
 	private User(){}
 
 	private User(final Builder builder) {
@@ -90,6 +93,7 @@ public class User extends BaseEntity
 		this.organizedEvents = new ArrayList<>();
 		this.userEvents = new ArrayList<>();
 		this.userNotifications = new ArrayList<>();
+		this.orlikAnimator = null;
 	}
 
 	public List<UserNotification> getUserNotifications() {
@@ -197,6 +201,14 @@ public class User extends BaseEntity
 		this.weight = weight;
 	}
 
+	public Orlik getOrlikAnimator() {
+		return orlikAnimator;
+	}
+
+	public void setOrlikAnimator(Orlik orlikAnimator) {
+		this.orlikAnimator = orlikAnimator;
+	}
+
 	public static class Builder{
 
 		private String email;
@@ -208,6 +220,7 @@ public class User extends BaseEntity
 		private Integer weight;
 		private Integer height;
 		private String foot;
+		private Orlik orlikAnimator;
 		public Builder(final String email, final String password){
 			this.email = email;
 			this.password = password;
@@ -218,6 +231,7 @@ public class User extends BaseEntity
 			this.weight = 0;
 			this.height = 0;
 			this.foot = "nie ustawiono";
+			this.orlikAnimator = null;
 		}
 
 		public void setName(final String name){
@@ -246,6 +260,10 @@ public class User extends BaseEntity
 
 		public void setFoot(final String foot){
 			this.foot = foot;
+		}
+
+		public void setOrlikAnimator(final Orlik orlikAnimator){
+			this.orlikAnimator = orlikAnimator;
 		}
 
 		public User build(){

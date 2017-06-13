@@ -16,7 +16,7 @@ public class HelpController {
 	}
 
 	@RequestMapping(value = "/terms", method = RequestMethod.GET)
-	public ModelAndView terms(ModelMap model) {
+	public ModelAndView terms() {
 		return new ModelAndView("terms");
 	}
 }

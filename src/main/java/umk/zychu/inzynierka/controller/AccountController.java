@@ -7,35 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import umk.zychu.inzynierka.controller.DTObeans.AccountForm;
 import umk.zychu.inzynierka.controller.DTObeans.ChangePasswordForm;
-import umk.zychu.inzynierka.controller.DTObeans.EditAccountForm;
 import umk.zychu.inzynierka.controller.validator.ChangingPasswordFormValidator;
 import umk.zychu.inzynierka.controller.validator.EditAccountFormValidator;
 import umk.zychu.inzynierka.model.User;
-import umk.zychu.inzynierka.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends ServicesAwareController{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ChangingPasswordFormValidator changingPasswordValidator;
@@ -44,7 +40,7 @@ public class AccountController {
     private EditAccountFormValidator editAccountFormValidator;
 
     @InitBinder("changePasswordForm")
-    private void initBinde4PasswordForm(WebDataBinder binder) {
+    private void initBinder4PasswordForm(WebDataBinder binder) {
         binder.setValidator(changingPasswordValidator);
     }
 
@@ -66,7 +62,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editAccount(final @ModelAttribute @Valid EditAccountForm form, final BindingResult result, final RedirectAttributes redirectAttributes) {
+    public String editAccount(final @ModelAttribute @Valid AccountForm form, final BindingResult result, final RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "editAccount";
         } else {
@@ -80,15 +76,7 @@ public class AccountController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editAccount(Map<String, Object> model, Principal principal) {
         User user = userService.getUser(principal.getName());
-        EditAccountForm form = new EditAccountForm(
-                user.getName(),
-                user.getSurname(),
-                user.getDateOfBirth(),
-                user.getPosition(),
-                user.getWeight(),
-                user.getHeight(),
-                user.getFoot()
-        );
+        AccountForm form = new AccountForm.Builder(user).build();
         model.put("editAccountForm", form);
         return "editAccount";
     }
