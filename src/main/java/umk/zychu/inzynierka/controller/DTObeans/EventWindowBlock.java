@@ -120,7 +120,7 @@ public class EventWindowBlock {
             this();
             List<UserEvent> filteredUserEvents = new ArrayList<>(userEvents);
 
-            filteredUserEvents.removeIf(ue -> !ue.getEvent().getEnumeratedEventState().equals(state));
+            filteredUserEvents.removeIf(ue -> !ue.getEvent().getEventState().equals(state));
             this.stateId = state.getValue();
 
             if (role != null) {

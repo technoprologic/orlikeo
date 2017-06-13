@@ -49,7 +49,7 @@ public class GraphicController extends ServicesAwareController{
 		List<JsonEventObject> graphicEntityList = new ArrayList<JsonEventObject>();
 		for (Graphic i : graphics) {
 			Graphic graphic = i;
-			if(graphic.getEvents().size() == 1 && (graphic.getEvents().iterator().next().getEnumeratedEventState().equals(EnumeratedEventState.READY_TO_ACCEPT) || graphic.getEvents().iterator().next().getEnumeratedEventState().equals(THREATENED))){
+			if(graphic.getEvents().size() == 1 && (graphic.getEvents().iterator().next().getEventState().equals(EnumeratedEventState.READY_TO_ACCEPT) || graphic.getEvents().iterator().next().getEventState().equals(THREATENED))){
 				graphic.setAvailable(false);
 				graphic.setTitle("Rezerwacja: " + graphic.getEvents().iterator().next().getUserOrganizer().getEmail());
 			}

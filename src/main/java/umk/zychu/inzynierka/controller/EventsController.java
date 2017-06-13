@@ -1,6 +1,5 @@
 package umk.zychu.inzynierka.controller;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import umk.zychu.inzynierka.controller.DTObeans.*;
 import umk.zychu.inzynierka.controller.handlers.Command;
 import umk.zychu.inzynierka.controller.handlers.CommandHandler;
 import umk.zychu.inzynierka.controller.handlers.RegisterEventCommand;
+import umk.zychu.inzynierka.controller.handlers.UpdateEventCommand;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.controller.validator.ChoosenOrlikBeanValidator;
 import umk.zychu.inzynierka.model.*;
@@ -40,11 +40,16 @@ public class EventsController extends ServicesAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
 
+	private static final String EVENT_FORM = "eventForm";
+
 	@Autowired
 	private ChoosenOrlikBeanValidator choosenOrlikBeanValidator;
 
 	@Autowired
 	private CommandHandler<Command, Event> registerEventCommandHandler;
+
+	@Autowired
+	private CommandHandler<Command, Optional<Event>> updateEventCommandHandler;
 
 	@InitBinder("chooseOrlikBean")
 	private void initBinder(WebDataBinder binder) {
@@ -63,7 +68,7 @@ public class EventsController extends ServicesAwareController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register( final @ModelAttribute("registerEventForm") RegisterEventForm form,
+	public String register( final @ModelAttribute(EVENT_FORM) EventForm form,
 			ModelMap model, final BindingResult result) {
 		if(result.hasErrors()) 
 			return "error";
@@ -119,7 +124,9 @@ public class EventsController extends ServicesAwareController {
 			return "redirect:/";
 		}
 		Event event = eventOpt.get();
-		if (eventService.isEventMember(event)) {
+		String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userService.getUser(userEmail);
+		if (user.isEventMember(event)) {
 			EnumeratedUserEventDecision dec;
 			if (Boolean.valueOf(decision)) {
 				dec = ACCEPTED;
@@ -222,7 +229,7 @@ public class EventsController extends ServicesAwareController {
 	}
 
 	@RequestMapping(value = "/edit/{eventId}", method = RequestMethod.GET)
-	public String editGet(final @PathVariable("eventId") Integer id,
+	public String getNewEventForm(final @PathVariable("eventId") Integer id,
 						  final ModelMap model,
 						  final Principal principal) {
 		User loggedUser = userService.getUser(principal.getName());
@@ -239,8 +246,8 @@ public class EventsController extends ServicesAwareController {
 			Event event = eventOpt.get();
 			UserGameDetails gameDetails = eventService.getGameDetails(event);
 			model.addAttribute("eventDetails", gameDetails);
-			RegisterEventForm form = eventService.generateRegisterEventForm(event);
-			model.addAttribute("editEventForm", form);
+			EventForm form = eventService.generateEventForm(event);
+			model.addAttribute(EVENT_FORM, form);
 			Graphic graphic = event.getGraphic();
 			Orlik orlik = graphic == null ? null : graphic.getOrlik();	
 			User animator = orlik == null ? null : orlik.getAnimator();
@@ -257,25 +264,27 @@ public class EventsController extends ServicesAwareController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String editPost(final @ModelAttribute("editEventForm") RegisterEventForm form,
+	public String updateEvent(final @ModelAttribute(EVENT_FORM) EventForm form,
 						   final BindingResult result,
 						   final Principal principal,
 						   final RedirectAttributes redirectAttr) {
 		if(result.hasErrors()){
 			return "redirect:/events";
-		}		
+		}
+		Optional<Event> optionalSavedEvent;
 		String username = principal.getName();
 		Optional<Event> event = eventService.getEventById(form.getEventId());
-		if(event.isPresent()){
+		if(event.isPresent()) {
 			Optional<UserEvent> userEvent = event.get().getUsersEvent().stream().filter(ev -> ev.getUser().getEmail().equals(username)).findFirst();
-			if(userEvent.isPresent() && userEvent.get().getUserPermission()){
-				eventService.updateEvent(form);
-			}else{
-				return "redirect:/events/show";
+			if (userEvent.isPresent() && userEvent.get().getUserPermission()) {
+				optionalSavedEvent = updateEventCommandHandler.apply(new UpdateEventCommand(form));
+				redirectAttr.addFlashAttribute("saved", "true");
+				if(optionalSavedEvent.isPresent()){
+					return "redirect:/events/edit/" + optionalSavedEvent.get().getId();
+				}
 			}
 		}
-		redirectAttr.addFlashAttribute("saved","true");
-		return "redirect:/events/edit/" + form.getEventId();
+		return "redirect:/events/show";
 	}
 	
 	@RequestMapping(value = "/reserve/{eventId}/{graphicId}", method = RequestMethod.GET)
@@ -287,7 +296,7 @@ public class EventsController extends ServicesAwareController {
 			if(ev.isPresent()){
 				Event event = ev.get();
 				event.setGraphic(graphicService.findOne(graphicId));
-				event.setEnumeratedEventState(IN_PROGRESS);
+				event.setEventState(IN_PROGRESS);
 
 				event.getUsersEvent().stream()
 					.filter(ue -> ue.getInviter() != null
@@ -312,21 +321,20 @@ public class EventsController extends ServicesAwareController {
 	@RequestMapping(value = "/reserve/{graphicId}", method = RequestMethod.GET)
 	public String reserve(final @PathVariable("graphicId") Integer graphicId,
 						  final Model model) {
-		User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
 		try {
 			Graphic graphic = graphicService.findOne(graphicId);
 			Orlik orlik = graphic.getOrlik();
 			List<User> userFriends = friendshipService.getFriends(null, ACCEPT);
-			List<RegisterEventUser> users = new ArrayList<>();
+			List<EventMember> users = new ArrayList<>();
 	
 			for(User u : userFriends){
-				RegisterEventUser e = new RegisterEventUser.Builder(u).build();
+				EventMember e = new EventMember.Builder(u).build();
 				users.add(e);
 			}			
-			RegisterEventForm form = new RegisterEventForm();
+			EventForm form = new EventForm(null, users);
 			form.setGraphicId(graphicId);
 			form.setEventFormMembers(users);
-			model.addAttribute("registerEventForm", form)
+			model.addAttribute(EVENT_FORM, form)
 			.addAttribute("orlik", orlik)
 			.addAttribute("event", graphic)
 			.addAttribute("reserve", true)

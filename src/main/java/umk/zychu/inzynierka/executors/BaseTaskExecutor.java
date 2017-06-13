@@ -42,7 +42,7 @@ public class BaseTaskExecutor {
      */
     protected void removeAllBrokenEvents() {
         eventService.findAll().stream()
-                .filter(e -> null == e.getGraphic() && !e.getEnumeratedEventState().equals(IN_A_BASKET))
+                .filter(e -> null == e.getGraphic() && !e.getEventState().equals(IN_A_BASKET))
                 .forEach(e -> eventService.delete(e));
     }
 
@@ -65,10 +65,10 @@ public class BaseTaskExecutor {
         // Remove graphics from events
         eventsReadyToPrepare.forEach(e -> {
             e.setGraphic(null);
-            if(e.getEnumeratedEventState().equals(READY_TO_ACCEPT)){
+            if(e.getEventState().equals(READY_TO_ACCEPT)){
                 eventToApproveService.removeEventFromWaitingForCheckByManager(e);
             }
-            e.setEnumeratedEventState(IN_A_BASKET);
+            e.setEventState(IN_A_BASKET);
             eventService.save(e);
         });
     }

@@ -4,8 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <c:url value="/events/register" var="registerEventUrl" />
 <c:url value="/events/create" var="createEventUrl" />
 <c:url value="/events/graphic" var="graphicEventUrl" />
@@ -27,8 +25,7 @@
 	</div>
 </div>
 
- 
-<form:form modelAttribute="registerEventForm" class="form" action="${registerEventUrl}" method="POST">
+<form:form modelAttribute="eventForm" class="form" action="${registerEventUrl}" method="POST">
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Zaproś znajomych</legend>
@@ -43,7 +40,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach items="${ registerEventForm.getEventFormMembers() }" var="friend" varStatus="i">                    
+			<c:forEach items="${ eventForm.getEventFormMembers() }" var="friend" varStatus="i">
                     <tr>
                     <td><form:checkbox path="eventFormMembers[${i.index}].invited" class="invite" value="true" /></td>
 					<td><form:checkbox path="eventFormMembers[${i.index}].allowed" class="allow" value="true" /></td>
@@ -57,7 +54,7 @@
 		</table>
 		
 		<div class="control-group .">
-		<form:hidden path="graphicId" value="${ registerEventForm.getGraphicId() }" />
+		<form:hidden path="graphicId" value="${ eventForm.getGraphicId() }" />
 			<div>
 				<input type="checkbox"  id="inviteAllStates">
 				<label for="inviteAllStates">Zaproś wszystkich</label>
@@ -93,10 +90,7 @@
 	</fieldset>
 </form:form>
 
-
-
 <script>
-
 $(document).ready(function() {
     $('#inviteAllStates').click(function(event) {  //on click
         if(this.checked) { // check select status
@@ -122,9 +116,5 @@ $(document).ready(function() {
     });
    
 });
-
-
 </script>
-
-
 <script src="<c:url value="/resources/mytheme/bootstrap/js/bootstrap-table.js" />" ></script>

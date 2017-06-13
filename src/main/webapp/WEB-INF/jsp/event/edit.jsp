@@ -86,7 +86,7 @@
 	} );
 </script>
 
-<form:form modelAttribute="editEventForm" class="form" action="${editEventUrl}" method="POST">
+<form:form modelAttribute="eventForm" class="form" action="${editEventUrl}" method="POST">
 	<fieldset>
 		<!-- Form Name -->
 		<legend>Lista chętnych do wzięcia udziału</legend>
@@ -104,7 +104,7 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach items="${ editEventForm.getEventFormMembers() }" var="friend" varStatus="i">                    
+			<c:forEach items="${ eventForm.getEventFormMembers() }" var="friend" varStatus="i">
                     <tr>
                     <c:set var="friendEmail" value="${friend.getEmail()}" />
                     <c:set var="inviterEmail" value="${friend.getInviter()}" />
@@ -119,7 +119,7 @@
                     				</td>
                     				<td>
                     					<i style="color: gold; margin-right:20px" class="glyphicon glyphicon-star"></i>
-                    					<form:hidden  path="eventFormMembers[${i.index}].allowed" class="allow" />
+                    					<form:hidden path="eventFormMembers[${i.index}].allowed" class="allow" />
                     				</td>
                     			</c:when>
                     			<c:otherwise>
@@ -133,7 +133,7 @@
                     			<c:when test="${ friendEmail eq organizerEmail }">
                     				<td><i style="color: gold; margin-right:20px" class="glyphicon glyphicon-star"></i>
                     					<form:hidden path="eventFormMembers[${i.index}].invited"  value="true"  />
-                    					<form:hidden  path="eventFormMembers[${i.index}].allowed"  value="true" />${organizerEmail} 
+                    					<form:hidden  path="eventFormMembers[${i.index}].allowed"  value="true" />${organizerEmail}
                     				</td>
                     			</c:when>
                     			<c:when test="${ inviterEmail eq organizerEmail }">
@@ -146,7 +146,7 @@
 		                    					<i style="color: gold" class="glyphicon glyphicon-random"></i>
 		                    				</c:otherwise>
 		                    			</c:choose>
-		                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  /><span style="margin-left:20px">${friendEmail}</span> 
+		                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  /><span style="margin-left:20px">${friendEmail}</span>
 		                    		</td>
 		                    	</c:when>
 		                    	<c:when test="${ not empty inviterEmail and inviterEmail ne editingUser }">
@@ -163,12 +163,12 @@
                     		</c:choose>
                     	</c:otherwise>
                     </c:choose>
-					<td><form:hidden path="eventFormMembers[${i.index}].email" value="${ friendEmail }" /> 
+					<td><form:hidden path="eventFormMembers[${i.index}].email" value="${ friendEmail }" />
 					<c:choose >
 						<c:when test="${ not empty inviterEmail }">
 							<c:choose>
 								<c:when test="${ organizerEmail eq inviterEmail }">
-									<i style="color: gold;" class="glyphicon glyphicon-star"></i>
+									<i style="color: gold;" class="glyphicon glyphicon-star"></i> ${organizerEmail} (organizator)
 								</c:when>
 								<c:otherwise>
 									${ inviterEmail }

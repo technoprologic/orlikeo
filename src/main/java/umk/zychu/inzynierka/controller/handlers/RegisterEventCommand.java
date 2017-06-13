@@ -1,18 +1,18 @@
 package umk.zychu.inzynierka.controller.handlers;
 
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
+import umk.zychu.inzynierka.controller.DTObeans.EventForm;
 
 
-public class RegisterEventCommand implements Command<RegisterEventForm> {
+public class RegisterEventCommand implements Command<EventForm> {
 
-    private RegisterEventForm form;
+    private EventForm form;
 
-    public RegisterEventCommand(final RegisterEventForm form){
+    public RegisterEventCommand(final EventForm form){
         super();
         this.form = form;
     }
 
-    public RegisterEventForm getForm(){
+    public EventForm getForm(){
         return this.form;
     };
 }

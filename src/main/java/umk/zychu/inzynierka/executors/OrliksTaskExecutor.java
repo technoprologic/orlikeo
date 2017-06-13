@@ -67,10 +67,10 @@ public class OrliksTaskExecutor extends BaseTaskExecutor{
             Map<Boolean, List<Graphic>> map = halfHourToStartGraphics.stream()
                     .collect(partitioningBy(g -> g.getStartTime().getTime() - NOW < QUARTER_OF_AN_HOUR));
 
-            manageByEventsState(map.get(Boolean.FALSE), event -> event.getEnumeratedEventState().equals(IN_PROGRESS));
-            manageByEventsState(map.get(Boolean.TRUE), event -> event.getEnumeratedEventState().equals(IN_PROGRESS)
-                    || event.getEnumeratedEventState().equals(READY_TO_ACCEPT)
-                    || event.getEnumeratedEventState().equals(THREATENED));
+            manageByEventsState(map.get(Boolean.FALSE), event -> event.getEventState().equals(IN_PROGRESS));
+            manageByEventsState(map.get(Boolean.TRUE), event -> event.getEventState().equals(IN_PROGRESS)
+                    || event.getEventState().equals(READY_TO_ACCEPT)
+                    || event.getEventState().equals(THREATENED));
 
             clearEventsGraphicsEnded30MinutesAgo();
             clear45minutesPastGraphics();

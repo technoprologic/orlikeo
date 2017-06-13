@@ -5,23 +5,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umk.zychu.inzynierka.controller.DTObeans.*;
+import umk.zychu.inzynierka.controller.DTObeans.EventForm;
+import umk.zychu.inzynierka.controller.DTObeans.EventMember;
+import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
+import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.*;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventState;
-import umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision;
 import umk.zychu.inzynierka.repository.EventDaoRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static umk.zychu.inzynierka.converter.EventStateConverter.convertToEnum;
-import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.GUEST;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventRole.ORGANIZER;
 import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.*;
 import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.*;
+import static umk.zychu.inzynierka.model.enums.FriendshipType.ACCEPT;
 
 @Service
 @Transactional
@@ -58,10 +60,10 @@ public class EventServiceImp implements EventService {
         Graphic graphic = event.getGraphic();
         Orlik orlik = graphic.getOrlik();
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (orlik.getAnimator() != null && orlik.getAnimator().equals(user) && event.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
+        if (orlik.getAnimator() != null && orlik.getAnimator().equals(user) && event.getEventState().equals(READY_TO_ACCEPT)) {
             changeConcurrentEvents(event);
             eventToApproveService.removeEventFromWaitingForCheckByManager(event);
-            event.setEnumeratedEventState(APPROVED);
+            event.setEventState(APPROVED);
             save(event);
             userNotificationsService.eventWonRaceForGraphic(event);
         }
@@ -95,10 +97,10 @@ public class EventServiceImp implements EventService {
                             userEventService.save(o);
                         });
                 e.setGraphic(null);
-                if (e.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
+                if (e.getEventState().equals(READY_TO_ACCEPT)) {
                     eventToApproveService.removeEventFromWaitingForCheckByManager(e);
                 }
-                e.setEnumeratedEventState(IN_A_BASKET);
+                e.setEventState(IN_A_BASKET);
                 save(e);
             }
         }
@@ -116,14 +118,14 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public RegisterEventForm generateRegisterEventForm(Event event) {
+    public EventForm generateEventForm(Event event) {
         List<UserEvent> usersEvents = event.getUsersEvent();
         List<User> friends = friendshipService.getFriends(null, ACCEPT);
-        List<RegisterEventUser> users = new ArrayList<>();
+        List<EventMember> users = new ArrayList<>();
 
         for (UserEvent userEvent : usersEvents) {
             String inviterEmail = userEvent.getInviter() != null ? userEvent.getInviter().getEmail() : null;
-            RegisterEventUser e = new RegisterEventUser.Builder(userEvent.getUser())
+            EventMember e = new EventMember.Builder(userEvent.getUser())
                     .setAllowed(userEvent.getUserPermission())
                     .setInviter(inviterEmail)
                     .setInvited(!userEvent.getDecision().equals(NOT_INVITED))
@@ -141,13 +143,13 @@ public class EventServiceImp implements EventService {
                 }
             }
             if (!isInvited) {
-                RegisterEventUser e1 = new RegisterEventUser.Builder(friend)
+                EventMember e1 = new EventMember.Builder(friend)
                         .setInviter(inviterEmail)
                         .build();
                 users.add(e1);
             }
         }
-        return new RegisterEventForm(event.getId(), users);
+        return new EventForm(event.getId(), users);
     }
 
     @Override
@@ -240,7 +242,7 @@ public class EventServiceImp implements EventService {
         if (state != null) {
             userEvents = userEvents
                     .stream()
-                    .filter(ue -> ue.getEvent().getEnumeratedEventState()
+                    .filter(ue -> ue.getEvent().getEventState()
                             .equals(state))
                     .collect(Collectors.toList());
         }
@@ -276,48 +278,8 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public Boolean isEventMember(Event event) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.getUser(userEmail);
-        Optional<UserEvent> userEventOpt = user.getUserEvents().stream()
-                .filter(ue -> ue.getEvent().equals(event))
-                .findFirst();
-
-        if (userEventOpt.isPresent()) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public Event save(Event event) {
-        return eventDAO.saveAndFlush(event);
-    }
-
-    @Override
-    public void updateEvent(RegisterEventForm form) {
-        User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        Event event = eventDAO.findOne(form.getEventId());
-        // remove userOrganizer && editing user
-        form.getEventFormMembers()
-                .removeIf(reu -> reu.getEmail().equals(event.getUserOrganizer().getEmail()) || reu.getEmail().equals(user.getEmail()));
-        // remove all who's !invited && !has_rights &&  !have userEvent (wasn't invited & and wasn't allowed/had_rights - status quo )
-        form.getEventFormMembers()
-                .removeIf(reu -> !reu.getAllowed()
-                        && !reu.getInvited()
-                        && !userEventService.findOne(event, userService.getUser(reu.getEmail()))
-                        .isPresent());
-        if (!event.getUserOrganizer().equals(user)) {
-            //remove all who wasn't invited
-            form.getEventFormMembers()
-                    .removeIf(reu -> userEventService.findOne(event, userService.getUser(reu.getEmail())).isPresent()
-                            && !userEventService.findOne(event, userService.getUser(reu.getEmail())).get().getInviter().equals(user));
-        } else {
-            event.setPlayersLimit(form.getUsersLimit());
-            save(event);
-        }
-        updateUsersEvents(form.getEventFormMembers(), event);
-        userEventService.changeEventStateIfRequired(event);
+        return eventDAO.save(event);
     }
 
     @Override
@@ -329,7 +291,7 @@ public class EventServiceImp implements EventService {
     public void delete(Integer id) throws IllegalArgumentException {
         if (eventDAO.exists(id)) {
             Event event = eventDAO.findOne(id);
-            if (event.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
+            if (event.getEventState().equals(READY_TO_ACCEPT)) {
                 eventToApproveService.removeEventFromWaitingForCheckByManager(event);
             }
             userNotificationsService.deleteAllOnEvent(event);
@@ -338,93 +300,6 @@ public class EventServiceImp implements EventService {
                     .forEach(ue -> userEventService.delete(ue));
             eventDAO.delete(event);
         }
-    }
-
-    private void updateUsersEvents(List<RegisterEventUser> eventFormMembers, Event event) {
-        User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        // are still event members
-        eventFormMembers
-                .stream()
-                .filter(reu -> (reu.getAllowed() || reu.getInvited()) && userEventService.findOne(event, userService.getUser(reu.getEmail()))
-                        .isPresent())
-                .forEach(
-                        reu -> {
-                            User u = userService.getUser(reu.getEmail());
-                            Optional<UserEvent> ueOpt = userEventService
-                                    .findOne(event, u);
-                            if (ueOpt.isPresent()) {
-                                UserEvent ue = ueOpt.get();
-                                ue.setInviter(user);
-
-                                //permission status changed
-                                if (!reu.getAllowed().equals(ue.getUserPermission())) {
-                                    ue.setUserPermission(reu.getAllowed());
-                                    if(reu.getAllowed()) {
-                                        userNotificationsService.notifyAboutInvitingPermission(ue);
-                                    }else {
-                                        userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
-                                    }
-                                }
-
-                                //invitation status changed to invited
-                                if (ue.getDecision().equals(NOT_INVITED) && reu.getInvited()) {
-                                        ue.setDecision(INVITED);
-                                        userNotificationsService.notifyAboutEventInvitation(ue);
-                                }
-
-                                //invitation status changed to NOT invited
-                                if (!ue.getDecision().equals(NOT_INVITED) && !reu.getInvited()) {
-                                    ue.setDecision(NOT_INVITED);
-                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
-                                }
-                                userEventService.save(ue);
-                            }
-                        });
-
-        //are new to the event
-        eventFormMembers.stream()
-                .filter(reu -> (reu.getAllowed() || reu.getInvited())
-                        && !userEventService.findOne(event, userService.getUser(reu.getEmail()))
-                        .isPresent())
-                .forEach(reu -> {
-                    User u = userService.getUser(reu.getEmail());
-                    EnumeratedUserEventDecision decision = reu.getInvited() ? INVITED : NOT_INVITED;
-                    Boolean permission = reu.getAllowed();
-                    UserEvent ue = new UserEvent.Builder(u, user, event, GUEST, decision)
-                            .setPermission(permission)
-                            .build();
-                    userEventService.save(ue);
-                    if(permission){
-                        userNotificationsService.notifyAboutInvitingPermission(ue);
-                    }
-                    if(reu.getInvited()){
-                        userNotificationsService.notifyAboutEventInvitation(ue);
-                    }
-                });
-        // are no longer event members
-        eventFormMembers
-                .stream()
-                .filter(reu -> !reu.getAllowed() && !reu.getInvited())
-                .forEach(
-                        reu -> {
-                            User u = userService.getUser(reu.getEmail());
-                            Optional<UserEvent> ueOpt = userEventService
-                                    .findOne(event, u);
-                            if (ueOpt.isPresent()) {
-                                UserEvent ue = ueOpt.get();
-                                //user was invited
-                                if(!ue.getDecision().equals(NOT_INVITED)){
-                                    userNotificationsService.notifyAboutEventInvitationRevoke(ue);
-                                }
-                                if(ue.getUserPermission()){
-                                    userNotificationsService.notifyAboutInvitingPermissionRevoke(ue);
-                                }
-                                event.getUsersEvent().remove(ue);
-                                save(event);
-                            }
-                        });
-        eventDAO.findOne(event.getId());
     }
 
     private EventWindowBlock getBlock(EnumeratedEventState state, EnumeratedEventRole role, Boolean incoming) {
@@ -448,7 +323,7 @@ public class EventServiceImp implements EventService {
         Event event = userEvent.getEvent();
         UserGameDetails.Builder ugdBuilder = new UserGameDetails.Builder(event.getId());
 
-        ugdBuilder.stateId(event.getEnumeratedEventState().getValue())
+        ugdBuilder.stateId(event.getEventState().getValue())
                 .organizerEmail(event.getUserOrganizer().getEmail())
                 .decision(userEvent.getDecision().getValue())
                 .role(userEvent.getRole())

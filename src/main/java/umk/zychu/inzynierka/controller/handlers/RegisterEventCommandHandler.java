@@ -4,8 +4,8 @@ package umk.zychu.inzynierka.controller.handlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventUser;
+import umk.zychu.inzynierka.controller.DTObeans.EventForm;
+import umk.zychu.inzynierka.controller.DTObeans.EventMember;
 import umk.zychu.inzynierka.model.Event;
 import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.User;
@@ -26,7 +26,7 @@ import static umk.zychu.inzynierka.model.enums.EnumeratedEventState.IN_PROGRESS;
 import static umk.zychu.inzynierka.model.enums.EnumeratedUserEventDecision.*;
 
 @Component
-public class RegisterEventCommandHandler implements CommandHandler<Command<RegisterEventForm>, Event>{
+public class RegisterEventCommandHandler implements CommandHandler<Command<EventForm>, Event>{
 
     @Autowired
     private UserService userService;
@@ -41,9 +41,9 @@ public class RegisterEventCommandHandler implements CommandHandler<Command<Regis
     private UserNotificationsService userNotificationsService;
 
     @Override
-    public Event apply(Command<RegisterEventForm> eventCommand) {
+    public Event apply(Command<EventForm> eventCommand) {
         try {
-            RegisterEventForm form = eventCommand.getForm();
+            EventForm form = eventCommand.getForm();
             return registerNewEvent(form);
 
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class RegisterEventCommandHandler implements CommandHandler<Command<Regis
         }
     }
 
-    private Event registerNewEvent(final RegisterEventForm form) {
+    private Event registerNewEvent(final EventForm form) {
         User userOrganizer = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
         Graphic graphic = graphicService.findOne(form.getGraphicId());
         Event event = new Event.Builder(userOrganizer)
@@ -71,10 +71,10 @@ public class RegisterEventCommandHandler implements CommandHandler<Command<Regis
         return event;
     }
 
-    private List<UserEvent> createAllNotAsOrganizerUsersEvents(final RegisterEventForm form, Event event) {
+    private List<UserEvent> createAllNotAsOrganizerUsersEvents(final EventForm form, Event event) {
         LinkedList<UserEvent> usersEvents = new LinkedList<>();
-        ArrayList<RegisterEventUser> regUsersList = form.getEventFormMembers() != null ? (ArrayList<RegisterEventUser>) form.getEventFormMembers() : new ArrayList<>();
-        for (RegisterEventUser regEventUser : regUsersList) {
+        ArrayList<EventMember> regUsersList = form.getEventFormMembers() != null ? (ArrayList<EventMember>) form.getEventFormMembers() : new ArrayList<>();
+        for (EventMember regEventUser : regUsersList) {
             if (regEventUser.getAllowed() || regEventUser.getInvited()) {
                 User userTarget = userService.getUser(regEventUser.getEmail());
                 EnumeratedUserEventDecision decision = (regEventUser.getInvited()) ? INVITED : NOT_INVITED;

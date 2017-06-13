@@ -36,7 +36,7 @@ public class Event extends BaseEntity {
 
     @Column(name = "state_id")
     @Convert(converter = EventStateConverter.class)
-    private EnumeratedEventState enumeratedEventState;
+    private EnumeratedEventState eventState;
 
     private Event() {
         super();
@@ -48,7 +48,7 @@ public class Event extends BaseEntity {
         this.graphic = builder.graphic;
         this.playersLimit = builder.playersLimit;
         this.creationDate = new Date();
-        this.enumeratedEventState = builder.enumeratedEventState;
+        this.eventState = builder.enumeratedEventState;
     }
 
     public Integer getPlayersLimit() {
@@ -87,12 +87,12 @@ public class Event extends BaseEntity {
         this.userOrganizer = userOrganizer;
     }
 
-    public EnumeratedEventState getEnumeratedEventState() {
-        return enumeratedEventState;
+    public EnumeratedEventState getEventState() {
+        return eventState;
     }
 
-    public void setEnumeratedEventState(EnumeratedEventState enumeratedEventState) {
-        this.enumeratedEventState = enumeratedEventState;
+    public void setEventState(EnumeratedEventState eventState) {
+        this.eventState = eventState;
     }
 
     public static class Builder {

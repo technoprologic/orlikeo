@@ -1,7 +1,7 @@
 package umk.zychu.inzynierka.service;
 
+import umk.zychu.inzynierka.controller.DTObeans.EventForm;
 import umk.zychu.inzynierka.controller.DTObeans.EventWindowBlock;
-import umk.zychu.inzynierka.controller.DTObeans.RegisterEventForm;
 import umk.zychu.inzynierka.controller.DTObeans.UserGameDetails;
 import umk.zychu.inzynierka.controller.util.EventType;
 import umk.zychu.inzynierka.model.Event;
@@ -24,7 +24,7 @@ public interface EventService {
 
     List<Event> findAll();
 
-    RegisterEventForm generateRegisterEventForm(Event event);
+    EventForm generateEventForm(Event event);
 
     List<UserGameDetails> generateUserGameDetailsList(List<UserEvent> userEvents);
 
@@ -40,11 +40,7 @@ public interface EventService {
 
     List<UserGameDetails> getGamesDetails(String username, EventType type, Integer stateId);
 
-    Boolean isEventMember(Event event);
-
     Event save(Event event);
-
-    void updateEvent(RegisterEventForm form);
 
     void delete(Event e);
 

@@ -94,7 +94,7 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void eventStateChanged(Event event) {
         String stateName = "";
-        switch (event.getEnumeratedEventState()) {
+        switch (event.getEventState()) {
             case IN_A_BASKET:
                 stateName = "W koszu";
                 break;

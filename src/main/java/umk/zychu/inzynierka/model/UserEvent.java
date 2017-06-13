@@ -123,7 +123,6 @@ public class UserEvent extends BaseEntity implements Serializable, Comparable<Us
 			return 0;
 	}
 
-
 	public static class Builder{
 		private User user;
 		private User inviter;

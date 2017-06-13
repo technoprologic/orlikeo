@@ -124,12 +124,12 @@ public class EventsManager extends DHXEventsManager {
 					.stream()
 					.forEach(
 							e -> {
-								if (e.getEnumeratedEventState().equals(READY_TO_ACCEPT)) {
+								if (e.getEventState().equals(READY_TO_ACCEPT)) {
 									services.getEventToApproveService()
 											.removeEventFromWaitingForCheckByManager(
 													e);
 								}
-								e.setEnumeratedEventState(IN_A_BASKET);
+								e.setEventState(IN_A_BASKET);
 								e.setGraphic(null);
 								services.getEventService().save(e);
 							});

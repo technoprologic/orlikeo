@@ -55,27 +55,27 @@ public class UserEventServiceImp implements UserEventService {
 	
 	@Override
 	public void changeEventStateIfRequired(Event event) {
-		EnumeratedEventState beforeState = event.getEnumeratedEventState();
+		EnumeratedEventState beforeState = event.getEventState();
 		long counter = event.getUsersEvent().stream()
 				.filter(ue -> ue.getDecision().equals(ACCEPTED))
 				.count();
-		if(event.getEnumeratedEventState().equals(EnumeratedEventState.IN_PROGRESS) && counter >= changeStatusBarrier) {
-			event.setEnumeratedEventState(READY_TO_ACCEPT);
+		if(event.getEventState().equals(EnumeratedEventState.IN_PROGRESS) && counter >= changeStatusBarrier) {
+			event.setEventState(READY_TO_ACCEPT);
 			eventToApproveService.addEventToCheckByManager(event);
-		}else if(event.getEnumeratedEventState().equals(READY_TO_ACCEPT) && counter < changeStatusBarrier){
-			event.setEnumeratedEventState(IN_PROGRESS);
+		}else if(event.getEventState().equals(READY_TO_ACCEPT) && counter < changeStatusBarrier){
+			event.setEventState(IN_PROGRESS);
 			Optional<EventToApprove> optEventToApprove = eventToApproveService.findByEvent(event);
 			if(optEventToApprove.isPresent()){
 				EventToApprove evenToAprrove = optEventToApprove.get();
 				eventToApproveService.delete(evenToAprrove);
 			}
-		}else if(event.getEnumeratedEventState().equals(APPROVED) && counter < changeStatusBarrier){
-			event.setEnumeratedEventState(THREATENED);
+		}else if(event.getEventState().equals(APPROVED) && counter < changeStatusBarrier){
+			event.setEventState(THREATENED);
 			//TODO set time to find player, if not change state to IN_PROGRESS
-		}else if (event.getEnumeratedEventState().equals(THREATENED) && counter >= changeStatusBarrier){
-			event.setEnumeratedEventState(APPROVED);
+		}else if (event.getEventState().equals(THREATENED) && counter >= changeStatusBarrier){
+			event.setEventState(APPROVED);
 		}
-		if(!beforeState.equals(event.getEnumeratedEventState())){
+		if(!beforeState.equals(event.getEventState())){
 			userNotificationsService.eventStateChanged(event);
 		}
 		eventService.save(event);

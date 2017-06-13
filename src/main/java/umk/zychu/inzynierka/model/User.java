@@ -209,6 +209,12 @@ public class User extends BaseEntity
 		this.orlikAnimator = orlikAnimator;
 	}
 
+	public boolean isEventMember(Event event) {
+		return this.userEvents.stream()
+				.filter(ue -> ue.getEvent().equals(event))
+				.count() > 0;
+	}
+
 	public static class Builder{
 
 		private String email;
