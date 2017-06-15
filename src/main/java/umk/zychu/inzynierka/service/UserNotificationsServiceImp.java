@@ -283,13 +283,17 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void notifyAboutInvitingPermission(UserEvent ue) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        Graphic graphic = ue.getEvent().getGraphic();
-        Orlik orlik = graphic.getOrlik();
+        String postfix = "bez orlika.";
+        if (null != ue.getEvent().getGraphic()){
+            Graphic graphic = ue.getEvent().getGraphic();
+            Orlik orlik = graphic.getOrlik();
+            postfix = orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime();
+        }
         UserNotification notification = new UserNotification.Builder(ue.getUser(),
                 "Otrzymałeś prawo zapraszania",
                 "Użytkownik " + user.getEmail()
-                        + " nadał Ci prawo zapraszania na wydarzenie: "
-                        + orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime())
+                        + " nadał Ci prawo zapraszania na wydarzenie : "
+                        + postfix)
                 .build();
         save(notification);
     }
@@ -297,13 +301,17 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void notifyAboutInvitingPermissionRevoke(UserEvent ue) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        Graphic graphic = ue.getEvent().getGraphic();
-        Orlik orlik = graphic.getOrlik();
+        String postfix = "bez orlika.";
+        if (null != ue.getEvent().getGraphic()){
+            Graphic graphic = ue.getEvent().getGraphic();
+            Orlik orlik = graphic.getOrlik();
+            postfix = orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime();
+        }
         UserNotification notification = new UserNotification.Builder(ue.getUser(),
                 "Utraciłeś prawo zapraszania",
                 "Użytkownik " + user.getEmail()
                         + " odebrał Ci prawo zapraszania na wydarzenie: "
-                        + orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime())
+                        + postfix)
                 .build();
         save(notification);
     }
@@ -311,13 +319,17 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void notifyAboutEventInvitation(UserEvent ue) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        Graphic graphic = ue.getEvent().getGraphic();
-        Orlik orlik = graphic.getOrlik();
+        String postfix = "bez orlika.";
+        if (null != ue.getEvent().getGraphic()){
+            Graphic graphic = ue.getEvent().getGraphic();
+            Orlik orlik = graphic.getOrlik();
+            postfix = orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime();
+        }
         UserNotification notification = new UserNotification.Builder(ue.getUser(),
                 "Zaproszenie na wydarzenie",
                 "Użytkownik " + user.getEmail()
                         + " zaprosił Cię na wydarzenie: "
-                        + orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime())
+                        + postfix)
                 .build();
         save(notification);
     }
@@ -325,13 +337,17 @@ public class UserNotificationsServiceImp implements UserNotificationsService {
     @Override
     public void notifyAboutEventInvitationRevoke(UserEvent ue) {
         User user = userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        Graphic graphic = ue.getEvent().getGraphic();
-        Orlik orlik = graphic.getOrlik();
+        String postfix = "bez orlika.";
+        if (null != ue.getEvent().getGraphic()){
+            Graphic graphic = ue.getEvent().getGraphic();
+            Orlik orlik = graphic.getOrlik();
+            postfix = orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime();
+        }
         UserNotification notification = new UserNotification.Builder(ue.getUser(),
                 "Cofnięto zaproszenie",
                 "Użytkownik " + user.getEmail()
                         + " cofnął dla Ciebie zaproszenie na wydarzenie: "
-                        + orlik.getAddress() + ", godz. " + graphic.getStartTime() + " - " + graphic.getEndTime())
+                        + postfix)
                 .build();
         save(notification);
     }

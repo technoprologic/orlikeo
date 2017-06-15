@@ -149,8 +149,8 @@
 		                    			<form:hidden  path="eventFormMembers[${i.index}].allowed"  /><span style="margin-left:20px">${friendEmail}</span>
 		                    		</td>
 		                    	</c:when>
-		                    	<c:when test="${ not empty inviterEmail and inviterEmail ne editingUser }">
-		                    		<td>
+		                    	<c:when test="${ not empty inviterEmail and (inviterEmail ne editingUser) }">
+		                    		<td>asa
 		                    			<i style="color: silver; margin-right:20px" class="glyphicon glyphicon-check"></i>${friendEmail}
 		                    			<form:hidden path="eventFormMembers[${i.index}].invited"  class="invite" />
                     					<form:hidden  path="eventFormMembers[${i.index}].allowed" class="allow" /></td>

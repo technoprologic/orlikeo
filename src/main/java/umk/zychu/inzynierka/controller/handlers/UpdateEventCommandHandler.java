@@ -57,14 +57,14 @@ public class UpdateEventCommandHandler implements CommandHandler<Command<EventFo
         event = eventService.findOne(form.getEventId());
         if(null == event) return empty;
         editedAsOrganizer = event.getUserOrganizer().equals(userService.getUser(SecurityContextHolder.getContext().getAuthentication().getName()));
-        newRostersEmails = form.getEventFormMembers().stream().map(fem -> fem.getEmail()).collect(Collectors.toList());
-        oldRostersEmails = event.getUsersEvent().stream().map(ue -> ue.getUser().getEmail()).collect(Collectors.toList());
         consumeForm(form);
         return Optional.of(eventService.save(event));
     }
 
     private void consumeForm(EventForm form) {
         form.removeUnnecessaryEventMembers();
+        oldRostersEmails = event.getUsersEvent().stream().map(ue -> ue.getUser().getEmail()).collect(Collectors.toList());
+        newRostersEmails = form.getEventFormMembers().stream().map(fem -> fem.getEmail()).collect(Collectors.toList());
         //handle who's no longer event member
         removeNonActualUserEvents();
         //Handle old members
@@ -144,7 +144,7 @@ public class UpdateEventCommandHandler implements CommandHandler<Command<EventFo
                 userNotificationsService.notifyAboutEventInvitationRevoke(updatedUserEvent);
             }
         }
-        return Optional.of(updatedUserEvent);
+        return Optional.of(userEventService.save(updatedUserEvent));
     }
 
     private UserEvent generateNewInstance(final EventMember eventMember) {
@@ -154,6 +154,7 @@ public class UpdateEventCommandHandler implements CommandHandler<Command<EventFo
                 event,
                 eventMember.getAllowed() ? GUEST : ORGANIZER,
                 eventMember.getInvited() ? INVITED : NOT_INVITED)
+                .setPermission(eventMember.getAllowed())
                 .build();
     }
 }
