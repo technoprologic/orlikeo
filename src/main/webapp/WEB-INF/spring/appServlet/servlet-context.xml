@@ -26,6 +26,8 @@
 
 	<!--<aop:aspectj-autoproxy />-->
 
+	<!--<context:property-placeholder location="classpath*:jbossews.properties"/>-->
+	<context:property-placeholder location="file:${catalina.base}/conf/jbossews.properties" />
 
 	<!--<mvc:annotation-driven  ignore-default-model-on-redirect="true"/>-->
 
