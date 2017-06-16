@@ -3,7 +3,6 @@ package umk.zychu.inzynierka.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,9 +20,6 @@ public class HomeController extends ServicesAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
 
-	@Value("${my.var}")
-	public String myVar;
-
 	@RequestMapping(method = RequestMethod.GET)
 	public String home(ModelMap model) {
 		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
@@ -31,7 +27,6 @@ public class HomeController extends ServicesAwareController {
 		if(authorities.stream().filter(a -> a.getAuthority().contains("ROLE_ANIMATOR")).count() > 0) {
 			return "redirect:/pane";
 		}
-		String dsd = myVar;
 		List<EventWindowBlock> eventWindowBlockList = eventService.getEventWindowBlocks(null);
 		model.addAttribute("eventWindowsList", eventWindowBlockList );
 		model.addAttribute("page", "all");

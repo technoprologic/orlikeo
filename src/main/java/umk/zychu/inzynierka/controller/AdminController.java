@@ -35,7 +35,6 @@ public class AdminController extends ServicesAwareController {
         return "orliks";
     }
 
-
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String initForm(@RequestParam(value = "orlikId", required = false) Integer orlikId,
                            @RequestParam(value = "confirm", required=false) Boolean saved,
@@ -55,7 +54,6 @@ public class AdminController extends ServicesAwareController {
                 model.addAttribute("orlikForm", new OrlikForm.Builder(orlik).build());
             }
         }
-
         return "orlikEdit";
     }
 
