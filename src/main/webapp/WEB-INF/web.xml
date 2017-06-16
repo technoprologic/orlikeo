@@ -8,7 +8,7 @@
     <!-- ========================================================== -->
     <!-- General -->
     <!-- ========================================================== -->
-    <display-name>Orlikeo</display-name>
+    <display-name>${application.name}</display-name>
     <description>Aplikacja wspomagająca zarządzanie orlikami</description>
 
     <!-- ========================================================== -->

@@ -20,16 +20,15 @@
 
 <!-- 	TE PROPERTASY SA DOSTEPNE JEDYNIE DLA ROOT CONTEXT 
 	<context:property-placeholder location="classpath:application.properties"/> -->
-	
+
+	<!--<context:property-placeholder location="classpath*:jbossews.properties"/>-->
+	<context:property-placeholder location="file:${catalina.base}/conf/jbossews.properties" />
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<import resource="datasource-config.xml" />
 	<!--<import resource="websocket-context.xml" />-->
 	<import resource="spring-security.xml" />
 	<import resource="tiles-context.xml" />
-
-
-	<!--	<import resource="rabbit-context.xml" />-->
-	<!--<import resource="appServlet/aop-context.xml" />-->
 
 <!--	<bean id="executorSC" class="org.springframework.messaging.support.ExecutorSubscribableChannel"/>
 
