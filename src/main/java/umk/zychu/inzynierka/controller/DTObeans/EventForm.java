@@ -20,6 +20,8 @@ public class EventForm {
 		super();
 		eventId = id;
 		eventFormMembers = users;
+		eventId = null;
+		graphicId = null;
 	}
 
 	public Integer getEventId() {

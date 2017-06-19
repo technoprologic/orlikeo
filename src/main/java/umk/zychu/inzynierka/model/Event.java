@@ -46,7 +46,7 @@ public class Event extends BaseEntity {
         super();
         this.userOrganizer = builder.userOrganizer;
         this.graphic = builder.graphic;
-        this.playersLimit = builder.playersLimit;
+        this.playersLimit = null == builder.playersLimit ? 12 : builder.playersLimit;
         this.creationDate = new Date();
         this.eventState = builder.enumeratedEventState;
     }

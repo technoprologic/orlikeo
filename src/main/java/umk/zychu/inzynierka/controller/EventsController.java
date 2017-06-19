@@ -69,15 +69,13 @@ public class EventsController extends ServicesAwareController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register( final @ModelAttribute(EVENT_FORM) EventForm form,
-			ModelMap model, final BindingResult result) {
+							final BindingResult result,
+							RedirectAttributes redirectAttributes) {
 		if(result.hasErrors()) 
 			return "error";
 		Event event = registerEventCommandHandler.apply(new RegisterEventCommand(form));
-		UserGameDetails gameDetails  = eventService.getGameDetails(event);
-		model.addAttribute("eventDetails", gameDetails);
-		List<UserEvent> usersEvents = event.getUsersEvent();
-		model.addAttribute("usersEvents", usersEvents);
-		return "eventCreated";
+		redirectAttributes.addFlashAttribute("saved", true);
+		return "redirect:/events/edit/" + event.getId();
 	}
 	
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -239,7 +237,7 @@ public class EventsController extends ServicesAwareController {
 					.filter(ev -> ev.getUser().equals(loggedUser))
 					.findFirst();
 			if(!userEvent.isPresent() || !userEvent.get().getUserPermission()){
-				return "redirect:/events/all";
+				return null;
 			}
 		}
 		try {	
@@ -323,26 +321,29 @@ public class EventsController extends ServicesAwareController {
 						  final Model model) {
 		try {
 			Graphic graphic = graphicService.findOne(graphicId);
-			Orlik orlik = graphic.getOrlik();
 			List<User> userFriends = friendshipService.getFriends(null, ACCEPT);
-			List<EventMember> users = new ArrayList<>();
-	
-			for(User u : userFriends){
-				EventMember e = new EventMember.Builder(u).build();
-				users.add(e);
-			}			
-			EventForm form = new EventForm(null, users);
-			form.setGraphicId(graphicId);
-			form.setEventFormMembers(users);
-			model.addAttribute(EVENT_FORM, form)
-			.addAttribute("orlik", orlik)
-			.addAttribute("event", graphic)
-			.addAttribute("reserve", true)
-			.addAttribute("animator", orlik.getAnimator());
+			if(graphic.getAvailable()) {
+				List<EventMember> users = new ArrayList<>();
+
+				for (User u : userFriends) {
+					EventMember e = new EventMember.Builder(u).build();
+					users.add(e);
+				}
+
+				EventForm form = new EventForm(null, users);
+				form.setGraphicId(graphicId);
+				form.setEventFormMembers(users);
+
+				UserGameDetails gameDetails = new UserGameDetails.Builder(graphic)
+						.build();
+				model.addAttribute(EVENT_FORM, form)
+						.addAttribute("eventDetails", gameDetails)
+						.addAttribute("reserve", true);
+				return "eventEdit";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		model.addAttribute("saved", "true");
-		return "reserve";
+		return "redirect:/home";
 	}
 }

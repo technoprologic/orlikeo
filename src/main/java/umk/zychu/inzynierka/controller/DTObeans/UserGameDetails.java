@@ -1,5 +1,6 @@
 package umk.zychu.inzynierka.controller.DTObeans;
 
+import umk.zychu.inzynierka.model.Graphic;
 import umk.zychu.inzynierka.model.enums.EnumeratedEventRole;
 
 import java.util.Date;
@@ -26,6 +27,7 @@ public class UserGameDetails {
     private String shoes;
 
     private UserGameDetails(Builder builder) {
+        super();
         this.eventId = builder.eventId;
         this.stateId = builder.stateId;
         this.orlikId = builder.orlikId;
@@ -178,6 +180,26 @@ public class UserGameDetails {
             this.lights = Boolean.FALSE;
             this.water = Boolean.FALSE;
             this.shower = Boolean.FALSE;
+        }
+
+        public Builder(final Graphic graphic) {
+            this.eventId = null;
+            this.stateId = null;
+            this.orlikId = graphic.getOrlik().getId();
+            this.address = graphic.getOrlik().getAddress();
+            this.city = graphic.getOrlik().getCity();
+            this.organizerEmail = " - ";
+            this.startDate = graphic.getStartTime();
+            this.endDate = graphic.getEndTime();
+            this.decisionId = null;
+            this.role = EnumeratedEventRole.ORGANIZER;
+            this.permission = Boolean.TRUE;
+            this.willCome = 1;
+            this.playersLimit = 12;
+            this.invited = 1;
+            this.lights = graphic.getOrlik().getLights();
+            this.water = graphic.getOrlik().getWater();
+            this.shower = graphic.getOrlik().getShower();
         }
 
         public Builder stateId(final int stateId) {
